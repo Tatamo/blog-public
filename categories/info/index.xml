@@ -18,6 +18,12 @@
       <description>
         &lt;p&gt;ブログはじめました。&lt;/p&gt;
 
+&lt;p&gt;シンタックスハイライトのテストです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for x in range(10) :
+	print x
+&lt;/code&gt;&lt;/pre&gt;
+
       </description>
     </item>
     
