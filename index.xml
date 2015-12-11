@@ -55,12 +55,12 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 	var elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
 	var l=elements.length;
 	for(var i=0; i&amp;lt;l;i++){
-	var el = elements[i];
-	hljs.highlightBlock(el);
-	if(el.parentNode.tagName.toLowerCase() != &amp;quot;pre&amp;quot;) {
-		el.style.display = &amp;quot;inline&amp;quot;;
-		el.style.margin = &amp;quot;0 2px&amp;quot;;
-		el.style.padding = &amp;quot;1px 3px&amp;quot;;
+		var el = elements[i];
+		hljs.highlightBlock(el);
+		if(el.parentNode.tagName.toLowerCase() != &amp;quot;pre&amp;quot;) {
+			el.style.display = &amp;quot;inline&amp;quot;;
+			el.style.margin = &amp;quot;0 2px&amp;quot;;
+			el.style.padding = &amp;quot;1px 3px&amp;quot;;
 		}
 	}
 }, false);

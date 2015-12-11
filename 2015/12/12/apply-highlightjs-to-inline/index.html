@@ -94,12 +94,12 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
 	var elements = document.getElementsByTagName(&quot;code&quot;);
 	var l=elements.length;
 	for(var i=0; i&lt;l;i++){
-	var el = elements[i];
-	hljs.highlightBlock(el);
-	if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
-		el.style.display = &quot;inline&quot;;
-		el.style.margin = &quot;0 2px&quot;;
-		el.style.padding = &quot;1px 3px&quot;;
+		var el = elements[i];
+		hljs.highlightBlock(el);
+		if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
+			el.style.display = &quot;inline&quot;;
+			el.style.margin = &quot;0 2px&quot;;
+			el.style.padding = &quot;1px 3px&quot;;
 		}
 	}
 }, false);
