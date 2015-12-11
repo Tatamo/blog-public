@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>わたしろぐ</title>
-    <link>http://tatamo.81.la/blog/</link>
-    <description>Recent content on わたしろぐ</description>
+    <title>Tech on わたしろぐ</title>
+    <link>http://tatamo.81.la/blog/categories/tech/</link>
+    <description>Recent content in Tech on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Sat, 12 Dec 2015 01:01:51 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://tatamo.81.la/blog/categories/tech/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>highlight.jsをインライン要素にも適用できるようにした</title>
@@ -74,50 +74,6 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 &lt;p&gt;既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
 たとえば、このように:&lt;code&gt;print &amp;quot;\n&amp;quot;.join([&amp;quot;Fizz&amp;quot;*(not i%3)+&amp;quot;Buzz&amp;quot;*(not i%5) or str(i) for i in range(1,101)])&lt;/code&gt;うまくハイライトされているのがわかります。
 やったね。&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>ブログはじめました</title>
-      <link>http://tatamo.81.la/blog/2015/12/11/hello-world/</link>
-      <pubDate>Fri, 11 Dec 2015 00:00:00 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2015/12/11/hello-world/</guid>
-      <description>
-        &lt;p&gt;ブログはじめました。&lt;/p&gt;
-
-&lt;p&gt;まだデザインや機能が十分ではないような感じがしますが、少しずつ改良していこうと思います。&lt;/p&gt;
-
-&lt;p&gt;以下はシンタックスハイライトのテストです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for x in range(10) :
-	print x
-&lt;/code&gt;&lt;/pre&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>http://tatamo.81.la/blog/about/</link>
-      <pubDate>Wed, 28 Oct 2015 21:21:25 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/about/</guid>
-      <description>
-        
-
-&lt;p&gt;黒歴史は塗り替えてなんぼデスッ！！&lt;/p&gt;
-
-&lt;h2 id=&#34;about-this-blog:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;about this blog&lt;/h2&gt;
-
-&lt;p&gt;日記や技術的なことなど、まとまった文章を書くために使用する予定です。&lt;/p&gt;
-
-&lt;h2 id=&#34;about-me:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;about me&lt;/h2&gt;
-
-&lt;p&gt;プログラミングやゲームをします。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://twitter.com/__tatamo__&#34;&gt;twitter&lt;/a&gt;やってます&lt;/p&gt;
 
       </description>
     </item>

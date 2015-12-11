@@ -6,8 +6,77 @@
     <description>Recent content in Blog on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Fri, 11 Dec 2015 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 12 Dec 2015 01:01:51 +0900</lastBuildDate>
     <atom:link href="http://tatamo.81.la/blog/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>highlight.jsをインライン要素にも適用できるようにした</title>
+      <link>http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/</link>
+      <pubDate>Sat, 12 Dec 2015 01:01:51 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/</guid>
+      <description>
+        
+
+&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用しています。&lt;/p&gt;
+
+&lt;p&gt;デフォルトでは適用できないインラインのコードのハイライトも行えるようにしましたので、適用の流れなど。&lt;/p&gt;
+
+&lt;h2 id=&#34;highlight-jsって何:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;highlight.jsって何&lt;/h2&gt;
+
+&lt;p&gt;JavaScriptによって、Webページ内のソースコードを色付けしてくれるものです。
+たとえば:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for i in range(1,101) :
+	print (&amp;quot;Fizz&amp;quot; if not i%3 else &amp;quot;&amp;quot;) + (&amp;quot;Buzz&amp;quot; if not i%5 else &amp;quot;&amp;quot;) or i
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://highlightjs.org/static/demo/&#34;&gt;highlight.js demo&lt;/a&gt;を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
+(しかし思うのですが、自分のサイトに導入を検討する際に、この濃い赤色の背景色だと白色の背景と感覚が違ってくるのでやや選びにくいのではないでしょうか……。
+コンソールから&lt;code&gt;document.body.style.backgroundColor=&amp;quot;#FFFFFF&amp;quot;;&lt;/code&gt;とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)&lt;/p&gt;
+
+&lt;h2 id=&#34;インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;インライン要素でもハイライトできるようにしてみた&lt;/h2&gt;
+
+&lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。&lt;/p&gt;
+
+&lt;p&gt;Markdownの展開方法に適用できるように、&lt;code&gt;&amp;lt;code&amp;gt;&amp;lt;/code&amp;gt;&lt;/code&gt;で囲まれた要素をハイライトすることにします。
+既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://kenzauros.com/blog/apply-highlight-js-to-inline-source-code/&#34;&gt;highlight.jsでインラインのソースコードもハイライトする | blog@kenzauros.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://swiftrithm.com/blog/highlightjs-install/&#34;&gt;軽いとうわさのhighlight.jsをTwenty Fifteenに導入、ソースコードを綺麗に表示 &amp;#8211; SWIFTRITHM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上記のサイトでは共にJQueryを用いていますが、このサイトでは特にJQueryを導入する気もなかったため、生のJavaScript+DOMで適当に書き直しました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script&amp;gt;
+// hljs.initHighlightingOnLoad();
+window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
+	var elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
+	var l=elements.length;
+	for(var i=0; i&amp;lt;l;i++){
+	var el = elements[i];
+	hljs.highlightBlock(el);
+	if(el.parentNode.tagName.toLowerCase() != &amp;quot;pre&amp;quot;) {
+		el.style.display = &amp;quot;inline&amp;quot;;
+		el.style.margin = &amp;quot;0 2px&amp;quot;;
+		el.style.padding = &amp;quot;1px 3px&amp;quot;;
+		}
+	}
+}, false);
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;普通&lt;code&gt;hljs.initHighlightingOnLoad();&lt;/code&gt;を呼ぶところを、上記のコードで置き換えるだけで完了です。
+親要素が&lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;ではない場合にインライン化するようにしています。
+またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。&lt;/p&gt;
+
+&lt;p&gt;既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
+たとえば、このように:&lt;code&gt;print &amp;quot;\n&amp;quot;.join([&amp;quot;Fizz&amp;quot;*(not i%3)+&amp;quot;Buzz&amp;quot;*(not i%5) or str(i) for i in range(1,101)])&lt;/code&gt;うまくハイライトされているのがわかります。
+やったね。&lt;/p&gt;
+
+      </description>
+    </item>
     
     <item>
       <title>ブログはじめました</title>
