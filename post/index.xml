@@ -67,7 +67,7 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 &amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;普通&lt;code&gt;hljs.initHighlightingOnLoad();&lt;/code&gt;を呼ぶところを、上記のコードで置き換えるだけで完了です。
+&lt;p&gt;通常&lt;code&gt;hljs.initHighlightingOnLoad();&lt;/code&gt;を呼ぶところを、上記のコードで置き換えるだけで完了です。
 親要素が&lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;ではない場合にインライン化するようにしています。
 またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。&lt;/p&gt;
 
