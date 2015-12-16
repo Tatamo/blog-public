@@ -85,7 +85,7 @@
 
 <h2 id="インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56">インライン要素でもハイライトできるようにしてみた</h2>
 
-<p>通常では、highlight.jsによるハイライトは<code>&lt;pre&gt;&lt;code&gt;</code>から<code>&lt;/code&gt;&lt;/pre&gt;</code>で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。</p>
+<p>通常では、highlight.jsによるハイライトは<code>&lt;pre&gt;&lt;code&gt;</code>から<code>&lt;/code&gt;&lt;/pre&gt;</code>で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。</p>
 
 <p>Markdownの展開方法に適用できるように、<code>&lt;code&gt;&lt;/code&gt;</code>で囲まれた要素をハイライトすることにします。
 既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。</p>
@@ -120,13 +120,14 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
 またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。</p>
 
 <p>既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
-たとえば、このように:<code>print &quot;\n&quot;.join([&quot;Fizz&quot;*(not i%3)+&quot;Buzz&quot;*(not i%5) or str(i) for i in range(1,101)])</code>うまくハイライトされているのがわかります。
+たとえば、このように:<code>print &quot;\n&quot;.join([&quot;Fizz&quot;*(not i%3)+&quot;Buzz&quot;*(not i%5) or str(i) for i in range(1,101)])</code>1行のコードでもうまくハイライトされているのがわかります。
 やったね。</p>
 
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>
     <nav class="article-nav-adjacent">
+        <span class="article-link-next"><a href="http://tatamo.81.la/blog/2015/12/17/hugo-implementation/">&lt;- Newer: Hugoを導入してブログを作った サイト構築編</a></span>
         <span class="article-link-border"></span>
         <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2015/12/11/hello-world/">Older: ブログはじめました -&gt;</a></span>
     </nav>
@@ -137,6 +138,7 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
             <section>
                 <h2 class="panel-title">Recent Posts</h2>
                 <ul>
+                <li><a href="http://tatamo.81.la/blog/2015/12/17/hugo-implementation/" class="list-group-item">Hugoを導入してブログを作った サイト構築編</a></li>
                 <li><a href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/" class="list-group-item">highlight.jsをインライン要素にも適用できるようにした</a></li>
                 <li><a href="http://tatamo.81.la/blog/2015/12/11/hello-world/" class="list-group-item">ブログはじめました</a></li>
                 </ul>
@@ -146,14 +148,15 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
                 <ul>
                 <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
-                <li><a href="http://tatamo.81.la/blog/categories/tech">tech (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/tech">tech (2)</a></li>
                 </ul>
             </section>
             <section>
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
                 <ul>
-                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (3)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/highlight_js">highlight_js (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (1)</a></li>
                 </ul>

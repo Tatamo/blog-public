@@ -37,7 +37,7 @@
 
 &lt;h2 id=&#34;インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;インライン要素でもハイライトできるようにしてみた&lt;/h2&gt;
 
-&lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。&lt;/p&gt;
+&lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。&lt;/p&gt;
 
 &lt;p&gt;Markdownの展開方法に適用できるように、&lt;code&gt;&amp;lt;code&amp;gt;&amp;lt;/code&amp;gt;&lt;/code&gt;で囲まれた要素をハイライトすることにします。
 既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。&lt;/p&gt;
@@ -72,7 +72,7 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。&lt;/p&gt;
 
 &lt;p&gt;既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
-たとえば、このように:&lt;code&gt;print &amp;quot;\n&amp;quot;.join([&amp;quot;Fizz&amp;quot;*(not i%3)+&amp;quot;Buzz&amp;quot;*(not i%5) or str(i) for i in range(1,101)])&lt;/code&gt;うまくハイライトされているのがわかります。
+たとえば、このように:&lt;code&gt;print &amp;quot;\n&amp;quot;.join([&amp;quot;Fizz&amp;quot;*(not i%3)+&amp;quot;Buzz&amp;quot;*(not i%5) or str(i) for i in range(1,101)])&lt;/code&gt;1行のコードでもうまくハイライトされているのがわかります。
 やったね。&lt;/p&gt;
 
       </description>
