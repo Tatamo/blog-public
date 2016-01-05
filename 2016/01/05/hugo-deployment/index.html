@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Tatamo&#39;s weblog">
+    <meta name="author" content="Tatamo">
+    
+    <base href="http://tatamo.81.la/blog/">
+    <title>
+      Hugoを導入してブログを作った デプロイ編 | わたしろぐ
+    </title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2016/01/05/hugo-deployment/">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>
+    
+    window.addEventListener("DOMContentLoaded", function(){
+        var elements = document.getElementsByTagName("code");
+        var l=elements.length;
+        for(var i=0; i<l;i++){
+            var el = elements[i];
+            hljs.highlightBlock(el);
+            if(el.parentNode.tagName.toLowerCase() != "pre") {
+                el.style.display = "inline";
+                el.style.margin = "0 2px";
+                el.style.padding = "1px 3px";
+            }
+        }
+    }, false);
+    </script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71305633-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="http://tatamo.81.la/blog/">わたしろぐ</a></h1>
+        <h2 class="site-subtitle">私録</h2>
+    </header>
+    <nav class="head-nav">
+        <ul>
+        <li><a href="about/">about</a></li>
+        <li><a href="https://twitter.com/__tatamo__" target="_blank">twitter</a></li>
+        <li><a href="https://github.com/tatamo" target="_blank">github</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <div class="main-content">
+
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2016/01/05/hugo-deployment/">Hugoを導入してブログを作った デプロイ編</a></h1>
+        <span class="article-datetime"><time>2016-01-05 20:50:32</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories/tech/">tech</a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/blog/">blog</a>
+        <a href="http://tatamo.81.la/blog/tags/hugo/">Hugo</a>
+        <a href="http://tatamo.81.la/blog/tags/github/">GitHub</a>
+        <a href="http://tatamo.81.la/blog/tags/wercker/">wercker</a>
+        <a href="http://tatamo.81.la/blog/tags/deploybot/">DeployBot</a></p>
+        
+
+<p><a href="https://gohugo.io/">Hugo</a>によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。</p>
+
+<h2 id="werckerを使って自動ビルドする:288053c42ac37fddb3dbfcd51f807cce">Werckerを使って自動ビルドする</h2>
+
+<p>まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
+記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
+また、Hugoの環境がなくても、gitさえ使うことができれば記事の更新を行うことができるようになります。</p>
+
+<p>今回使用した<a href="http://wercker.com/">Wercker</a>は、このような自動ビルド作業およびデプロイ作業を自動化してくれるCIサービスです。
+Werckerを利用した自動デプロイは、<a href="https://gohugo.io/tutorials/automated-deployments/">Hugoの公式ドキュメント</a>に記事があるため、これを参考に行います。
+この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。</p>
+
+<h3 id="wercker-ymlの記述:288053c42ac37fddb3dbfcd51f807cce">wercker.ymlの記述</h3>
+
+<p>公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
+既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。</p>
+
+<pre><code class="language-yml">box: debian 
+build:
+  steps:
+    - arjen/hugo-build:
+        version: &quot;0.14&quot;
+</code></pre>
+
+<p>これだけでHugoのビルドが可能です。
+ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。</p>
+
+<h2 id="werckerとdeploybotを使って自動デプロイする:288053c42ac37fddb3dbfcd51f807cce">WerckerとDeployBotを使って自動デプロイする</h2>
+
+<p>前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。</p>
+
+<pre><code class="language-yml">box: debian 
+build:
+  steps:
+    - arjen/hugo-build:
+        version: &quot;0.14&quot;
+deploy:
+  steps:
+    - install-packages:
+        packages: lftp
+    - script:
+        name: mirror over lftp
+        code: |
+            lftp -u $DEPLOY_FTP_USER,$DEPLOY_FTP_PASS -e &quot;set ftp:passive-mode off;set ftp:ssl-allow off;set net:timeout 5;set net:max-retries 3;set net:reconnect-interval-max 60;mirror -enR public /blog;quit&quot; $DEPLOY_FTP_SERVER
+</code></pre>
+
+<p>lftpでの接続に失敗し、アップロードを行うことができませんでした。
+PASVモードのon/off、sslを使用しないようにするなどのオプションを試みましたが、コネクションがうまく確立できず失敗しました。</p>
+
+<p>後日また調べてみたいと思っていますが、ひとまずFTPでのアップロードを行うため、別のサービスを利用することにしました。
+<a href="http://deploybot.com/">DeployBot</a>は1プロジェクトまで無料で利用できるサービスで、FTPによるアップロードにも対応しているため、これを利用しました。
+DeployBotによるデプロイは、<a href="http://creative-tweet.net/blog/2015/10/usage-hugo-2.html">Hugoをセットアップしてデプロイするまで［後編］CIサービスでビルドからデプロイを自動化するまで | creative tweet.</a>で解説されているので、ここを参考にして行いました。</p>
+
+<p>全体としては、</p>
+
+<ol>
+<li>記事を書いてGitHub上にpushする</li>
+<li>Werckerが更新を検知して自動的にビルドを行い、別のGitHubリポジトリを更新する</li>
+<li>そのリポジトリの更新を検知してDeployBotによって自動的にサーバーへアップロードする</li>
+</ol>
+
+<p>というような流れでのデプロイを行いました。</p>
+
+<p>Werckerから別のGitHubリポジトリへのpushを行うようにするため、公式ドキュメントに書かれている通りにwercker.ymlを書き換えます。</p>
+
+<pre><code class="language-yml">box: debian 
+build:
+  steps:
+    - arjen/hugo-build:
+        version: &quot;0.14&quot;
+deploy:
+  steps:
+    - install-packages:
+        packages: git ssh-client
+    - leipert/git-push:
+        gh-oauth: $GIT_TOKEN
+        basedir: public
+        repo: $GITHUB_REPO
+        clean_removed_files: true
+</code></pre>
+
+<p><code>$GIT_TOKEN</code>および<code>$GITHUB_REPO</code>は、werckerの設定画面でdeploy targetごとに変数を定義できるため、そこに記述します。$GIT_TOKENはprotectedにチェックを入れ、外部から取得できないようにしておきます。</p>
+
+<p>あとはwerckerのデプロイ先に指定したGitHubリポジトリをDeployBotに登録するだけです。
+DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
+これで目的のサーバーへの自動デプロイが完了しました。</p>
+
+<h2 id="補足など:288053c42ac37fddb3dbfcd51f807cce">補足など</h2>
+
+<h3 id="githubリポジトリの分割:288053c42ac37fddb3dbfcd51f807cce">GitHubリポジトリの分割</h3>
+
+<p>Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。</p>
+
+<pre><code>public/
+</code></pre>
+
+<ul>
+<li>リポジトリA:publicディレクトリを除くHugoディレクトリ</li>
+<li>リポジトリB:生成されたpublicディレクトリの内容</li>
+</ul>
+
+<p>というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。</p>
+
+<h3 id="werckerの設定:288053c42ac37fddb3dbfcd51f807cce">Werckerの設定</h3>
+
+<h4 id="dockerの使用:288053c42ac37fddb3dbfcd51f807cce">Dockerの使用</h4>
+
+<p>Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
+Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、<a href="http://thleap.net/blog/recovering-wercker/">boxが見つからないというエラー</a>が発生します。
+逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
+(なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)</p>
+
+<h4 id="デプロイターゲット登録時のauto-deploy設定:288053c42ac37fddb3dbfcd51f807cce">デプロイターゲット登録時のAuto deploy設定</h4>
+
+<p>ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&rdquo;auto deploy successful builds to branch(es):&ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
+GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。</p>
+
+<p>なお、デプロイ先のGitHubブランチ名は前述したwercker.yml内に指定する箇所があります。</p>
+
+<hr />
+
+<p>以上で、Hugoで生成したサイトを自動的にデプロイすることができました。
+とはいえWerckerから直接デプロイすることに失敗したためにやや回りくどい方法をとっており、いずれ改善したいと思っています。</p>
+
+<p>Werckerはビルドごとに環境を最初から設定するため、ライブラリのインストールなども毎回行われ、ビルド環境が整うまでに1分ほどかかります。
+手元でビルドができる環境ならばローカルでビルドしてアップロードしたほうが明らかに速いので、すぐに更新したいときなどはデプロイまでにかなり時間がかかる印象を受けます。
+Werckerを経由せず、手動でアップロードできる方法も用意しておいたほうがいいのかもしれません。</p>
+
+<p>また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
+デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。</p>
+
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2015/12/17/hugo-implementation/">Older: Hugoを導入してブログを作った サイト構築編 -&gt;</a></span>
+    </nav>
+
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <section>
+                <h2 class="panel-title">Recent Posts</h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/2016/01/05/hugo-deployment/" class="list-group-item">Hugoを導入してブログを作った デプロイ編</a></li>
+                <li><a href="http://tatamo.81.la/blog/2015/12/17/hugo-implementation/" class="list-group-item">Hugoを導入してブログを作った サイト構築編</a></li>
+                <li><a href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/" class="list-group-item">highlight.jsをインライン要素にも適用できるようにした</a></li>
+                <li><a href="http://tatamo.81.la/blog/2015/12/11/hello-world/" class="list-group-item">ブログはじめました</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/tech">tech (3)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/highlight_js">highlight_js (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    </div>
+   <footer>
+        <p>Copyright (c) 2015 <a href="about/">Tatamo</a>.</p>
+        <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a></p>
+    </footer>
+</body>
+</html>
+
