@@ -76,7 +76,7 @@
 たとえば:</p>
 
 <pre><code class="language-python">for i in range(1,101) :
-	print (&quot;Fizz&quot; if not i%3 else &quot;&quot;) + (&quot;Buzz&quot; if not i%5 else &quot;&quot;) or i
+    print (&quot;Fizz&quot; if not i%3 else &quot;&quot;) + (&quot;Buzz&quot; if not i%5 else &quot;&quot;) or i
 </code></pre>
 
 <p><a href="https://highlightjs.org/static/demo/">highlight.js demo</a>を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
@@ -100,17 +100,17 @@
 <pre><code class="language-html">&lt;script&gt;
 // hljs.initHighlightingOnLoad();
 window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
-	var elements = document.getElementsByTagName(&quot;code&quot;);
-	var l=elements.length;
-	for(var i=0; i&lt;l;i++){
-		var el = elements[i];
-		hljs.highlightBlock(el);
-		if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
-			el.style.display = &quot;inline&quot;;
-			el.style.margin = &quot;0 2px&quot;;
-			el.style.padding = &quot;1px 3px&quot;;
-		}
-	}
+    var elements = document.getElementsByTagName(&quot;code&quot;);
+    var l=elements.length;
+    for(var i=0; i&lt;l;i++){
+        var el = elements[i];
+        hljs.highlightBlock(el);
+        if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
+            el.style.display = &quot;inline&quot;;
+            el.style.margin = &quot;0 2px&quot;;
+            el.style.padding = &quot;1px 3px&quot;;
+        }
+    }
 }, false);
 &lt;/script&gt;
 </code></pre>
@@ -138,6 +138,7 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
             <section>
                 <h2 class="panel-title">Recent Posts</h2>
                 <ul>
+                <li><a href="http://tatamo.81.la/blog/2016/02/17/freeciv-2016-01-30/" class="list-group-item">うくらいなにっき(Freecivマルチレポ) 2016/01/30</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/01/05/hugo-deployment/" class="list-group-item">Hugoを導入してブログを作った デプロイ編</a></li>
                 <li><a href="http://tatamo.81.la/blog/2015/12/17/hugo-implementation/" class="list-group-item">Hugoを導入してブログを作った サイト構築編</a></li>
                 <li><a href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/" class="list-group-item">highlight.jsをインライン要素にも適用できるようにした</a></li>
@@ -148,6 +149,7 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
             <section>
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
                 <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/tech">tech (3)</a></li>
                 </ul>
@@ -157,6 +159,7 @@ window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
                 <ul>
                 <li><a href="http://tatamo.81.la/blog/tags/blog">blog (4)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/highlight_js">highlight_js (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
