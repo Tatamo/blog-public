@@ -76,7 +76,7 @@
 たとえば:</p>
 
 <pre><code class="language-python">for i in range(1,101) :
-    print (&quot;Fizz&quot; if not i%3 else &quot;&quot;) + (&quot;Buzz&quot; if not i%5 else &quot;&quot;) or i
+	print (&quot;Fizz&quot; if not i%3 else &quot;&quot;) + (&quot;Buzz&quot; if not i%5 else &quot;&quot;) or i
 </code></pre>
 
 <p><a href="https://highlightjs.org/static/demo/">highlight.js demo</a>を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
@@ -100,17 +100,17 @@
 <pre><code class="language-html">&lt;script&gt;
 // hljs.initHighlightingOnLoad();
 window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
-    var elements = document.getElementsByTagName(&quot;code&quot;);
-    var l=elements.length;
-    for(var i=0; i&lt;l;i++){
-        var el = elements[i];
-        hljs.highlightBlock(el);
-        if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
-            el.style.display = &quot;inline&quot;;
-            el.style.margin = &quot;0 2px&quot;;
-            el.style.padding = &quot;1px 3px&quot;;
-        }
-    }
+	var elements = document.getElementsByTagName(&quot;code&quot;);
+	var l=elements.length;
+	for(var i=0; i&lt;l;i++){
+		var el = elements[i];
+		hljs.highlightBlock(el);
+		if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
+			el.style.display = &quot;inline&quot;;
+			el.style.margin = &quot;0 2px&quot;;
+			el.style.padding = &quot;1px 3px&quot;;
+		}
+	}
 }, false);
 &lt;/script&gt;
 </code></pre>

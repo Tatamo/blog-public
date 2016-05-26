@@ -313,7 +313,7 @@ CSS周りについても記事を書いてみたいですが、あまりに試�
 たとえば:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for i in range(1,101) :
-    print (&amp;quot;Fizz&amp;quot; if not i%3 else &amp;quot;&amp;quot;) + (&amp;quot;Buzz&amp;quot; if not i%5 else &amp;quot;&amp;quot;) or i
+	print (&amp;quot;Fizz&amp;quot; if not i%3 else &amp;quot;&amp;quot;) + (&amp;quot;Buzz&amp;quot; if not i%5 else &amp;quot;&amp;quot;) or i
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://highlightjs.org/static/demo/&#34;&gt;highlight.js demo&lt;/a&gt;を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
@@ -337,17 +337,17 @@ CSS周りについても記事を書いてみたいですが、あまりに試�
 &lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script&amp;gt;
 // hljs.initHighlightingOnLoad();
 window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
-    var elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
-    var l=elements.length;
-    for(var i=0; i&amp;lt;l;i++){
-        var el = elements[i];
-        hljs.highlightBlock(el);
-        if(el.parentNode.tagName.toLowerCase() != &amp;quot;pre&amp;quot;) {
-            el.style.display = &amp;quot;inline&amp;quot;;
-            el.style.margin = &amp;quot;0 2px&amp;quot;;
-            el.style.padding = &amp;quot;1px 3px&amp;quot;;
-        }
-    }
+	var elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
+	var l=elements.length;
+	for(var i=0; i&amp;lt;l;i++){
+		var el = elements[i];
+		hljs.highlightBlock(el);
+		if(el.parentNode.tagName.toLowerCase() != &amp;quot;pre&amp;quot;) {
+			el.style.display = &amp;quot;inline&amp;quot;;
+			el.style.margin = &amp;quot;0 2px&amp;quot;;
+			el.style.padding = &amp;quot;1px 3px&amp;quot;;
+		}
+	}
 }, false);
 &amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
