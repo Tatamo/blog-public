@@ -8,10 +8,10 @@
     
     <base href="http://tatamo.81.la/blog/">
     <title>
-      highlight.jsをインライン要素にも適用できるようにした | わたしろぐ
+      FreecivCalc2を公開しました | わたしろぐ
     </title>
     <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
-    <link rel="canonical" href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/">
     <link rel="stylesheet" href="highlight/styles/default.css">
     <script src="highlight/highlight.pack.js"></script>
     <script>
@@ -56,80 +56,61 @@
     <div class="main-content">
 
     <article class="article">
-        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/">highlight.jsをインライン要素にも適用できるようにした</a></h1>
-        <span class="article-datetime"><time>2015-12-12 01:01:51</time></span>
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/">FreecivCalc2を公開しました</a></h1>
+        <span class="article-datetime"><time>2016-05-26 15:47:37</time></span>
         <p class="article-categories">Category:
         <a href="http://tatamo.81.la/blog/categories/dev/">dev</a></p>
         <p class="article-tags">Tag:
-        <a href="http://tatamo.81.la/blog/tags/highlight_js/">highlight_js</a>
-        <a href="http://tatamo.81.la/blog/tags/javascript/">javascript</a>
-        <a href="http://tatamo.81.la/blog/tags/blog/">blog</a></p>
+        <a href="http://tatamo.81.la/blog/tags/freeciv/">freeciv</a>
+        <a href="http://tatamo.81.la/blog/tags/freecivcalc/">freecivcalc</a></p>
         
 
-<p>このブログのシンタックスハイライトには<a href="https://highlightjs.org/">highlight.js</a>を使用しています。</p>
+<p>Freecivのユニット同士の戦闘勝率を手軽に行えるソフトであるFreecivCalcの新バージョン、FreecivCalc2を公開しました。</p>
 
-<p>デフォルトでは適用できないインラインのコードのハイライトも行えるようにしましたので、適用の流れなど。</p>
+<p>FreecivCalc2: <a href="http://tatamo.81.la/freecivcalc2/">http://tatamo.81.la/freecivcalc2/</a></p>
 
-<h2 id="highlight-jsって何:dbe2fecfd9603c43589f9d37f36eba56">highlight.jsって何</h2>
+<p>以前から公開していた<a href="http://m06t625.81.la/files/FreecivCalc.html">FreecivCalc</a>はSilverlight上で動作するソフトのため、現状では動作するブラウザがほとんどなくなってきています。</p>
 
-<p>JavaScriptによって、Webページ内のソースコードを色付けしてくれるものです。
-たとえば:</p>
+<p>そこでHTML5+JavaScript/TypeScriptに移植し、機能やインターフェースを大幅に見直したFreecivCalc2を開発しました。</p>
 
-<pre><code class="language-python">for i in range(1,101) :
-	print (&quot;Fizz&quot; if not i%3 else &quot;&quot;) + (&quot;Buzz&quot; if not i%5 else &quot;&quot;) or i
-</code></pre>
+<p>Chrome, Opera, Firefox, Edgeでの動作を確認しています。</p>
 
-<p><a href="https://highlightjs.org/static/demo/">highlight.js demo</a>を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
-(しかし思うのですが、自分のサイトに導入を検討する際に、この濃い赤色の背景色だと白色の背景と感覚が違ってくるのでやや選びにくいのではないでしょうか……。
-コンソールから<code>document.body.style.backgroundColor=&quot;#FFFFFF&quot;;</code>とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)</p>
+<h2 id="freecivcalc2の新機能:0fe09111c483b88d0d4fda3fcdc49d63">FreecivCalc2の新機能</h2>
 
-<h2 id="インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56">インライン要素でもハイライトできるようにしてみた</h2>
+<p>FreecivCalc2の画面からユニットを選択し、各種補正情報を入力することで戦闘勝率を表示できます。また詳細結果タブを開くことで、戦闘後のユニットHPの期待値を表示できるほか、タブを保持しておくことで復数の戦闘の予測結果を見比べることなどができます。</p>
 
-<p>通常では、highlight.jsによるハイライトは<code>&lt;pre&gt;&lt;code&gt;</code>から<code>&lt;/code&gt;&lt;/pre&gt;</code>で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。</p>
+<p>従来バージョンでは、地形による防御ボーナスの適用の可否や特定のユニット同士の戦闘にかかる特殊補正などの補正の情報を手動で入力する必要がありました。
+FreecivCalc2ではこれらの特殊補正は自動で適用されるため、Freecivの複雑な戦闘補正を十分に把握していない場合でも正確に戦闘勝率の予測が可能です。
+ユニットにかけられている補正の一覧は、詳細結果タブ内で確認することができます。</p>
 
-<p>Markdownの展開方法に適用できるように、<code>&lt;code&gt;&lt;/code&gt;</code>で囲まれた要素をハイライトすることにします。
-既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。</p>
+<h2 id="複数の言語-多様なルールセットに対応可能な拡張性:0fe09111c483b88d0d4fda3fcdc49d63">複数の言語、多様なルールセットに対応可能な拡張性</h2>
 
-<ul>
-<li><a href="http://kenzauros.com/blog/apply-highlight-js-to-inline-source-code/">highlight.jsでインラインのソースコードもハイライトする | blog@kenzauros.com</a></li>
-<li><a href="http://swiftrithm.com/blog/highlightjs-install/">軽いとうわさのhighlight.jsをTwenty Fifteenに導入、ソースコードを綺麗に表示 &#8211; SWIFTRITHM</a></li>
-</ul>
+<p>戦闘補正の自動適用を実現するために、ユニットの情報や補正の条件など、ルールセットに関連するすべての情報を外部データ化しました。
+これによってclassicルールセットだけでなく、多様なルールセットに対応することが可能です。
+同時に、FreecivCalc2のインターフェース部分もテンプレートを用いて外部ファイルからコンテンツ内容を流し込んでいるため、容易に多言語化が可能になっています。</p>
 
-<p>上記のサイトでは共にJQueryを用いていますが、このサイトでは特にJQueryを導入する気もなかったため、生のJavaScript+DOMで適当に書き直しました。</p>
+<p>現状では、classicルールセットを日本語および英語の2か国語で対応しています。</p>
 
-<pre><code class="language-html">&lt;script&gt;
-// hljs.initHighlightingOnLoad();
-window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
-	var elements = document.getElementsByTagName(&quot;code&quot;);
-	var l=elements.length;
-	for(var i=0; i&lt;l;i++){
-		var el = elements[i];
-		hljs.highlightBlock(el);
-		if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
-			el.style.display = &quot;inline&quot;;
-			el.style.margin = &quot;0 2px&quot;;
-			el.style.padding = &quot;1px 3px&quot;;
-		}
-	}
-}, false);
-&lt;/script&gt;
-</code></pre>
+<h2 id="開発について:0fe09111c483b88d0d4fda3fcdc49d63">開発について</h2>
 
-<p>通常<code>hljs.initHighlightingOnLoad();</code>を呼ぶところを、上記のコードで置き換えるだけで完了です。
-親要素が<code>&lt;pre&gt;</code>ではない場合にインライン化するようにしています。
-またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。</p>
+<p>FreecivCalc2は三条項BSDライセンス下で公開されています。</p>
 
-<p>既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
-たとえば、このように:<code>print &quot;\n&quot;.join([&quot;Fizz&quot;*(not i%3)+&quot;Buzz&quot;*(not i%5) or str(i) for i in range(1,101)])</code>1行のコードでもうまくハイライトされているのがわかります。
-やったね。</p>
+<p>ローカル環境でのビルド、他のルールセットや言語に対応させるためのデータセットの文法などについては<a href="https://github.com/Tatamo/freecivcalc2">GitHubリポジトリ</a>上で記述しているため、そちらを参照してください。</p>
+
+<p>FreecivCalc2は大半をTypeScriptで、jQuery UIのウィジェット定義など一部を生のJavaScriptで書いています。</p>
+
+<p>また使用したライブラリはjQuery, jQuery UI, amChartsです。
+当初jQueryを使う予定はなかったのですが、ユニット選択用のUIとしてコンボボックスを実現するためのライブラリを探していたところjQuery UIが最も用途に適っていたため採用し、その流れでjQueryも使用することになりました。
+amChartsは簡単にグラフを表示できるライブラリとして使いやすそうだったため使用しました。</p>
+
+<p>その他、外部JSONファイルからテンプレートを通してHTMLファイルを生成するためのテンプレートエンジンとしてEJSを使用しました。</p>
 
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>
     <nav class="article-nav-adjacent">
-        <span class="article-link-next"><a href="http://tatamo.81.la/blog/2015/12/17/hugo-implementation/">&lt;- Newer: Hugoを導入してブログを作った サイト構築編</a></span>
         <span class="article-link-border"></span>
-        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2015/12/11/hello-world/">Older: ブログはじめました -&gt;</a></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2016/02/20/freeciv-build-first-cities/">Older: Freecivオンラインプレイ解説 最初の都市を建設するまで -&gt;</a></span>
     </nav>
 
     </div>
