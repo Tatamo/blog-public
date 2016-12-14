@@ -30,7 +30,7 @@
 
 &lt;p&gt;もう帰っていいですかね。&lt;/p&gt;
 
-&lt;h2 id=&#34;総称型tに対してnew-t-したい:c600ddb79433125511402a932eb728b1&#34;&gt;総称型Tに対してnew T()したい&lt;/h2&gt;
+&lt;h2 id=&#34;総称型tに対してt-classやnew-t-したい:c600ddb79433125511402a932eb728b1&#34;&gt;総称型Tに対してT.classやnew T()したい&lt;/h2&gt;
 
 &lt;h3 id=&#34;ジェネリクスとは:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスとは&lt;/h3&gt;
 
@@ -83,7 +83,7 @@ public &amp;lt;T&amp;gt; void doSomething(String arg){
 &lt;p&gt;ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
 残念でしたね。&lt;/p&gt;
 
-&lt;h2 id=&#34;なぜt-classしたいのか:c600ddb79433125511402a932eb728b1&#34;&gt;なぜT.classしたいのか&lt;/h2&gt;
+&lt;h2 id=&#34;なぜしたいのか:c600ddb79433125511402a932eb728b1&#34;&gt;なぜしたいのか&lt;/h2&gt;
 
 &lt;h3 id=&#34;もしかして-設計が間違っている:c600ddb79433125511402a932eb728b1&#34;&gt;もしかして： 設計が間違っている&lt;/h3&gt;
 
