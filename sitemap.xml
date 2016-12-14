@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/</loc>
-    <lastmod>2016-12-07T13:53:12+09:00</lastmod>
+    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/</loc>
+    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
   </url>
   
   <url>

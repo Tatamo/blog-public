@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Tatamo&#39;s weblog">
+    <meta name="author" content="Tatamo">
+    
+    <base href="http://tatamo.81.la/blog/">
+    <title>
+      Javaのリフレクションを悪用してクラス設計してみる | わたしろぐ
+    </title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>
+    
+    window.addEventListener("DOMContentLoaded", function(){
+        var elements = document.getElementsByTagName("code");
+        var l=elements.length;
+        for(var i=0; i<l;i++){
+            var el = elements[i];
+            hljs.highlightBlock(el);
+            if(el.parentNode.tagName.toLowerCase() != "pre") {
+                el.style.display = "inline";
+                el.style.margin = "0 2px";
+                el.style.padding = "1px 3px";
+            }
+        }
+    }, false);
+    </script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71305633-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="http://tatamo.81.la/blog/">わたしろぐ</a></h1>
+        <h2 class="site-subtitle">私録</h2>
+    </header>
+    <nav class="head-nav">
+        <ul>
+        <li><a href="about/">about</a></li>
+        <li><a href="https://twitter.com/__tatamo__" target="_blank">twitter</a></li>
+        <li><a href="https://github.com/tatamo" target="_blank">github</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <div class="main-content">
+
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/">Javaのリフレクションを悪用してクラス設計してみる</a></h1>
+        <span class="article-datetime"><time>2016-12-15 01:11:23</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories/dev/">dev</a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/java/">java</a>
+        <a href="http://tatamo.81.la/blog/tags/generics/">generics</a>
+        <a href="http://tatamo.81.la/blog/tags/reflection/">reflection</a></p>
+        
+
+<p>この記事は<a href="http://www.adventar.org/calendars/1881">Kobe University Advent Calendar 2016</a>の14日の記事です。遅刻です。
+なお私は当該大学の学部2年(2016年12月現在)です。</p>
+
+<hr />
+
+<p>最近、大学の授業などで少しだけJavaに触れる機会があったので、ちょっとした黒魔術っぽいことでもやってみようと思います。</p>
+
+<p>と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。<br />
+* <a href="http://d.hatena.ne.jp/Nagise/20131121/1385046248">new T()したいケースへの対処法 - プログラマーの脳みそ</a></p>
+
+<p>もう帰っていいですかね。</p>
+
+<h2 id="総称型tに対してnew-t-したい:c600ddb79433125511402a932eb728b1">総称型Tに対してnew T()したい</h2>
+
+<h3 id="ジェネリクスとは:c600ddb79433125511402a932eb728b1">ジェネリクスとは</h3>
+
+<p>わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。</p>
+
+<pre><code class="language-Java">ArrayList&lt;String&gt; strlist = new ArrayList&lt;String&gt;();
+ArrayList&lt;Integer&gt; intlist = new ArrayList&lt;Integer&gt;();
+</code></pre>
+
+<p>ArrayList<T>に対し、ジェネリクスとしてStringやIntegerなど、リストの要素として入れたい型をTの部分に具体的に書くことで、一つのクラスであるArrayListに利用者側が好きな要素を入れることができるようになります。</p>
+
+<p>ジェネリクスを用いて自分でメソッドを定義する場合は、以下のようになります。</p>
+
+<pre><code class="language-Java">public &lt;T&gt; void doSomething(T arg){
+	// doSomething
+}
+
+// TをSomeClassのサブクラスに限定する
+public &lt;T extends SomeClass&gt; void notDoAnything(T arg){
+	return;
+}
+</code></pre>
+
+<p>これらのメソッドを呼び出すときは、<code>hoge.&lt;SomeClass&gt;doSomething();</code>のようになります。<br />
+どうして<code>hoge.doSomething&lt;SomeClass&gt;();</code>じゃないんだろう。</p>
+
+<h3 id="ジェネリクスはt-classやnew-t-をさせてくれない:c600ddb79433125511402a932eb728b1">ジェネリクスはT.classやnew T()をさせてくれない</h3>
+
+<p>Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。</p>
+
+<pre><code class="language-Java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list){
+	return list
+		.stream()
+		.filter(value -&gt; value instanceof T) // ここでlistの要素valueがTのインスタンスかどうか判別したい -&gt; error
+		.collect(Collectors.toList());
+}
+
+public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList2(List&lt;SomeClass&gt; list){
+	return list
+		.stream()
+		.filter(value -&gt; value.getClass() == T.class) // instanceofがだめならclassを取得して判別したい -&gt; error
+		.collect(Collectors.toList());
+}
+
+public &lt;T&gt; void doSomething(String arg){
+	T foo = new T(arg); // T型の新しいインスタンスfooを作りたい -&gt; error
+}
+</code></pre>
+
+<p>ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
+残念でしたね。</p>
+
+<h2 id="なぜt-classしたいのか:c600ddb79433125511402a932eb728b1">なぜT.classしたいのか</h2>
+
+<h3 id="もしかして-設計が間違っている:c600ddb79433125511402a932eb728b1">もしかして： 設計が間違っている</h3>
+
+<p>先ほどのgetSubClassListメソッドを見てみましょう。
+正しく動くかどうかはさておき、やりたいことは以下の通りです：<br />
+* SomeClassとそのサブクラスを含んだリストlistの要素のうち、SomeClassのサブクラスTのインスタンスだけを要素とする新しいリストを取得したい。</p>
+
+<p>そもそも、抽象化された集合から具体的なクラスのインスタンスを取り出そうとすること自体がオブジェクト指向やポリモーフィズムの考え方に対する反逆である可能性があります。</p>
+
+<p>SomeClassのリストであるlistをイテレートして、それぞれの要素のdoSomething()メソッドを呼べば、あとはそれがSomeClassのインスタンスであろうと、もしくはSomeClassを継承した別のクラスのインスタンスであろうと、外部からはただdoSomething()メソッドを呼ぶだけで操作が完結していなければなりません。
+それがサブクラス固有のふるまいをするとしても、その実装はそのクラス自身に隠蔽されるべきなのです。</p>
+
+<p>よって、サブクラスだけを取り出そうとする試み自体がナンセンスなものである可能性が非常に高く、まずそのような試みが必要になる設計そのものを見直す必要があります。</p>
+
+<p>終わり。</p>
+
+<h3 id="そうも言っていられない:c600ddb79433125511402a932eb728b1">そうも言っていられない</h3>
+
+<p>実際その通りなのですが、それではこの記事が続きません。</p>
+
+<p>ここからは、少し具体的なプログラムの設計を例にとって考えてみたいと思います。<br />
+あなたはちょっとしたゲームを作るためのフレームワークを作っています。
+その一部分が以下のようになります。</p>
+
+<pre><code class="language-Java">// 抽象的なゲーム内エンティティクラス
+public abstract class Entity {
+	private int x;
+	private int y;
+	public Entity(int x, int y){
+		this.setX(x);
+		this.setY(y);
+	}
+	public int getX() { return x; }
+	public void setX(int x) { this.x = x; }
+	public int getY() { return y; }
+	public void setY(int y) { this.y = y; }
+
+	public abstract void update(EntityManager manager);
+}
+
+// なんでもかんでも××Managerという名前を付けるのはやめましょう
+public class EntityManager {
+	private ArrayList&lt;Entity&gt; all_entities;
+	public EntityManager(){
+		this.all_entities = new ArrayList&lt;Entity&gt;();
+	}
+	public void add(Entity e){
+		this.all_entities.add(e);
+	}
+	public ArrayList&lt;Entity&gt; getAll() {
+		return new ArrayList&lt;Entity&gt;(this.all_entities);
+	}
+	public void updateAll(){
+		this.all_entities.forEach(e-&gt;e.update(this));
+	}
+}
+</code></pre>
+
+<p>なんのことはありませんね。
+ゲーム内に登場するエンティティを表す抽象クラスEntityを作り、それをEntityManagerで管理します(なんでもかんでも××Managerという名前を付けるのはManagerクラスの肥大化を招きかねないため避けるべきであるなどという話もありますが、今回は置いておきます)。
+たとえば毎フレームごとにメインループ内で<code>EntityManager#updateAll()</code>を呼び出すことで、全てのエンティティの更新を行ったりすることが想定されます。
+オーソドックスなループ駆動型のゲームプログラム設計です。<br />
+Entityインスタンスを作成するためのFactory Methodパターンを使うべきとか、そういう話もあっちでやってください。</p>
+
+<p>あとは、このフレームワークの利用者にはEntityクラスを継承したクラスを作らせ、それをもとにゲームを作ってもらえればいいだけです。
+以下のクラスを追加してみましょう。</p>
+
+<pre><code class="language-Java">// あなたです
+public class Player extends Entity{
+	private int hp; // プレイヤーはヒットポイントを持ちます
+	public Player(int x, int y, int hp){
+		super(x, y);
+		this.setHp(hp);
+	}
+	public int getHp() { return hp; }
+	public void setHp(int hp) { this.hp = hp; }
+	@Override
+	public void update(EntityManager manager){
+		// プレイヤーが動きます
+	}
+}
+
+// 敵です
+public class Enemy extends Entity {
+	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
+	public Enemy(int x, int y, int damage){
+		super(x, y);
+		this.setDamage(damage);
+	}
+	public int getDamage() { return damage; }
+	public void setDamage(int damage) { this.damage = damage; }
+	@Override
+	public void update() {
+		// 敵が動きます
+	}
+}
+</code></pre>
+
+<p>プレイヤーと敵を登場させました。
+常命の者であるプレイヤーにはヒットポイントが定められており、敵はこれを脅かすダメージ値を持っています。</p>
+
+<p>注意しておく必要があるのは、これらのクラスはあくまでフレームワークの利用者が作るものだということです。
+よって、EntityクラスやEntityManagerクラスからはこのようなEntityサブクラスの存在を知ることはできません。<br />
+知る必要もないというのがオブジェクト指向の考え方だったはずです。
+そうですよね？</p>
+
+<p>ここで、「敵のダメージ値を参照して、プレイヤーのヒットポイントを減らす」処理をしたいという需要が当然生まれます。
+実装の方法はいろいろあると思いますが、ひとまずこの処理を、Enemyのメソッドとして書いてみます。</p>
+
+<pre><code class="language-Java">// 敵です
+public class Enemy extends Entity {
+	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
+	public Enemy(int x, int y, int damage){
+		super(x, y);
+		this.setDamage(damage);
+	}
+	public int getDamage() { return damage; }
+	public void setDamage(int damage) { this.damage = damage; }
+	@Override
+	public void update(EntityManager manager) {
+		// 敵が動きます
+		// プレイヤーがいたらダメージを与えます
+		manager.getAll().forEach((entity)-&gt;{ // 全てのエンティティを調べる
+			if(entity instanceof Player){ //  エンティティがプレイヤーなら
+				if(this.getX() == entity.getX() &amp;&amp; this.getY() == entity.getY()){ // プレイヤーと敵の座標が同じなら
+					this.doDamage((Player) entity); // ダメージを与える
+				}
+			}
+		});
+	}
+	public void doDamage(Player p){
+		p.setHp(p.getHp() - this.getDamage()); // プレイヤーのヒットポイントをダメージ値分だけ減らします
+	}
+}
+</code></pre>
+
+<p>ここであなたは気を利かせます。</p>
+
+<pre><code class="language-Java">manager.getAll().forEach((entity)-&gt;{
+	if(entity instanceof Player){
+		if(...){
+			...
+		}
+	}
+}
+</code></pre>
+
+<p>この部分です、どう見ても冗長ですし、いちいち全エンティティのリストをforEachで回しているので高速化も望めませんし、同様のコードクローンが至る所に発生するのは目に見えています。</p>
+
+<p>できるならたとえばこう書きたい。</p>
+
+<pre><code class="language-Java">manager.&lt;Player&gt;getAllOfSubClass().forEach((player)-&gt;{
+	if(...){
+		...
+	}
+}
+</code></pre>
+
+<p>これでPlayerクラスだけが得られるなら、呼び出し側のコード量は減りますし、もしあなたがO(n^2)の処理をO(nlogn)に落とすような作業に慣れているなら、Managerクラスの内側でより高速になるような最適化を行い、その実装も内部に隠蔽することができます。</p>
+
+<p>また、ゲームのセーブとロードをするときのことも考えてみます。
+たとえばデータのセーブを行うときはとりあえずオブジェクトを文字列化するとして、<br />
+<code>public String Entity#serialize()</code>などといったメソッドを作ってセーブし、ロード時には文字列配列を引数として受け取るようオーバーロードされたコンストラクタを使用してオブジェクトを再生成するといったことが考えられます。
+そういうことはFactory Methodあたりに委譲するべきな気もしますし、うまくやらないとフレームワークの利用者側の負担が増える気もしますが、今は置いておきます。</p>
+
+<p>結局、セーブデータのロード時にこのようなコードを書くことになるでしょう。</p>
+
+<pre><code class="language-Java">	public &lt;E extends Entity&gt; E createEntity(List&lt;String&gt; args){ // 可変長引数としてもよい
+		return new E(args); // ジェネリクス型はnewできない -&gt; error
+	}
+	public loadSaveData(SaveData savedata){
+		// セーブデータから1行ずつ読み込んでオブジェクトを再生成する
+		... {
+			entityManager.add(this.createEntity(agrs));
+		}
+	}
+</code></pre>
+
+<p>しかしジェネリクス型はnewできないため、コンパイルエラーとなります。</p>
+
+<h2 id="解決策:c600ddb79433125511402a932eb728b1">解決策</h2>
+
+<p>さて、だいぶん勿体つけたが、解決編に入ろう。</p>
+
+<p>……というか、例として取り上げた題材が無理やりすぎた気がしてやる気が尽きかけてきました。</p>
+
+<h3 id="リフレクションを使用する:c600ddb79433125511402a932eb728b1">リフレクションを使用する</h3>
+
+<p>Javaにはリフレクションという機能があり、プログラムの実行中にクラス名やメソッド名を動的に取り扱うことができます。
+これのClass<T>型を、ジェネリクスと併用しましょう。
+<code>EntityManager#getAllOfSubClass</code>メソッドを考えてみます。
+実装は以下のようになります。</p>
+
+<pre><code class="language-Java">	@SuppressWarnings(&quot;unchecked&quot;)
+	public &lt;E extends Entity&gt; List&lt;E&gt; getAllOfSubClass(Class&lt;E&gt; cls){
+		return (List&lt;E&gt;) all_entities.stream()
+			.filter(entity -&gt; entity.getClass() == cls)
+			.collect(Collectors.toList());
+	}
+</code></pre>
+
+<p>これを呼び出す際は、</p>
+
+<pre><code class="language-Java">entityManager.getAllOfSubClass(Player.class);
+</code></pre>
+
+<p>のようにして、Class型の<code>クラス名.class</code>を引数として与えます。
+ここで型推論が働くので、</p>
+
+<pre><code class="language-Java">entityManager.&lt;Player&gt;getAllOfSubClass(Player.class);
+</code></pre>
+
+<p>のようにPlayerクラス名を2度も書く必要はありません。</p>
+
+<p>また、Playerクラスだけでなく、Playerクラスを継承したクラスも含めて判別したいときは、以下のようにします。</p>
+
+<pre><code class="language-Java">	@SuppressWarnings(&quot;unchecked&quot;)
+	public &lt;E extends Entity&gt; List&lt;E&gt; getAllOfSubClass(Class&lt;E&gt; cls){
+		return (List&lt;E&gt;) all_entities.stream()
+			.filter(entity -&gt; cls.isAssignableFrom(entity.getClass()))
+			.collect(Collectors.toList());
+	}
+</code></pre>
+
+<p><code>createEntity</code>メソッドも、以下のようにすれば書くことができます。</p>
+
+<pre><code class="language-Java">	public &lt;E extends Entity&gt; E createEntity(Class&lt;E&gt; cls, List&lt;String&gt; args){
+		// cls型のString[]を引数にとるコンストラクタを呼び出す
+		return cls.getConstructor(new Class&lt;?&gt;[] { String[].class }).newInstance(args);
+	}
+</code></pre>
+
+<p>やや黒魔術じみてきました。
+実際にはE型がString[]を引数にとるコンストラクタを持つということが担保されていないためこれだけでは動かず、例外回避のためにいろいろやる必要があります。</p>
+
+<p>最初の例に戻ってみましょう。<code>getSubClassList</code>は、以下のように書けます。</p>
+
+<pre><code class="language-Java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list, Class&lt;T&gt; cls){
+	return list
+		.stream()
+		.filter(value -&gt; value.getClass() == cls)
+		.collect(Collectors.toList());
+}
+
+// 呼び出し側
+getSubClassList(list, SubClassOfSomeClass.class);
+</code></pre>
+
+<p>めでたしめでたし。</p>
+
+<h3 id="おまけ:c600ddb79433125511402a932eb728b1">おまけ</h3>
+
+<pre><code class="language-Java">public &lt;T&gt; int getStaticValue(Class&lt;T&gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
+	return (int) cls.getMethod(&quot;getStaticValue&quot;).invoke(null);
+}
+
+// 呼び出し
+getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでいるのと同じになる
+</code></pre>
+
+<p>staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。</p>
+
+<h2 id="おわり:c600ddb79433125511402a932eb728b1">おわり</h2>
+
+<p><code>Class&lt;T&gt; cls</code>を引数にとり、<code>value.getClass() == cls</code>で比較を行うのは、実質的にはinstanceofの迂回といえます。<br />
+この程度なら型安全性は一応担保されますが、コンストラクタやメソッドの取得と呼び出しまで始めた場合、throw宣言やcatch節が山のように膨らんだり、メソッドの存在確認や型の確認などに多大なコストを支払う必要がありそうです。
+実際に使用するには相当の覚悟を必要とするでしょう。<strong>やめましょう。</strong></p>
+
+<p>自分でプログラムを組んでいる際にこのような需要が発生することが時々あったので、Javaではリフレクションを使うことで強引に解決できると知って記事を書いてみましたが、自分の中ではむしろ「設計が悪い」の一言に実感が沸くという結果となった気がします。<br />
+今回例に挙げたゲームプログラムの設計はまさしく昔私が作ったものそのものなのですが、記事を書く上で「リフレクションを使いたい理由付け」を明確にしようとすればするほど、その理由が無理やりなものにしかならないのではないかという気持ちに陥りました。
+途中まで書いた記事がグダグダになりそうな予感がしてくると結構精神的につらい。<br />
+……うーん。Abstract Factoryパターンとか、もととなるクラスが増えるとそれに合わせてFactoryクラスも増やさないといけないのがあまり好きじゃないので、そのあたりも動的になんとかできないかなどと思っていたのですが、なかなか難しいようです。</p>
+
+<p>私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。</p>
+
+<p>プログラミングをするときはまともな設計をするようにしましょう。</p>
+
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/">Older: 自作PCの紹介 -&gt;</a></span>
+    </nav>
+
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <section>
+                <h2 class="panel-title">Recent Posts</h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/" class="list-group-item">Javaのリフレクションを悪用してクラス設計してみる</a></li>
+                <li><a href="http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/" class="list-group-item">自作PCの紹介</a></li>
+                <li><a href="http://tatamo.81.la/blog/2016/09/29/freeciv-arago-challenge-01/" class="list-group-item">aragoのHIROic ChallengeでのFreecivプレイレポ 前編</a></li>
+                <li><a href="http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/" class="list-group-item">FreecivCalc2を公開しました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2016/02/20/freeciv-build-first-cities/" class="list-group-item">Freecivオンラインプレイ解説 最初の都市を建設するまで</a></li>
+                <li><a href="http://tatamo.81.la/blog/2016/02/17/freeciv-2016-01-30/" class="list-group-item">うくらいなにっき(Freecivマルチレポ) 2016/01/30</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/pc">pc (1)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/highlight_js">highlight_js (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/homebuilt_pc">homebuilt_pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    </div>
+   <footer>
+        <p>Copyright (c) 2015 <a href="about/">Tatamo</a>.</p>
+        <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a></p>
+    </footer>
+</body>
+</html>
+
