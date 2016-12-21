@@ -174,9 +174,9 @@
 <pre><code>式{ [9] [+] [11 * (2 + 1)] }
 式{ 項{ [9] } &quot;+&quot; 項{ [11] [*] [(2 + 1)] } }
 式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ [(] [2 + 1] [)] } } }
-式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ [2] [+] [1] } &quot;) &quot;} } }
-式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ 項{ [2] } + 項{ [1] } } &quot;) &quot;} } }
-式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ 項{ 因子{2} } + 項{ 因子{1} } } &quot;)&quot; } } }
+式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ [2] [+] [1] } &quot;)&quot; } } }
+式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ 項{ [2] } &quot;+&quot; 項{ [1] } } &quot;) &quot;} } }
+式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ 項{ 因子{2} } &quot;+&quot; 項{ 因子{1} } } &quot;)&quot; } } }
 </code></pre>
 
 <p>のように展開されます(こうして得られた構造をどう解析するかについては省略します)。この、解析対象→構文木の変換を自動で行うのがパーサです。</p>
