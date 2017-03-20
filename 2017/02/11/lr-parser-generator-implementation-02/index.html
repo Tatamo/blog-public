@@ -128,7 +128,7 @@ export type LexDefinitions = Array&lt;LexDefinitionSection&gt;;
 
 // 実際の字句規則
 const lex: LexDefinitions = [
-	{token:&quot;NUMBER&quot;, pattern:/[1-9][0-9]*/},
+	{token:&quot;DIGITS&quot;, pattern:/[1-9][0-9]*/},
 	{token:&quot;PLUS&quot;, pattern:&quot;+&quot;},
 	{token:&quot;ASTERISK&quot;, pattern:&quot;*&quot;},
 	{token:&quot;LPAREN&quot;, pattern:&quot;(&quot;},
@@ -280,14 +280,14 @@ ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全て�
 <p>この字句解析器に先ほどの字句規則を与え、<code>9 + 11 * (2 + 1)</code> を入力すると、</p>
 
 <pre><code class="language-TypeScript">[
-	{token:&quot;NUMBER&quot;, value:&quot;9&quot;},
+	{token:&quot;DIGITS&quot;, value:&quot;9&quot;},
 	{token:&quot;PLUS&quot;, value:&quot;+&quot;},
-	{token:&quot;NUMBER&quot;, value:&quot;11&quot;},
+	{token:&quot;DIGITS&quot;, value:&quot;11&quot;},
 	{token:&quot;ASTERISK&quot;, value:&quot;*&quot;},
 	{token:&quot;LPAREN&quot;, value:&quot;(&quot;},
-	{token:&quot;NUMBER&quot;, value:&quot;2&quot;},
+	{token:&quot;DIGITS&quot;, value:&quot;2&quot;},
 	{token:&quot;PLUS&quot;, value:&quot;+&quot;},
-	{token:&quot;NUMBER&quot;, value:&quot;1&quot;},
+	{token:&quot;DIGITS&quot;, value:&quot;1&quot;},
 	{token:&quot;RPAREN&quot;, value:&quot;)&quot;},
 	{token:Symbol(EOF), value:&quot;&quot;}
 ]
@@ -296,12 +296,14 @@ ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全て�
 <p>という結果が得られます。
 これでトークンの並びを得ることに成功したので、次回以降はいよいよパーサジェネレータの作成に移っていくことになります。</p>
 
-<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回:かんたん構文解析入門</a></p>
+<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回:かんたん構文解析入門</a><br />
+<a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">次回:儀式の下準備</a></p>
 
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>
     <nav class="article-nav-adjacent">
+        <span class="article-link-next"><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">&lt;- Newer: LR(1)パーサジェネレータを自作して構文解析をする 第3回:儀式の下準備</a></span>
         <span class="article-link-border"></span>
         <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">Older: LR(1)パーサジェネレータを自作して構文解析をする 第1回:かんたん構文解析入門 -&gt;</a></span>
     </nav>
@@ -312,19 +314,19 @@ ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全て�
             <section>
                 <h2 class="panel-title">Recent Posts</h2>
                 <ul>
+                <li><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第3回:儀式の下準備</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第2回:字句解析器の実装</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第1回:かんたん構文解析入門</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/" class="list-group-item">Javaのリフレクションを悪用してクラス設計してみる</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/" class="list-group-item">自作PCの紹介</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/09/29/freeciv-arago-challenge-01/" class="list-group-item">aragoのHIROic ChallengeでのFreecivプレイレポ 前編</a></li>
-                <li><a href="http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/" class="list-group-item">FreecivCalc2を公開しました</a></li>
                 </ul>
             </section>
             
             <section>
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
                 <ul>
-                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (7)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (8)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/game">game (3)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/pc">pc (1)</a></li>
@@ -346,10 +348,10 @@ ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全て�
                 <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (1)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (2)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (2)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (2)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (3)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
                 </ul>

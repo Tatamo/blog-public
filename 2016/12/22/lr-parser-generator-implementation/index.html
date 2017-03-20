@@ -125,7 +125,7 @@
 <li>解析された構文を処理するプログラム</li>
 </ul>
 
-<p>さらに、これらの構文解析に入る前の下準備のために以下が必要です；</p>
+<p>さらに、これらの構文解析に入る前の下準備のために以下が必要です：</p>
 
 <ul>
 <li>文字列をトークンとして分割して表現するための字句規則</li>
@@ -257,7 +257,7 @@
 
 <p>字句解析器程度ならわざわざジェネレータを作らなくても、字句規則そのものを字句解析器に渡せば良い感じに字句解析してくれるようにできますが、パーサジェネレータも「構文解析表の構築後、それをもとにして構文解析を行う」ような機能がついていればそれはパーサであるとも言えます。
 わざわざパーサとパーサジェネレータが分けられているのは、一つには計算資源の乏しかった昔はパーサジェネレータがオンメモリで展開した構文解析表をもとにそのままパーサとして振る舞うというようなことが少なく、構文解析表を与えることで「パーサのソースコード」を出力するようなものが一般的だったからではないかと思われます(適当な思いつきを言っています)。
-もっとも、現在でもパーサジェネレータがパーサを生成する際の処理には時間がかかるため、予めパーサをコンパイルしておけるようにするのは妥当といえるでしょう。
+もっとも、パーサジェネレータがパーサを生成する際の処理にかかる時間を省略したい場合、予めパーサをコンパイルしておけるようにするのは妥当といえるでしょう。
 字句解析器のための「字句解析器ジェネレータ」も実際に存在していますが、ここでは簡単のために字句解析器はコンストラクタに字句規則を与えれば勝手に良い感じの字句解析を行ってくれるようになるものと思ってもらえればよいです。</p>
 
 <h3 id="文脈自由言語について:4f3ac79f73d5f2d4c7087437a39bd22b">文脈自由言語について</h3>
@@ -386,19 +386,19 @@ VP -&gt; v
             <section>
                 <h2 class="panel-title">Recent Posts</h2>
                 <ul>
+                <li><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第3回:儀式の下準備</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第2回:字句解析器の実装</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第1回:かんたん構文解析入門</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/" class="list-group-item">Javaのリフレクションを悪用してクラス設計してみる</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/" class="list-group-item">自作PCの紹介</a></li>
                 <li><a href="http://tatamo.81.la/blog/2016/09/29/freeciv-arago-challenge-01/" class="list-group-item">aragoのHIROic ChallengeでのFreecivプレイレポ 前編</a></li>
-                <li><a href="http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/" class="list-group-item">FreecivCalc2を公開しました</a></li>
                 </ul>
             </section>
             
             <section>
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
                 <ul>
-                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (7)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (8)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/game">game (3)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/pc">pc (1)</a></li>
@@ -420,10 +420,10 @@ VP -&gt; v
                 <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (1)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (2)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (2)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (2)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (3)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
                 </ul>
