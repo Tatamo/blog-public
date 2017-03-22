@@ -647,7 +647,8 @@ export class NullableSet{
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;First(X) ⊇ First(Y1)&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Y1&lt;/code&gt;がNullableなら &lt;code&gt;First(X) ⊇ First(Y2)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Y2&lt;/code&gt;がNullableなら &lt;code&gt;First(X) ⊇ First(Y3)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Y1&lt;/code&gt;および&lt;code&gt;Y2&lt;/code&gt;がともにNullableなら &lt;code&gt;First(X) ⊇ First(Y3)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Y1&lt;/code&gt;および&lt;code&gt;Y2&lt;/code&gt;および&lt;code&gt;Y3&lt;/code&gt;がともにNullableなら &lt;code&gt;First(X) ⊇ First(Y4)&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;以下繰り返し&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;生成した制約に従い、スーパーセット側にサブセット側の集合の持つ記号を追加していく(制約の解消)。&lt;/li&gt;
