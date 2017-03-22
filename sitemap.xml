@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/</loc>
-    <lastmod>2017-03-21T00:29:18+09:00</lastmod>
+    <lastmod>2017-03-22T15:58:04+09:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/</loc>
+    <lastmod>2017-03-22T15:58:04+09:00</lastmod>
   </url>
   
   <url>
