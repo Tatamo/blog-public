@@ -625,7 +625,7 @@ export class NullableSet{
 
 &lt;p&gt;たとえば先ほど挙げた&lt;code&gt;X&lt;/code&gt;が&lt;code&gt;10&lt;/code&gt;や&lt;code&gt;0&lt;/code&gt;となるように、非終端記号は規則をたどっていくと終端記号のみの列に変換することができます。
 構文解析を行うためには、ある非終端記号から得られるそのような終端記号の列のうち、最も左側にどのような終端記号が来るのかを知る必要があります。
-つまり(1)先読みを行うわけです(&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;参照)。&lt;/p&gt;
+今解析している記号の次に非終端記号が来るときに、実際にどのような終端記号が来るのかを調べることによって、(1)先読み(&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;参照)が可能となるわけです。&lt;/p&gt;
 
 &lt;p&gt;このように、ある非終端記号と、そこから得られる可能性のある終端記号の列の先頭に来る記号の集合を対応付けたものを、First集合またはFirst関数と呼びます。
 たとえば、先ほどの&lt;code&gt;X&lt;/code&gt;を例にすると、&lt;code&gt;First(X)&lt;/code&gt;は、&lt;code&gt;10&lt;/code&gt;と&lt;code&gt;0&lt;/code&gt;のそれぞれ左端の記号をとって&lt;code&gt;{1, 0}&lt;/code&gt;となります。&lt;/p&gt;
