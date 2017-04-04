@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Tatamo&#39;s weblog">
+    <meta name="author" content="Tatamo">
+    <meta name="viewport" content="width=device-width">
+    
+    <base href="http://tatamo.81.la/blog/">
+    <title>
+      LR(1)パーサジェネレータを自作して構文解析をする 第6回:パーサの実装と構文解析の実行 | わたしろぐ
+    </title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>
+    
+    window.addEventListener("DOMContentLoaded", function(){
+        var elements = document.getElementsByTagName("code");
+        var l=elements.length;
+        for(var i=0; i<l;i++){
+            var el = elements[i];
+            hljs.highlightBlock(el);
+            if(el.parentNode.tagName.toLowerCase() != "pre") {
+                el.style.display = "inline";
+                el.style.margin = "0 2px";
+                el.style.padding = "1px 3px";
+            }
+        }
+    }, false);
+    </script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71305633-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="http://tatamo.81.la/blog/">わたしろぐ</a></h1>
+        <h2 class="site-subtitle">私録</h2>
+    </header>
+    <nav class="head-nav">
+        <ul>
+        <li><a href="about/">about</a></li>
+        <li><a href="https://twitter.com/__tatamo__" target="_blank">twitter</a></li>
+        <li><a href="https://github.com/tatamo" target="_blank">github</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <div class="main-content">
+
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/">LR(1)パーサジェネレータを自作して構文解析をする 第6回:パーサの実装と構文解析の実行</a></h1>
+        <span class="article-datetime"><time>2017-04-04 23:41:09</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories//"></a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/parsing/">parsing</a>
+        <a href="http://tatamo.81.la/blog/tags/parser-generator/">parser generator</a>
+        <a href="http://tatamo.81.la/blog/tags/parser/">parser</a>
+        <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
+        
+
+<p><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/">前回</a>ではLR(1)法による構文解析表の実装を済ませました。
+今回はいよいよ、構文解析表をもとに実際に構文解析を行うことのできる構文解析器を実装し、実際に構文解析を行ってみます。</p>
+
+<p>概略は<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">第4回</a>で示した通りであり、ステートマシンの仕様に沿って構文解析表を解析できるようにします。
+第4回でアルゴリズム面まで踏み込んで解説してしまったため、あまり書くことがなくてやや後悔しています。</p>
+
+<h2 id="astの定義:bed37c78c27b269093985160c6797817">ASTの定義</h2>
+
+<p>パーサを実装する前に、パーサの出力結果となる抽象構文木の定義を行います。<br />
+<a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts</a></p>
+
+<pre><code class="language-TypeScript">/// ast.ts
+export interface ASTNode{
+	type: Token;
+	value: string|null;
+	children: Array&lt;ASTNode&gt;;
+}
+</code></pre>
+
+<p>構文木は再帰的な木構造によって表されます。
+それぞれのノードにはそれが何の記号かを示すトークン、およびそのトークンに紐つけられている実際の入力文字列(そのトークンが非終端記号である場合はnull)、自身の子となるノードの配列を持ちます。</p>
+
+<p>たとえば、<a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">第3回</a>で定義した構文規則によって<code>1+1</code>を解析した場合、結果として得られる抽象構文木は以下のようになるでしょう。</p>
+
+<pre><code class="language-TypeScript">{&quot;type&quot;:&quot;EXP&quot;, &quot;value&quot;:null, &quot;children&quot;:[
+    {&quot;type&quot;:&quot;EXP&quot;, &quot;value&quot;:null, &quot;children&quot;:[
+        {&quot;type&quot;:&quot;TERM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
+            {&quot;type&quot;:&quot;ATOM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
+                {&quot;type&quot;:&quot;DIGITS&quot;, &quot;value&quot;:&quot;1&quot;, &quot;children&quot;:[]}
+            ]}
+        ]}
+    ]}, 
+    {&quot;type&quot;:&quot;PLUS&quot;, &quot;value&quot;:&quot;+&quot;, &quot;children&quot;:[]}, 
+    {&quot;type&quot;:&quot;TERM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
+        {&quot;type&quot;:&quot;ATOM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
+            {&quot;type&quot;:&quot;DIGITS&quot;, &quot;value&quot;:&quot;1&quot;, &quot;children&quot;:[]}
+        ]}
+    ]}
+]}
+
+</code></pre>
+
+<p>簡単ですね。</p>
+
+<h2 id="パーサの実装:bed37c78c27b269093985160c6797817">パーサの実装</h2>
+
+<p>ではParserクラスを作っていきます。<br />
+<a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts</a></p>
+
+<pre><code class="language-TypeScript">/// parser.ts
+export interface TerminalCallbackArg {
+        token: string;
+        value: string;
+        terminal: true;
+}
+export interface NonterminalCallbackArg {
+        token: string;
+        children: Array&lt;any&gt;;
+        pattern: Array&lt;string&gt;;
+        terminal: false;
+}
+export declare type ParserCallbackArg = TerminalCallbackArg | NonterminalCallbackArg;
+export declare type ParserCallback = (arg: ParserCallbackArg) =&gt; any;
+export declare class Parser {
+        private lexer;
+        private syntax;
+        private parsingtable;
+        private default_callback;
+        constructor(lexer: ILexer, syntax: SyntaxDefinitions, parsingtable: ParsingTable, default_callback?: ParserCallback | null);
+        setDefaultCallback(default_callback?: ParserCallback | null): void;
+        parse(input: string, cb?: ParserCallback): any;
+        private _parse(inputs, cb?);
+}
+</code></pre>
+
+<p>できました。</p>
+
+<p>構文解析処理を行う処理は、110行程度に及ぶ<a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts#L40">Parser#_parse()メソッド</a>の内部で完結しています。
+これは、<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">第4回</a>に示したオートマトンの動作を仕様通りに実装しています。
+入力を前から順に読み込み、現在スタックに積まれている状態番号を取得し、構文解析表の該当する位置に書かれている命令を実行していくだけです。</p>
+
+<p>ここでは、構文解析の実行中に衝突した命令が存在した場合、その時点で解析失敗としてエラーを返すようにしています。
+コンフリクトが発生した際の対処についても<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">第4回</a>で触れていますが、一般に使用されているパーサジェネレータでは、構文規則を定義するファイルの中に演算子の優先度や右結合/左結合の指定を行うことができたり、指定のない場合はshift/reduceのいずれかを優先するようになっていたりします。</p>
+
+<p>このあたりのコンフリクト回避処理や、エラーが発生した際の詳細なエラー情報の検知・回避などの機能面には大きく改善の余地があります。</p>
+
+<p>あとは、このParserをParserGeneratorから利用できるようにするため、適当にファクトリクラスを作ります。
+<a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/factory.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parser/factory.ts</a></p>
+
+<pre><code class="language-TypeScript">/// factory.ts
+export class ParserFactory{
+	public static create(grammar: GrammarDefinition, parsing_table: ParsingTable, default_fallback?: ParserCallback):Parser{
+		let lexer = new Lexer(grammar.lex);
+		return new Parser(lexer, grammar.syntax, parsing_table, default_fallback);
+	}
+}
+</code></pre>
+
+<p><a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts#L32">ParserGenerator#getParser()メソッド</a>には、以下のような記述を行います。</p>
+
+<pre><code class="language-TypeScript">/// parsergenerator.ts
+public getParser(default_callback?: ParserCallback):Parser{
+	return ParserFactory.create(this.grammar, this.parsing_table, default_callback);
+}
+</code></pre>
+
+<p>これで完成です。</p>
+
+<h2 id="構文解析を実行する:bed37c78c27b269093985160c6797817">構文解析を実行する</h2>
+
+<h3 id="構文木を生成する:bed37c78c27b269093985160c6797817">構文木を生成する</h3>
+
+<p>では、実際に構文解析を実行してみましょう。
+与える構文は、以下のようになります。</p>
+
+<pre><code class="language-TypeScript">const syntax:SyntaxDefinitions = [
+	{
+		ltoken: &quot;EXP&quot;,
+		pattern: [&quot;EXP&quot;, &quot;PLUS&quot;, &quot;TERM&quot;]
+	},
+	{
+		ltoken: &quot;EXP&quot;,
+		pattern: [&quot;TERM&quot;]
+	},
+	{
+		ltoken: &quot;TERM&quot;,
+		pattern: [&quot;TERM&quot;, &quot;ASTERISK&quot;, &quot;ATOM&quot;]
+	},
+	{
+		ltoken: &quot;TERM&quot;,
+		pattern: [&quot;ATOM&quot;]
+	},
+	{
+		ltoken: &quot;ATOM&quot;,
+		pattern:[&quot;DIGITS&quot;]
+	},
+	{
+		ltoken: &quot;ATOM&quot;,
+		pattern:[&quot;LPAREN&quot;, &quot;EXP&quot;, &quot;RPAREN&quot;]
+	}
+];
+const lex:LexDefinitions = [
+	{token:&quot;DIGITS&quot;, pattern:/[1-9][0-9]*/},
+	{token:&quot;PLUS&quot;, pattern:&quot;+&quot;},
+	{token:&quot;ASTERISK&quot;, pattern:&quot;*&quot;},
+	{token:&quot;LPAREN&quot;, pattern:&quot;(&quot;},
+	{token:&quot;RPAREN&quot;, pattern:&quot;)&quot;},
+	{token:null, pattern:/(\r\n|\r|\n)+/},
+	{token:null, pattern:/[ \f\t\v\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000\ufeff]+/},
+	{token:&quot;INVALID&quot;, pattern:/./},
+];
+
+const grammar:GrammarDefinition = {
+	lex: lex,
+	syntax: syntax,
+	start_symbol: &quot;EXP&quot;
+};
+</code></pre>
+
+<p><code>9 + 11 * (2 + 1)</code>という式を解析するためには、以下のように実行します。</p>
+
+<pre><code class="language-TypeScript">new ParserGenerator(grammar).getParser().parse(&quot;9 + 11 * (2 + 1)&quot;);
+</code></pre>
+
+<p>すると、結果として以下のようなオブジェクトが得られます。</p>
+
+<pre><code class="language-TypeScript">{&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+    {&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+    {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+        {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;9&quot;,&quot;children&quot;:[]}
+            ]}
+        ]}
+    ]},
+    {&quot;type&quot;:&quot;PLUS&quot;,&quot;value&quot;:&quot;+&quot;,&quot;children&quot;:[]},
+    {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+        {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+            {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;11&quot;,&quot;children&quot;:[]}
+            ]}
+        ]},
+        {&quot;type&quot;:&quot;ASTERISK&quot;,&quot;value&quot;:&quot;*&quot;,&quot;children&quot;:[]},
+        {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+            {&quot;type&quot;:&quot;LPAREN&quot;,&quot;value&quot;:&quot;(&quot;,&quot;children&quot;:[]},
+            {&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                {&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                    {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                        {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                            {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;2&quot;,&quot;children&quot;:[]}
+                        ]}
+                    ]}
+                ]},
+                {&quot;type&quot;:&quot;PLUS&quot;,&quot;value&quot;:&quot;+&quot;,&quot;children&quot;:[]},
+                {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                    {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
+                        {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;1&quot;,&quot;children&quot;:[]}
+                    ]}
+                ]}
+            ]},
+            {&quot;type&quot;:&quot;RPAREN&quot;,&quot;value&quot;:&quot;)&quot;,&quot;children&quot;:[]}
+        ]}
+    ]}
+]}
+</code></pre>
+
+<p>どこからどう見ても成功ですね。
+おめでとうございます。</p>
+
+<h3 id="コールバックを利用して構文木のさらなる解析を行う:bed37c78c27b269093985160c6797817">コールバックを利用して構文木のさらなる解析を行う</h3>
+
+<p>ついに、本記事の目標である構文木の取得を達成しました。
+あとはこれに適当な再帰的処理を挟めば、良い感じに数式処理ができるでしょう。</p>
+
+<p>確かに一度構文木を生成してからそれを解析してもよいのですが、パーサに適当なコールバックを渡し、構文木を生成する代わりに数式処理を行ってしまうという手もあります。</p>
+
+<p>先ほどのparsergenerator.tsに、以下のような定義が含まれていました。</p>
+
+<pre><code class="language-TypeScript">export interface TerminalCallbackArg {
+        token: string;
+        value: string;
+        terminal: true;
+}
+export interface NonterminalCallbackArg {
+        token: string;
+        children: Array&lt;any&gt;;
+        pattern: Array&lt;string&gt;;
+        terminal: false;
+}
+export declare type ParserCallbackArg = TerminalCallbackArg | NonterminalCallbackArg;
+export declare type ParserCallback = (arg: ParserCallbackArg) =&gt; any;
+</code></pre>
+
+<p>Parserのコンストラクタ引数、ParserGeneratorのgetParserメソッドの引数、またはParserのparseメソッドの引数としてコールバックを与えると、reduce処理が行われた際にそれを呼び出すことができます。
+処理するべきトークンが終端器号であった場合はそのトークンの種類と実際の入力が、非終端記号であった場合は対応する規則の情報、およびその子ノードの情報が引数として与えられます。</p>
+
+<p>実際に、数式の処理を行うための関数を書いてみましょう。</p>
+
+<pre><code class="language-TypeScript">let solve_terminal = (arg:TerminalCallbackArg)=&gt;{
+	switch(arg.token){
+		case &quot;DIGITS&quot;:
+			return +arg.value;
+		default:
+			return null;
+	}
+}
+let solve_nonterminal = (arg:NonterminalCallbackArg)=&gt;{
+	switch(arg.token){
+		case &quot;EXP&quot;:
+			if(arg.children.length == 1) return arg.children[0];
+			else return arg.children[0] + arg.children[2];
+		case &quot;TERM&quot;:
+			if(arg.children.length == 1) return arg.children[0];
+			else return arg.children[0] * arg.children[2];
+		case &quot;ATOM&quot;:
+			if(arg.children.length == 1) return arg.children[0];
+			else return arg.children[1];
+	}
+}
+let solve = (arg:ParserCallbackArg)=&gt;{
+	if(arg.terminal) return solve_terminal(arg);
+	else return solve_nonterminal(arg);
+}
+</code></pre>
+
+<p>これをもとに、以下のように実行します。</p>
+
+<pre><code class="language-TypeScript">new ParserGenerator(grammar).getParser(solve).parse(&quot;9 + 11 * (2 + 1)&quot;);
+</code></pre>
+
+<p>実行結果は、以下のようになります。</p>
+
+<pre><code class="language-TypeScript">42
+</code></pre>
+
+<p>これにて、パーサジェネレータの実装および構文解析が完了しました。
+ここまでお付き合いいただき、ありがとうございました。</p>
+
+<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
+<a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/">前回:LR(1)パーサジェネレータの実装</a></p>
+
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/">Older: LR(1)パーサジェネレータを自作して構文解析をする 第5回:LR(1)パーサジェネレータの実装 -&gt;</a></span>
+    </nav>
+
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <section>
+                <h2 class="panel-title">Recent Posts</h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第6回:パーサの実装と構文解析の実行</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第5回:LR(1)パーサジェネレータの実装</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第4回:かんたんLR(1)法入門</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第3回:儀式の下準備</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第2回:字句解析器の実装</a></li>
+                <li><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第1回:かんたん構文解析入門</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/"> (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (10)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/pc">pc (1)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/highlight_js">highlight_js (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/homebuilt_pc">homebuilt_pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    </div>
+   <footer>
+        <p>Copyright (c) 2015 <a href="about/">Tatamo</a>.</p>
+        <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a></p>
+    </footer>
+</body>
+</html>
+
