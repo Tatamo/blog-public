@@ -126,7 +126,7 @@ Pythonから起動するほか、Windows用にexe形式の実行ファイルも�
 そのため、いずれこのようなステージを遊ぶことができるように移行作業を行いたいと考えています。&lt;/p&gt;
 
 &lt;p&gt;2.
-JavaScript以外のプログラミング言語にも触れてみたいと思っていた時にハッカーになろう(&lt;a href=&#34;http://cruel.org/freeware/hacker.html)を読む機会があり、まんまと影響されたためにPythonを使って何か作ろうと思い、作りました。&#34;&gt;http://cruel.org/freeware/hacker.html)を読む機会があり、まんまと影響されたためにPythonを使って何か作ろうと思い、作りました。&lt;/a&gt;
+JavaScript以外のプログラミング言語にも触れてみたいと思っていた時にハッカーになろう(&lt;a href=&#34;http://cruel.org/freeware/hacker.html&#34;&gt;http://cruel.org/freeware/hacker.html&lt;/a&gt; )を読む機会があり、まんまと影響されたためにPythonを使って何か作ろうと思い、作りました。
 Pythonと、Pythonで使用できるGUIツールであるTkinterを用いて作成しました。
 exe形式の実行ファイルへの変換は、py2exeを使用しています。&lt;/p&gt;
 
@@ -203,12 +203,12 @@ LR法による構文解析は行う手順が多く、それらの手順が明確
 
 &lt;p&gt;開発記のブログ、スライドなどの資料があれば、それも教えてください。コンテストなどに出品したことがあれば、それも教えてください。&lt;/p&gt;
 
-&lt;p&gt;4.は、立命館大学主催のソフトウェアコンテストであるICT Challenge+R2013高校版(&lt;a href=&#34;http://www.2013.ict-challenger.jp/)に出品してファイナリストに選ばれ、2つの企業賞を受賞しています。&#34;&gt;http://www.2013.ict-challenger.jp/)に出品してファイナリストに選ばれ、2つの企業賞を受賞しています。&lt;/a&gt;
+&lt;p&gt;4.は、立命館大学主催のソフトウェアコンテストであるICT Challenge+R2013高校版(&lt;a href=&#34;http://www.2013.ict-challenger.jp/&#34;&gt;http://www.2013.ict-challenger.jp/&lt;/a&gt; )に出品してファイナリストに選ばれ、2つの企業賞を受賞しています。
 またこれに参加した際のスライド発表の様子は、youtube上に公開されています(&lt;code&gt;/*検閲により削除。探せば見れます。*/&lt;/code&gt;)。&lt;/p&gt;
 
-&lt;p&gt;7.のブログの構築については、ブログ上の記事でその流れを公開しています(&lt;a href=&#34;http://tatamo.81.la/blog/tags/blog/)。&#34;&gt;http://tatamo.81.la/blog/tags/blog/)。&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;7.のブログの構築については、ブログ上の記事でその流れを公開しています(&lt;a href=&#34;http://tatamo.81.la/blog/tags/blog/&#34;&gt;http://tatamo.81.la/blog/tags/blog/&lt;/a&gt; )。&lt;/p&gt;
 
-&lt;p&gt;また、8.のパーサジェネレータについても、構文解析入門、およびパーサジェネレータの自作方法の解説という体裁で紹介記事を同じブログで公開しています(&lt;a href=&#34;http://tatamo.81.la/blog/tags/parser-generator/)。&#34;&gt;http://tatamo.81.la/blog/tags/parser-generator/)。&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;また、8.のパーサジェネレータについても、構文解析入門、およびパーサジェネレータの自作方法の解説という体裁で紹介記事を同じブログで公開しています(&lt;a href=&#34;http://tatamo.81.la/blog/tags/parser-generator/&#34;&gt;http://tatamo.81.la/blog/tags/parser-generator/&lt;/a&gt; )。&lt;/p&gt;
 
 &lt;h3 id=&#34;共-1-4:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-1（4）.&lt;/h3&gt;
 
@@ -670,7 +670,7 @@ SMEPは、ユーザー空間上にあるコードをカーネルモードで動�
 SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実装でもあります。
 これはカーネルモードで動作しているCPUのユーザー空間上のメモリに対しての読み書きを禁止します(&lt;a href=&#34;https://en.wikipedia.org/wiki/Supervisor_Mode_Access_Prevention)。&#34;&gt;https://en.wikipedia.org/wiki/Supervisor_Mode_Access_Prevention)。&lt;/a&gt;
 これによって、カーネルが意図しない形でユーザー空間にアクセスした場合にはページフォールトを発生させ、今回の脆弱性を悪用したコードによるカーネルモードでの任意コード実行を防止することができます。
-またubuntuでは、Kernel Address Display Restrictionと呼ばれる機能により、一般ユーザーが/proc/kallsymsを表示しようとした場合、すべてのアドレスが0で埋められて表示されるようになっています(&lt;a href=&#34;http://inaz2.hatenablog.com/entry/2015/03/21/175433)。&#34;&gt;http://inaz2.hatenablog.com/entry/2015/03/21/175433)。&lt;/a&gt;
+またubuntuでは、Kernel Address Display Restrictionと呼ばれる機能により、一般ユーザーが/proc/kallsymsを表示しようとした場合、すべてのアドレスが0で埋められて表示されるようになっています(&lt;a href=&#34;http://inaz2.hatenablog.com/entry/2015/03/21/175433&#34;&gt;http://inaz2.hatenablog.com/entry/2015/03/21/175433&lt;/a&gt; )。
 攻撃者が多くのLinuxディストリビューション上で動作するようなエクスプロイトコードを書きたいと思った場合、/proc/kakllsymsから動的にcommit_credsなどのメモリアドレスを取得しようとすることが考えられるため、そのような攻撃に対しての効果が期待されます。&lt;/p&gt;
 
 &lt;p&gt;以降、この問題を解こうとして感じたことを述べます。
