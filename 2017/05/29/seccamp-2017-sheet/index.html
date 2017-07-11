@@ -69,6 +69,8 @@
 私はこの記事がアップロードされたことを確認したら寝ます。
 いい加減期限が迫ってから焦って取り組もうとするのはやめたほうが良いと思います。</p>
 
+<p><strong>追記: 受かりました。</strong></p>
+
 <p>推敲まで行っている余裕がとてもなかったため、悪文・乱文が多い可能性があります。
 審査員の方々には申し訳ない限りです。</p>
 
@@ -239,7 +241,7 @@ LR法による構文解析は行う手順が多く、それらの手順が明確
 結果として、自分自身の構文ファイルを解析してパーサーを生成する処理に2秒程度かかっていたのが、最終的に100msから50msにまで処理時間を減らすことができました。</p>
 
 <p>追加していきたい機能は複数あります。
-まず、このパーサジェネレータではLA(1)文法に厳密に従ったあいまいさのない構文しか処理することができません。
+まず、このパーサジェネレータではLA(1)文法<code>/* 誤字 -&gt; LR(1)文法 */</code>に厳密に従ったあいまいさのない構文しか処理することができません。
 具体的には、 S -&gt; S+S | x というような構文があったとき、x+x+xという入力の(x+x)+xとx+(x+x)の2通りを区別できないためにこの構文はコンフリクトを起こし、パーサの生成に失敗します。
 演算子に右結合・左結合の設定を行ったり、演算子の優先順位の設定を行える機能を搭載し、例のような構文も処理できるようにしたほうが実用的になると考えています。</p>
 
@@ -771,6 +773,7 @@ SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実�
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>
     <nav class="article-nav-adjacent">
+        <span class="article-link-next"><a href="http://tatamo.81.la/blog/2017/07/11/freeciv-arago-challenge-02/">&lt;- Newer: HIROic Freeciv Challengeの参加結果</a></span>
         <span class="article-link-border"></span>
         <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/">Older: LR(1)パーサジェネレータを自作して構文解析をする 第6回:パーサの実装と構文解析の実行 -&gt;</a></span>
     </nav>
@@ -781,12 +784,12 @@ SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実�
             <section>
                 <h2 class="panel-title">Recent Posts</h2>
                 <ul>
+                <li><a href="http://tatamo.81.la/blog/2017/07/11/freeciv-arago-challenge-02/" class="list-group-item">HIROic Freeciv Challengeの参加結果</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/05/29/seccamp-2017-sheet/" class="list-group-item">セキュリティキャンプ2017の応募用紙</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第6回:パーサの実装と構文解析の実行</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第5回:LR(1)パーサジェネレータの実装</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第4回:かんたんLR(1)法入門</a></li>
                 <li><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第3回:儀式の下準備</a></li>
-                <li><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/" class="list-group-item">LR(1)パーサジェネレータを自作して構文解析をする 第2回:字句解析器の実装</a></li>
                 </ul>
             </section>
             
@@ -794,7 +797,7 @@ SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実�
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
                 <ul>
                 <li><a href="http://tatamo.81.la/blog/categories/dev">dev (12)</a></li>
-                <li><a href="http://tatamo.81.la/blog/categories/game">game (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (4)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/pc">pc (1)</a></li>
                 </ul>
@@ -802,10 +805,10 @@ SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実�
             <section>
                 <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
                 <ul>
-                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (2)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/blog">blog (4)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
-                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (5)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
                 <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
