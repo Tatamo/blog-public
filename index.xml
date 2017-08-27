@@ -6,8 +6,177 @@
     <description>Recent content on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Tue, 11 Jul 2017 15:03:07 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 27 Aug 2017 23:54:42 +0900</lastBuildDate>
     <atom:link href="http://tatamo.81.la/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>セキュリティキャンプ全国大会2017に参加してきました</title>
+      <link>http://tatamo.81.la/blog/2017/08/27/seccamp-2017/</link>
+      <pubDate>Sun, 27 Aug 2017 23:54:42 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2017/08/27/seccamp-2017/</guid>
+      <description>
+        
+
+&lt;p&gt;8/14から8/18まで開かれたセキュリティキャンプに参加してきました。
+応募用紙に書いた内容は&lt;a href=&#34;http://tatamo.81.la/blog/2017/05/29/seccamp-2017-seet/&#34;&gt;こちら&lt;/a&gt;の記事に書いてあります。&lt;/p&gt;
+
+&lt;p&gt;今日中に感想文を上げないといけないらしいので、参加記を書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;0日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;0日目&lt;/h2&gt;
+
+&lt;p&gt;開始日前日がC92最終日だったのでもしかしたらコミケ行けるのでは？などと思っていましたが、大学の試験期間中は事前課題に全く手をつけていなかったのでいろいろ山積していてだめでした。&lt;/p&gt;
+
+&lt;p&gt;夕方のうちに名刺を刷っておこうと思っていたのですが、Windows 10 Creators Updateが入ってノートPCが数時間使えなくなった上にGRUBが上書きされてデュアルブート環境が壊れました。
+修復用のディスクの用意やGRUBの再インストールなどでかなり時間を使ってしまい、睡眠時間を削って名刺を刷る羽目になりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;1日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;1日目&lt;/h2&gt;
+
+&lt;p&gt;すいみん不足。&lt;/p&gt;
+
+&lt;p&gt;休憩時間に軽く寝てたら名刺交換出遅れたりしました。
+名刺は60枚ほどは交換できたかな、という感じです。
+JSON形式のプロフィール文をcatしたものを印刷しただけ、という名刺を持っていきましたが、意外とネタ被りしている人が少なく(一人はいた)、名刺を覚えてもらいやすかったので重複して交換することを防げました。
+100枚ほどは用意したので、流石に名刺入れに収まりきらないだろうと思ってデッキケースに入れていったところ、同じことをしている決闘者を発見できました。&lt;/p&gt;
+
+&lt;p&gt;初日なのでありがたいお話をひたすら聞くだけでした。
+支給されたハンドスピナーを回したりしながら耐えていましたが、2つ目の全体講義は記憶から完全に飛んでいます。
+まあそれ以外の講義もろくに覚えちゃいませんが。
+何人かのチューターの方の圧倒的進捗の報告を聞いて圧倒されたのは覚えています。&lt;/p&gt;
+
+&lt;p&gt;お夕飯を食べましたが、お夕飯にしては控えめな量だった気がします。
+その後グループワークになり、ぼんやりしたお題だなあと一抹の不安を感じつつ、ひとまずノルマとして課せられた講師やチューターへの聞き込みを各自で進めることに決めました。&lt;/p&gt;
+
+&lt;p&gt;22時に終了したので風呂に入ってそのまま寝ました。&lt;/p&gt;
+
+&lt;h2 id=&#34;2日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;2日目&lt;/h2&gt;
+
+&lt;p&gt;最初の講義は8:30開始でしたが、目が覚めたのは8:20でした。
+空腹だったので食堂に行き(8:24)、時間がなかったので、ひと皿だけ取って食べて講義の教室に入り(8:29)ました。&lt;/p&gt;
+
+&lt;h3 id=&#34;c1-ブラウザの脆弱性とそのインパクト:d32a538f907a1c066600df8908f4c6c9&#34;&gt;C1 ブラウザの脆弱性とそのインパクト&lt;/h3&gt;
+
+&lt;p&gt;ブラウザの脆弱性を見つけて生計を立てていた人がどのように脆弱性を見つけていたのか、を教えてもらいました。
+やっぱり場数かなあ、と思いました。
+リリースノートを監視していくのは単純に面白そう。&lt;/p&gt;
+
+&lt;h3 id=&#34;d2-3-カーネルエクスプロイトによるシステム権限奪取:d32a538f907a1c066600df8908f4c6c9&#34;&gt;D2~3 カーネルエクスプロイトによるシステム権限奪取&lt;/h3&gt;
+
+&lt;p&gt;講師の方が同じ大学の先輩なのですが、リアルでは会ったことがなくセキュキャン会場ではじめてお会いしました。
+グループワークの聞き込みで名前と所属を聞かないといけなかったのですが、「ああ知ってます、イノベーションなんとか科のるくすくん(&lt;a href=&#34;https://twitter.com/RKX1209&#34;&gt;@RKX1209&lt;/a&gt;)さんですよね？」って言ったら覚えてろよって言われました。&lt;/p&gt;
+
+&lt;p&gt;応募用紙でカーネルエクスプロイト問を選択したのでその延長という感覚で受講を決めた講義です。
+事前課題でROPの組み方を予習して、講義ではそれを使ってエクスプロイトを書くという感じだったので、ひたすらROP職人っぽいことをしていたという感じの印象があります。&lt;/p&gt;
+
+&lt;p&gt;前半はWebKitの脆弱性で遊びました。
+32bitの範囲内の数値しか扱えないJavaScriptで64bitメモリ空間のROPをやるにはこうすればいいのかーなどど思いました。&lt;/p&gt;
+
+&lt;p&gt;後半はBadIRETでユーザー空間とカーネル空間のGSレジスタがswapされてしまう脆弱性を突いたエクスプロイトを記述しようと試みました。
+&lt;a href=&#34;https://speakerdeck.com/rkx1209/kaneruekusupuroitoniyorusisutemuquan-xian-duo-qu&#34;&gt;講義資料&lt;/a&gt;のP65の任意アドレス書き込みのためのパディングの大きさを調べようとしたところ、当該箇所の構造体の定義部分が200行ぐらいあって詰みました。
+ちゃんとカーネルデバッグかけてサイズを吐かせる必要があるようです。
+講義時間だけではとても足りなかったのでもう少し自分で続きをやりたいところです。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;この日は早めに寝ました。&lt;/p&gt;
+
+&lt;h2 id=&#34;3日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;3日目&lt;/h2&gt;
+
+&lt;p&gt;朝6:30に起きてグループで集まって話し合いをしました。
+聞き取り結果などをまとめて部屋に戻ったら、ちょうどけものフレンズが始まったところだったので見ました。
+早起きしたのでちょっと睡眠が足りていないかな？という感じでした。&lt;/p&gt;
+
+&lt;h3 id=&#34;e4-サイバー犯罪捜査の現場:d32a538f907a1c066600df8908f4c6c9&#34;&gt;E4 サイバー犯罪捜査の現場&lt;/h3&gt;
+
+&lt;p&gt;事前学習スレに講師からの投稿が100件以上あってヒーヒー言ってました。&lt;/p&gt;
+
+&lt;p&gt;千葉県警の協力のもと、家宅捜索してDFして逮捕するという流れを一通りやりました。
+チームのリーダーをやらせてもらったのですが、座って時々指示を出して情報をまとめるお仕事をしていたら捜査フェイズが終わったのでフォレンジックらしいことはチームのメンバーに丸投げする形になってしまいました。&lt;/p&gt;
+
+&lt;p&gt;家宅捜索フェイズでは証拠品を探し回ったのですが、見つけさせる気無いだろうというぐらい手の込んだ隠し方でした。
+役得というか、容疑者の自室前で捜査令状を突きつけたり、後半で容疑者に逮捕状を突きつけたりできたので、単純にひたすら楽しかったです。
+令状を持って容疑者宅の前まで行ったら報道陣まで待機していて笑いました。&lt;/p&gt;
+
+&lt;h3 id=&#34;c5-暗号運用技術:d32a538f907a1c066600df8908f4c6c9&#34;&gt;C5 暗号運用技術&lt;/h3&gt;
+
+&lt;p&gt;なかなか重い講義が多いセキュキャンでしたが、これは入門講義という感じで割とふんわりしていました。
+ちょっと座学が多かった(=眠くなった)気がします。
+普段使ってる「証明書」って何なの？という感じだったので、運用面まで含めて教えてもらえたのは良かったです。
+ある二つのRSA鍵が共通の秘密鍵を使っている場合、公開鍵同士の最大公約数は簡単に求まるためクラック可能だというのはなるほどと思いました。&lt;/p&gt;
+
+&lt;h3 id=&#34;bof-企業プレゼン:d32a538f907a1c066600df8908f4c6c9&#34;&gt;BoF、企業プレゼン&lt;/h3&gt;
+
+&lt;p&gt;BoFが終わったら既に企業プレゼンが始まっている時間でした。&lt;/p&gt;
+
+&lt;p&gt;セキュリティ、というかITに関係のない人の話を聞きましたが、なんか既視感があったので同じ人もしくは似たような人の話を以前聞いたことがあるのではないかという気がします。
+結構強烈だったのでしばらく感覚がセキュキャンから引き離されました。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;その後はグループワークをして終了。
+最初はなかなか方向性を絞りきれずに話が脱線しがちだったのですが、話し合っているうちになぜかテーマがまとまってきていて不思議でした。&lt;/p&gt;
+
+&lt;p&gt;お酒が飲みたくても飲めないのでふてくされつつ、ゆっくりお茶をいれてお菓子を食べていたら寝る時間が削れました。&lt;/p&gt;
+
+&lt;h2 id=&#34;4日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;4日目&lt;/h2&gt;
+
+&lt;p&gt;選択講義は4日目が最終日です。&lt;/p&gt;
+
+&lt;h3 id=&#34;c6-スマートフォン向けゲームのセキュリティ:d32a538f907a1c066600df8908f4c6c9&#34;&gt;C6 スマートフォン向けゲームのセキュリティ&lt;/h3&gt;
+
+&lt;p&gt;超楽しかったです。&lt;/p&gt;
+
+&lt;p&gt;まずはWeb上のゲームのハック。
+事前課題で出ていたものの難易度を少し上げたものに挑戦しました。
+難読化されたソースコードをデコードして(これは想定外だったらしい)、リクエストを飛ばす関数をそのまま呼び出して突破。&lt;/p&gt;
+
+&lt;p&gt;次にAndroidエミュレータ上でいろいろな手段でゲームアプリのクラックを試みました。&lt;/p&gt;
+
+&lt;p&gt;まずはメモリの書き換え。
+うさみみハリケーンとかスペシャルねこまんま57号とか、使ったことありますよね。
+あれでJava上で動いているソフトを攻略できたためしがないので、もしかして仮想マシンなどの上で動くソフトはメモリ書き換えに耐性があるのかな、などと思いました。
+メモリ書き換えまでしっかり対策したプログラムを書くのは大変そうです。&lt;/p&gt;
+
+&lt;p&gt;次にパケットの改竄。
+当然通信は暗号化されているのですが、「バイナリコードを覗いてみたらXCHG命令があって、しかもその部分に謎の定数が置かれているのでこれがXORの鍵っぽい」とかいうやり方で突破していてまじかってなりました。&lt;/p&gt;
+
+&lt;p&gt;これ一般に出回っているゲームアプリに普通にチート仕掛けられるのでは？と心配になるほどいろいろやったので、全体講義で口うるさく言われたセキュリティ倫理を早くも試されているのか、という気持ちになりました。&lt;/p&gt;
+
+&lt;h3 id=&#34;a7-ファジング実習:d32a538f907a1c066600df8908f4c6c9&#34;&gt;A7 ファジング実習&lt;/h3&gt;
+
+&lt;p&gt;ファジング #とは という感じだったうえに事前課題でルータを渡されて「調査してみてください」と言われ、資料通りに何時間かファジングしてみたものの何も起こらず、？？？という気持ちだったので不安でしたが、講義では詳細に教えてもらえてむしろ事前課題とは何だったのか、という感じになりました。&lt;/p&gt;
+
+&lt;p&gt;ルータをファジングしましょうと言われたのでファジングとはネットワーク系の検査に使うものなのかな、などと思っていたのですが、実際にはソフトウェアに対しても行うことができ、なかなか強力なようです。
+自分が作ったソフトの脆弱性発見にも役立ちそうなので、使いこなせるようになってみたいと思います。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;その後はグループワークをしたあと、技術書のプレゼントが行われました。
+年齢が若い人から順に早いもの勝ちで、私はほぼ最高齢だったので人権はありませんでした。&lt;/p&gt;
+
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;うらやましくなんてないのです、我々は大人なので &lt;a href=&#34;https://twitter.com/hashtag/seccamp?src=hash&#34;&gt;#seccamp&lt;/a&gt;&lt;/p&gt;&amp;mdash; たたもさん@がんばらない (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/898157958206377985&#34;&gt;2017年8月17日&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;他の日より一時間程度早く終わりましたが、グループワークが間に合っているはずもなく、風呂に入ってからまたグループで集まりました。
+とはいえ方向性はまとまりつつあったので、一時間程度話し合った時点で解散。
+夜遅くまでグループでの話し合いを続けることは免れました。&lt;/p&gt;
+
+&lt;p&gt;我々のグループはかなり早めに解散できたのですが、プレゼン担当の人はその後数時間作業してくれていたようで頭が上がりません。&lt;/p&gt;
+
+&lt;p&gt;早めに寝ようと思っていたのですが、ちょっとtwitterを開いたばかりに40分ほど持って行かれました。&lt;/p&gt;
+
+&lt;h2 id=&#34;5日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;5日目&lt;/h2&gt;
+
+&lt;p&gt;最終日です。&lt;/p&gt;
+
+&lt;h2 id=&#34;感想:d32a538f907a1c066600df8908f4c6c9&#34;&gt;感想&lt;/h2&gt;
+
+&lt;p&gt;2000字書かないといけないらしいです。
+まず、全体的にハードな日程だったように感じます。
+8:30の講義開始に間に合わせるように起床して、次に自由が得られるのは22:00です。&lt;/p&gt;
+
+      </description>
+    </item>
     
     <item>
       <title>HIROic Freeciv Challengeの参加結果</title>
@@ -3966,149 +4135,6 @@ amChartsは簡単にグラフを表示できるライブラリとして使いや
 &lt;p&gt;なおハッカーはゲーム開始時からの同盟国であったが、その機会に恵まれた一方で内政は進まず、また3度も大戦争を繰り広げているウクライナの同盟国であるにもにもかかわらずユニット撃破数は100に達しておらず、さらには視界を敵陣営に横流しする重大な裏切りを働くなど、こいつ居ないほうが良かったんじゃないかという感は大いに否めないものがある。&lt;/p&gt;
 
 &lt;p&gt;あと久々にプレイ日記書いたら例のごとくたくさん書きすぎました。ここまで読んでくださった方に感謝します。&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>Hugoを導入してブログを作った デプロイ編</title>
-      <link>http://tatamo.81.la/blog/2016/01/05/hugo-deployment/</link>
-      <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2016/01/05/hugo-deployment/</guid>
-      <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;
-
-&lt;h2 id=&#34;werckerを使って自動ビルドする:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Werckerを使って自動ビルドする&lt;/h2&gt;
-
-&lt;p&gt;まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
-記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
-また、Hugoの環境がなくても、gitさえ使うことができれば記事の更新を行うことができるようになります。&lt;/p&gt;
-
-&lt;p&gt;今回使用した&lt;a href=&#34;http://wercker.com/&#34;&gt;Wercker&lt;/a&gt;は、このような自動ビルド作業およびデプロイ作業を自動化してくれるCIサービスです。
-Werckerを利用した自動デプロイは、&lt;a href=&#34;https://gohugo.io/tutorials/automated-deployments/&#34;&gt;Hugoの公式ドキュメント&lt;/a&gt;に記事があるため、これを参考に行います。
-この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。&lt;/p&gt;
-
-&lt;h3 id=&#34;wercker-ymlの記述:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;wercker.ymlの記述&lt;/h3&gt;
-
-&lt;p&gt;公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
-既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &amp;quot;0.14&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これだけでHugoのビルドが可能です。
-ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。&lt;/p&gt;
-
-&lt;h2 id=&#34;werckerとdeploybotを使って自動デプロイする:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;WerckerとDeployBotを使って自動デプロイする&lt;/h2&gt;
-
-&lt;p&gt;前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &amp;quot;0.14&amp;quot;
-deploy:
-  steps:
-    - install-packages:
-        packages: lftp
-    - script:
-        name: mirror over lftp
-        code: |
-            lftp -u $DEPLOY_FTP_USER,$DEPLOY_FTP_PASS -e &amp;quot;set ftp:passive-mode off;set ftp:ssl-allow off;set net:timeout 5;set net:max-retries 3;set net:reconnect-interval-max 60;mirror -enR public /blog;quit&amp;quot; $DEPLOY_FTP_SERVER
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;lftpでの接続に失敗し、アップロードを行うことができませんでした。
-PASVモードのon/off、sslを使用しないようにするなどのオプションを試みましたが、コネクションがうまく確立できず失敗しました。&lt;/p&gt;
-
-&lt;p&gt;後日また調べてみたいと思っていますが、ひとまずFTPでのアップロードを行うため、別のサービスを利用することにしました。
-&lt;a href=&#34;http://deploybot.com/&#34;&gt;DeployBot&lt;/a&gt;は1プロジェクトまで無料で利用できるサービスで、FTPによるアップロードにも対応しているため、これを利用しました。
-DeployBotによるデプロイは、&lt;a href=&#34;http://creative-tweet.net/blog/2015/10/usage-hugo-2.html&#34;&gt;Hugoをセットアップしてデプロイするまで［後編］CIサービスでビルドからデプロイを自動化するまで | creative tweet.&lt;/a&gt;で解説されているので、ここを参考にして行いました。&lt;/p&gt;
-
-&lt;p&gt;全体としては、&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;記事を書いてGitHub上にpushする&lt;/li&gt;
-&lt;li&gt;Werckerが更新を検知して自動的にビルドを行い、別のGitHubリポジトリを更新する&lt;/li&gt;
-&lt;li&gt;そのリポジトリの更新を検知してDeployBotによって自動的にサーバーへアップロードする&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;というような流れでのデプロイを行いました。&lt;/p&gt;
-
-&lt;p&gt;Werckerから別のGitHubリポジトリへのpushを行うようにするため、公式ドキュメントに書かれている通りにwercker.ymlを書き換えます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &amp;quot;0.14&amp;quot;
-deploy:
-  steps:
-    - install-packages:
-        packages: git ssh-client
-    - leipert/git-push:
-        gh-oauth: $GIT_TOKEN
-        basedir: public
-        repo: $GITHUB_REPO
-        clean_removed_files: true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;$GIT_TOKEN&lt;/code&gt;および&lt;code&gt;$GITHUB_REPO&lt;/code&gt;は、werckerの設定画面でdeploy targetごとに変数を定義できるため、そこに記述します。$GIT_TOKENはprotectedにチェックを入れ、外部から取得できないようにしておきます。&lt;/p&gt;
-
-&lt;p&gt;あとはwerckerのデプロイ先に指定したGitHubリポジトリをDeployBotに登録するだけです。
-DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
-これで目的のサーバーへの自動デプロイが完了しました。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足など:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;補足など&lt;/h2&gt;
-
-&lt;h3 id=&#34;githubリポジトリの分割:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;GitHubリポジトリの分割&lt;/h3&gt;
-
-&lt;p&gt;Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;リポジトリA:publicディレクトリを除くHugoディレクトリ&lt;/li&gt;
-&lt;li&gt;リポジトリB:生成されたpublicディレクトリの内容&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。&lt;/p&gt;
-
-&lt;h3 id=&#34;werckerの設定:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Werckerの設定&lt;/h3&gt;
-
-&lt;h4 id=&#34;dockerの使用:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Dockerの使用&lt;/h4&gt;
-
-&lt;p&gt;Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
-Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、&lt;a href=&#34;http://thleap.net/blog/recovering-wercker/&#34;&gt;boxが見つからないというエラー&lt;/a&gt;が発生します。
-逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
-(なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)&lt;/p&gt;
-
-&lt;h4 id=&#34;デプロイターゲット登録時のauto-deploy設定:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;デプロイターゲット登録時のAuto deploy設定&lt;/h4&gt;
-
-&lt;p&gt;ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&amp;rdquo;auto deploy successful builds to branch(es):&amp;ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
-GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。&lt;/p&gt;
-
-&lt;p&gt;なお、デプロイ先のGitHubブランチ名は前述したwercker.yml内に指定する箇所があります。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;以上で、Hugoで生成したサイトを自動的にデプロイすることができました。
-とはいえWerckerから直接デプロイすることに失敗したためにやや回りくどい方法をとっており、いずれ改善したいと思っています。&lt;/p&gt;
-
-&lt;p&gt;Werckerはビルドごとに環境を最初から設定するため、ライブラリのインストールなども毎回行われ、ビルド環境が整うまでに1分ほどかかります。
-手元でビルドができる環境ならばローカルでビルドしてアップロードしたほうが明らかに速いので、すぐに更新したいときなどはデプロイまでにかなり時間がかかる印象を受けます。
-Werckerを経由せず、手動でアップロードできる方法も用意しておいたほうがいいのかもしれません。&lt;/p&gt;
-
-&lt;p&gt;また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
-デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。&lt;/p&gt;
 
       </description>
     </item>
