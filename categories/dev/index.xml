@@ -6,8 +6,77 @@
     <description>Recent content in Dev on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Tue, 04 Apr 2017 23:41:09 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 08 Nov 2017 18:00:00 +0900</lastBuildDate>
     <atom:link href="http://tatamo.81.la/blog/categories/dev/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ブログのシンタックスハイライトを改善しました</title>
+      <link>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</link>
+      <pubDate>Wed, 08 Nov 2017 18:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</guid>
+      <description>
+        
+
+&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
+
+&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
+
+&lt;p&gt;プログラムの実行結果など、プログラムそのもの以外を&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグで囲いたくなる場合が何度かありました。
+class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。&lt;/p&gt;
+
+&lt;p&gt;さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
+またブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;```javascript
+/* code */
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決策:0daaccc7bb8856c5021376961a2bf330&#34;&gt;解決策&lt;/h2&gt;
+
+&lt;p&gt;今のところ&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、&lt;code&gt;nohighlight&lt;/code&gt;を指定した場合でもCSSテーマが適用されるようにします。
+また、インライン要素の場合はデフォルトで&lt;code&gt;nohighlight&lt;/code&gt;にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
+&lt;a href=&#34;http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/&#34;&gt;highlight.jsをインライン要素にも適用できるようにした&lt;/a&gt; で書いたコードを、さらに手直しします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// hljs.initHighlightingOnLoad();
+window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
+	const elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
+	for (const el of elements) {
+		if (el.parentNode.tagName != &amp;quot;PRE&amp;quot;) {
+			// インライン要素
+			el.style.display = &amp;quot;inline&amp;quot;;
+			el.style.margin = &amp;quot;0 2px&amp;quot;;
+			el.style.padding = &amp;quot;1px 3px&amp;quot;;
+			if (el.classList.length == 0) {
+				// classが指定されていない場合はnohighlightとする
+				el.classList.add(&amp;quot;nohighlight&amp;quot;);
+			}
+		}
+		hljs.highlightBlock(el);
+		// nohighlightでもテーマは適用する
+		if (el.classList.contains(&amp;quot;nohighlight&amp;quot;) ||
+			el.classList.contains(&amp;quot;lang-nohighlight&amp;quot;) ||
+			el.classList.contains(&amp;quot;language-nohighlight&amp;quot;)) {
+			el.classList.add(&amp;quot;hljs&amp;quot;);
+		}
+	}
+}, false);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ついでにES6で書きました。&lt;/p&gt;
+
+&lt;p&gt;まず、&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグでclassの指定が明示的に行われていない場合は自動的に&lt;code&gt;nohighlight&lt;/code&gt;を追加しています。
+この処理はhighlight.jsでのハイライト化の処理を行う前に持ってきました。
+次に、&lt;code&gt;nohighlight&lt;/code&gt;が指定されていてハイライトが行われていない要素に対して、classにhighlight.jsで使用されているクラスである&lt;code&gt;hljs&lt;/code&gt;を指定することでテーマの適用を行っています。&lt;/p&gt;
+
+&lt;p&gt;あとは既存の記事をこの変更に合わせて修正しました。
+ところどころ不自然なハイライトが行われていた箇所がありましたが、これで改善されました。&lt;/p&gt;
+
+      </description>
+    </item>
     
     <item>
       <title>LR(1)パーサジェネレータを自作して構文解析をする 第6回:パーサの実装と構文解析の実行</title>
@@ -2589,9 +2658,9 @@ CSS周りについても記事を書いてみたいですが、あまりに試�
 
 &lt;h2 id=&#34;インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;インライン要素でもハイライトできるようにしてみた&lt;/h2&gt;
 
-&lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。&lt;/p&gt;
+&lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code class=&#34;html&#34;&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code class=&#34;html&#34;&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。&lt;/p&gt;
 
-&lt;p&gt;Markdownの展開方法に適用できるように、&lt;code&gt;&amp;lt;code&amp;gt;&amp;lt;/code&amp;gt;&lt;/code&gt;で囲まれた要素をハイライトすることにします。
+&lt;p&gt;Markdownの展開方法に適用できるように、&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&amp;lt;/code&amp;gt;&lt;/code&gt;で囲まれた要素をハイライトすることにします。
 既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。&lt;/p&gt;
 
 &lt;ul&gt;
@@ -2620,7 +2689,7 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;通常&lt;code&gt;hljs.initHighlightingOnLoad();&lt;/code&gt;を呼ぶところを、上記のコードで置き換えるだけで完了です。
-親要素が&lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;ではない場合にインライン化するようにしています。
+親要素が&lt;code class=&#34;html&#34;&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;ではない場合にインライン化するようにしています。
 またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。&lt;/p&gt;
 
 &lt;p&gt;既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。

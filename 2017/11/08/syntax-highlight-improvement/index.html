@@ -9,11 +9,10 @@
     
     <base href="http://tatamo.81.la/blog/">
     <title>
-      Tags | わたしろぐ
+      ブログのシンタックスハイライトを改善しました | わたしろぐ
     </title>
     <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
-    <link rel="canonical" href="http://tatamo.81.la/blog/tags/">
-    <link href="http://tatamo.81.la/blog/tags/index.xml" rel="alternate" type="application/rss+xml" title="Tags" />
+    <link rel="canonical" href="http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/">
     <link rel="stylesheet" href="highlight/styles/default.css">
     <script src="highlight/highlight.pack.js"></script>
     <script>
@@ -66,34 +65,81 @@
     <div class="container">
     <div class="main-content">
 
-        <section>
-            <h1 class="tag-list-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h1>
-        </section>
-        <article class="term-list-article">
-            <ul>
-            <li><a href="http://tatamo.81.la/blog/tags/arago">arago (2)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/austin">austin (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/blog">blog (5)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (5)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/highlightjs">highlightjs (2)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/homebuilt_pc">homebuilt_pc (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (2)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (6)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/parser">parser (6)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (6)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (6)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/seccamp">seccamp (2)</a></li>
-            <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
-            </ul>
-        </article>
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/">ブログのシンタックスハイライトを改善しました</a></h1>
+        <span class="article-datetime"><time>2017-11-08 18:00:00</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories/dev/">dev</a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/highlightjs/">highlightjs</a>
+        <a href="http://tatamo.81.la/blog/tags/javascript/">javascript</a>
+        <a href="http://tatamo.81.la/blog/tags/blog/">blog</a></p>
+        
+
+<p>このブログのシンタックスハイライトには<a href="https://highlightjs.org/">highlight.js</a>を使用していますが、使い勝手を上げるために調整を行いました。</p>
+
+<h2 id="コードの強調は不要だがhighlight-jsのテーマは使いたい:0daaccc7bb8856c5021376961a2bf330">コードの強調は不要だがhighlight.jsのテーマは使いたい</h2>
+
+<p>プログラムの実行結果など、プログラムそのもの以外を<code class="html">&lt;code&gt;</code>タグで囲いたくなる場合が何度かありました。
+class要素に<code>nohighlight</code>を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。</p>
+
+<p>さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
+またブロック要素ではMarkdownでcode部分を囲う際に</p>
+
+<pre><code class="language-nohighlight">```javascript
+/* code */
+```
+</code></pre>
+
+<p>とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。</p>
+
+<h2 id="解決策:0daaccc7bb8856c5021376961a2bf330">解決策</h2>
+
+<p>今のところ<code class="html">&lt;code&gt;</code>で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、<code>nohighlight</code>を指定した場合でもCSSテーマが適用されるようにします。
+また、インライン要素の場合はデフォルトで<code>nohighlight</code>にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
+<a href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/">highlight.jsをインライン要素にも適用できるようにした</a> で書いたコードを、さらに手直しします。</p>
+
+<pre><code class="language-javascript">// hljs.initHighlightingOnLoad();
+window.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; {
+	const elements = document.getElementsByTagName(&quot;code&quot;);
+	for (const el of elements) {
+		if (el.parentNode.tagName != &quot;PRE&quot;) {
+			// インライン要素
+			el.style.display = &quot;inline&quot;;
+			el.style.margin = &quot;0 2px&quot;;
+			el.style.padding = &quot;1px 3px&quot;;
+			if (el.classList.length == 0) {
+				// classが指定されていない場合はnohighlightとする
+				el.classList.add(&quot;nohighlight&quot;);
+			}
+		}
+		hljs.highlightBlock(el);
+		// nohighlightでもテーマは適用する
+		if (el.classList.contains(&quot;nohighlight&quot;) ||
+			el.classList.contains(&quot;lang-nohighlight&quot;) ||
+			el.classList.contains(&quot;language-nohighlight&quot;)) {
+			el.classList.add(&quot;hljs&quot;);
+		}
+	}
+}, false);
+</code></pre>
+
+<p>ついでにES6で書きました。</p>
+
+<p>まず、<code class="html">&lt;code&gt;</code>タグでclassの指定が明示的に行われていない場合は自動的に<code>nohighlight</code>を追加しています。
+この処理はhighlight.jsでのハイライト化の処理を行う前に持ってきました。
+次に、<code>nohighlight</code>が指定されていてハイライトが行われていない要素に対して、classにhighlight.jsで使用されているクラスである<code>hljs</code>を指定することでテーマの適用を行っています。</p>
+
+<p>あとは既存の記事をこの変更に合わせて修正しました。
+ところどころ不自然なハイライトが行われていた箇所がありましたが、これで改善されました。</p>
+
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2017/09/17/indeed-austin-tour/">Older: Indeed視察ツアー2017参加記 -&gt;</a></span>
+    </nav>
 
     </div>
     <aside class="sidebar">
@@ -156,3 +202,4 @@
     </footer>
 </body>
 </html>
+
