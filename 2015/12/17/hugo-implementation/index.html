@@ -105,21 +105,21 @@ Hugoを用いたサイト構築の基本的な考え方や流れの紹介、そ�
 
 <h3 id="hugoの基本的なディレクトリ構成:618f10612e6a9a223dbbbddb739583ff">Hugoの基本的なディレクトリ構成</h3>
 
-<pre><code class="language-bash">$ hugo new site name_of_my_site
+<pre><code class="language-shell">$ hugo new site name_of_my_site
 </code></pre>
 
 <p>を実行することで、サイト用のディレクトリが生成されます。
 中には、config.tomlといくつかのディレクトリが生成されているはずです。
 config.tomlはサイト全体の設定を記述するファイルです。なお、代わりにconfig.yamlとしてYAMLで記述することなども可能です。お好みで変更しましょう。</p>
 
-<pre><code class="language-bash">$ cd name_of_my_site/
+<pre><code class="language-shell">$ cd name_of_my_site/
 $ ls -p
 archetypes/  config.toml  content/  data/  layouts/  static/
 </code></pre>
 
 <p>contentディレクトリは、記事ファイルを配置する場所です。</p>
 
-<pre><code class="language-bash">$ hugo new hoge.md
+<pre><code class="language-shell">$ hugo new hoge.md
 </code></pre>
 
 <p>などとするとcontent内にmdファイル(記事は主にMarkdownで記述します)が生成されますので、これを編集して記事を作ることになります。</p>
@@ -143,7 +143,7 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 
 <p>いくつものHugoのレイアウトが<a href="https://themes.gohugo.io/">公開されて</a>います。基本的には、この中から気に入ったものを使うのが良さそうです。themesディレクトリ直下にテーマごとのディレクトリを作り、その中にテーマファイルを配置します。</p>
 
-<pre><code class="language-bash">$ git clone --recursive https://github.com/spf13/hyde themes/hyde
+<pre><code class="language-shell">$ git clone --recursive https://github.com/spf13/hyde themes/hyde
 </code></pre>
 
 <p>テーマを適用するときは、configファイル内でテーマを指定するか、hugoコマンドの実行時に<code>hugo -t hyde</code>または<code>hugo server -t hyde</code>のように-tオプションでテーマを指定します。ここで指定するテーマ名は、themes直下に配置したディレクトリの名前となります。

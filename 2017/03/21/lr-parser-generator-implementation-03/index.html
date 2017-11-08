@@ -88,7 +88,7 @@
 
 <p>まずは、前回字句規則を定義したように、構文規則を定義していく必要があります。</p>
 
-<pre><code class="language-TypeScript">export interface LexDefinitionSection{
+<pre><code class="language-ts">export interface LexDefinitionSection{
 	token: Token|null;
 	pattern: string|RegExp;
 }
@@ -111,7 +111,7 @@ export interface GrammarDefinition{
 
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回</a>で定義した構文規則をこのデータ形式に直すと、以下のようになります。</p>
 
-<pre><code class="language-TypeScript">const syntax:SyntaxDefinitions = [
+<pre><code class="language-ts">const syntax:SyntaxDefinitions = [
 	{
 		ltoken: &quot;EXP&quot;,
 		pattern: [&quot;EXP&quot;, &quot;PLUS&quot;, &quot;TERM&quot;]
@@ -167,7 +167,7 @@ const grammar:GrammarDefinition = {
 
 <p>ひとまず、SymbolDiscriminatorというクラスを作って終端記号と非終端記号の問い合わせをできるようにします。</p>
 
-<pre><code class="language-TypeScript">/// symboldiscriminator.d.ts
+<pre><code class="language-ts">/// symboldiscriminator.d.ts
 export declare class SymbolDiscriminator {
     private terminal_symbols;
     private nonterminal_symbols;
@@ -182,7 +182,7 @@ export declare class SymbolDiscriminator {
 <p>実際のコードは以下を参照してください。<br />
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts</a></p>
 
-<pre><code class="language-TypeScript">/// コンストラクタの実装のみ抜粋
+<pre><code class="language-ts">/// コンストラクタの実装のみ抜粋
 constructor(syntaxdef:SyntaxDefinitions){
 	this.terminal_symbols = new Set&lt;Token&gt;();
 	this.nonterminal_symbols = new Set&lt;Token&gt;();
@@ -239,7 +239,7 @@ constructor(syntaxdef:SyntaxDefinitions){
 空列とはスペース(空白)等を意味するのではなく、長さ0の入力を意味します。
 具体的には、次のようなルールを見てみましょう。</p>
 
-<pre><code>X -&gt; Y &quot;0&quot;
+<pre><code class="language-nohighlight">X -&gt; Y &quot;0&quot;
 Y -&gt; &quot;1&quot;
 Y -&gt;
 </code></pre>
@@ -250,7 +250,7 @@ Y -&gt;
 ここで、<code>Y</code>は空列となり得るため、Nulls集合に含まれます。
 さらに、次のような例を見てください。</p>
 
-<pre><code>Z -&gt; Y
+<pre><code class="language-nohighlight">Z -&gt; Y
 Y -&gt; &quot;1&quot;
 Y -&gt;
 </code></pre>
@@ -267,7 +267,7 @@ Y -&gt;
 NullableSetクラスを作ってみましょう。<br />
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts</a></p>
 
-<pre><code class="language-TypeScript">/// nullableset.ts
+<pre><code class="language-ts">/// nullableset.ts
 export class NullableSet{
 	private nulls:Set&lt;Token&gt;;
 	constructor(private syntax: SyntaxDefinitions){
@@ -364,7 +364,7 @@ export class NullableSet{
 <p>とはいえちょっとコードが長いので、URLから参照をお願いします。
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts</a></p>
 
-<pre><code class="language-TypeScript">/// firstset.d.ts
+<pre><code class="language-ts">/// firstset.d.ts
 export declare class FirstSet {
     private syntax;
     private symbols;

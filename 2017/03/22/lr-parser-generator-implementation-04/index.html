@@ -119,7 +119,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 <p>個別のLRアイテムは、以下のようなものです。</p>
 
-<pre><code class="language-JSON">X -&gt; A . B C [x,y,$]
+<pre><code class="language-nohighlight">X -&gt; A . B C [x,y,$]
 Xは非終端記号
 A,B,Cは終端記号または非終端記号
 x,yは終端記号
@@ -142,13 +142,13 @@ x,yは終端記号
 <p>まず、DFAを最初の状態で初期化します。
 このとき、DFAのノード数は一つのみであり、そのノードは、以下のようなLRアイテム一つのみを要素とするアイテム集合を持ちます。</p>
 
-<pre><code class="language-JSON">S' -&gt; . S [$]
+<pre><code class="language-nohighlight">S' -&gt; . S [$]
 </code></pre>
 
 <p>ただし、<code>S</code>は開始記号であり、<code>S'</code>は便宜的に追加した新しい非終端記号です。
 便宜的には、<code>S'</code>について以下の規則が成り立つこととみなします。</p>
 
-<pre><code class="language-JSON">S' -&gt; S $
+<pre><code class="language-nohighlight">S' -&gt; S $
 </code></pre>
 
 <p>これを自己展開させることによって、構文解析のためのDFAを構築していきます。</p>
@@ -158,7 +158,7 @@ x,yは終端記号
 <p>まず、初期化時点で存在するこのDFAノードは、まだ完全な状態にはなっていません。
 一定のルールに従い、アイテム集合を「クロージャー展開」する必要があります。</p>
 
-<pre><code class="language-JSON">X -&gt; α . Y β [x]
+<pre><code class="language-nohighlight">X -&gt; α . Y β [x]
 X,Yは非終端記号(X=Yであってもよい)
 xは終端記号
 α,βは任意の長さの終端記号または非終端記号の列
@@ -168,13 +168,13 @@ xは終端記号
 ただし、先読み記号はFirst(βx)で得られる記号全てとします。
 つまり、</p>
 
-<pre><code class="language-JSON">Y -&gt; γ
+<pre><code class="language-nohighlight">Y -&gt; γ
 γは任意の長さの終端記号または非終端記号の列
 </code></pre>
 
 <p>というような規則があった場合、</p>
 
-<pre><code class="language-JSON">Y -&gt; . γ [First(βx)]
+<pre><code class="language-nohighlight">Y -&gt; . γ [First(βx)]
 </code></pre>
 
 <p>というLRアイテムを新しく追加します。</p>
@@ -184,7 +184,7 @@ xは終端記号
 <p>具体的に見て行きましょう。
 以下の規則を仮定します。</p>
 
-<pre><code class="language-JSON">S -&gt; 0
+<pre><code class="language-nohighlight">S -&gt; 0
 S -&gt; X 1
 X -&gt; 0
 Sは開始記号
@@ -194,14 +194,14 @@ S,Xは非終端記号
 
 <p>この場合、開始記号は<code>S</code>なので、最初のLRアイテムは以下のようになります。</p>
 
-<pre><code class="language-JSON">S' -&gt; . S [$]
+<pre><code class="language-nohighlight">S' -&gt; . S [$]
 </code></pre>
 
 <p><code>.</code>の次にある<code>S</code>を展開します。
 先読み記号は<code>First($)=[$]</code>です。
 以下のアイテムを追加します。</p>
 
-<pre><code class="language-JSON">S -&gt; . 0 [$]
+<pre><code class="language-nohighlight">S -&gt; . 0 [$]
 S -&gt; . X 1 [$]
 </code></pre>
 
@@ -209,14 +209,14 @@ S -&gt; . X 1 [$]
 <code>0</code>は終端記号のため、展開は行いません。
 先読み記号は、<code>First(1$)=[1]</code>です(First関数は終端記号の列の左端の記号を得るので、ここでは<code>1</code>のみとなります)。</p>
 
-<pre><code class="language-JSON">X -&gt; . 0 [1]
+<pre><code class="language-nohighlight">X -&gt; . 0 [1]
 </code></pre>
 
 <p>上の規則では<code>0</code>は終端記号のため、ここで展開は終了します。</p>
 
 <p>結果として、最初のDFAノードの持つアイテム集合は以下のようになります。</p>
 
-<pre><code class="language-JSON">S' -&gt; . S [$]
+<pre><code class="language-nohighlight">S' -&gt; . S [$]
 S -&gt; . 0 [$]
 S -&gt; . X 1 [$]
 X -&gt; . 0 [1]
@@ -229,7 +229,7 @@ X -&gt; . 0 [1]
 
 <p>クロージャー展開が完了したアイテム集合から、一定のルールのもとで新しいDFAノードを生成します。</p>
 
-<pre><code class="language-JSON">X -&gt; α . A β [x]
+<pre><code class="language-nohighlight">X -&gt; α . A β [x]
 Xは非終端記号
 Aは終端記号または非終端記号(X=Aであってもよい)
 xは終端記号
@@ -238,7 +238,7 @@ xは終端記号
 
 <p>というLRアイテムが存在する場合、以下の新しいLRアイテムを生成します(そのDFAノードのアイテムセットには追加しません)。</p>
 
-<pre><code class="language-JSON">X -&gt; α A . β [x]
+<pre><code class="language-nohighlight">X -&gt; α A . β [x]
 </code></pre>
 
 <p>そのDFAノードの持つ全てのLRアイテムについてこの処理が終わったら、<code>.</code>の左隣の記号、つまり<code>A</code>の位置の記号ごとに新しいアイテム集合を作り、それを情報としてもつ新しいDFAノードを生成します。
@@ -246,7 +246,7 @@ xは終端記号
 
 <p>具体的には、</p>
 
-<pre><code class="language-JSON">S' -&gt; . S [$]
+<pre><code class="language-nohighlight">S' -&gt; . S [$]
 S -&gt; . 0 [$]
 S -&gt; . X 1 [$]
 X -&gt; . 0 [1]
@@ -254,7 +254,7 @@ X -&gt; . 0 [1]
 
 <p>というアイテム集合を持つDFAからは、</p>
 
-<pre><code class="language-JSON">S' -&gt; S . [$]
+<pre><code class="language-nohighlight">S' -&gt; S . [$]
 S -&gt; 0 . [$]
 S -&gt; X . 1 [$]
 X -&gt; 0 . [1]
@@ -262,16 +262,16 @@ X -&gt; 0 . [1]
 
 <p>という4つのLRアイテムが生成され、これは以下の3つに分けられます。</p>
 
-<pre><code class="language-JSON">1. ラベル: S
+<pre><code class="language-nohighlight">1. ラベル: S
 S' -&gt; S . [$]
 </code></pre>
 
-<pre><code class="language-JSON">2. ラベル: 0
+<pre><code class="language-nohighlight">2. ラベル: 0
 S -&gt; 0 . [$]
 X -&gt; 0 . [1]
 </code></pre>
 
-<pre><code class="language-JSON">3. ラベル: X
+<pre><code class="language-nohighlight">3. ラベル: X
 S -&gt; X . 1 [$]
 </code></pre>
 
@@ -291,7 +291,7 @@ S -&gt; X . 1 [$]
 
 <p>具体的に、以下のようなアイテム集合を持つ2つのDFAノードを考えます。</p>
 
-<pre><code class="language-JSON">DFAノードA:
+<pre><code class="language-nohighlight">DFAノードA:
 X -&gt; .Y Z [x]
 Y -&gt; .V W [x,y]
 
@@ -302,7 +302,7 @@ Y -&gt; .V W [y,z]
 
 <p>この2つのDFAノードは、先読み部分を除けば一致しているため、マージして次のDFAノードCを作ります。</p>
 
-<pre><code class="language-JSON">DFAノードC:
+<pre><code class="language-nohighlight">DFAノードC:
 X -&gt; .Y Z [x,z]
 Y -&gt; .V W [x,y,z]
 </code></pre>

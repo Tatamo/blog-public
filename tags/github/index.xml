@@ -111,7 +111,7 @@ DeployBotはリポジトリが更新されるとその内容をそのままサ�
 
 &lt;p&gt;Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;public/
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;public/
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;

@@ -91,12 +91,12 @@
 
 <p>まず、解析するべき入力を文字列として受け取ります。</p>
 
-<pre><code>9 + 11 * (2 + 1)
+<pre><code class="language-nohighlight">9 + 11 * (2 + 1)
 </code></pre>
 
 <p>これに加えて、字句規則を用意します。</p>
 
-<pre><code>数字: /[1-9][0-9]*/
+<pre><code class="language-nohighlight">数字: /[1-9][0-9]*/
 プラス: &quot;+&quot;
 アステリスク: &quot;*&quot;
 左括弧: &quot;(&quot;
@@ -108,7 +108,7 @@
 <p>字句解析器は受け取った入力を先頭から順に字句規則にあてはめ、マッチするものがあればそのトークンを割り当てます。
 結果として得られる出力は、以下のようなリストになります。</p>
 
-<pre><code>数字: 9
+<pre><code class="language-nohighlight">数字: 9
 プラス: +
 数字: 11
 アステリスク: *
@@ -128,7 +128,7 @@
 ただし、<strong>字句規則の解析には構文解析器が必要</strong>となるため、現時点ではプログラム内にハードコーディングしておくなどする必要があります。
 今回は、字句規則を内部的に以下のようなデータ構造で扱うこととして、しばらくは字句規則をその内部データの形式で直接書くことにします。</p>
 
-<pre><code class="language-TypeScript">// 定義
+<pre><code class="language-ts">// 定義
 export type Token = string|symbol;
 export interface LexDefinitionSection{
 	token: Token|null;
@@ -154,7 +154,7 @@ const lex: LexDefinitions = [
 
 <h3 id="入力の読み捨て:33ced0e1bdc35ac00ed380cf2d7265fa">入力の読み捨て</h3>
 
-<pre><code class="language-TypeScript">{token:null, pattern:/\s/}
+<pre><code class="language-ts">{token:null, pattern:/\s/}
 // (読み捨て): /\s/
 </code></pre>
 
@@ -187,7 +187,7 @@ const lex: LexDefinitions = [
 
 <p>今回はコード量が少ないので、 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/lexer.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/lexer.ts</a> 全体をそのまま貼り付けます。</p>
 
-<pre><code class="language-TypeScript">/// token.ts
+<pre><code class="language-ts">/// token.ts
 export type Token = string|symbol;
 export const SYMBOL_EOF:Token = Symbol(&quot;EOF&quot;);
 export const SYMBOL_SYNTAX:Token = Symbol(&quot;S'&quot;);
@@ -196,7 +196,7 @@ export const SYMBOL_DOT:Token = Symbol(&quot;.&quot;);
 export type TokenList = Array&lt;{token:Token, value:string}&gt;;
 </code></pre>
 
-<pre><code class="language-TypeScript">/// lexer.ts
+<pre><code class="language-ts">/// lexer.ts
 /// LexDefinitionsの定義は先述のものと同一
 import {Token, SYMBOL_EOF, TokenList} from &quot;./token&quot;;
 import {LexDefinitions} from &quot;./grammar&quot;;
@@ -289,7 +289,7 @@ ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全て�
 
 <p>この字句解析器に先ほどの字句規則を与え、<code>9 + 11 * (2 + 1)</code> を入力すると、</p>
 
-<pre><code class="language-TypeScript">[
+<pre><code class="language-json">[
 	{token:&quot;DIGITS&quot;, value:&quot;9&quot;},
 	{token:&quot;PLUS&quot;, value:&quot;+&quot;},
 	{token:&quot;DIGITS&quot;, value:&quot;11&quot;},

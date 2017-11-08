@@ -94,7 +94,7 @@
 <p>そこで、それらの情報取得を担うクラスとしてSyntaxDBクラスを作成します。<br />
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts</a></p>
 
-<pre><code class="language-TypeScript">/// syntaxdb.d.ts
+<pre><code class="language-ts">/// syntaxdb.d.ts
 export declare class SyntaxDB {
     private syntax;
     private _start_symbol;
@@ -128,7 +128,7 @@ export declare class SyntaxDB {
 そのため、同一のSyntaxDBインスタンスのgetTokenIdメソッドにトークンを与えると、同一のトークンならば必ず同じ番号が返ってくるようになっていればそれで構いません。
 よって、以下のような単純な実装で事足ります。</p>
 
-<pre><code class="language-TypeScript">// Tokenを与えると一意なidを返す
+<pre><code class="language-ts">// Tokenを与えると一意なidを返す
 public getTokenId(token: Token): number{
 	if(!this.tokenmap.has(token)) this.tokenmap.set(token, this.tokenid_counter++);
 	return this.tokenmap.get(token)!; /// ※ !はTypeScriptのnon-nullable注釈
@@ -148,7 +148,7 @@ public getTokenId(token: Token): number{
 
 <p><a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts</a></p>
 
-<pre><code class="language-TypeScript">/// closure.d.ts
+<pre><code class="language-ts">/// closure.d.ts
 export declare class ClosureItem {
     private syntax;
     private _syntax_id;
@@ -194,7 +194,7 @@ ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自�
 
 <h3 id="クロージャー展開:3aec03ed6d530aa5eea872bb2e906074">クロージャー展開</h3>
 
-<pre><code class="language-TypeScript">// クロージャー展開を行う
+<pre><code class="language-ts">// クロージャー展開を行う
 // TODO: リファクタリング
 private expandClosure(){
 	// 展開処理中はClosureItemのlookaheadsの要素数を常に1に保つこととする
@@ -282,13 +282,13 @@ private expandClosure(){
 
 <p>たとえば、構文番号1、<code>.</code>の位置が左から2番目、先読み記号が<code>[$,x]</code>のClosureItemなら、</p>
 
-<pre><code class="language-JSON">&quot;1,2,[$,x]&quot;
+<pre><code class="language-shell">&quot;1,2,[$,x]&quot;
 </code></pre>
 
 <p>というような文字列を出力すれば目的は果たせます。
 ClosureItemの集合であるClosureSetの場合は、まず自身の持っているClosureItemを、このハッシュ文字列を使ってソートした上で、以下のような文字列を生成します。</p>
 
-<pre><code class="language-JSON">&quot;1,2,[$,x]|2,3,[$]&quot;
+<pre><code class="language-shell">&quot;1,2,[$,x]|2,3,[$]&quot;
 </code></pre>
 
 <p>ClosureItemが常にソートされていると仮定したならば、こちらも同一性の判定に用いることができます。</p>
@@ -296,13 +296,13 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 <p>ただしこの場合、ひとつだけ問題が生じます。
 もし上記の<code>x</code>のかわりに、<code>x]|2,2,[y</code>という名前の終端記号があったとすると、さきほどのClosureSetのハッシュ文字列は</p>
 
-<pre><code class="language-JSON">&quot;1,2,[$,x]|2,2,[y]|2,3,[$]&quot;
+<pre><code class="language-shell">&quot;1,2,[$,x]|2,2,[y]|2,3,[$]&quot;
 </code></pre>
 
 <p>となってしまい、<code>2,2,[y]</code>というClosureItemが存在した時に衝突が発生してしまう可能性があります。
 これを防ぐため、先ほどのSyntaxDBを用いて、それぞれの終端記号を個別の数値に直してしまいます。</p>
 
-<pre><code class="language-JSON">&quot;1,2,[0,1]&quot;
+<pre><code class="language-shell">&quot;1,2,[0,1]&quot;
 &quot;1,2,[0,1]|2,3,[1]&quot;
 </code></pre>
 
@@ -323,7 +323,7 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 DFAGeneratorクラスを作っていきます。<br />
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts</a></p>
 
-<pre><code class="language-TypeScript">/// dfagenerator.d.ts
+<pre><code class="language-ts">/// dfagenerator.d.ts
 export declare type DFAEdge = Map&lt;Token, number&gt;;
 export declare type DFANode = {
     closure: ClosureSet;
@@ -357,7 +357,7 @@ DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMap
 <p>構文解析表と、それに必要な四種類の命令群を定義しておきます。
 また、コンフリクトが発生したことを表す命令も定義します。</p>
 
-<pre><code class="language-TypeScript">/// parsingtable.ts
+<pre><code class="language-ts">/// parsingtable.ts
 export type ShiftOperation = {type: &quot;shift&quot;, to: number};
 export type ReduceOperation = {type: &quot;reduce&quot;, syntax: number};
 export type ConflictedOperation = {type: &quot;conflict&quot;, shift_to:Array&lt;number&gt;, reduce_syntax:Array&lt;number&gt;};
@@ -370,7 +370,7 @@ export type ParsingTable = Array&lt;Map&lt;Token, ParsingOperation&gt;&gt;;
 <p>構文解析表の構築処理は、ParserGeneratorクラスのメソッドとして実装します。<br />
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts</a></p>
 
-<pre><code class="language-TypeScript">/// parsergenerator.d.ts
+<pre><code class="language-ts">/// parsergenerator.d.ts
 export declare class ParserGenerator {
     private grammar;
     private parsing_table;

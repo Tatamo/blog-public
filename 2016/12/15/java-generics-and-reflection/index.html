@@ -94,7 +94,7 @@
 
 <p>わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。</p>
 
-<pre><code class="language-Java">ArrayList&lt;String&gt; strlist = new ArrayList&lt;String&gt;();
+<pre><code class="language-java">ArrayList&lt;String&gt; strlist = new ArrayList&lt;String&gt;();
 ArrayList&lt;Integer&gt; intlist = new ArrayList&lt;Integer&gt;();
 </code></pre>
 
@@ -102,7 +102,7 @@ ArrayList&lt;Integer&gt; intlist = new ArrayList&lt;Integer&gt;();
 
 <p>ジェネリクスを用いて自分でメソッドを定義する場合は、以下のようになります。</p>
 
-<pre><code class="language-Java">public &lt;T&gt; void doSomething(T arg){
+<pre><code class="language-java">public &lt;T&gt; void doSomething(T arg){
 	// doSomething
 }
 
@@ -119,7 +119,7 @@ public &lt;T extends SomeClass&gt; void notDoAnything(T arg){
 
 <p>Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。</p>
 
-<pre><code class="language-Java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list){
+<pre><code class="language-java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list){
 	return list
 		.stream()
 		.filter(value -&gt; value instanceof T) // ここでlistの要素valueがTのインスタンスかどうか判別したい -&gt; error
@@ -166,7 +166,7 @@ public &lt;T&gt; void doSomething(String arg){
 あなたはちょっとしたゲームを作るためのフレームワークを作っています。
 その一部分が以下のようになります。</p>
 
-<pre><code class="language-Java">// 抽象的なゲーム内エンティティクラス
+<pre><code class="language-java">// 抽象的なゲーム内エンティティクラス
 public abstract class Entity {
 	private int x;
 	private int y;
@@ -209,7 +209,7 @@ Entityインスタンスを作成するためのFactory Methodパターンを使
 <p>あとは、このフレームワークの利用者にはEntityクラスを継承したクラスを作らせ、それをもとにゲームを作ってもらえればいいだけです。
 以下のクラスを追加してみましょう。</p>
 
-<pre><code class="language-Java">// あなたです
+<pre><code class="language-java">// あなたです
 public class Player extends Entity{
 	private int hp; // プレイヤーはヒットポイントを持ちます
 	public Player(int x, int y, int hp){
@@ -251,7 +251,7 @@ public class Enemy extends Entity {
 <p>ここで、「敵のダメージ値を参照して、プレイヤーのヒットポイントを減らす」処理をしたいという需要が当然生まれます。
 実装の方法はいろいろあると思いますが、ひとまずこの処理を、Enemyのメソッドとして書いてみます。</p>
 
-<pre><code class="language-Java">// 敵です
+<pre><code class="language-java">// 敵です
 public class Enemy extends Entity {
 	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
 	public Enemy(int x, int y, int damage){
@@ -280,7 +280,7 @@ public class Enemy extends Entity {
 
 <p>ここであなたは気を利かせます。</p>
 
-<pre><code class="language-Java">manager.getAll().forEach((entity)-&gt;{
+<pre><code class="language-java">manager.getAll().forEach((entity)-&gt;{
 	if(entity instanceof Player){
 		if(...){
 			...
@@ -293,7 +293,7 @@ public class Enemy extends Entity {
 
 <p>できるならたとえばこう書きたい。</p>
 
-<pre><code class="language-Java">manager.&lt;Player&gt;getAllOfSubClass().forEach((player)-&gt;{
+<pre><code class="language-java">manager.&lt;Player&gt;getAllOfSubClass().forEach((player)-&gt;{
 	if(...){
 		...
 	}
@@ -309,7 +309,7 @@ public class Enemy extends Entity {
 
 <p>結局、セーブデータのロード時にこのようなコードを書くことになるでしょう。</p>
 
-<pre><code class="language-Java">	public &lt;E extends Entity&gt; E createEntity(List&lt;String&gt; args){ // 可変長引数としてもよい
+<pre><code class="language-java">	public &lt;E extends Entity&gt; E createEntity(List&lt;String&gt; args){ // 可変長引数としてもよい
 		return new E(args); // ジェネリクス型はnewできない -&gt; error
 	}
 	public loadSaveData(SaveData savedata){
@@ -335,7 +335,7 @@ public class Enemy extends Entity {
 <code>EntityManager#getAllOfSubClass</code>メソッドを考えてみます。
 実装は以下のようになります。</p>
 
-<pre><code class="language-Java">	@SuppressWarnings(&quot;unchecked&quot;)
+<pre><code class="language-java">	@SuppressWarnings(&quot;unchecked&quot;)
 	public &lt;E extends Entity&gt; List&lt;E&gt; getAllOfSubClass(Class&lt;E&gt; cls){
 		return (List&lt;E&gt;) all_entities.stream()
 			.filter(entity -&gt; entity.getClass() == cls)
@@ -345,20 +345,20 @@ public class Enemy extends Entity {
 
 <p>これを呼び出す際は、</p>
 
-<pre><code class="language-Java">entityManager.getAllOfSubClass(Player.class);
+<pre><code class="language-java">entityManager.getAllOfSubClass(Player.class);
 </code></pre>
 
 <p>のようにして、Class型の<code>クラス名.class</code>を引数として与えます。
 ここで型推論が働くので、</p>
 
-<pre><code class="language-Java">entityManager.&lt;Player&gt;getAllOfSubClass(Player.class);
+<pre><code class="language-java">entityManager.&lt;Player&gt;getAllOfSubClass(Player.class);
 </code></pre>
 
 <p>のようにPlayerクラス名を2度も書く必要はありません。</p>
 
 <p>また、Playerクラスだけでなく、Playerクラスを継承したクラスも含めて判別したいときは、以下のようにします。</p>
 
-<pre><code class="language-Java">	@SuppressWarnings(&quot;unchecked&quot;)
+<pre><code class="language-java">	@SuppressWarnings(&quot;unchecked&quot;)
 	public &lt;E extends Entity&gt; List&lt;E&gt; getAllOfSubClass(Class&lt;E&gt; cls){
 		return (List&lt;E&gt;) all_entities.stream()
 			.filter(entity -&gt; cls.isAssignableFrom(entity.getClass()))
@@ -368,7 +368,7 @@ public class Enemy extends Entity {
 
 <p><code>createEntity</code>メソッドも、以下のようにすれば書くことができます。</p>
 
-<pre><code class="language-Java">	public &lt;E extends Entity&gt; E createEntity(Class&lt;E&gt; cls, List&lt;String&gt; args){
+<pre><code class="language-java">	public &lt;E extends Entity&gt; E createEntity(Class&lt;E&gt; cls, List&lt;String&gt; args){
 		// cls型のString[]を引数にとるコンストラクタを呼び出す
 		return cls.getConstructor(new Class&lt;?&gt;[] { String[].class }).newInstance(args);
 	}
@@ -379,7 +379,7 @@ public class Enemy extends Entity {
 
 <p>最初の例に戻ってみましょう。<code>getSubClassList</code>は、以下のように書けます。</p>
 
-<pre><code class="language-Java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list, Class&lt;T&gt; cls){
+<pre><code class="language-java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list, Class&lt;T&gt; cls){
 	return list
 		.stream()
 		.filter(value -&gt; value.getClass() == cls)
@@ -394,7 +394,7 @@ getSubClassList(list, SubClassOfSomeClass.class);
 
 <h3 id="おまけ:c600ddb79433125511402a932eb728b1">おまけ</h3>
 
-<pre><code class="language-Java">public &lt;T&gt; int getStaticValue(Class&lt;T&gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
+<pre><code class="language-java">public &lt;T&gt; int getStaticValue(Class&lt;T&gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
 	return (int) cls.getMethod(&quot;getStaticValue&quot;).invoke(null);
 }
 

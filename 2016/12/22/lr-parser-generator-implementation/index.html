@@ -156,14 +156,14 @@
 そのルールをを表すのが構文規則です。
 構文規則を書き表すルールは、たとえば<a href="https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%83%E3%82%AB%E3%82%B9%E3%83%BB%E3%83%8A%E3%82%A6%E3%82%A2%E8%A8%98%E6%B3%95">BNF</a>など様々な種類がありますが、基本的な発想としては</p>
 
-<pre><code>S -&gt; X Y Z
+<pre><code class="language-nohighlight">S -&gt; X Y Z
 </code></pre>
 
 <p>のように左辺の記号を右辺の記号の並びによって定義することで行います。</p>
 
 <p>具体的に見てみましょう。</p>
 
-<pre><code>式 -&gt; 式 &quot;+&quot; 項
+<pre><code class="language-nohighlight">式 -&gt; 式 &quot;+&quot; 項
 式 -&gt; 項
 項 -&gt; 項 &quot;*&quot; 因子
 項 -&gt; 因子
@@ -181,7 +181,7 @@
 
 <p>たとえば<code>9 + 11 * (2 + 1)</code>は、</p>
 
-<pre><code>式{ [9] [+] [11 * (2 + 1)] }
+<pre><code class="language-nohighlight">式{ [9] [+] [11 * (2 + 1)] }
 式{ 項{ [9] } &quot;+&quot; 項{ [11] [*] [(2 + 1)] } }
 式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ [(] [2 + 1] [)] } } }
 式{ 項{ 因子{9} } &quot;+&quot; 項{ 因子{11} &quot;*&quot; 因子{ &quot;(&quot; 式{ [2] [+] [1] } &quot;)&quot; } } }
@@ -201,7 +201,7 @@
 <p>通常、<code>9 + 11 * (2 + 1)</code> のような入力は文字列で与えられますが、記号と記号の間には複数もしくは0個の空白が挿入されている可能性もあります。
 しかし以下のような構文規則を定義するのは本質的ではありません：</p>
 
-<pre><code>空白 -&gt; &quot; &quot;
+<pre><code class="language-nohighlight">空白 -&gt; &quot; &quot;
 空白 -&gt; &quot; &quot; 空白
 数字 -&gt; &quot;0&quot; | &quot;1&quot; | &quot;2&quot; | ... | &quot;9&quot;
 数字 -&gt; (&quot;0&quot; | &quot;1&quot; | &quot;2&quot; | ... | &quot;9&quot;) 数字
@@ -212,7 +212,7 @@
 <p>そこで、通常は「入力として与えられた文字列」を「終端記号として分類されたトークンの列」に変換する処理をはさみ、これによって得られたトークンを構文解析器に与えます。
 トークンとは終端記号と、必要ならばそれに紐付いた元々の情報を保持しておいたものです。たとえば、<code>9 + 11 * (2 + 1)</code>は、</p>
 
-<pre><code>数字: 9
+<pre><code class="language-nohighlight">数字: 9
 プラス: +
 数字: 11
 アステリスク: *
@@ -231,7 +231,7 @@
 
 <p>字句規則は、例えば以下のような書き方になるでしょう：</p>
 
-<pre><code>数字: /[1-9][0-9]*/
+<pre><code class="language-nohighlight">数字: /[1-9][0-9]*/
 プラス: &quot;+&quot;
 アステリスク: &quot;*&quot;
 左括弧: &quot;(&quot;
@@ -309,7 +309,7 @@
 <p>「再帰を使って構文解析する」という発想としては単純なもの。
 LL(1)文法のクラスはLR(1)よりも大幅に小さいものの、それでもLALR(1)文法を外れた文法を解析できたりします。</p>
 
-<pre><code>S -&gt; S + E
+<pre><code class="language-nohighlight">S -&gt; S + E
 </code></pre>
 
 <p>というような、右辺の一番左の場所に左辺の記号が登場するような「左再帰則」を読むことができません。ナンセンス。</p>
@@ -351,7 +351,7 @@ LALR(1)のLAはLook-Aheadの略で、まずLR(1)法で構文解析表を作っ�
 <p>強力なアルゴリズムにより、文脈自由言語すべてを比較的高速に解析可能。
 ただし、</p>
 
-<pre><code>S -&gt; NP VP
+<pre><code class="language-nohighlight">S -&gt; NP VP
 VP -&gt; v
 </code></pre>
 

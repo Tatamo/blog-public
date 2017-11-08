@@ -29,7 +29,7 @@
 &lt;p&gt;パーサを実装する前に、パーサの出力結果となる抽象構文木の定義を行います。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// ast.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// ast.ts
 export interface ASTNode{
 	type: Token;
 	value: string|null;
@@ -42,7 +42,7 @@ export interface ASTNode{
 
 &lt;p&gt;たとえば、&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;第3回&lt;/a&gt;で定義した構文規則によって&lt;code&gt;1+1&lt;/code&gt;を解析した場合、結果として得られる抽象構文木は以下のようになるでしょう。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;{&amp;quot;type&amp;quot;:&amp;quot;EXP&amp;quot;, &amp;quot;value&amp;quot;:null, &amp;quot;children&amp;quot;:[
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{&amp;quot;type&amp;quot;:&amp;quot;EXP&amp;quot;, &amp;quot;value&amp;quot;:null, &amp;quot;children&amp;quot;:[
     {&amp;quot;type&amp;quot;:&amp;quot;EXP&amp;quot;, &amp;quot;value&amp;quot;:null, &amp;quot;children&amp;quot;:[
         {&amp;quot;type&amp;quot;:&amp;quot;TERM&amp;quot;, &amp;quot;value&amp;quot;:null, &amp;quot;children&amp;quot;:[
             {&amp;quot;type&amp;quot;:&amp;quot;ATOM&amp;quot;, &amp;quot;value&amp;quot;:null, &amp;quot;children&amp;quot;:[
@@ -67,7 +67,7 @@ export interface ASTNode{
 &lt;p&gt;ではParserクラスを作っていきます。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// parser.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// parser.ts
 export interface TerminalCallbackArg {
         token: string;
         value: string;
@@ -107,7 +107,7 @@ export declare class Parser {
 &lt;p&gt;あとは、このParserをParserGeneratorから利用できるようにするため、適当にファクトリクラスを作ります。
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/factory.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/factory.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// factory.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// factory.ts
 export class ParserFactory{
 	public static create(grammar: GrammarDefinition, parsing_table: ParsingTable, default_fallback?: ParserCallback):Parser{
 		let lexer = new Lexer(grammar.lex);
@@ -118,7 +118,7 @@ export class ParserFactory{
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts#L32&#34;&gt;ParserGenerator#getParser()メソッド&lt;/a&gt;には、以下のような記述を行います。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// parsergenerator.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// parsergenerator.ts
 public getParser(default_callback?: ParserCallback):Parser{
 	return ParserFactory.create(this.grammar, this.parsing_table, default_callback);
 }
@@ -133,7 +133,7 @@ public getParser(default_callback?: ParserCallback):Parser{
 &lt;p&gt;では、実際に構文解析を実行してみましょう。
 与える構文は、以下のようになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;const syntax:SyntaxDefinitions = [
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;const syntax:SyntaxDefinitions = [
 	{
 		ltoken: &amp;quot;EXP&amp;quot;,
 		pattern: [&amp;quot;EXP&amp;quot;, &amp;quot;PLUS&amp;quot;, &amp;quot;TERM&amp;quot;]
@@ -179,12 +179,12 @@ const grammar:GrammarDefinition = {
 
 &lt;p&gt;&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt;という式を解析するためには、以下のように実行します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;new ParserGenerator(grammar).getParser().parse(&amp;quot;9 + 11 * (2 + 1)&amp;quot;);
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;new ParserGenerator(grammar).getParser().parse(&amp;quot;9 + 11 * (2 + 1)&amp;quot;);
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;すると、結果として以下のようなオブジェクトが得られます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;{&amp;quot;type&amp;quot;:&amp;quot;EXP&amp;quot;,&amp;quot;value&amp;quot;:null,&amp;quot;children&amp;quot;:[
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{&amp;quot;type&amp;quot;:&amp;quot;EXP&amp;quot;,&amp;quot;value&amp;quot;:null,&amp;quot;children&amp;quot;:[
     {&amp;quot;type&amp;quot;:&amp;quot;EXP&amp;quot;,&amp;quot;value&amp;quot;:null,&amp;quot;children&amp;quot;:[
     {&amp;quot;type&amp;quot;:&amp;quot;TERM&amp;quot;,&amp;quot;value&amp;quot;:null,&amp;quot;children&amp;quot;:[
         {&amp;quot;type&amp;quot;:&amp;quot;ATOM&amp;quot;,&amp;quot;value&amp;quot;:null,&amp;quot;children&amp;quot;:[
@@ -235,7 +235,7 @@ const grammar:GrammarDefinition = {
 
 &lt;p&gt;先ほどのparsergenerator.tsに、以下のような定義が含まれていました。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;export interface TerminalCallbackArg {
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;export interface TerminalCallbackArg {
         token: string;
         value: string;
         terminal: true;
@@ -255,7 +255,7 @@ export declare type ParserCallback = (arg: ParserCallbackArg) =&amp;gt; any;
 
 &lt;p&gt;実際に、数式の処理を行うための関数を書いてみましょう。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;let solve_terminal = (arg:TerminalCallbackArg)=&amp;gt;{
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;let solve_terminal = (arg:TerminalCallbackArg)=&amp;gt;{
 	switch(arg.token){
 		case &amp;quot;DIGITS&amp;quot;:
 			return +arg.value;
@@ -284,12 +284,12 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 
 &lt;p&gt;これをもとに、以下のように実行します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;new ParserGenerator(grammar).getParser(solve).parse(&amp;quot;9 + 11 * (2 + 1)&amp;quot;);
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;new ParserGenerator(grammar).getParser(solve).parse(&amp;quot;9 + 11 * (2 + 1)&amp;quot;);
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;実行結果は、以下のようになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;42
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;42
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;これにて、パーサジェネレータの実装および構文解析が完了しました。
@@ -327,7 +327,7 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 &lt;p&gt;そこで、それらの情報取得を担うクラスとしてSyntaxDBクラスを作成します。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// syntaxdb.d.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// syntaxdb.d.ts
 export declare class SyntaxDB {
     private syntax;
     private _start_symbol;
@@ -361,7 +361,7 @@ export declare class SyntaxDB {
 そのため、同一のSyntaxDBインスタンスのgetTokenIdメソッドにトークンを与えると、同一のトークンならば必ず同じ番号が返ってくるようになっていればそれで構いません。
 よって、以下のような単純な実装で事足ります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;// Tokenを与えると一意なidを返す
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// Tokenを与えると一意なidを返す
 public getTokenId(token: Token): number{
 	if(!this.tokenmap.has(token)) this.tokenmap.set(token, this.tokenid_counter++);
 	return this.tokenmap.get(token)!; /// ※ !はTypeScriptのnon-nullable注釈
@@ -381,7 +381,7 @@ public getTokenId(token: Token): number{
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// closure.d.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// closure.d.ts
 export declare class ClosureItem {
     private syntax;
     private _syntax_id;
@@ -427,7 +427,7 @@ ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自�
 
 &lt;h3 id=&#34;クロージャー展開:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;クロージャー展開&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;// クロージャー展開を行う
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// クロージャー展開を行う
 // TODO: リファクタリング
 private expandClosure(){
 	// 展開処理中はClosureItemのlookaheadsの要素数を常に1に保つこととする
@@ -515,13 +515,13 @@ private expandClosure(){
 
 &lt;p&gt;たとえば、構文番号1、&lt;code&gt;.&lt;/code&gt;の位置が左から2番目、先読み記号が&lt;code&gt;[$,x]&lt;/code&gt;のClosureItemなら、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;&amp;quot;1,2,[$,x]&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[$,x]&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;というような文字列を出力すれば目的は果たせます。
 ClosureItemの集合であるClosureSetの場合は、まず自身の持っているClosureItemを、このハッシュ文字列を使ってソートした上で、以下のような文字列を生成します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;&amp;quot;1,2,[$,x]|2,3,[$]&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[$,x]|2,3,[$]&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;ClosureItemが常にソートされていると仮定したならば、こちらも同一性の判定に用いることができます。&lt;/p&gt;
@@ -529,13 +529,13 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 &lt;p&gt;ただしこの場合、ひとつだけ問題が生じます。
 もし上記の&lt;code&gt;x&lt;/code&gt;のかわりに、&lt;code&gt;x]|2,2,[y&lt;/code&gt;という名前の終端記号があったとすると、さきほどのClosureSetのハッシュ文字列は&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;&amp;quot;1,2,[$,x]|2,2,[y]|2,3,[$]&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[$,x]|2,2,[y]|2,3,[$]&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;となってしまい、&lt;code&gt;2,2,[y]&lt;/code&gt;というClosureItemが存在した時に衝突が発生してしまう可能性があります。
 これを防ぐため、先ほどのSyntaxDBを用いて、それぞれの終端記号を個別の数値に直してしまいます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;&amp;quot;1,2,[0,1]&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[0,1]&amp;quot;
 &amp;quot;1,2,[0,1]|2,3,[1]&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -556,7 +556,7 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 DFAGeneratorクラスを作っていきます。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// dfagenerator.d.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// dfagenerator.d.ts
 export declare type DFAEdge = Map&amp;lt;Token, number&amp;gt;;
 export declare type DFANode = {
     closure: ClosureSet;
@@ -590,7 +590,7 @@ DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMap
 &lt;p&gt;構文解析表と、それに必要な四種類の命令群を定義しておきます。
 また、コンフリクトが発生したことを表す命令も定義します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// parsingtable.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// parsingtable.ts
 export type ShiftOperation = {type: &amp;quot;shift&amp;quot;, to: number};
 export type ReduceOperation = {type: &amp;quot;reduce&amp;quot;, syntax: number};
 export type ConflictedOperation = {type: &amp;quot;conflict&amp;quot;, shift_to:Array&amp;lt;number&amp;gt;, reduce_syntax:Array&amp;lt;number&amp;gt;};
@@ -603,7 +603,7 @@ export type ParsingTable = Array&amp;lt;Map&amp;lt;Token, ParsingOperation&amp;g
 &lt;p&gt;構文解析表の構築処理は、ParserGeneratorクラスのメソッドとして実装します。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// parsergenerator.d.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// parsergenerator.d.ts
 export declare class ParserGenerator {
     private grammar;
     private parsing_table;
@@ -682,7 +682,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 &lt;p&gt;個別のLRアイテムは、以下のようなものです。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;X -&amp;gt; A . B C [x,y,$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; A . B C [x,y,$]
 Xは非終端記号
 A,B,Cは終端記号または非終端記号
 x,yは終端記号
@@ -705,13 +705,13 @@ x,yは終端記号
 &lt;p&gt;まず、DFAを最初の状態で初期化します。
 このとき、DFAのノード数は一つのみであり、そのノードは、以下のようなLRアイテム一つのみを要素とするアイテム集合を持ちます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S&#39; -&amp;gt; . S [$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;ただし、&lt;code&gt;S&lt;/code&gt;は開始記号であり、&lt;code&gt;S&#39;&lt;/code&gt;は便宜的に追加した新しい非終端記号です。
 便宜的には、&lt;code&gt;S&#39;&lt;/code&gt;について以下の規則が成り立つこととみなします。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S&#39; -&amp;gt; S $
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; S $
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;これを自己展開させることによって、構文解析のためのDFAを構築していきます。&lt;/p&gt;
@@ -721,7 +721,7 @@ x,yは終端記号
 &lt;p&gt;まず、初期化時点で存在するこのDFAノードは、まだ完全な状態にはなっていません。
 一定のルールに従い、アイテム集合を「クロージャー展開」する必要があります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;X -&amp;gt; α . Y β [x]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; α . Y β [x]
 X,Yは非終端記号(X=Yであってもよい)
 xは終端記号
 α,βは任意の長さの終端記号または非終端記号の列
@@ -731,13 +731,13 @@ xは終端記号
 ただし、先読み記号はFirst(βx)で得られる記号全てとします。
 つまり、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;Y -&amp;gt; γ
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;Y -&amp;gt; γ
 γは任意の長さの終端記号または非終端記号の列
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;というような規則があった場合、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;Y -&amp;gt; . γ [First(βx)]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;Y -&amp;gt; . γ [First(βx)]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;というLRアイテムを新しく追加します。&lt;/p&gt;
@@ -747,7 +747,7 @@ xは終端記号
 &lt;p&gt;具体的に見て行きましょう。
 以下の規則を仮定します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S -&amp;gt; 0
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; 0
 S -&amp;gt; X 1
 X -&amp;gt; 0
 Sは開始記号
@@ -757,14 +757,14 @@ S,Xは非終端記号
 
 &lt;p&gt;この場合、開始記号は&lt;code&gt;S&lt;/code&gt;なので、最初のLRアイテムは以下のようになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S&#39; -&amp;gt; . S [$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;code&gt;.&lt;/code&gt;の次にある&lt;code&gt;S&lt;/code&gt;を展開します。
 先読み記号は&lt;code&gt;First($)=[$]&lt;/code&gt;です。
 以下のアイテムを追加します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S -&amp;gt; . 0 [$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; . 0 [$]
 S -&amp;gt; . X 1 [$]
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -772,14 +772,14 @@ S -&amp;gt; . X 1 [$]
 &lt;code&gt;0&lt;/code&gt;は終端記号のため、展開は行いません。
 先読み記号は、&lt;code&gt;First(1$)=[1]&lt;/code&gt;です(First関数は終端記号の列の左端の記号を得るので、ここでは&lt;code&gt;1&lt;/code&gt;のみとなります)。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;X -&amp;gt; . 0 [1]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; . 0 [1]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;上の規則では&lt;code&gt;0&lt;/code&gt;は終端記号のため、ここで展開は終了します。&lt;/p&gt;
 
 &lt;p&gt;結果として、最初のDFAノードの持つアイテム集合は以下のようになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S&#39; -&amp;gt; . S [$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
 S -&amp;gt; . 0 [$]
 S -&amp;gt; . X 1 [$]
 X -&amp;gt; . 0 [1]
@@ -792,7 +792,7 @@ X -&amp;gt; . 0 [1]
 
 &lt;p&gt;クロージャー展開が完了したアイテム集合から、一定のルールのもとで新しいDFAノードを生成します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;X -&amp;gt; α . A β [x]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; α . A β [x]
 Xは非終端記号
 Aは終端記号または非終端記号(X=Aであってもよい)
 xは終端記号
@@ -801,7 +801,7 @@ xは終端記号
 
 &lt;p&gt;というLRアイテムが存在する場合、以下の新しいLRアイテムを生成します(そのDFAノードのアイテムセットには追加しません)。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;X -&amp;gt; α A . β [x]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; α A . β [x]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;そのDFAノードの持つ全てのLRアイテムについてこの処理が終わったら、&lt;code&gt;.&lt;/code&gt;の左隣の記号、つまり&lt;code&gt;A&lt;/code&gt;の位置の記号ごとに新しいアイテム集合を作り、それを情報としてもつ新しいDFAノードを生成します。
@@ -809,7 +809,7 @@ xは終端記号
 
 &lt;p&gt;具体的には、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S&#39; -&amp;gt; . S [$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
 S -&amp;gt; . 0 [$]
 S -&amp;gt; . X 1 [$]
 X -&amp;gt; . 0 [1]
@@ -817,7 +817,7 @@ X -&amp;gt; . 0 [1]
 
 &lt;p&gt;というアイテム集合を持つDFAからは、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;S&#39; -&amp;gt; S . [$]
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; S . [$]
 S -&amp;gt; 0 . [$]
 S -&amp;gt; X . 1 [$]
 X -&amp;gt; 0 . [1]
@@ -825,16 +825,16 @@ X -&amp;gt; 0 . [1]
 
 &lt;p&gt;という4つのLRアイテムが生成され、これは以下の3つに分けられます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;1. ラベル: S
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;1. ラベル: S
 S&#39; -&amp;gt; S . [$]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;2. ラベル: 0
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;2. ラベル: 0
 S -&amp;gt; 0 . [$]
 X -&amp;gt; 0 . [1]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;3. ラベル: X
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;3. ラベル: X
 S -&amp;gt; X . 1 [$]
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -854,7 +854,7 @@ S -&amp;gt; X . 1 [$]
 
 &lt;p&gt;具体的に、以下のようなアイテム集合を持つ2つのDFAノードを考えます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;DFAノードA:
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;DFAノードA:
 X -&amp;gt; .Y Z [x]
 Y -&amp;gt; .V W [x,y]
 
@@ -865,7 +865,7 @@ Y -&amp;gt; .V W [y,z]
 
 &lt;p&gt;この2つのDFAノードは、先読み部分を除けば一致しているため、マージして次のDFAノードCを作ります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-JSON&#34;&gt;DFAノードC:
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;DFAノードC:
 X -&amp;gt; .Y Z [x,z]
 Y -&amp;gt; .V W [x,y,z]
 &lt;/code&gt;&lt;/pre&gt;
@@ -1002,7 +1002,7 @@ LR(1) DFA、クロージャー展開、構文解析表等について詳細な�
 
 &lt;p&gt;まずは、前回字句規則を定義したように、構文規則を定義していく必要があります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;export interface LexDefinitionSection{
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;export interface LexDefinitionSection{
 	token: Token|null;
 	pattern: string|RegExp;
 }
@@ -1025,7 +1025,7 @@ export interface GrammarDefinition{
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;で定義した構文規則をこのデータ形式に直すと、以下のようになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;const syntax:SyntaxDefinitions = [
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;const syntax:SyntaxDefinitions = [
 	{
 		ltoken: &amp;quot;EXP&amp;quot;,
 		pattern: [&amp;quot;EXP&amp;quot;, &amp;quot;PLUS&amp;quot;, &amp;quot;TERM&amp;quot;]
@@ -1081,7 +1081,7 @@ const grammar:GrammarDefinition = {
 
 &lt;p&gt;ひとまず、SymbolDiscriminatorというクラスを作って終端記号と非終端記号の問い合わせをできるようにします。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// symboldiscriminator.d.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// symboldiscriminator.d.ts
 export declare class SymbolDiscriminator {
     private terminal_symbols;
     private nonterminal_symbols;
@@ -1096,7 +1096,7 @@ export declare class SymbolDiscriminator {
 &lt;p&gt;実際のコードは以下を参照してください。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// コンストラクタの実装のみ抜粋
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// コンストラクタの実装のみ抜粋
 constructor(syntaxdef:SyntaxDefinitions){
 	this.terminal_symbols = new Set&amp;lt;Token&amp;gt;();
 	this.nonterminal_symbols = new Set&amp;lt;Token&amp;gt;();
@@ -1153,7 +1153,7 @@ constructor(syntaxdef:SyntaxDefinitions){
 空列とはスペース(空白)等を意味するのではなく、長さ0の入力を意味します。
 具体的には、次のようなルールを見てみましょう。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;X -&amp;gt; Y &amp;quot;0&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; Y &amp;quot;0&amp;quot;
 Y -&amp;gt; &amp;quot;1&amp;quot;
 Y -&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
@@ -1164,7 +1164,7 @@ Y -&amp;gt;
 ここで、&lt;code&gt;Y&lt;/code&gt;は空列となり得るため、Nulls集合に含まれます。
 さらに、次のような例を見てください。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Z -&amp;gt; Y
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;Z -&amp;gt; Y
 Y -&amp;gt; &amp;quot;1&amp;quot;
 Y -&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
@@ -1181,7 +1181,7 @@ Y -&amp;gt;
 NullableSetクラスを作ってみましょう。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// nullableset.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// nullableset.ts
 export class NullableSet{
 	private nulls:Set&amp;lt;Token&amp;gt;;
 	constructor(private syntax: SyntaxDefinitions){
@@ -1278,7 +1278,7 @@ export class NullableSet{
 &lt;p&gt;とはいえちょっとコードが長いので、URLから参照をお願いします。
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// firstset.d.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// firstset.d.ts
 export declare class FirstSet {
     private syntax;
     private symbols;
@@ -1332,12 +1332,12 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
 
 &lt;p&gt;まず、解析するべき入力を文字列として受け取ります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;9 + 11 * (2 + 1)
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;9 + 11 * (2 + 1)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;これに加えて、字句規則を用意します。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;数字: /[1-9][0-9]*/
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;数字: /[1-9][0-9]*/
 プラス: &amp;quot;+&amp;quot;
 アステリスク: &amp;quot;*&amp;quot;
 左括弧: &amp;quot;(&amp;quot;
@@ -1349,7 +1349,7 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
 &lt;p&gt;字句解析器は受け取った入力を先頭から順に字句規則にあてはめ、マッチするものがあればそのトークンを割り当てます。
 結果として得られる出力は、以下のようなリストになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;数字: 9
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;数字: 9
 プラス: +
 数字: 11
 アステリスク: *
@@ -1369,7 +1369,7 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
 ただし、&lt;strong&gt;字句規則の解析には構文解析器が必要&lt;/strong&gt;となるため、現時点ではプログラム内にハードコーディングしておくなどする必要があります。
 今回は、字句規則を内部的に以下のようなデータ構造で扱うこととして、しばらくは字句規則をその内部データの形式で直接書くことにします。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;// 定義
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// 定義
 export type Token = string|symbol;
 export interface LexDefinitionSection{
 	token: Token|null;
@@ -1395,7 +1395,7 @@ const lex: LexDefinitions = [
 
 &lt;h3 id=&#34;入力の読み捨て:33ced0e1bdc35ac00ed380cf2d7265fa&#34;&gt;入力の読み捨て&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;{token:null, pattern:/\s/}
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;{token:null, pattern:/\s/}
 // (読み捨て): /\s/
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1428,7 +1428,7 @@ const lex: LexDefinitions = [
 
 &lt;p&gt;今回はコード量が少ないので、 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/lexer.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/lexer.ts&lt;/a&gt; 全体をそのまま貼り付けます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// token.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// token.ts
 export type Token = string|symbol;
 export const SYMBOL_EOF:Token = Symbol(&amp;quot;EOF&amp;quot;);
 export const SYMBOL_SYNTAX:Token = Symbol(&amp;quot;S&#39;&amp;quot;);
@@ -1437,7 +1437,7 @@ export const SYMBOL_DOT:Token = Symbol(&amp;quot;.&amp;quot;);
 export type TokenList = Array&amp;lt;{token:Token, value:string}&amp;gt;;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;/// lexer.ts
+&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// lexer.ts
 /// LexDefinitionsの定義は先述のものと同一
 import {Token, SYMBOL_EOF, TokenList} from &amp;quot;./token&amp;quot;;
 import {LexDefinitions} from &amp;quot;./grammar&amp;quot;;
@@ -1530,7 +1530,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;この字句解析器に先ほどの字句規則を与え、&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt; を入力すると、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;[
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
 	{token:&amp;quot;DIGITS&amp;quot;, value:&amp;quot;9&amp;quot;},
 	{token:&amp;quot;PLUS&amp;quot;, value:&amp;quot;+&amp;quot;},
 	{token:&amp;quot;DIGITS&amp;quot;, value:&amp;quot;11&amp;quot;},
@@ -1641,14 +1641,14 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 そのルールをを表すのが構文規則です。
 構文規則を書き表すルールは、たとえば&lt;a href=&#34;https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%83%E3%82%AB%E3%82%B9%E3%83%BB%E3%83%8A%E3%82%A6%E3%82%A2%E8%A8%98%E6%B3%95&#34;&gt;BNF&lt;/a&gt;など様々な種類がありますが、基本的な発想としては&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;S -&amp;gt; X Y Z
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; X Y Z
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;のように左辺の記号を右辺の記号の並びによって定義することで行います。&lt;/p&gt;
 
 &lt;p&gt;具体的に見てみましょう。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;式 -&amp;gt; 式 &amp;quot;+&amp;quot; 項
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;式 -&amp;gt; 式 &amp;quot;+&amp;quot; 項
 式 -&amp;gt; 項
 項 -&amp;gt; 項 &amp;quot;*&amp;quot; 因子
 項 -&amp;gt; 因子
@@ -1666,7 +1666,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;たとえば&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt;は、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;式{ [9] [+] [11 * (2 + 1)] }
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;式{ [9] [+] [11 * (2 + 1)] }
 式{ 項{ [9] } &amp;quot;+&amp;quot; 項{ [11] [*] [(2 + 1)] } }
 式{ 項{ 因子{9} } &amp;quot;+&amp;quot; 項{ 因子{11} &amp;quot;*&amp;quot; 因子{ [(] [2 + 1] [)] } } }
 式{ 項{ 因子{9} } &amp;quot;+&amp;quot; 項{ 因子{11} &amp;quot;*&amp;quot; 因子{ &amp;quot;(&amp;quot; 式{ [2] [+] [1] } &amp;quot;)&amp;quot; } } }
@@ -1686,7 +1686,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 &lt;p&gt;通常、&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt; のような入力は文字列で与えられますが、記号と記号の間には複数もしくは0個の空白が挿入されている可能性もあります。
 しかし以下のような構文規則を定義するのは本質的ではありません：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;空白 -&amp;gt; &amp;quot; &amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;空白 -&amp;gt; &amp;quot; &amp;quot;
 空白 -&amp;gt; &amp;quot; &amp;quot; 空白
 数字 -&amp;gt; &amp;quot;0&amp;quot; | &amp;quot;1&amp;quot; | &amp;quot;2&amp;quot; | ... | &amp;quot;9&amp;quot;
 数字 -&amp;gt; (&amp;quot;0&amp;quot; | &amp;quot;1&amp;quot; | &amp;quot;2&amp;quot; | ... | &amp;quot;9&amp;quot;) 数字
@@ -1697,7 +1697,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 &lt;p&gt;そこで、通常は「入力として与えられた文字列」を「終端記号として分類されたトークンの列」に変換する処理をはさみ、これによって得られたトークンを構文解析器に与えます。
 トークンとは終端記号と、必要ならばそれに紐付いた元々の情報を保持しておいたものです。たとえば、&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt;は、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;数字: 9
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;数字: 9
 プラス: +
 数字: 11
 アステリスク: *
@@ -1716,7 +1716,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;字句規則は、例えば以下のような書き方になるでしょう：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;数字: /[1-9][0-9]*/
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;数字: /[1-9][0-9]*/
 プラス: &amp;quot;+&amp;quot;
 アステリスク: &amp;quot;*&amp;quot;
 左括弧: &amp;quot;(&amp;quot;
@@ -1794,7 +1794,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 &lt;p&gt;「再帰を使って構文解析する」という発想としては単純なもの。
 LL(1)文法のクラスはLR(1)よりも大幅に小さいものの、それでもLALR(1)文法を外れた文法を解析できたりします。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;S -&amp;gt; S + E
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; S + E
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;というような、右辺の一番左の場所に左辺の記号が登場するような「左再帰則」を読むことができません。ナンセンス。&lt;/p&gt;
@@ -1836,7 +1836,7 @@ LALR(1)のLAはLook-Aheadの略で、まずLR(1)法で構文解析表を作っ�
 &lt;p&gt;強力なアルゴリズムにより、文脈自由言語すべてを比較的高速に解析可能。
 ただし、&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;S -&amp;gt; NP VP
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; NP VP
 VP -&amp;gt; v
 &lt;/code&gt;&lt;/pre&gt;
 
