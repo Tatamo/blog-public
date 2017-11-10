@@ -25,8 +25,10 @@
 &lt;p&gt;プログラムの実行結果など、プログラムそのもの以外を&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグで囲いたくなる場合が何度かありました。
 class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。&lt;/p&gt;
 
+&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
+
 &lt;p&gt;さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
-またブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
+ブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;```javascript
 /* code */
@@ -66,10 +68,9 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
 }, false);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;ついでにES6で書きました。&lt;/p&gt;
-
-&lt;p&gt;まず、&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグでclassの指定が明示的に行われていない場合は自動的に&lt;code&gt;nohighlight&lt;/code&gt;を追加しています。
+&lt;p&gt;まず、&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグでclassの指定が明示的に行われていない場合は自動的に&lt;code&gt;nohighlight&lt;/code&gt;クラスを追加しています。
 この処理はhighlight.jsでのハイライト化の処理を行う前に持ってきました。
+スタイルの適用も同じように前に持ってきましたが、特に問題はないようです。
 次に、&lt;code&gt;nohighlight&lt;/code&gt;が指定されていてハイライトが行われていない要素に対して、classにhighlight.jsで使用されているクラスである&lt;code&gt;hljs&lt;/code&gt;を指定することでテーマの適用を行っています。&lt;/p&gt;
 
 &lt;p&gt;あとは既存の記事をこの変更に合わせて修正しました。
