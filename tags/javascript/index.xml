@@ -63,7 +63,7 @@
 &lt;p&gt;PC・モバイル両方のブラウザで動作するゲームという方針のため、HTML5 Canvas系のライブラリを使うことにしました。
 npm上で型定義が用意されているものを使いたかったので、今回は&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;を選択しました。&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&#34;shell&#34;&gt;$ npm install &amp;ndash;save-dev @types/pixi.js&lt;/code&gt;で型定義ファイルをインストールし、&lt;/p&gt;
+&lt;p&gt;&lt;code class=&#34;shell&#34;&gt;$ npm install --save-dev @types/pixi.js&lt;/code&gt;で型定義ファイルをインストールし、&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;import * as PIXI from &amp;quot;pixi.js&amp;quot;;
 &lt;/code&gt;&lt;/pre&gt;
@@ -135,7 +135,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;h2 id=&#34;おわりに:715a67537c3fb0cd66e102735cb99acd&#34;&gt;おわりに&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;はチュートリアルだけは読んだことがあるという状態で、一度実際に使ってみたいと思っていたので今回使用することができて良かったです。
+&lt;p&gt;&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;はチュートリアルだけは読んだことがあるという状態で、一度実際に使ってみたいと思っていたので使用することができて良かったです。
 ドキュメントをろくに読み込まずに使いたい機能だけ調べて使うといった感じでしたが、かなり高速にゲーム開発ができたので非常に便利でした。
 またwebpackやBabel、npm scriptsをメインに用いたビルドなどもはじめてだったのですがいい感じにできました。&lt;/p&gt;
 
