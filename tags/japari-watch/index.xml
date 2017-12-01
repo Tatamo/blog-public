@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Javascript on わたしろぐ</title>
-    <link>http://tatamo.81.la/blog/tags/javascript/</link>
-    <description>Recent content in Javascript on わたしろぐ</description>
+    <title>Japari Watch on わたしろぐ</title>
+    <link>http://tatamo.81.la/blog/tags/japari-watch/</link>
+    <description>Recent content in Japari Watch on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Fri, 01 Dec 2017 17:35:00 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://tatamo.81.la/blog/tags/japari-watch/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>ゲーム「じゃぱりうぉっち」を作りました</title>
@@ -141,145 +141,6 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;使用した画像については作者である&lt;a href=&#34;https://twitter.com/kirai_s&#34;&gt;@kirai_s&lt;/a&gt;さんに確認を得ないまま加工して作り始めてしまったのですが、使用を快く承諾していただけました。
 この場を借りてお礼申し上げます。&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>ブログのシンタックスハイライトを改善しました</title>
-      <link>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</link>
-      <pubDate>Wed, 08 Nov 2017 18:00:00 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</guid>
-      <description>
-        
-
-&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
-
-&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
-
-&lt;p&gt;プログラムの実行結果など、プログラムそのもの以外を&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグで囲いたくなる場合が何度かありました。
-class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。&lt;/p&gt;
-
-&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
-
-&lt;p&gt;さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
-ブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;```javascript
-/* code */
-```
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。&lt;/p&gt;
-
-&lt;h2 id=&#34;解決策:0daaccc7bb8856c5021376961a2bf330&#34;&gt;解決策&lt;/h2&gt;
-
-&lt;p&gt;今のところ&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、&lt;code&gt;nohighlight&lt;/code&gt;を指定した場合でもCSSテーマが適用されるようにします。
-また、インライン要素の場合はデフォルトで&lt;code&gt;nohighlight&lt;/code&gt;にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
-&lt;a href=&#34;http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/&#34;&gt;highlight.jsをインライン要素にも適用できるようにした&lt;/a&gt; で書いたコードを、さらに手直しします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// hljs.initHighlightingOnLoad();
-window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
-	const elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
-	for (const el of elements) {
-		if (el.parentNode.tagName != &amp;quot;PRE&amp;quot;) {
-			// インライン要素
-			el.style.display = &amp;quot;inline&amp;quot;;
-			el.style.margin = &amp;quot;0 2px&amp;quot;;
-			el.style.padding = &amp;quot;1px 3px&amp;quot;;
-			if (el.classList.length == 0) {
-				// classが指定されていない場合はnohighlightとする
-				el.classList.add(&amp;quot;nohighlight&amp;quot;);
-			}
-		}
-		hljs.highlightBlock(el);
-		// nohighlightでもテーマは適用する
-		if (el.classList.contains(&amp;quot;nohighlight&amp;quot;) ||
-			el.classList.contains(&amp;quot;lang-nohighlight&amp;quot;) ||
-			el.classList.contains(&amp;quot;language-nohighlight&amp;quot;)) {
-			el.classList.add(&amp;quot;hljs&amp;quot;);
-		}
-	}
-}, false);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;まず、&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグでclassの指定が明示的に行われていない場合は自動的に&lt;code&gt;nohighlight&lt;/code&gt;クラスを追加しています。
-この処理はhighlight.jsでのハイライト化の処理を行う前に持ってきました。
-スタイルの適用も同じように前に持ってきましたが、特に問題はないようです。
-次に、&lt;code&gt;nohighlight&lt;/code&gt;が指定されていてハイライトが行われていない要素に対して、classにhighlight.jsで使用されているクラスである&lt;code&gt;hljs&lt;/code&gt;を指定することでテーマの適用を行っています。&lt;/p&gt;
-
-&lt;p&gt;あとは既存の記事をこの変更に合わせて修正しました。
-ところどころ不自然なハイライトが行われていた箇所がありましたが、これで改善されました。&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>highlight.jsをインライン要素にも適用できるようにした</title>
-      <link>http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/</link>
-      <pubDate>Sat, 12 Dec 2015 01:01:51 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/</guid>
-      <description>
-        
-
-&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用しています。&lt;/p&gt;
-
-&lt;p&gt;デフォルトでは適用できないインラインのコードのハイライトも行えるようにしましたので、適用の流れなど。&lt;/p&gt;
-
-&lt;h2 id=&#34;highlight-jsって何:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;highlight.jsって何&lt;/h2&gt;
-
-&lt;p&gt;JavaScriptによって、Webページ内のソースコードを色付けしてくれるものです。
-たとえば:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for i in range(1,101) :
-	print (&amp;quot;Fizz&amp;quot; if not i%3 else &amp;quot;&amp;quot;) + (&amp;quot;Buzz&amp;quot; if not i%5 else &amp;quot;&amp;quot;) or i
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://highlightjs.org/static/demo/&#34;&gt;highlight.js demo&lt;/a&gt;を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
-(しかし思うのですが、自分のサイトに導入を検討する際に、この濃い赤色の背景色だと白色の背景と感覚が違ってくるのでやや選びにくいのではないでしょうか……。
-コンソールから&lt;code class=&#34;js&#34;&gt;document.body.style.backgroundColor=&amp;ldquo;#FFFFFF&amp;rdquo;;&lt;/code&gt;とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)&lt;/p&gt;
-
-&lt;h2 id=&#34;インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;インライン要素でもハイライトできるようにしてみた&lt;/h2&gt;
-
-&lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code class=&#34;html&#34;&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code class=&#34;html&#34;&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。&lt;/p&gt;
-
-&lt;p&gt;Markdownの展開方法に適用できるように、&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&amp;lt;/code&amp;gt;&lt;/code&gt;で囲まれた要素をハイライトすることにします。
-既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://kenzauros.com/blog/apply-highlight-js-to-inline-source-code/&#34;&gt;highlight.jsでインラインのソースコードもハイライトする | blog@kenzauros.com&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://swiftrithm.com/blog/highlightjs-install/&#34;&gt;軽いとうわさのhighlight.jsをTwenty Fifteenに導入、ソースコードを綺麗に表示 &amp;#8211; SWIFTRITHM&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上記のサイトでは共にJQueryを用いていますが、このサイトでは特にJQueryを導入する気もなかったため、生のJavaScript+DOMで適当に書き直しました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script&amp;gt;
-// hljs.initHighlightingOnLoad();
-window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
-	var elements = document.getElementsByTagName(&amp;quot;code&amp;quot;);
-	var l=elements.length;
-	for(var i=0; i&amp;lt;l;i++){
-		var el = elements[i];
-		hljs.highlightBlock(el);
-		if(el.parentNode.tagName.toLowerCase() != &amp;quot;pre&amp;quot;) {
-			el.style.display = &amp;quot;inline&amp;quot;;
-			el.style.margin = &amp;quot;0 2px&amp;quot;;
-			el.style.padding = &amp;quot;1px 3px&amp;quot;;
-		}
-	}
-}, false);
-&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通常&lt;code&gt;hljs.initHighlightingOnLoad();&lt;/code&gt;を呼ぶところを、上記のコードで置き換えるだけで完了です。
-親要素が&lt;code class=&#34;html&#34;&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;ではない場合にインライン化するようにしています。
-またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。&lt;/p&gt;
-
-&lt;p&gt;既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
-たとえば、このように:&lt;code class=&#34;py&#34;&gt;print &amp;ldquo;\n&amp;rdquo;.join([&amp;ldquo;Fizz&amp;rdquo;&lt;em&gt;(not i%3)+&amp;ldquo;Buzz&amp;rdquo;&lt;/em&gt;(not i%5) or str(i) for i in range(1,101)])&lt;/code&gt;1行のコードでもうまくハイライトされているのがわかります。
-やったね。&lt;/p&gt;
 
       </description>
     </item>
