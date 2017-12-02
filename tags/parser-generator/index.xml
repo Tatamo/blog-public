@@ -667,7 +667,7 @@ ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのイ
 &lt;p&gt;1.のFirst関数については、&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;の記事で紹介を済ませているため割愛します。&lt;br /&gt;
 LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ処理を行います。&lt;/p&gt;
 
-&lt;p&gt;パーサジェネレータを作成して解析する構文を自由に決定できるようにする場合、3.の構文解析表までを与えられた構文に合わせて自動的に生成できるようにします。&lt;/p&gt;
+&lt;p&gt;パーサジェネレータを作成して解析する構文を自由に決定できるようにする場合、4.の構文解析表までを与えられた構文に合わせて自動的に生成できるようにします。&lt;/p&gt;
 
 &lt;h2 id=&#34;アイテム集合とdfa:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;アイテム集合とDFA&lt;/h2&gt;
 
