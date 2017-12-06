@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Tatamo&#39;s weblog">
+    <meta name="author" content="Tatamo">
+    <meta name="viewport" content="width=device-width">
+    
+    <base href="http://tatamo.81.la/blog/">
+    <title>
+      Web技術ではじめるレポート・論文制作 | わたしろぐ
+    </title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2017/12/06/web-dtp/">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>
+    
+    window.addEventListener("DOMContentLoaded", () => {
+        const elements = document.getElementsByTagName("code");
+        for (const el of elements) {
+            if (el.parentNode.tagName != "PRE") {
+                
+                el.style.display = "inline";
+                el.style.margin = "0 2px";
+                el.style.padding = "1px 3px";
+                if (el.classList.length == 0) {
+                    
+                    el.classList.add("nohighlight");
+                }
+            }
+            hljs.highlightBlock(el);
+			
+            if (el.classList.contains("nohighlight") ||
+                el.classList.contains("lang-nohighlight") ||
+                el.classList.contains("language-nohighlight")) {
+                el.classList.add("hljs");
+            }
+        }
+    }, false);
+    </script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71305633-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="http://tatamo.81.la/blog/">わたしろぐ</a></h1>
+        <h2 class="site-subtitle">私録</h2>
+    </header>
+    <nav class="head-nav">
+        <ul>
+        <li><a href="about/">about</a></li>
+        <li><a href="https://twitter.com/__tatamo__" target="_blank">twitter</a></li>
+        <li><a href="https://github.com/tatamo" target="_blank">github</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <div class="main-content">
+
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2017/12/06/web-dtp/">Web技術ではじめるレポート・論文制作</a></h1>
+        <span class="article-datetime"><time>2017-12-06 18:30:00</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories/dev/">dev</a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/html/">html</a>
+        <a href="http://tatamo.81.la/blog/tags/css/">css</a>
+        <a href="http://tatamo.81.la/blog/tags/vivliostyle/">vivliostyle</a>
+        <a href="http://tatamo.81.la/blog/tags/dtp/">dtp</a></p>
+        
+
+<p>この記事は<a href="https://adventar.org/calendars/2491">Kobe University Advent Calendar 2017</a>の6日の記事です。
+なお私は当該大学の学部3年(2017年12月現在)です。</p>
+
+<hr />
+
+<p><a href="http://vivliostyle.com/ja/products/">Vivliostyle</a>やその他のWeb技術を用いて、HTMLとCSSで課題のレポートを書くための環境を作る話です。
+あと「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」を勝手に販促する記事でもあります。</p>
+
+<h2 id="html-cssによる組版:ed3b1424743a59edb650e822cbfa39a9">HTML+CSSによる組版</h2>
+
+<p>個人的にはWordもTeXもあまり得意ではない、というか、HTML+CSSで似たようなことができそうなのにわざわざWordやTeXを使うのが大変だと感じています(InDesignはよく知りません)。
+文書構造の明確化という観点においては、構造と見た目が明確に分離しているHTML+CSSに勝るものはありません(筆者個人の主観です)。</p>
+
+<p>そこでWeb技術を用いてレポートや論文を書きたいなあと思っていたのですが、ちょうど<a href="http://tatamo.81.la/blog/2017/08/27/seccamp-2017/#0日目">セキュキャンの事前準備で行けなかった</a>ときのコミケで、pentapodさんより「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」が頒布されていたので、友人に頼んで確保しておいてもらいました。</p>
+
+<p><blockquote>内容については同人誌制作だけをターゲットに絞らず， できるだけ色々な場面で使えるような説明を心がけています．</blockquote>
+というあとがきの記述通り、CSS組版全般、また単にCSSの解説本としても読めるようになっており、本書を参考にしてレポートを書くための環境を整えることができました。
+同人誌でもレポートでも論文でも、やりたいことは結局同じ組版であるため、整えるべき環境は変わりません。</p>
+
+<h2 id="この記事で書くこと:ed3b1424743a59edb650e822cbfa39a9">この記事で書くこと</h2>
+
+<p>CSSを用いた組版については、「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」を直接読んでいただくのが一番早いため、今回はあまり詳しくは書きません。
+<a href="https://pentapod.booth.pm/items/601017">300円というお手頃価格で電子版も出ている</a>ので買ってください。
+これは販促です。</p>
+
+<p>そこでこの記事では、本書を参考にしながら行った環境構築を中心に書いていきます。
+構築した環境は <a href="https://github.com/Tatamo/htmldtp">https://github.com/Tatamo/htmldtp</a> に上げていますが、「そもそもボイラープレートという単語を数日前にはじめて知った」レベルのためディレクトリ構成ひとつとっても正直褒められたものではないと感じています。
+なのでまたちゃんと体裁を整えたいと思います。</p>
+
+<h2 id="vivliostyle:ed3b1424743a59edb650e822cbfa39a9">Vivliostyle</h2>
+
+<p>とはいえ、<a href="http://vivliostyle.com/ja/products/">Vivliostyle</a>については触れておかないと話が始まりません。
+これはWeb技術による組版を目的としたプロジェクトで、CSSの将来的な仕様を先取りすることで、より多彩なレイアウトを実現できるようにしているものです。
+<a href="http://vivliostyle.com/ja/samples/">サンプル</a>が充実しており、実際にCSSによってデザインされた本と、その生のHTMLを閲覧することができます。</p>
+
+<p><a href="http://vivliostyle.github.io/vivliostyle.js/samples/css-secrets-long/viewer/vivliostyle-viewer.html#x=../doc/">こういうレベルのこと</a>がCSSで既に可能となっているのです。</p>
+
+<p>Vivliostyleを用いた印刷を行う方法は何種類かありますが、<a href="https://chrome.google.com/webstore/detail/vivliostyle/ffeiildjegeigkbobbakjjmfeacadbne">Chrome拡張</a>を用いるのが最も簡単だと思われます。
+目的のHTMLファイルを表示した状態で拡張機能を有効化するとレイアウトが紙面向けのものに変換されるので、これをChromeの印刷機能を用いて紙面やPDFに印刷します。</p>
+
+<p>そのため、Vivliostyleに対応したCSSファイルと、それを適用するための原稿となるHTMLファイルを用意することが目的となります。
+HTMLとCSSの状態からPDFを生成する作業を自動化する方法についても「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」では解説されていますが、今回は省略するので本書を購入してください。</p>
+
+<p>恥ずかしい話ですが、最近のCSS3の仕様をしっかり追いかけているわけではないため、どこからどこまでがVivliostyleによって実現されている機能で、どこまでがブラウザの標準機能で既にサポートされている部分なのかがよくわかっていません。
+このあたりは書けば書くほどボロが出るに違いないので適当にごまかします。</p>
+
+<h2 id="フレームワーク選定:ed3b1424743a59edb650e822cbfa39a9">フレームワーク選定</h2>
+
+<p>書籍ではPug+marked+Stylus+Prism.js+MathJax+Browsersync+Gulpの構成が紹介されていましたが、このあたりは好みだと思うので適当に選んでいきました。</p>
+
+<p>結論としては、Nunjucks+nunjucks-markdown+PostCSS(cssnext+stylelint)+highlight.js+MathJax+Browsersync+Gulpという構成になりました。</p>
+
+<h3 id="nunjucks:ed3b1424743a59edb650e822cbfa39a9">Nunjucks</h3>
+
+<p>まずはHTMLテンプレートエンジンを選びます。
+変数を用いた操作や別のHTMLの継承などの機能を取り入れることで、HTMLをより書きやすくして開発の高速化・再利用の促進を図ります。</p>
+
+<p>今回は<a href="https://mozilla.github.io/nunjucks/">Nunjucks</a>を使うことにしました。
+昔Djangoを触ったことがあるので見慣れたテンプレートであるという点などが採用理由です。
+他には以前使ったことのあるEJS、紹介されていたPug(Jade)なども候補に上がりました。</p>
+
+<pre><code class="language-html">&lt;!-- template/_base.njk --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;{{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+{% block content %}
+    &lt;section&gt;
+        &lt;p&gt;default content&lt;/p&gt;
+    &lt;/section&gt;
+{% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-html">&lt;!-- index.njk --&gt;
+{% extends &quot;template/_base.njk&quot; %}
+{% set title = &quot;awesome-report&quot; %}
+{% block content %}
+&lt;section&gt;
+    &lt;!-- awesome-report-content --&gt;
+&lt;/section&gt;
+{% endblock %}
+</code></pre>
+
+<p>のような感じでHTMLにいろいろなものをくっつけていきながら書けるようになります。
+Nunjucksで記述したHTMLは、.htmlのほかに.njkなどの拡張子を使ったりするらしいです。</p>
+
+<h3 id="nunjucks-markdown:ed3b1424743a59edb650e822cbfa39a9">nunjucks-markdown</h3>
+
+<p>ひたすら文章を書くのにいちいち<code>&lt;p&gt;</code>タグを書いたりしていられないので、Markdownを使えるようにすることが必要です。
+Nunjucksを使うことにしたので、markedのNunjucks向けプラグインである<a href="https://www.npmjs.com/package/nunjucks-markdown">nunjucks-markdown</a>を使うことにしました。</p>
+
+<pre><code class="language-html">{% block content %}
+&lt;section&gt;
+    {% markdown %}
+    ## PPAP
+    I have a pen.
+    I have an apple.
+    ```js
+    console.log(&quot;Apple pen!&quot;);
+    ```
+    {% endmarkdown %}
+{% endblock %}
+</code></pre>
+
+<p>のように、<code>{% markdown %}</code>で囲った部分をMarkdownとして書くことができようになります。</p>
+
+<h3 id="postcss-cssnext-stylelint:ed3b1424743a59edb650e822cbfa39a9">PostCSS(cssnext+stylelint)</h3>
+
+<p>HTMLだけでなくCSSも次世代仕様を使用できるようにしておくと便利です。
+SassやStylusという選択肢もありますが、この次世代CSS過渡期において独自記法マシマシのcoffeeとあくまでES2015をもとにしたtsならどちらを使うかという話です。
+一通り必要な機能が入ったプラグイン集である<a href="http://cssnext.io/">cssnext</a>と、lintをしてくれる<a href="https://stylelint.io/">stylelint</a>を入れていますが、この構成だとSassのように<code>@import</code>できない点で不便さがあるので、CSSをモジュール化できるようにするためにpostcss-importも入れたほうが良いかもしれません。</p>
+
+<p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">gulp-postcssを使っている際にstylelintでインデント幅をlintするよう指定している状態でAutoprefixerなどで右寄せしたprefixが追加された場合、なぜかsrc側のCSSのインデントが崩れているとしてstylelintに怒られてしまうので、plugin設定にはstylelintを一番先に置くべきという知見を得ました <a href="https://t.co/IMnmqibetC">pic.twitter.com/IMnmqibetC</a></p>&mdash; たたもさん@がんばらない (@<strong>tatamo</strong>) <a href="https://twitter.com/__tatamo__/status/928286264914145280?ref_src=twsrc%5Etfw">2017年11月8日</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+これは余談です。</p>
+
+<h3 id="highlight-js:ed3b1424743a59edb650e822cbfa39a9">highlight.js</h3>
+
+<p>プログラムリストを貼り付けることが求められることもあるので、シンタックスハイライターを用意します。
+他の候補としてはPrism.jsなどがあります。
+今回はこのブログで使ったりして使い慣れている<a href="https://highlightjs.org/">highlight.js</a>を用いました。</p>
+
+<h3 id="mathjax:ed3b1424743a59edb650e822cbfa39a9">MathJax</h3>
+
+<p>TeX形式で書いた数式を表示するために必須です。
+<a href="https://www.mathjax.org/">MathJax</a>以外の選択肢は特にないと言っていいでしょう。
+適当なスニペットを<code>&lt;head&gt;</code>タグ内に追加し、</p>
+
+<pre><code class="language-html">&lt;p&gt;MathJax test: $E = mc^2$&lt;/p&gt;
+</code></pre>
+
+<p>などと書くだけで数式部分が整形されて表示されます。</p>
+
+<p>どうでもいい余談ですが、個人的にはMicrosoft Officeの数式エディタは見た目もきれいですし非常に使いやすいと思っています。
+これについてはあまり同意されたことがない気がします。</p>
+
+<h3 id="browsersync:ed3b1424743a59edb650e822cbfa39a9">Browsersync</h3>
+
+<p>ソースコードが更新され(、そしてそれを検知してビルドが走って<code>dist/</code>ディレクトリが更新され)たことを検知し、<a href="https://www.browsersync.io/">Browsersync</a>が自動でブラウザを再読み込みしてくれるようにします。
+わざわざF5を押さなくても変更が反映され、ビルド結果がすぐにブラウザ上で見れて便利…… なのですが、今回はブラウザを更新したあとVivliostyleのChrome拡張を有効化しなければならず、結局F5相当の動作を手で行わなければならないという難点があります。</p>
+
+<h3 id="gulp:ed3b1424743a59edb650e822cbfa39a9">Gulp</h3>
+
+<p>ビルドを自動化してくれるようにするためのタスクランナーです。
+<a href="https://gulpjs.com/">Gulp</a>は使っていますがGruntは使ったことがないです。
+タスクランナーとは、<code>hoge</code>というパッケージと一緒に<code>gulp-hoge</code>を入れなければならなくなってpackage.jsonの依存パッケージ数が2倍近くに膨れ上がるという、とても素敵なものです。</p>
+
+<p>最近は何でもかんでもnpm-scriptsでやろうという話があって、確かに一理あるなあという感じなのでGulpじゃなくてもよかったかもしれません。</p>
+
+<h2 id="全部突っ込む:ed3b1424743a59edb650e822cbfa39a9">全部突っ込む</h2>
+
+<p>JavaScriptから利用するためのパッケージを一つも入れていない、というかJavaScriptを書くつもりがない(gulpfile除く)のに依存パッケージ数が10を越えるのはどういうことなんだ、という感じですが、とりあえず上記のツールを全部組み合わせます。
+highlight.jsとMathJaxに関しては、<code>&lt;script&gt;</code>タグで読み込むだけでいいので<code>npm install</code>は不要です。
+Nunjucksのテンプレート継承機能を用いて、これらの読み込み用のスニペットをモジュール化しておくのがいいでしょう。</p>
+
+<p>Nunjucks(+nunjucks-markdown)とPostCSSを用いて、それぞれHTMLファイルとCSSファイルを生成する処理が行われるので、これをGulpのタスクとしてまとめてしまいます。
+あとはソースコードの更新を検知して自動的にこのビルド処理が走るようにしたり、ビルド完了のタイミングでBrowsersyncに更新を伝えたりする処理を<a href="https://github.com/Tatamo/htmldtp/blob/master/gulpfile.js">gulpfile.js</a>に書いて終わりです。</p>
+
+<h2 id="使ってみた:ed3b1424743a59edb650e822cbfa39a9">使ってみた</h2>
+
+<p>大学でパーセプトロンの出力を求めるだけのレポート課題が出たので、構築した環境を用いてレポートを書いてみました。</p>
+
+<p>以下に、Vivliostyleを用いて出力されたPDF(のスクリーンショットにモザイクかけたただの画像)を示します。</p>
+
+<p><a href="http://tatamo.81.la/blog/images/post/2017/12/06/output_report.png" target="_blank"><img src="http://tatamo.81.la/blog/images/post/2017/12/06/output_report.png" alt="PDFに出力されたレポート"></a></p>
+
+<p>図はLibreOffice Drawで用意しましたがそのあたりは適当です。</p>
+
+<p>これに用いたCSSは、</p>
+
+<pre><code class="language-css">@page {
+  size: A4;
+  margin: 20mm;
+  @bottom-center {
+    content: counter(page);
+  }
+}
+
+figcaption {
+  counter-increment: fig;
+}
+
+figcaption::before {
+  content: &quot;図&quot; counter(fig) &quot;. &quot;;
+}
+
+/* うまく動かない(後述) */
+a.figref::after {
+  content: &quot;図&quot; target-counter(attr(href), fig);
+}
+
+img {
+  max-width: 100%;
+}
+</code></pre>
+
+<p>だけであり、非常に簡潔なCSSで十分に見た目の整ったレポートを書くことができます。</p>
+
+<p>そういえば指定するのを忘れていましたが、当然<code>font-size</code>でフォントサイズをポイント指定することも可能です。</p>
+
+<h3 id="相互参照と問題点:ed3b1424743a59edb650e822cbfa39a9">相互参照と問題点</h3>
+
+<p>図を示している部分のHTMLを抜粋すると、以下のようになります。</p>
+
+<pre><code class="language-html">&lt;section&gt;
+    {% markdown %}
+    ## パーセプトロンの提示
+    まず、パーセプトロンの修正後の重みを&lt;a class=&quot;figref&quot; href=&quot;#fig-nn&quot;&gt;&lt;/a&gt;に示す。
+    &lt;figure&gt;
+        &lt;img src=&quot;perceptron.png&quot;&gt;
+        &lt;figcaption id=&quot;fig-nn&quot;&gt;パーセプトロン&lt;/figcaption&gt;
+    &lt;/figure&gt;
+    簡単のため、パーセプトロンのそれぞれのノードに番号を付与した。
+    {% endmarkdown %}
+&lt;/section&gt;
+</code></pre>
+
+<p><code>figcaption::before</code>の<code>content</code>に<code>counter(fig)</code>を用いることで、自動的に図表番号を振ることができます。</p>
+
+<p>それに加えて、<code>figcaption</code>の持つidに対するリンクのcontentに<code>target-counter(attr(href), fig)</code>を指定しています。
+これは<code>attr(href)</code>&mdash;つまりhrefの属性値、<code>&quot;#fig-nn&quot;</code>&mdash;の地点での<code>counter(fig)</code>のカウンタの値を取得しており、つまりその図表に割り当てられた番号が得られます。</p>
+
+<p>これによって相互参照が実現できます。</p>
+
+<p>と言ってドヤ顔したいところなのですが、ここで致命的な問題が発生します。
+なぜかChrome拡張のVivliostyleでは、この<code>target-counter()</code>がうまく動かず、図表番号が<code>??</code>で表示されます。</p>
+
+<p>他の手段であるVivliostyle FormatterやVivliostyle Viewerを使えば動かせはするのですが、その場合highlight.jsによるシンタックスハイライトが効かなかったり、MathJaxは対応しているもののMathML以外の記法を使えない、などの別の問題が生じてきます。</p>
+
+<p>なので現状、<code>a.figref::after</code>に対するスタイル指定を削除し、<code>&lt;a class=&quot;figref&quot; href=&quot;#fig-nn&quot;&gt;図1&lt;/a&gt;</code>などと直接書くしかないという本末転倒感があります。</p>
+
+<p>これについては今のところ解決策を見つけられていないので、もう少し調べてみて必要ならissueを飛ばすなりしようと思っています。</p>
+
+<h2 id="おわり:ed3b1424743a59edb650e822cbfa39a9">おわり</h2>
+
+<p>レポート・論文程度ならそこまで凝ったデザインである必要がないので、非常に短いCSSでそれなりの印刷が可能になります。
+HTML+CSSを用いてレポートを書くというのは十分に実用の範囲内だと思ったので、これからも試していこうと思っています。</p>
+
+<p>しかしながら、やはり現状で相互参照が実現できないというのはレポート・論文執筆には致命的なところがあります。
+<code>target-counter()</code>は策定中の次期CSS仕様であることから、解決は時間の問題だとは思っているのですが、なんとかしたいところです。</p>
+
+<p>今の時代のCSSは、もはやWebページだけでなく紙面上のレイアウトも自在に操れるようになってきています。「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」はCSSを使ったさまざまな紙面レイアウトについて書かれており、とてもおすすめなのでぜひ購入してみてください。</p>
+
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2017/12/01/japari-watch/">Older: ゲーム「じゃぱりうぉっち」を作りました -&gt;</a></span>
+    </nav>
+
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <section>
+                <h2 class="panel-title">Recent Posts</h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/2017/12/06/web-dtp/" class="list-group-item">Web技術ではじめるレポート・論文制作</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/12/01/japari-watch/" class="list-group-item">ゲーム「じゃぱりうぉっち」を作りました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/" class="list-group-item">ブログのシンタックスハイライトを改善しました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/09/17/indeed-austin-tour/" class="list-group-item">Indeed視察ツアー2017参加記</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/08/27/seccamp-2017/" class="list-group-item">セキュリティキャンプ全国大会2017に参加してきました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/07/11/freeciv-arago-challenge-02/" class="list-group-item">HIROic Freeciv Challengeの参加結果</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (14)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/diary">diary (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (4)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/pc">pc (1)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/austin">austin (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/css">css (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/dtp">dtp (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/highlightjs">highlightjs (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/homebuilt_pc">homebuilt_pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/html">html (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/japari-watch">japari-watch (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/pixijs">pixijs (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/seccamp">seccamp (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/vivliostyle">vivliostyle (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    </div>
+   <footer>
+        <p>Copyright (c) 2015 <a href="about/">Tatamo</a>.</p>
+        <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a></p>
+    </footer>
+</body>
+</html>
+
