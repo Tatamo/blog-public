@@ -31,7 +31,7 @@
 &lt;p&gt;個人的にはWordもTeXもあまり得意ではない、というか、HTML+CSSで似たようなことができそうなのにわざわざWordやTeXを使うのが大変だと感じています(InDesignはよく知りません)。
 文書構造の明確化という観点においては、構造と見た目が明確に分離しているHTML+CSSに勝るものはありません(筆者個人の主観です)。&lt;/p&gt;
 
-&lt;p&gt;そこでWeb技術を用いてレポートや論文を書きたいなあと思っていたのですが、ちょうど&lt;a href=&#34;http://tatamo.81.la/blog/2017/08/27/seccamp-2017/#0日目&#34;&gt;セキュキャンの事前準備で行けなかった&lt;/a&gt;ときのコミケで、pentapodさんより「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」が頒布されていたので、友人に頼んで確保しておいてもらいました。&lt;/p&gt;
+&lt;p&gt;そこでWeb技術を用いてレポートや論文を書きたいなあと思っていたのですが、ちょうど&lt;a href=&#34;http://tatamo.81.la/blog/2017/08/27/seccamp-2017/&#34;&gt;セキュキャンの事前準備で行けなかった&lt;/a&gt;ときのコミケで、pentapodさんより「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」が頒布されていたので、友人に頼んで確保しておいてもらいました。&lt;/p&gt;
 
 &lt;p&gt;&lt;blockquote&gt;内容については同人誌制作だけをターゲットに絞らず， できるだけ色々な場面で使えるような説明を心がけています．&lt;/blockquote&gt;
 というあとがきの記述通り、CSS組版全般、また単にCSSの解説本としても読めるようになっており、本書を参考にしてレポートを書くための環境を整えることができました。
@@ -124,6 +124,7 @@ Nunjucksを使うことにしたので、markedのNunjucks向けプラグイン�
     console.log(&amp;quot;Apple pen!&amp;quot;);
     ```
     {% endmarkdown %}
+&amp;lt;/section&amp;gt;
 {% endblock %}
 &lt;/code&gt;&lt;/pre&gt;
 
