@@ -6,8 +6,141 @@
     <description>Recent content in Posts on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Wed, 06 Dec 2017 18:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 18 Dec 2017 01:30:00 +0900</lastBuildDate>
     <atom:link href="http://tatamo.81.la/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ACM-ICPC2017アジアつくば大会に参加しました</title>
+      <link>http://tatamo.81.la/blog/2017/12/18/icpc-2017-asia/</link>
+      <pubDate>Mon, 18 Dec 2017 01:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2017/12/18/icpc-2017-asia/</guid>
+      <description>
+        
+
+&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の18日の記事です。
+なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://icpc.iisf.or.jp/2017-tsukuba/results/&#34;&gt;ICPC国内予選39位&lt;/a&gt;で神戸大学の第2チームとしてぎりぎり予選通過できたので、&lt;a href=&#34;https://icpc.iisf.or.jp/2017-tsukuba/&#34;&gt;アジア大会&lt;/a&gt;に参加しました。&lt;/p&gt;
+
+&lt;p&gt;結果としては3問通して&lt;a href=&#34;http://icpc2017.yamagula.ic.i.u-tokyo.ac.jp/standings/&#34;&gt;39位&lt;/a&gt;でした。&lt;/p&gt;
+
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;実績「座っているだけのお仕事」&lt;br&gt;解除条件：ICPCで一度たりとも競技用マシンに触れない&lt;br&gt;を達成しました💺💤&lt;/p&gt;&amp;mdash; Tatamo@Super-Srups (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/942290374382383104?ref_src=twsrc%5Etfw&#34;&gt;2017年12月17日&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+なにもしないをしました&lt;/p&gt;
+
+&lt;h2 id=&#34;チーム構成-方針:265df706d5a774eea5a09d1b00a6a527&#34;&gt;チーム構成・方針&lt;/h2&gt;
+
+&lt;p&gt;私の所属するチームであるSuper-Srupsのメンバー構成は以下の通りです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏
+
+&lt;ul&gt;
+&lt;li&gt;学部2年&lt;/li&gt;
+&lt;li&gt;リーダー&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏
+
+&lt;ul&gt;
+&lt;li&gt;学部2年&lt;/li&gt;
+&lt;li&gt;実装担当&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/__tatamo__&#34;&gt;@__tatamo__&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;わたし 学部3年&lt;/li&gt;
+&lt;li&gt;座っている担当&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;私は3人の中で最も実力が低く、かつここ数ヶ月のあいだ全くC++を書いていないという状態です。
+つまり論理的結論として、私は一行もコードを書くべきではありません。
+そのため私は英語で与えられる問題文の読解、他メンバーの補助および考察少しを担当しました。
+他の2人は英語キーボードのEnterキーが空振りするとかgeditがつらいとかubuntuの使い方がわからないとか大変そうでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;解いた問題:265df706d5a774eea5a09d1b00a6a527&#34;&gt;解いた問題&lt;/h2&gt;
+
+&lt;p&gt;問題の内容については&lt;a href=&#34;https://storage.googleapis.com/icpcsec/icpc2017-regional/problems.pdf&#34;&gt;問題文&lt;/a&gt;を参照してください。&lt;/p&gt;
+
+&lt;h3 id=&#34;a:265df706d5a774eea5a09d1b00a6a527&#34;&gt;A&lt;/h3&gt;
+
+&lt;p&gt;やるだけ問です。
+問題文を読んで&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏に投げたらよろしくやってくれました。&lt;/p&gt;
+
+&lt;h3 id=&#34;c:265df706d5a774eea5a09d1b00a6a527&#34;&gt;C&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏と考察を担当し、実装は&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏にやってもらいました。
+値が負になるときの特殊ケースや変数の更新タイミングのミス等のちょっとした考察漏れ・実装ミスを3つほど同時に仕込んでしまって数十分ほど無駄に消費してしまったので反省点が多いです。&lt;/p&gt;
+
+&lt;h3 id=&#34;i:265df706d5a774eea5a09d1b00a6a527&#34;&gt;I&lt;/h3&gt;
+
+&lt;p&gt;B問題・C問題で無限に時間を費やしているうちに他チームは問題をたくさん解いていたので、風船の浮かんでいる状況を見てI,F,G問題に解く対象を絞りました。
+なお今年の問題の並び順は、A,B,C問題までが易しい順に並んでおりそれ以降の問題はランダムになっています。&lt;/p&gt;
+
+&lt;p&gt;I問題は問題文を読んで&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏に丸投げしたら見事に解いてくれました。&lt;/p&gt;
+
+&lt;h2 id=&#34;解けなかった問題:265df706d5a774eea5a09d1b00a6a527&#34;&gt;解けなかった問題&lt;/h2&gt;
+
+&lt;h3 id=&#34;b:265df706d5a774eea5a09d1b00a6a527&#34;&gt;B&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏がメインで担当しました。
+制限実行時間10秒の問題ですが、最初にすべての可能な傾きの同じ線分の集合を持ったりしていたらハマってしまって通せませんでした。
+普通に全探索すれば解けるなどということを終了後に聞きましたが、全然通らなかったのでいっそ早めに放り投げるべきだったのかもしれません。&lt;/p&gt;
+
+&lt;h3 id=&#34;f:265df706d5a774eea5a09d1b00a6a527&#34;&gt;F&lt;/h3&gt;
+
+&lt;p&gt;私はグラフは最短経路の超典型問ぐらいしか解けないので、問題を訳すだけして他の２人に投げました。
+実装の最後の方まで行っていたようなのですが間に合いませんでした。&lt;/p&gt;
+
+&lt;h3 id=&#34;g:265df706d5a774eea5a09d1b00a6a527&#34;&gt;G&lt;/h3&gt;
+
+&lt;p&gt;考察を担当しました。
+座標変換で簡単になるというのは気付きませんでしたが、極座標→XY座標への変換をしてからdX=正三角形の辺の長さの半分, dY=正三角形の高さ で区切って場合分け2回ほどで数学的に求めて終わりです。&lt;/p&gt;
+
+&lt;h2 id=&#34;結果:265df706d5a774eea5a09d1b00a6a527&#34;&gt;結果&lt;/h2&gt;
+
+&lt;p&gt;A問題解いた直後に沼にはまって時間を無為に費やし、終盤になってB,F,Gの解法が出揃ったが実装時間が圧倒的に足りないという状況に陥り、結局4問目を通せず3完でした。
+予選と全く同じ順位の39位です。&lt;/p&gt;
+
+&lt;p&gt;ICPCはやはりマシン1台のチーム戦ということで、特有の難しさがあるので事前の慣らしはもっとしておいたほうがよかったような気がします。
+あとUSキーボードは思った以上に慣れない(らしい)のでこちらも事前準備が必要そうです。&lt;/p&gt;
+
+&lt;p&gt;とはいえ、そもそも私は自力で問題を解けないので、問題文の和訳と考察補助とただ座っているぐらいしか仕事がない感じです。
+こういう場にカジュアル勢が紛れ込んでしまって肩身が狭いというか申し訳無さです。&lt;/p&gt;
+
+&lt;h2 id=&#34;雑事:265df706d5a774eea5a09d1b00a6a527&#34;&gt;雑事&lt;/h2&gt;
+
+&lt;p&gt;1日目は昼過ぎに集合で、参加受付+開会式+練習+懇親会だけで、解放される時間がなぜか20時です。
+思うところがないでもありません。&lt;/p&gt;
+
+&lt;p&gt;2日目についても、終了後の懇親会で2時間拘束されます。
+こちらでは企業ブースがいくつかあり、物をもらったり話を聞いたりすることができました。&lt;a href=&#34;2017/09/17/indeed-austin-tour/&#34;&gt;ツアー&lt;/a&gt;で一緒だった某r(i)社の方々とまた会ったりしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://proc-cpuinfo.fixstars.com/2017/12/in-house-procon-06-announcement/&#34;&gt;量子リバーシ&lt;/a&gt;なるクイズが出題されており、こういうのは&lt;a href=&#34;http://shogitter.com/rule/108&#34;&gt;量子将棋&lt;/a&gt;とか&lt;a href=&#34;http://uhyo.hatenablog.com/entry/2016/04/22/161011&#34;&gt;量子人狼&lt;/a&gt;とか&lt;a href=&#34;https://uhyohyo.net/quantum2048/&#34;&gt;量子2048&lt;/a&gt;とか作ってる人たちが周りにいるから見慣れてるんだよなあなどと思いつつ、順に確定させてから普通のオセロをシミュレートするだけのやるだけ問を3分ぐらいで解いたら驚かれました。&lt;/p&gt;
+
+&lt;p&gt;また他のブースではよくわからないクイズを解くだけでANKERの10000mAhモバイルバッテリー(自分が持っている物の一つ下のモデル)をもらうことができました。&lt;/p&gt;
+
+&lt;h2 id=&#34;つくば:265df706d5a774eea5a09d1b00a6a527&#34;&gt;つくば&lt;/h2&gt;
+
+&lt;p&gt;交通費補助が新幹線代程度出るものの、宿泊施設の提供なしで宿泊補助費は5000円しか出ないので新幹線で行くと大赤字です。
+そこでLCCで飛んでいくことで交通費を浮かせて2泊するための宿泊費に充てました(これって書いていいんでしょうか)。&lt;/p&gt;
+
+&lt;p&gt;宿泊施設が用意されなくなったのは今年からとのことですが、ICPC協賛の某企業の方に聞いた話によると、どうもスポンサー費用は例年上がっていく一方らしいです。
+よくわかりません。&lt;/p&gt;
+
+&lt;p&gt;そこそこ移動がつらく、朝6時頃には家を出て空港まで行ったかと思えば移動の間に2時間ぐらい待機する必要があったりしました。
+また宿はできるだけ安いところを取りましたが、1日目は浴場の給湯器が故障していて使えず、2日目は浴場に入ることはできたものの、あまりにお湯がぬるいので仕方なくサウナで温まるなどすることになりました。&lt;/p&gt;
+
+&lt;p&gt;1日目は部屋に備え付けの浴室を使いましたが、湯を張るために蛇口を開くと汚れの混じった赤っぽい水が出てきたので、無心でシャワーを浴びてそのまま何も考えずに寝ました。&lt;/p&gt;
+
+&lt;p&gt;エクスカーションや企業見学に参加する人に合わせて飛行機を取ったので、3日目は夜まで暇です。
+大洗に行くか秋葉原に行くか迷いどころです。&lt;/p&gt;
+
+      </description>
+    </item>
     
     <item>
       <title>Web技術ではじめるレポート・論文制作</title>
@@ -3923,178 +4056,6 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 &lt;p&gt;私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。&lt;/p&gt;
 
 &lt;p&gt;プログラミングをするときはまともな設計をするようにしましょう。&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>自作PCの紹介</title>
-      <link>http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/</link>
-      <pubDate>Wed, 07 Dec 2016 13:53:12 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/</guid>
-      <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の7日の記事です。
-なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;私は自作PCerなので、この機会に普段使用しているPCのパーツ構成を紹介していきたいと思います。
-趣味の中でも結構金がかかっている分野です。&lt;/p&gt;
-
-&lt;h2 id=&#34;外観:14cdc902344e522bd60455484bb9d961&#34;&gt;外観&lt;/h2&gt;
-
-&lt;p&gt;クリックすると別タブで拡大表示します。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img01.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img01.jpg&#34; alt=&#34;自作PC外観(筐体)&#34; height=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; alt=&#34;自作PC外観(卓上)&#34; width=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;使用用途-スペック:14cdc902344e522bd60455484bb9d961&#34;&gt;使用用途・スペック&lt;/h2&gt;
-
-&lt;p&gt;ごく普通のプログラミングやネットサーフィンに加え、ゲームを多くプレイするため、少なくとも比較的新しいゲームを高画質設定でプレイ出来るだけのスペックを目指して構築しています。&lt;/p&gt;
-
-&lt;h2 id=&#34;パーツ構成-本体:14cdc902344e522bd60455484bb9d961&#34;&gt;パーツ構成(本体)&lt;/h2&gt;
-
-&lt;p&gt;おおよそ5年前の2011年年末から2012年の年始に組み上げ、そこからパーツを少しずつ更新して現在に至ります。
-当時のパーツで残っているのはCPUとM/B、およびメモリとHDD程度。&lt;/p&gt;
-
-&lt;h3 id=&#34;cpu-マザーボード:14cdc902344e522bd60455484bb9d961&#34;&gt;CPU・マザーボード&lt;/h3&gt;
-
-&lt;p&gt;CPU: Phenom II X6 1065T&lt;br /&gt;
-M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
-
-&lt;p&gt;AMD機体です。
-マザーボードは当時Socket AM3+が登場した頃だったため、採用しているCPUはSocket AM3のPhenom II X2ですが将来的な性能向上を見越してSocket AM3/AM3+の両方に対応しているGA-990FXA-UD5を採用。M/Bはパーツ交換の頻度が最も低くなると思ったので、ここは金を掛けるべきと判断してUD3ではなく一つ上のUD5にしています。&lt;/p&gt;
-
-&lt;p&gt;一方でCPUはコストパフォーマンスを重視し、6コア帯の中でも消費電力の低いモデルであるPhenom II X6 1065Tを採用。2011年当時でもやや古めのモデルではあるものの、ミドルクラス構成としては悪くないものだと思っています。
-6コアまたは4コア8スレッド以上の性能を持つCPUを求める場合、Intel製品では2万円台から3万円台以上は見る必要があった中で、1万7000円前後で6コアを得られるPhenom II X6シリーズは魅力的でした。
-この性能に対する価格のパフォーマンスの高さが、AMDを選択する理由の一つになっています。&lt;/p&gt;
-
-&lt;p&gt;現在でもSocket AM3+対応で2012年から2014年にかけて展開されたAMD FX8xxx/9xxxシリーズはミドルクラスからハイクラスにかけて良好な性能を誇る上に、同等の性能帯のIntel製CPUに比べて1万円から2万円程度安く入手できます。
-一方でそれよりも上の性能を目指す場合はIntelの一強状態となっており、ハイエンドでもAMDが多少は追随できていた2011年当時とは状況が異なっています。
-そのため、今からPCを組む場合は何も考えずにAMD製品を選ぶというわけにはいかないように思います。&lt;/p&gt;
-
-&lt;h3 id=&#34;メモリ:14cdc902344e522bd60455484bb9d961&#34;&gt;メモリ&lt;/h3&gt;
-
-&lt;p&gt;PC3-12800の4GBを4枚 計16GB&lt;br /&gt;
-→最近1枚壊れたため3枚12GB&lt;/p&gt;
-
-&lt;p&gt;Minecraftあたりのメモリを食いまくるゲームをやっていたり、Chromeでやたらとタブを開いたりしていると、8GBではやや足りない状況があるので16GB。
-普通に使っていると8GBで足りるか足りないか程度だと思うので、8GBから多少上であればいいと思います。
-今のところ16GBから12GBに減ってもほとんど影響を感じることはありません。&lt;/p&gt;
-
-&lt;h3 id=&#34;グラフィックボード:14cdc902344e522bd60455484bb9d961&#34;&gt;グラフィックボード&lt;/h3&gt;
-
-&lt;p&gt;SAPPHIRE R9 270 2G GDDR5&lt;/p&gt;
-
-&lt;p&gt;やはりAMDの、Radeon R9 270です。特筆することは少ないですが一応は現在でもミドルクラス上位レベルの性能らしいですし、2万円台前半と、悪くない価格帯でもあります。
-新しいゲームでも普通に1080pで悪くない画質設定で遊べますし、コストパフォーマンスも良いです。
-Batman:Arkham Knightは画質設定を低にしないと遊べませんでしたが… VRAMが2GBというのがそろそろ時代遅れになってきているのかもしれません。
-PCを組んだ当初は二束三文で売られていたRadeon HD4xxxか5xxxあたりのグラボを使っていましたが、そのVRAMが512MBぐらいしかなかったことを考えると隔世の感があります。&lt;/p&gt;
-
-&lt;p&gt;当然ながらVRをプレイしようと考えるのは無理があります。&lt;/p&gt;
-
-&lt;h3 id=&#34;電源:14cdc902344e522bd60455484bb9d961&#34;&gt;電源&lt;/h3&gt;
-
-&lt;p&gt;どのモデルだったか忘れました。
-500Wのものですが、一度壊れたので換装しています。&lt;/p&gt;
-
-&lt;h3 id=&#34;ストレージ:14cdc902344e522bd60455484bb9d961&#34;&gt;ストレージ&lt;/h3&gt;
-
-&lt;p&gt;SSD: CFD CSSD-S6T512NHG6Q (512GB)&lt;br /&gt;
-HDD1: HGST HDS721050CLA362 (500GB)&lt;br /&gt;
-HDD2: TOSHIBA DT01ACA300 (3TB)&lt;/p&gt;
-
-&lt;p&gt;最初は500GBのHDD1個のみで、2015年春に512GBのSSDを、そして今年に入って3TBのHDDを増設しました。
-現在はSSD上にWindows10をインストールして使用しています。
-SSDは登場当初に比べて随分安くなった印象です。
-5年ほどひたすら値下がりを待ってようやく私が512GBのSSDを購入した時点で3万円程度でしたが、今は512GBを2万円台前半で買えるようです。&lt;/p&gt;
-
-&lt;p&gt;SSD化までは500GBのHDD1本だけで運用していましたが、通電時間2万時間越えのこのHDDは今でも不良セクタが1つもなくとても健康な状態のようです。&lt;/p&gt;
-
-&lt;h3 id=&#34;光学ドライブ:14cdc902344e522bd60455484bb9d961&#34;&gt;光学ドライブ&lt;/h3&gt;
-
-&lt;p&gt;Pioneer BDR-207JBK&lt;/p&gt;
-
-&lt;p&gt;BD対応ドライブです。光学ドライブもやはり交換頻度は少ないだろうと踏み、やや性能の高いものを採用しています。
-1万円台中盤程度で、十数万円をどうにか絞り出してPCを組んだ当初これを買っている余裕はなかったため、OSのインストール等は手元にあったUSB外付けDVDドライブでなんとかしのぎ、資金力の回復を待った上で後付けで購入しました。
-耐久性も良好ですし性能も高く良い感じですが、PCケースと干渉してディスクトレイがうまく開かないことがあるのが玉に瑕。&lt;/p&gt;
-
-&lt;h3 id=&#34;pcケース:14cdc902344e522bd60455484bb9d961&#34;&gt;PCケース&lt;/h3&gt;
-
-&lt;p&gt;Antec SOLO II&lt;/p&gt;
-
-&lt;p&gt;音が静かで、見た目が好みで、作りが良いです。
-最初は似た価格帯のケースが半額で売っていたので買って使っていましたが、サイドパネルがペラペラだったり購入後すぐ前面の開閉部分が壊れたりあまり作りが良くなかったり裏側配線ができなかったりして投げ捨てたので、今使っているこのケースは非常に満足しています。
-唯一前面パネルのUSBポートの作りがやや甘かったのか、購入から1年しないぐらいでUSB2.0のポートが1つ潰れました。&lt;/p&gt;
-
-&lt;h2 id=&#34;周辺機器構成:14cdc902344e522bd60455484bb9d961&#34;&gt;周辺機器構成&lt;/h2&gt;
-
-&lt;p&gt;画像再掲&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; alt=&#34;自作PC外観(卓上)&#34; width=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;モニタ:14cdc902344e522bd60455484bb9d961&#34;&gt;モニタ&lt;/h3&gt;
-
-&lt;p&gt;EIZO FORIS FS2333 2枚&lt;/p&gt;
-
-&lt;p&gt;23.5インチ2枚のデュアルディスプレイ編成です。
-最近FS2333の同ディスプレイ2枚体制の構築を達成しました。
-このディスプレイは使い勝手もよく文句なしです。&lt;/p&gt;
-
-&lt;h3 id=&#34;スピーカー:14cdc902344e522bd60455484bb9d961&#34;&gt;スピーカー&lt;/h3&gt;
-
-&lt;p&gt;Logicool Speakers Z130&lt;/p&gt;
-
-&lt;p&gt;とくにこだわりもなくずっと使ってますが、モニタ内臓のスピーカーよりはよっぽど良いですし値段も安かったため満足しています。
-音楽は作業中にアニソンを流す程度であまり聴きません。&lt;/p&gt;
-
-&lt;h3 id=&#34;トラックボール:14cdc902344e522bd60455484bb9d961&#34;&gt;トラックボール&lt;/h3&gt;
-
-&lt;p&gt;サンワサプライ MA-TB38&lt;br /&gt;
-エレコム M-DT1URBK&lt;/p&gt;
-
-&lt;p&gt;トラックボーラーです。&lt;br /&gt;
-サンワサプライのMA-TB38は私の愛機で、5年ぐらい使い続けた結果ホイールが壊れたため現在は2機目です。
-標準の金属支持球をセラミック球に交換した上でゴムシートによる安定化を図る改造も施しており、何度も試行錯誤した結果改造ノウハウもたまっています。&lt;br /&gt;
-大玉トラックボールとしては珍しいマウスホイール搭載機であり、多くのトラックボールが抱える「ホイールクリックボタンがない」という重大な欠点を解消しつつも非常に良好な操作性を誇り、また個体差や欠陥構造を有しているものの簡単な改造でそれを補えるため、現状これ以外の選択肢はほとんど考えられません。
-現時点で既に製造終了モデルとなっているのが残念なところです。&lt;/p&gt;
-
-&lt;p&gt;エレコムのトラックボールは1代目のMA-TB38が故障した頃にちょうど新しく出たモデルだったので、ちょっと気になってつなぎ兼予備として購入。有線モデル特有の欠点として、耳を近づけるとわずかにコイル鳴きが聞こえるのが難点。
-使い勝手は悪くないですが、結局2代目のMA-TB38を確保してからはほとんど使っていません。&lt;/p&gt;
-
-&lt;h3 id=&#34;キーボード:14cdc902344e522bd60455484bb9d961&#34;&gt;キーボード&lt;/h3&gt;
-
-&lt;p&gt;Skydigital NKEY-P&lt;/p&gt;
-
-&lt;p&gt;買い換えよう買い換えようと思いつつ、なかなか良いキーボードが見つからないため結局5年ぐらい使い続けています。
-安価かつゲーミング向きという観点からこのキーボードを選びましたが、5000円程度で全キー同時押し対応、反応速度が向上するゲームモード搭載、着脱式のパームレスト付きと、値段に対してやたらと尖った性能をしておりコストパフォーマンスは非常に高かったのでは無いかと思っています。&lt;/p&gt;
-
-&lt;p&gt;流石にスペースキーの調子が悪かったり一部キーが押しづらくなったりしてきているので、いい加減に買い換えを検討中です。&lt;/p&gt;
-
-&lt;p&gt;現在の買い換え候補は、2017年に発売が予定されている&lt;a href=&#34;http://www.realforce.co.jp/&#34;&gt;REALFORCE RGB&lt;/a&gt;の日本語配列版です。
-REALFORCEシリーズのゲーミング向けモデルがついに発売されるということで、非常に注目しています。&lt;/p&gt;
-
-&lt;h3 id=&#34;ゲームパッド:14cdc902344e522bd60455484bb9d961&#34;&gt;ゲームパッド&lt;/h3&gt;
-
-&lt;p&gt;Microsoft Xbox 360 Controller for Windows&lt;/p&gt;
-
-&lt;p&gt;もはやデファクトスタンダードといってもよさそうな定番コントローラーで、値段の安さも驚くべきことです。
-ただドライバ周りに少し癖があり、公式ドライバと非公式ドライバの両方を使い分けたほうがいい場合があったりする点には注意が必要です。&lt;/p&gt;
-
-&lt;h2 id=&#34;今後:14cdc902344e522bd60455484bb9d961&#34;&gt;今後&lt;/h2&gt;
-
-&lt;p&gt;一度自作PCを組むと、いくらでも機能を向上させたくなるために際限なく金が吸われます。&lt;/p&gt;
-
-&lt;p&gt;今最も買い換えたいのはキーボードで、Razerの&lt;a href=&#34;http://www.razerzone.com/jp-jp/gaming-keyboards-keypads/razer-blackwidow-chroma&#34;&gt;BlackWidow Chroma&lt;/a&gt;を購入候補として検討していましたが、Razerの緑軸はやや打鍵音が強すぎますし、一方でオレンジ軸は自分の好みとは遠い感じでした。
-そこで前述したように&lt;a href=&#34;http://www.realforce.co.jp/&#34;&gt;REALFORCE RGB&lt;/a&gt;が近々発売されるということを知ったため、今のところはこれの発売と評価を待っている状況です。
-あまりに期待値を下回った場合は&lt;a href=&#34;http://www.razerzone.com/jp-jp/gaming-keyboards-keypads/razer-blackwidow-chroma&#34;&gt;BlackWidow Chroma&lt;/a&gt;を買うことになるかも。
-そんなにキーボードを光らせたいのか。&lt;/p&gt;
-
-&lt;p&gt;あとはグラフィックボードのVRAMまわりに若干の力不足を感じていますが、そんなに最新のゲームをやりまくるわけでもないですし(Steamでなかなか割引されないので)、最新かつ高いグラフィックを要求するゲームのプレイ頻度がそう高くないので今のところ現状で問題はあまりない気もしています。&lt;/p&gt;
 
       </description>
     </item>
