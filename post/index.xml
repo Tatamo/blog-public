@@ -6,8 +6,179 @@
     <description>Recent content in Posts on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Mon, 18 Dec 2017 01:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 18 Dec 2017 21:00:00 +0900</lastBuildDate>
     <atom:link href="http://tatamo.81.la/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ThinkPad X1 Carbonを購入しました</title>
+      <link>http://tatamo.81.la/blog/2017/12/18/intro-new-moblie-pc/</link>
+      <pubDate>Mon, 18 Dec 2017 21:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2017/12/18/intro-new-moblie-pc/</guid>
+      <description>
+        
+
+&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の19日の記事です。
+なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;新しいモバイルPCが先週届いたので、それについて書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;購入したpc:e1aff7a4c108ad68177d235e2867a617&#34;&gt;購入したPC&lt;/h2&gt;
+
+&lt;p&gt;Lenovo ThinkPad X1 Carbon(2017モデル)を買いました。
+基本的なスペックは以下の通りです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CPU: Core i7-7500U&lt;/li&gt;
+&lt;li&gt;メモリ: 16GB 1866MHz&lt;/li&gt;
+&lt;li&gt;ストレージ: 512GB SSD&lt;/li&gt;
+&lt;li&gt;WLANなし&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;液晶サイズは14型、本体重量はおよそ1.13kgです。
+お値段は約161kでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;新pc購入のモチベーション:e1aff7a4c108ad68177d235e2867a617&#34;&gt;新PC購入のモチベーション&lt;/h2&gt;
+
+&lt;p&gt;とにかく元々持っていたラップトップが重すぎたというのが大きな要因です。
+大学に行くときなどかなり頻繁にPCを持って出るのですが、サイズが大きくて鞄に入れにくい上に重量が2.5kg以上と決して持ち運びに適したPCではなかったのです。&lt;/p&gt;
+
+&lt;p&gt;実際のところスペック的にはまだまだ使えるマシンなのですが、今後大学院の修士課程まで行くことを考えると少なくとも3年以上はノートPCを頻繁に持ち運ぶ機会があることが想定され、その間ずっとPCを変えずに使い続けるのはつらいのではないかと感じました。&lt;/p&gt;
+
+&lt;p&gt;そしていずれPCを変えることになるなら早いほうがいいに決まっているので、タンスに挟まっていた成人祝いの札束などを引っ張り出して新しいPCの購入に踏み切りました。&lt;/p&gt;
+
+&lt;h2 id=&#34;pc選定の条件:e1aff7a4c108ad68177d235e2867a617&#34;&gt;PC選定の条件&lt;/h2&gt;
+
+&lt;p&gt;タンス預金の中身を検めると諭吉氏が16枚あったので、これに財布の中の一万円を加えた17万円を予算上限としました。&lt;/p&gt;
+
+&lt;p&gt;その上で、新しいPCに求めるスペックを想定しました。
+以下はその優先度の高い順に並べています。&lt;/p&gt;
+
+&lt;h3 id=&#34;携帯性:e1aff7a4c108ad68177d235e2867a617&#34;&gt;携帯性&lt;/h3&gt;
+
+&lt;p&gt;今回のPC買い替えの動機でもあるので、軽くて持ち運びやすい、いわゆるモバイルPCにすることにしました。
+とはいえ元のPCがあまりに重いため、ちょっとぐらいの差はわからないので極限まで軽さを求めることはしません。&lt;/p&gt;
+
+&lt;p&gt;大きさについては、鞄に入れやすい程度には小さく収まってほしいですが、あまり小さくて液晶が見難くなっても困るので、やはり一般的なモバイルPCの範疇に収まっていることを条件としました。&lt;/p&gt;
+
+&lt;h3 id=&#34;ストレージ:e1aff7a4c108ad68177d235e2867a617&#34;&gt;ストレージ&lt;/h3&gt;
+
+&lt;p&gt;私はデスクトップ機とノートPCで同じ環境を構築し、出先でも開発ができるようにしています。
+これはつまり、WindowsとLinux(Debian)のデュアルブートを行うことを意味します。
+ストレージ容量が256GBの場合、単純にOSごとに半分ずつ割り当てるとそれぞれ128GBしか使えず、これではやや不安が残ります。
+というか、手元のラップトップを見たところWindowsだけで128GBなんて軽く越えていたので不安しかありません。
+そのため、ストレージには512GB SSDを使用したいと考えました(SSDなのは前提条件として当然です)。&lt;/p&gt;
+
+&lt;h3 id=&#34;メモリ:e1aff7a4c108ad68177d235e2867a617&#34;&gt;メモリ&lt;/h3&gt;
+
+&lt;p&gt;経験上、Chromeを立ち上げまくったりメモリを食うことをたくさんした場合、メモリの消費量がぴったり8GB前後になるという印象があります。
+基本的には8GBで何の問題もありませんが、メモリをたくさん食っている状況下では、メモリが8GBだとちょうど溢れてしまう可能性があります。
+なので16GBあると嬉しいですが、それによって値段が上がりすぎてしまうのであれば8GBのほうが良い、という想定になりました。&lt;/p&gt;
+
+&lt;h3 id=&#34;cpu:e1aff7a4c108ad68177d235e2867a617&#34;&gt;CPU&lt;/h3&gt;
+
+&lt;p&gt;Core i3はさすがにどうかと思いますが、動画処理や画像処理等はしないですし、ゲームはノートPCなんて使わずに家のデスクトップでやるので高い性能はあまり必要ありません。
+なのでCore i5でも積んでいれば十分と考えました。&lt;/p&gt;
+
+&lt;h3 id=&#34;os:e1aff7a4c108ad68177d235e2867a617&#34;&gt;OS&lt;/h3&gt;
+
+&lt;p&gt;先述したようにデスクトップとノートPCで環境を揃える予定なので、macOSだと環境が違ってきてしまうのでやや評価が下がります。
+デュアルブート自体Windows+Linuxよりは相性が悪い印象ですし、そもそもMacだとLinuxを入れるまでもなく普通にMac上に環境構築するので、結局デスクトップ機との環境統一が望めません。&lt;/p&gt;
+
+&lt;p&gt;macOSは悪い選択肢ではありませんが、今回の使用目的ではWindowsのほうが優先されます。&lt;/p&gt;
+
+&lt;h3 id=&#34;拡張性-端子類:e1aff7a4c108ad68177d235e2867a617&#34;&gt;拡張性(端子類)&lt;/h3&gt;
+
+&lt;p&gt;モバイルPCは往々にしてUSBポートが1個しか付いていなかったりすることが多いですが、個人的には2個以上あったほうが良いのではないかという考えです。&lt;/p&gt;
+
+&lt;p&gt;また今の状況を考えると、USB Type-AかType-Cかというのも悩みどころです。
+手元にType-Cの機器はないですが、今後のことを考えると欲しさはあります。
+とはいえ変換ケーブルを持ち運ぶのも面倒なので、両方ついていれば長く使えそうだなと考えていました。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;全体的には、モバイルPCでかつ512GBのストレージを積めることを前提条件として考えました。
+またOfficeについてはあまり使う予定がないため、選択可能なら非搭載とすることにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;候補に上がったもの:e1aff7a4c108ad68177d235e2867a617&#34;&gt;候補に上がったもの&lt;/h2&gt;
+
+&lt;p&gt;結局どのPCを買うか悩んでいるときが一番楽しい&lt;/p&gt;
+
+&lt;h3 id=&#34;surface-pro:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Surface Pro&lt;/h3&gt;
+
+&lt;p&gt;2in1は目新しいので気になりましたが、液晶を自立させるために後ろにスタンドを必要とすることから、「新幹線・飛行機の小さいテーブルで使いにくい」「膝上で使いにくい」ということで候補から外しました。&lt;/p&gt;
+
+&lt;h3 id=&#34;surface-laptop:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Surface Laptop&lt;/h3&gt;
+
+&lt;p&gt;だったらクラムシェルにしようということで候補に上げました。
+しかしCore i7+メモリ16GBまで積まないと512GBのストレージを選択することができず、しかもその場合のお値段なんと28万円を越えるためこれも除外しました。&lt;/p&gt;
+
+&lt;h3 id=&#34;vaio-z:e1aff7a4c108ad68177d235e2867a617&#34;&gt;VAIO Z&lt;/h3&gt;
+
+&lt;p&gt;これも2in1ですが、天板が半分ぐらいのところで折り曲がってモード変更できるようになっており、通常使用時は普通のクラムシェルとして使えるので膝上性能ばっちりです。
+非常にハイスペックなだけあって高いので、Core i5+メモリ8GB+SSD256GBの時点で20万円を越えることを確認して候補から外しました。&lt;/p&gt;
+
+&lt;h3 id=&#34;macbook-air-macbook-pro:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Macbook Air, Macbook Pro&lt;/h3&gt;
+
+&lt;p&gt;Core i5+メモリ8GB+SSD 512GBの構成で139k、Core i7の場合は155kと、予算的にはいい感じです。
+しかし最大の問題として、そもそも積んでいるCPUが第5世代のものです。
+単純に動作周波数で見ても、MBAのCore i7の動作周波数2.2GHzは現行の第7世代Core i3にすら劣ります。&lt;/p&gt;
+
+&lt;p&gt;お値段が安いのは利点ですがCPUの古さのために相殺されてしまい、やはりモデルとして古すぎて今買うべきかと言われると疑問符が付くので保留とし、結局候補から外れました。&lt;/p&gt;
+
+&lt;p&gt;MBPは第七世代CPUを使用可能ですが、Core i5(2.3GHz)+メモリ8GB+512GBで187kとなるので予算オーバーです。&lt;/p&gt;
+
+&lt;h3 id=&#34;matebook-x:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Matebook X&lt;/h3&gt;
+
+&lt;p&gt;華為のモバイルPCで、メモリは8GBのみ、512GB SSDを積むためにはCore i7モデルを選択する必要があります。
+この場合の基本価格は174k程度で予算の上限を越えますが、実際にはもう少し安い価格で買えるようです。&lt;/p&gt;
+
+&lt;p&gt;欠点があるとすれば、デザインがあまりにMacbookに似ているのでちょっと複雑な気持ちになりそうなところでしょうか。&lt;/p&gt;
+
+&lt;h3 id=&#34;thinkpad-x1-carbon-thinkpad-x270:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Thinkpad X1 Carbon, Thinkpad X270&lt;/h3&gt;
+
+&lt;p&gt;LenovoのThinkpadは常に割引されている状態で、日時によって割引率がどんどん変わっていくのでちゃんとした値段を出すのが難しいです。
+一度割引率43%までは確認したので、とりあえず40%の割引がなされるものとして計算しました。&lt;/p&gt;
+
+&lt;p&gt;Core i5+メモリ8GB+512GB SSDで159kとなり、予算に収まります。
+なおCore i7+メモリ16GB+512GB SSDだと177kでした。&lt;/p&gt;
+
+&lt;p&gt;X1 Carbonは14型液晶ですがサイズは13型PCとほぼ同等で、その上軽量化が図られているのでとても使いやすそうに感じました。
+端子類もType-A USB端子が2つにType-C端子が2つ(電源込み)と十分な数があり、長く使い続けられそうです。&lt;/p&gt;
+
+&lt;p&gt;また12.5型のThinkpad X270も候補に上げました。
+これはX1 Carbonよりも重い一方でサイズは12.5型のため小さく、また同スペックでも1万円から2万円ほど安く買うことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;thinkpad-x1-carbon購入:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Thinkpad X1 Carbon購入&lt;/h2&gt;
+
+&lt;p&gt;最終的な候補としてMatebook X, Thinkpad X1 Carbon, Thinkpad X270が残りました。
+デザイン的にはThinkpadが好みだったり、また知名度からの安心感もあるのでMatebookは除外し、X1 CarbonとX270のどちらかを買うことに決めました。&lt;/p&gt;
+
+&lt;p&gt;とはいえこの2つは大きさと重さの違いが重要なので、実際に店頭で確かめることにしました。
+ちょうど大阪に行く用事があったのでヨドバシ梅田に寄って実機を確かめましたが、X270は画面が小さすぎる印象があり、X1 Carbonを購入することに決めました。
+ネットの情報ではX1 Carbonは従来機種よりも薄いためにトラックポイントの背が低く、操作性が落ちているということが書かれていましたが、Thinkpadを使ったことのない自分が店頭で触り比べてみた程度では違いが全くわからなかったので気にしないことにしました。&lt;/p&gt;
+
+&lt;p&gt;価格を聞いてみたところ、販売店では常に直近のネット最安価格よりも1%程度割引率が高くなるらしく、44%の割引率が適用されたのでそのまま買うことにしました。&lt;/p&gt;
+
+&lt;p&gt;この割引率ではi5+8GB+512GB SSDで148kと思った以上に安く、どうせならメモリを16GBに増やそうと思ったのですが、その場合はCPUもCore i7に上げなければならないということを伝えられました。
+この場合のお値段は165kで、予算内には十分収まっています。&lt;/p&gt;
+
+&lt;p&gt;ここに来てCore i5+メモリ8GBとi7+16GBのどちらにするかで非常に迷うことになってしまったのですが、高い買い物をするときは多少余計に払ってでも良いものを買えという親の教えを思い出し、Core i7+メモリ16GBにすることに決めました。&lt;/p&gt;
+
+&lt;h2 id=&#34;使用感など:e1aff7a4c108ad68177d235e2867a617&#34;&gt;使用感など&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/blog/2017/12/18/intro-new-moblie-pc/&#34;&gt;ICPC参加&lt;/a&gt;のためにつくばに行く2日ほど前に届きました。
+とても軽い上に鞄に入れやすいサイズのため、持ち運びは明らかに便利になりました。
+Xfceを入れたDebian 9.3とWindows10とのデュアルブート(ブートローダはGRUB)にしましたが、どちらも起動・終了が非常に速いので快適です。
+Linuxとの相性は悪くなく、無線LANドライバなども全く問題なく動作していますが、搭載されている指紋センサだけはドライバが対応せず使えないようです。&lt;/p&gt;
+
+&lt;p&gt;全体的に非常に使いやすいのでとても満足していますが、一点だけ挙げるとすればキーボードの右上にHome/Endキーが搭載されているため、Fnキー+左/右キーの組み合わせではHome/Endキーが使えません。
+キー配置の慣れの問題かもしれませんが、HomeキーとEndキーは頻繁に使用するキーのため今の所やや不便です。&lt;/p&gt;
+
+      </description>
+    </item>
     
     <item>
       <title>ACM-ICPC2017アジアつくば大会に参加しました</title>
@@ -3701,361 +3872,6 @@ VP -&amp;gt; v
 &lt;p&gt;えっちょっとまって、今パーサジェネレータは既存のものを使えばいいって言ったよね、ねえ&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;次回:字句解析器の実装&lt;/a&gt;&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>Javaのリフレクションを悪用してクラス設計してみる</title>
-      <link>http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/</link>
-      <pubDate>Thu, 15 Dec 2016 01:11:23 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/</guid>
-      <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の14日の記事です。遅刻です。
-なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;最近、大学の授業などで少しだけJavaに触れる機会があったので、ちょっとした黒魔術っぽいことでもやってみようと思います。&lt;/p&gt;
-
-&lt;p&gt;と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。&lt;br /&gt;
-* &lt;a href=&#34;http://d.hatena.ne.jp/Nagise/20131121/1385046248&#34;&gt;new T()したいケースへの対処法 - プログラマーの脳みそ&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;もう帰っていいですかね。&lt;/p&gt;
-
-&lt;h2 id=&#34;総称型tに対してt-classやnew-t-したい:c600ddb79433125511402a932eb728b1&#34;&gt;総称型Tに対してT.classやnew T()したい&lt;/h2&gt;
-
-&lt;h3 id=&#34;ジェネリクスとは:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスとは&lt;/h3&gt;
-
-&lt;p&gt;わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;ArrayList&amp;lt;String&amp;gt; strlist = new ArrayList&amp;lt;String&amp;gt;();
-ArrayList&amp;lt;Integer&amp;gt; intlist = new ArrayList&amp;lt;Integer&amp;gt;();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ArrayList&lt;T&gt;に対し、ジェネリクスとしてStringやIntegerなど、リストの要素として入れたい型をTの部分に具体的に書くことで、一つのクラスであるArrayListに利用者側が好きな要素を入れることができるようになります。&lt;/p&gt;
-
-&lt;p&gt;ジェネリクスを用いて自分でメソッドを定義する場合は、以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public &amp;lt;T&amp;gt; void doSomething(T arg){
-	// doSomething
-}
-
-// TをSomeClassのサブクラスに限定する
-public &amp;lt;T extends SomeClass&amp;gt; void notDoAnything(T arg){
-	return;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これらのメソッドを呼び出すときは、&lt;code&gt;hoge.&amp;lt;SomeClass&amp;gt;doSomething();&lt;/code&gt;のようになります。&lt;br /&gt;
-どうして&lt;code&gt;hoge.doSomething&amp;lt;SomeClass&amp;gt;();&lt;/code&gt;じゃないんだろう。&lt;/p&gt;
-
-&lt;h3 id=&#34;ジェネリクスはt-classやnew-t-をさせてくれない:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスはT.classやnew T()をさせてくれない&lt;/h3&gt;
-
-&lt;p&gt;Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public &amp;lt;T extends SomeClass&amp;gt; List&amp;lt;T&amp;gt; getSubClassList(List&amp;lt;SomeClass&amp;gt; list){
-	return list
-		.stream()
-		.filter(value -&amp;gt; value instanceof T) // ここでlistの要素valueがTのインスタンスかどうか判別したい -&amp;gt; error
-		.collect(Collectors.toList());
-}
-
-public &amp;lt;T extends SomeClass&amp;gt; List&amp;lt;T&amp;gt; getSubClassList2(List&amp;lt;SomeClass&amp;gt; list){
-	return list
-		.stream()
-		.filter(value -&amp;gt; value.getClass() == T.class) // instanceofがだめならclassを取得して判別したい -&amp;gt; error
-		.collect(Collectors.toList());
-}
-
-public &amp;lt;T&amp;gt; void doSomething(String arg){
-	T foo = new T(arg); // T型の新しいインスタンスfooを作りたい -&amp;gt; error
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
-残念でしたね。&lt;/p&gt;
-
-&lt;h2 id=&#34;なぜしたいのか:c600ddb79433125511402a932eb728b1&#34;&gt;なぜしたいのか&lt;/h2&gt;
-
-&lt;h3 id=&#34;もしかして-設計が間違っている:c600ddb79433125511402a932eb728b1&#34;&gt;もしかして： 設計が間違っている&lt;/h3&gt;
-
-&lt;p&gt;先ほどのgetSubClassListメソッドを見てみましょう。
-正しく動くかどうかはさておき、やりたいことは以下の通りです：&lt;br /&gt;
-* SomeClassとそのサブクラスを含んだリストlistの要素のうち、SomeClassのサブクラスTのインスタンスだけを要素とする新しいリストを取得したい。&lt;/p&gt;
-
-&lt;p&gt;そもそも、抽象化された集合から具体的なクラスのインスタンスを取り出そうとすること自体がオブジェクト指向やポリモーフィズムの考え方に対する反逆である可能性があります。&lt;/p&gt;
-
-&lt;p&gt;SomeClassのリストであるlistをイテレートして、それぞれの要素のdoSomething()メソッドを呼べば、あとはそれがSomeClassのインスタンスであろうと、もしくはSomeClassを継承した別のクラスのインスタンスであろうと、外部からはただdoSomething()メソッドを呼ぶだけで操作が完結していなければなりません。
-それがサブクラス固有のふるまいをするとしても、その実装はそのクラス自身に隠蔽されるべきなのです。&lt;/p&gt;
-
-&lt;p&gt;よって、サブクラスだけを取り出そうとする試み自体がナンセンスなものである可能性が非常に高く、まずそのような試みが必要になる設計そのものを見直す必要があります。&lt;/p&gt;
-
-&lt;p&gt;終わり。&lt;/p&gt;
-
-&lt;h3 id=&#34;そうも言っていられない:c600ddb79433125511402a932eb728b1&#34;&gt;そうも言っていられない&lt;/h3&gt;
-
-&lt;p&gt;実際その通りなのですが、それではこの記事が続きません。&lt;/p&gt;
-
-&lt;p&gt;ここからは、少し具体的なプログラムの設計を例にとって考えてみたいと思います。&lt;br /&gt;
-あなたはちょっとしたゲームを作るためのフレームワークを作っています。
-その一部分が以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// 抽象的なゲーム内エンティティクラス
-public abstract class Entity {
-	private int x;
-	private int y;
-	public Entity(int x, int y){
-		this.setX(x);
-		this.setY(y);
-	}
-	public int getX() { return x; }
-	public void setX(int x) { this.x = x; }
-	public int getY() { return y; }
-	public void setY(int y) { this.y = y; }
-
-	public abstract void update(EntityManager manager);
-}
-
-// なんでもかんでも××Managerという名前を付けるのはやめましょう
-public class EntityManager {
-	private ArrayList&amp;lt;Entity&amp;gt; all_entities;
-	public EntityManager(){
-		this.all_entities = new ArrayList&amp;lt;Entity&amp;gt;();
-	}
-	public void add(Entity e){
-		this.all_entities.add(e);
-	}
-	public ArrayList&amp;lt;Entity&amp;gt; getAll() {
-		return new ArrayList&amp;lt;Entity&amp;gt;(this.all_entities);
-	}
-	public void updateAll(){
-		this.all_entities.forEach(e-&amp;gt;e.update(this));
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なんのことはありませんね。
-ゲーム内に登場するエンティティを表す抽象クラスEntityを作り、それをEntityManagerで管理します(なんでもかんでも××Managerという名前を付けるのはManagerクラスの肥大化を招きかねないため避けるべきであるなどという話もありますが、今回は置いておきます)。
-たとえば毎フレームごとにメインループ内で&lt;code&gt;EntityManager#updateAll()&lt;/code&gt;を呼び出すことで、全てのエンティティの更新を行ったりすることが想定されます。
-オーソドックスなループ駆動型のゲームプログラム設計です。&lt;br /&gt;
-Entityインスタンスを作成するためのFactory Methodパターンを使うべきとか、そういう話もあっちでやってください。&lt;/p&gt;
-
-&lt;p&gt;あとは、このフレームワークの利用者にはEntityクラスを継承したクラスを作らせ、それをもとにゲームを作ってもらえればいいだけです。
-以下のクラスを追加してみましょう。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// あなたです
-public class Player extends Entity{
-	private int hp; // プレイヤーはヒットポイントを持ちます
-	public Player(int x, int y, int hp){
-		super(x, y);
-		this.setHp(hp);
-	}
-	public int getHp() { return hp; }
-	public void setHp(int hp) { this.hp = hp; }
-	@Override
-	public void update(EntityManager manager){
-		// プレイヤーが動きます
-	}
-}
-
-// 敵です
-public class Enemy extends Entity {
-	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
-	public Enemy(int x, int y, int damage){
-		super(x, y);
-		this.setDamage(damage);
-	}
-	public int getDamage() { return damage; }
-	public void setDamage(int damage) { this.damage = damage; }
-	@Override
-	public void update() {
-		// 敵が動きます
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;プレイヤーと敵を登場させました。
-常命の者であるプレイヤーにはヒットポイントが定められており、敵はこれを脅かすダメージ値を持っています。&lt;/p&gt;
-
-&lt;p&gt;注意しておく必要があるのは、これらのクラスはあくまでフレームワークの利用者が作るものだということです。
-よって、EntityクラスやEntityManagerクラスからはこのようなEntityサブクラスの存在を知ることはできません。&lt;br /&gt;
-知る必要もないというのがオブジェクト指向の考え方だったはずです。
-そうですよね？&lt;/p&gt;
-
-&lt;p&gt;ここで、「敵のダメージ値を参照して、プレイヤーのヒットポイントを減らす」処理をしたいという需要が当然生まれます。
-実装の方法はいろいろあると思いますが、ひとまずこの処理を、Enemyのメソッドとして書いてみます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// 敵です
-public class Enemy extends Entity {
-	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
-	public Enemy(int x, int y, int damage){
-		super(x, y);
-		this.setDamage(damage);
-	}
-	public int getDamage() { return damage; }
-	public void setDamage(int damage) { this.damage = damage; }
-	@Override
-	public void update(EntityManager manager) {
-		// 敵が動きます
-		// プレイヤーがいたらダメージを与えます
-		manager.getAll().forEach((entity)-&amp;gt;{ // 全てのエンティティを調べる
-			if(entity instanceof Player){ //  エンティティがプレイヤーなら
-				if(this.getX() == entity.getX() &amp;amp;&amp;amp; this.getY() == entity.getY()){ // プレイヤーと敵の座標が同じなら
-					this.doDamage((Player) entity); // ダメージを与える
-				}
-			}
-		});
-	}
-	public void doDamage(Player p){
-		p.setHp(p.getHp() - this.getDamage()); // プレイヤーのヒットポイントをダメージ値分だけ減らします
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ここであなたは気を利かせます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;manager.getAll().forEach((entity)-&amp;gt;{
-	if(entity instanceof Player){
-		if(...){
-			...
-		}
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この部分です、どう見ても冗長ですし、いちいち全エンティティのリストをforEachで回しているので高速化も望めませんし、同様のコードクローンが至る所に発生するのは目に見えています。&lt;/p&gt;
-
-&lt;p&gt;できるならたとえばこう書きたい。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;manager.&amp;lt;Player&amp;gt;getAllOfSubClass().forEach((player)-&amp;gt;{
-	if(...){
-		...
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これでPlayerクラスだけが得られるなら、呼び出し側のコード量は減りますし、もしあなたがO(n^2)の処理をO(nlogn)に落とすような作業に慣れているなら、Managerクラスの内側でより高速になるような最適化を行い、その実装も内部に隠蔽することができます。&lt;/p&gt;
-
-&lt;p&gt;また、ゲームのセーブとロードをするときのことも考えてみます。
-たとえばデータのセーブを行うときはとりあえずオブジェクトを文字列化するとして、&lt;br /&gt;
-&lt;code&gt;public String Entity#serialize()&lt;/code&gt;などといったメソッドを作ってセーブし、ロード時には文字列配列を引数として受け取るようオーバーロードされたコンストラクタを使用してオブジェクトを再生成するといったことが考えられます。
-そういうことはFactory Methodあたりに委譲するべきな気もしますし、うまくやらないとフレームワークの利用者側の負担が増える気もしますが、今は置いておきます。&lt;/p&gt;
-
-&lt;p&gt;結局、セーブデータのロード時にこのようなコードを書くことになるでしょう。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;	public &amp;lt;E extends Entity&amp;gt; E createEntity(List&amp;lt;String&amp;gt; args){ // 可変長引数としてもよい
-		return new E(args); // ジェネリクス型はnewできない -&amp;gt; error
-	}
-	public loadSaveData(SaveData savedata){
-		// セーブデータから1行ずつ読み込んでオブジェクトを再生成する
-		... {
-			entityManager.add(this.createEntity(agrs));
-		}
-	}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;しかしジェネリクス型はnewできないため、コンパイルエラーとなります。&lt;/p&gt;
-
-&lt;h2 id=&#34;解決策:c600ddb79433125511402a932eb728b1&#34;&gt;解決策&lt;/h2&gt;
-
-&lt;p&gt;さて、だいぶん勿体つけたが、解決編に入ろう。&lt;/p&gt;
-
-&lt;p&gt;……というか、例として取り上げた題材が無理やりすぎた気がしてやる気が尽きかけてきました。&lt;/p&gt;
-
-&lt;h3 id=&#34;リフレクションを使用する:c600ddb79433125511402a932eb728b1&#34;&gt;リフレクションを使用する&lt;/h3&gt;
-
-&lt;p&gt;Javaにはリフレクションという機能があり、プログラムの実行中にクラス名やメソッド名を動的に取り扱うことができます。
-これのClass&lt;T&gt;型を、ジェネリクスと併用しましょう。
-&lt;code&gt;EntityManager#getAllOfSubClass&lt;/code&gt;メソッドを考えてみます。
-実装は以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;	@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
-	public &amp;lt;E extends Entity&amp;gt; List&amp;lt;E&amp;gt; getAllOfSubClass(Class&amp;lt;E&amp;gt; cls){
-		return (List&amp;lt;E&amp;gt;) all_entities.stream()
-			.filter(entity -&amp;gt; entity.getClass() == cls)
-			.collect(Collectors.toList());
-	}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを呼び出す際は、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;entityManager.getAllOfSubClass(Player.class);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のようにして、Class型の&lt;code&gt;クラス名.class&lt;/code&gt;を引数として与えます。
-ここで型推論が働くので、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;entityManager.&amp;lt;Player&amp;gt;getAllOfSubClass(Player.class);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のようにPlayerクラス名を2度も書く必要はありません。&lt;/p&gt;
-
-&lt;p&gt;また、Playerクラスだけでなく、Playerクラスを継承したクラスも含めて判別したいときは、以下のようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;	@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
-	public &amp;lt;E extends Entity&amp;gt; List&amp;lt;E&amp;gt; getAllOfSubClass(Class&amp;lt;E&amp;gt; cls){
-		return (List&amp;lt;E&amp;gt;) all_entities.stream()
-			.filter(entity -&amp;gt; cls.isAssignableFrom(entity.getClass()))
-			.collect(Collectors.toList());
-	}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;createEntity&lt;/code&gt;メソッドも、以下のようにすれば書くことができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;	public &amp;lt;E extends Entity&amp;gt; E createEntity(Class&amp;lt;E&amp;gt; cls, List&amp;lt;String&amp;gt; args){
-		// cls型のString[]を引数にとるコンストラクタを呼び出す
-		return cls.getConstructor(new Class&amp;lt;?&amp;gt;[] { String[].class }).newInstance(args);
-	}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;やや黒魔術じみてきました。
-実際にはE型がString[]を引数にとるコンストラクタを持つということが担保されていないためこれだけでは動かず、例外回避のためにいろいろやる必要があります。&lt;/p&gt;
-
-&lt;p&gt;最初の例に戻ってみましょう。&lt;code&gt;getSubClassList&lt;/code&gt;は、以下のように書けます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public &amp;lt;T extends SomeClass&amp;gt; List&amp;lt;T&amp;gt; getSubClassList(List&amp;lt;SomeClass&amp;gt; list, Class&amp;lt;T&amp;gt; cls){
-	return list
-		.stream()
-		.filter(value -&amp;gt; value.getClass() == cls)
-		.collect(Collectors.toList());
-}
-
-// 呼び出し側
-getSubClassList(list, SubClassOfSomeClass.class);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;めでたしめでたし。&lt;/p&gt;
-
-&lt;h3 id=&#34;おまけ:c600ddb79433125511402a932eb728b1&#34;&gt;おまけ&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public &amp;lt;T&amp;gt; int getStaticValue(Class&amp;lt;T&amp;gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
-	return (int) cls.getMethod(&amp;quot;getStaticValue&amp;quot;).invoke(null);
-}
-
-// 呼び出し
-getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでいるのと同じになる
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。&lt;/p&gt;
-
-&lt;h2 id=&#34;おわり:c600ddb79433125511402a932eb728b1&#34;&gt;おわり&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;Class&amp;lt;T&amp;gt; cls&lt;/code&gt;を引数にとり、&lt;code&gt;value.getClass() == cls&lt;/code&gt;で比較を行うのは、実質的にはinstanceofの迂回といえます。&lt;br /&gt;
-この程度なら型安全性は一応担保されますが、コンストラクタやメソッドの取得と呼び出しまで始めた場合、throw宣言やcatch節が山のように膨らんだり、メソッドの存在確認や型の確認などに多大なコストを支払う必要がありそうです。
-実際に使用するには相当の覚悟を必要とするでしょう。&lt;strong&gt;やめましょう。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;自分でプログラムを組んでいる際にこのような需要が発生することが時々あったので、Javaではリフレクションを使うことで強引に解決できると知って記事を書いてみましたが、自分の中ではむしろ「設計が悪い」の一言に実感が沸くという結果となった気がします。&lt;br /&gt;
-今回例に挙げたゲームプログラムの設計はまさしく昔私が作ったものそのものなのですが、記事を書く上で「リフレクションを使いたい理由付け」を明確にしようとすればするほど、その理由が無理やりなものにしかならないのではないかという気持ちに陥りました。
-途中まで書いた記事がグダグダになりそうな予感がしてくると結構精神的につらい。&lt;br /&gt;
-……うーん。Abstract Factoryパターンとか、もととなるクラスが増えるとそれに合わせてFactoryクラスも増やさないといけないのがあまり好きじゃないので、そのあたりも動的になんとかできないかなどと思っていたのですが、なかなか難しいようです。&lt;/p&gt;
-
-&lt;p&gt;私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。&lt;/p&gt;
-
-&lt;p&gt;プログラミングをするときはまともな設計をするようにしましょう。&lt;/p&gt;
 
       </description>
     </item>
