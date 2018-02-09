@@ -6,8 +6,179 @@
     <description>Recent content on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Fri, 09 Feb 2018 17:25:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 09 Feb 2018 19:30:00 +0900</lastBuildDate>
     <atom:link href="http://tatamo.81.la/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JavaScript/TypeScriptで競技プログラミングをするには 後編</title>
+      <link>http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/</link>
+      <pubDate>Fri, 09 Feb 2018 19:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/</guid>
+      <description>
+        
+
+&lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
+今回は後者についてです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-01/&#34;&gt;前回の記事&lt;/a&gt;ではコンテストサイトのJavaScript対応状況をメインに書きました。
+この記事では、実際にJavaScript/TypeScriptで競技プログラミングをする際に気をつけている点について書いていきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;競技プログラミングにおけるjavascriptの致命的な問題点:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;競技プログラミングにおけるJavaScriptの致命的な問題点&lt;/h2&gt;
+
+&lt;p&gt;残念ながら、JavaScriptが競技プログラミングに向いていない理由となる仕様がいくつか存在します。&lt;/p&gt;
+
+&lt;h3 id=&#34;末尾再帰最適化が実装されていない上にコールスタック上限が小さく-変更できない:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;末尾再帰最適化が実装されていない上にコールスタック上限が小さく、変更できない&lt;/h3&gt;
+
+&lt;p&gt;JavaScriptではPythonの&lt;code&gt;sys.setrecursionlimit()&lt;/code&gt;のように再帰呼び出し回数の最大値を変更することができません。
+コールスタックの上限は処理系に依存しますが、たとえばnode.js v5.12.0では15712です。
+また、末尾再帰最適化はES2015の仕様に盛り込まれていた内容ですが、現在においてもこれを実装している処理系は非常に少ないのが現状です。&lt;/p&gt;
+
+&lt;p&gt;これらの要因のため、要素数が数万程度の何かに対して手っ取り早く再帰でDFSを書こうとすると、ほぼ間違いなくMaximum call stack size exceededで落ちます。
+自分で配列をスタックとして使ってBFSと同じような書き方で書くか、DFS専用のイテレータでも自作しましょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;64bit整数値を扱う手段が存在しない:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;64bit整数値を扱う手段が存在しない&lt;/h3&gt;
+
+&lt;p&gt;JavaScriptのすべての数値は、いわゆるdouble型で保持されています。
+&lt;code&gt;Number.MAX_SAFE_INTEGER&lt;/code&gt;で確認できますが、整数値としての精度が保証される最大値は2^53-1までです。
+これはおよそ9.0*10^15程度なので、入力中に10^18ぐらいの数値が与えられるとその時点で詰みです。&lt;/p&gt;
+
+&lt;p&gt;まあ&lt;a href=&#34;https://github.com/broofa/node-int64&#34;&gt;Int64&lt;/a&gt;とか&lt;a href=&#34;https://github.com/silentmatt/javascript-biginteger&#34;&gt;biginteger&lt;/a&gt;的なものを使う・作るしかないです。&lt;/p&gt;
+
+&lt;p&gt;余談ですが、JavaScriptは歴史的経緯から複数のJavaScriptファイルをまとめて一つのソースコードとすることが頻繁に行われているため、browserifyやwebpackといったツールを使えばサードパーティのライブラリを使うことは割と平気で可能です(ソースコード上限を越えなければ)。
+しかし競技プログラミング的にどうなのかよくわからないので、私は今のところ自作以外のライブラリを使ったことはないです。&lt;/p&gt;
+
+&lt;p&gt;まあできないことを気にしても仕方がありませんので、以上のような問題点が存在することを把握しておく、ということが大切です。&lt;/p&gt;
+
+&lt;h2 id=&#34;入出力テンプレート:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;入出力テンプレート&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;import * as fs from &amp;quot;fs&amp;quot;;
+
+const input = (fs.readFileSync(&amp;quot;/dev/stdin&amp;quot;, &amp;quot;utf8&amp;quot;) as string).split(&amp;quot;\n&amp;quot;);
+const n = +input[0];
+// const [n] = input[0].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt; +x);
+const a = [];
+for(let i=0;i&amp;lt;n;i++){
+	a.push(input[i+1].split(&amp;quot; &amp;quot;).map((x:string):number=&amp;gt;+x));
+}
+
+console.log(input);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;入力部分は多少長くなってしまうので、テンプレートを用意しています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;N M
+A1 A2 ... A3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;というような入力に対しては、少し書き換えて&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;const [n, m] = input[0].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt; +x);
+const a = input[1].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt; +x);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とすれば対応できます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;fs.readFileSync(&amp;quot;/dev/stdin&amp;quot;, &amp;quot;utf8&amp;quot;)&lt;/code&gt;部分がWindowsでは動かない気がするので、適当にUNIX環境を用意しましょう。&lt;/p&gt;
+
+&lt;p&gt;package.jsonやtsconfig.jsonについては、&lt;a href=&#34;https://github.com/Tatamo/comp/tree/master/template/ts&#34;&gt;このへん&lt;/a&gt;に上げています。&lt;/p&gt;
+
+&lt;h2 id=&#34;typescript-複数のプログラムを同時にコンパイルする際の注意:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;(TypeScript) 複数のプログラムを同時にコンパイルする際の注意&lt;/h2&gt;
+
+&lt;p&gt;npm scripts等で自動コンパイルを行っている場合などに、&lt;a href=&#34;https://www.typescriptlang.org/docs/handbook/modules.html&#34;&gt;モジュール&lt;/a&gt;でない複数のTypeScriptプログラムを同時にコンパイルすると、すべてのプログラムの変数が同一スコープ上で扱われるため、&lt;code&gt;input&lt;/code&gt;などの変数が衝突してエラーになります。&lt;/p&gt;
+
+&lt;p&gt;これは、それぞれのプログラムがモジュールであると認識されれば解決されます。
+そのためのワークアラウンドとして、1行目でfsを取得する際に&lt;code&gt;require()&lt;/code&gt;ではなく&lt;code&gt;import&lt;/code&gt;文を使うようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;import * as fs from &amp;quot;fs&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;export&lt;/code&gt;を行っていなくても、TypeScript的にはこれだけでモジュールとして扱われるようなので、複数のプログラムを同時にコンパイルすることができるようになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;array-prototype-shift-の計算量はo-n:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;Array.prototype.shift()の計算量はO(n)&lt;/h2&gt;
+
+&lt;p&gt;JavaScriptで計算量について触れられている資料は少ないので、下手をすると&lt;a href=&#34;http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.shift&#34;&gt;仕様書&lt;/a&gt;まで見に行かないと気付けないのですが、&lt;code&gt;shift()&lt;/code&gt;の計算量はO(n)です。
+inputに10万行程度の入力を入れて、先頭から1行ずつ&lt;code&gt;shift()&lt;/code&gt;で取り出すと、それだけで2秒が過ぎます。
+&lt;code&gt;push()&lt;/code&gt;および&lt;code&gt;pop()&lt;/code&gt;は高速でできるので、普通の配列はスタックとしてのみ使用し、キューは自前で実装する必要があります。&lt;/p&gt;
+
+&lt;p&gt;参考までに、私は次のようなコードを使用しています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;export default class Queue&amp;lt;T&amp;gt; {
+	private _in: Array&amp;lt;T&amp;gt;;
+	private _out: Array&amp;lt;T&amp;gt;;
+
+	get length(): number {
+		return this._in.length + this._out.length;
+	}
+
+	constructor(iterable?: Iterable&amp;lt;T&amp;gt;) {
+		this._in = iterable === undefined ? new Array&amp;lt;T&amp;gt;() : [...iterable];
+		this._out = new Array&amp;lt;T&amp;gt;();
+	}
+
+	private _fix() {
+		this._out = this._in.reverse().concat(this._out);
+		this._in = new Array&amp;lt;T&amp;gt;();
+	}
+
+	push(...values: Array&amp;lt;T&amp;gt;): void {
+		this._in.push(...values);
+	}
+
+	shift(): T | undefined {
+		if (this._out.length === 0) this._fix();
+		return this._out.pop();
+	}
+
+	toArray(): Array&amp;lt;T&amp;gt; {
+		this._fix();
+		return this._out.slice().reverse();
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;array-prototype-fill-は同一オブジェクトで埋められる:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;Array.prototype.fill()は同一オブジェクトで埋められる&lt;/h2&gt;
+
+&lt;p&gt;まあこれは気付かなかった私がよくないという例ですが、一応。&lt;/p&gt;
+
+&lt;p&gt;0埋めされた3×3の二次元配列を用意しようとして、次のようなコードを書いたとします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;const a = new Array(3).fill(new Array(3).fill(0));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;まあ確かに0埋めされた3×3の二次元配列は得られますが、a[0]とa[1]とa[2]は同じ一次元配列を参照しています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;a[0][0] = 1;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とすると、aの中身は&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;[[1,0,0]
+ [1,0,0]
+ [1,0,0]]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;となってしまいます。
+そのため、多次元配列を初期化するときは横着せずにforで回すようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;const a = new Array(3);
+for(let i=0; i&amp;lt;3; i++){
+	a[i].push(new Array(3).fill(0));
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;以上が、私がJavaScript/TypeScriptで競技プログラミングをする際に気をつけている点です。&lt;/p&gt;
+
+&lt;p&gt;こうして書き出してみると、数値が大きくなると詰むとか再帰がろくに使えないだとかでろくな言語じゃないなという感じですね。
+競技プログラミングの問題自体がC/C++で解くことを想定されている節があるので、仕方のないことではあります。&lt;/p&gt;
+
+&lt;p&gt;とはいえ、以上のことさえ気に留めていれば、JavaScript/TypeScriptを使っていることが原因で詰むことはほとんどないと思います。
+JavaScriptそのものは非常に書きやすい言語なので、ハマりどころを把握した上で選択肢にしていただける方が増えればいいなと思っています。&lt;/p&gt;
+
+      </description>
+    </item>
     
     <item>
       <title>JavaScript/TypeScriptで競技プログラミングをするには 前編</title>
@@ -20,6 +191,8 @@
 
 &lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
 今回は前者についてです。&lt;/p&gt;
+
+&lt;p&gt;追記：&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/&#34;&gt;後編&lt;/a&gt;書きました。&lt;/p&gt;
 
 &lt;p&gt;競技プログラミングをやるのにC++を選択しない時点で物好きという気はしますが、私は普段からTypeScriptをメインに使って問題を解いています。
 この前AtCoder Problemsに&lt;a href=&#34;http://kenkoooo.com/atcoder/?kind=lang&#34;&gt;Language Owners Ranking&lt;/a&gt;ができていたので見てみたらTypeScriptで1位を取っていました(2018年2月時点)。
@@ -122,7 +295,7 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
 &lt;hr /&gt;
 
 &lt;p&gt;ここまで書いていて思った以上に分量が膨らんでしまいました。
-後編では、実際にJavaScript/TypeScriptで問題を解く上で気をつけている点を書いていきます。&lt;/p&gt;
+&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/&#34;&gt;後編&lt;/a&gt;では、実際にJavaScript/TypeScriptで問題を解く上で気をつけている点を書いていきます。&lt;/p&gt;
 
       </description>
     </item>
@@ -3177,333 +3350,6 @@ LR(1) DFA、クロージャー展開、構文解析表等について詳細な�
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回:儀式の下準備&lt;/a&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;次回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
-
-      </description>
-    </item>
-    
-    <item>
-      <title>LR(1)パーサジェネレータを自作して構文解析をする 第3回:儀式の下準備</title>
-      <link>http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/</link>
-      <pubDate>Tue, 21 Mar 2017 00:29:18 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/</guid>
-      <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;前回&lt;/a&gt;は字句解析器の作成を行ったので、次にLR(1)法による構文解析のためのパーサジェネレータの作成に入っていきます。
-今回は、LR(1)構文解析器の構築のために必要な、終端記号と非終端記号の区別、Nulls集合、First集合の導出等を行えるようにしていきます。&lt;/p&gt;
-
-&lt;p&gt;いよいよ構文解析部分の実装にとりかかるため、今後はLR(1)法に焦点を絞って解説していきます。&lt;/p&gt;
-
-&lt;p&gt;今回はその準備段階として必要になる部分を作っていくため、どんどん実装を進めていきます。&lt;/p&gt;
-
-&lt;h2 id=&#34;構文規則を定義する:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;構文規則を定義する&lt;/h2&gt;
-
-&lt;p&gt;まずは、前回字句規則を定義したように、構文規則を定義していく必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;export interface LexDefinitionSection{
-	token: Token|null;
-	pattern: string|RegExp;
-}
-export type LexDefinitions = Array&amp;lt;LexDefinitionSection&amp;gt;;
-
-export interface SyntaxDefinitionSection{
-	ltoken: Token;
-	pattern: Array&amp;lt;Token&amp;gt;;
-}
-export type SyntaxDefinitions = Array&amp;lt;SyntaxDefinitionSection&amp;gt;;
-
-export interface GrammarDefinition{
-	lex: LexDefinitions;
-	syntax: SyntaxDefinitions;
-	start_symbol: Token;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;字句規則と構文規則を合わせて、上記のように定義しておきましょう。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;で定義した構文規則をこのデータ形式に直すと、以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;const syntax:SyntaxDefinitions = [
-	{
-		ltoken: &amp;quot;EXP&amp;quot;,
-		pattern: [&amp;quot;EXP&amp;quot;, &amp;quot;PLUS&amp;quot;, &amp;quot;TERM&amp;quot;]
-	},
-	{
-		ltoken: &amp;quot;EXP&amp;quot;,
-		pattern: [&amp;quot;TERM&amp;quot;]
-	},
-	{
-		ltoken: &amp;quot;TERM&amp;quot;,
-		pattern: [&amp;quot;TERM&amp;quot;, &amp;quot;ASTERISK&amp;quot;, &amp;quot;ATOM&amp;quot;]
-	},
-	{
-		ltoken: &amp;quot;TERM&amp;quot;,
-		pattern: [&amp;quot;ATOM&amp;quot;]
-	},
-	{
-		ltoken: &amp;quot;ATOM&amp;quot;,
-		pattern:[&amp;quot;DIGITS&amp;quot;]
-	},
-	{
-		ltoken: &amp;quot;ATOM&amp;quot;,
-		pattern:[&amp;quot;LPAREN&amp;quot;, &amp;quot;EXP&amp;quot;, &amp;quot;RPAREN&amp;quot;]
-	}
-];
-const lex:LexDefinitions = [
-	{token:&amp;quot;DIGITS&amp;quot;, pattern:/[1-9][0-9]*/},
-	{token:&amp;quot;PLUS&amp;quot;, pattern:&amp;quot;+&amp;quot;},
-	{token:&amp;quot;ASTERISK&amp;quot;, pattern:&amp;quot;*&amp;quot;},
-	{token:&amp;quot;LPAREN&amp;quot;, pattern:&amp;quot;(&amp;quot;},
-	{token:&amp;quot;RPAREN&amp;quot;, pattern:&amp;quot;)&amp;quot;},
-	{token:null, pattern:/\s/},
-	{token:&amp;quot;INVALID&amp;quot;, pattern:/./},
-];
-const grammar:GrammarDefinition = {
-	lex: lex,
-	syntax: syntax,
-	start_symbol: &amp;quot;EXP&amp;quot;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ルール一行ごとに一つのオブジェクトを割り当てています。
-また、&lt;code&gt;start_symbol&lt;/code&gt;の定義を加えていることに注意してください。
-これは文字通り開始記号のことであり、最初にどの記号から構文解析を開始するか表すために必要です。
-最終的に構文解析を行った結果として構文木を得た場合、この開始記号が構文木の根となります。&lt;/p&gt;
-
-&lt;h2 id=&#34;終端記号と非終端記号を区別する:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;終端記号と非終端記号を区別する&lt;/h2&gt;
-
-&lt;p&gt;構文解析器を作るためには、与えられた構文から終端記号と非終端記号を区別できるようにする必要があります。
-定義を再確認しておくと、規則の左辺に現れることのない記号が終端記号、現れる記号が非終端記号です。&lt;/p&gt;
-
-&lt;p&gt;実装上難しい点は特にないので、簡単に済ませてしまいましょう。&lt;/p&gt;
-
-&lt;p&gt;ひとまず、SymbolDiscriminatorというクラスを作って終端記号と非終端記号の問い合わせをできるようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// symboldiscriminator.d.ts
-export declare class SymbolDiscriminator {
-    private terminal_symbols;
-    private nonterminal_symbols;
-    constructor(syntaxdef: SyntaxDefinitions);
-    getTerminalSymbols(): Set&amp;lt;Token&amp;gt;;
-    getNonterminalSymbols(): Set&amp;lt;Token&amp;gt;;
-    isTerminalSymbol(symbol: Token): boolean;
-    isNonterminalSymbol(symbol: Token): boolean;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;実際のコードは以下を参照してください。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// コンストラクタの実装のみ抜粋
-constructor(syntaxdef:SyntaxDefinitions){
-	this.terminal_symbols = new Set&amp;lt;Token&amp;gt;();
-	this.nonterminal_symbols = new Set&amp;lt;Token&amp;gt;();
-
-	// 左辺値の登録
-	for(let sect of syntaxdef){
-		let symbol = sect.ltoken;
-		// 構文規則の左辺に現れる記号は非終端記号
-		this.nonterminal_symbols.add(symbol);
-	}
-	// 右辺値の登録
-	for(let sect of syntaxdef){
-		for(let symbol of sect.pattern){
-			if(!this.nonterminal_symbols.has(symbol)){
-				// 非終端記号でない(=左辺値に現れない)場合、終端記号である
-				this.terminal_symbols.add(symbol);
-			}
-		}
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2つのSetを用意し、コンストラクタの呼び出し時に左辺に現れる記号とそうでない記号で分けています。
-これで、トークンを与えるとそれが終端記号かどうか、非終端記号かどうかを判別できるようになりました。&lt;/p&gt;
-
-&lt;p&gt;なおこの記事において、「トークン」と「記号」は概念上は同様の意味を持ちますが、前者はプログラム内で記号を表すための構造として扱い、理論的な概念について触れる際は後者を使うものとします。&lt;/p&gt;
-
-&lt;h2 id=&#34;nulls集合とfirst集合:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合とFirst集合&lt;/h2&gt;
-
-&lt;p&gt;構文解析器の作成のためには、First集合というものを求める必要があります。
-そしてFisrt集合を求めるためには、Nulls集合が必要です。&lt;/p&gt;
-
-&lt;p&gt;First集合はFirst関数などとも呼ばれます。
-まあ名前なんてどうでもいいのですが、とにかくFirstとNullsを導出しなければなりません。
-順を追って見て行きましょう。
-例に漏れず、&lt;a href=&#34;https://twitter.com/ki6o4&#34;&gt;うさぎさん(@ki6o4)&lt;/a&gt;の&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://kimiyuki.net/blog/2016/08/03/context-free-grammar/&#34;&gt;文脈自由文法とその構文解析法 &amp;middot; うさぎ小屋&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;が詳しいので厳密な定義等はそちらを参照してください(First,NullableはLL(1)の項で紹介されています)。&lt;/p&gt;
-
-&lt;h3 id=&#34;nulls集合を求める:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合を求める&lt;/h3&gt;
-
-&lt;h4 id=&#34;nulls集合とは:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合とは&lt;/h4&gt;
-
-&lt;p&gt;ある終端記号または非終端記号について、それが「Nullableである」かどうかを判別する必要があります。
-「Nullableな記号」を集めた集合をNulls集合ということにします。
-記号がNullableであるとは、その記号から空列が導かれうることを意味します。&lt;/p&gt;
-
-&lt;p&gt;今回題材としている数式の構文規則には、「右辺が存在しない」ルールはありません。
-しかし、解析したい構文によっては、右辺が存在しない、つまり左辺から空列が導かれるルールが存在することがあります。
-空列とはスペース(空白)等を意味するのではなく、長さ0の入力を意味します。
-具体的には、次のようなルールを見てみましょう。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; Y &amp;quot;0&amp;quot;
-Y -&amp;gt; &amp;quot;1&amp;quot;
-Y -&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;構文規則の三行目の右辺には何も書かれていません。
-このような場合、&lt;code&gt;Y&lt;/code&gt;は&lt;code&gt;1&lt;/code&gt;もしくは空列となり得ます。
-よって&lt;code&gt;X&lt;/code&gt;は、&lt;code&gt;10&lt;/code&gt;と&lt;code&gt;0&lt;/code&gt;の2通りが許容されるのです。
-ここで、&lt;code&gt;Y&lt;/code&gt;は空列となり得るため、Nulls集合に含まれます。
-さらに、次のような例を見てください。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;Z -&amp;gt; Y
-Y -&amp;gt; &amp;quot;1&amp;quot;
-Y -&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合、&lt;code&gt;Z&lt;/code&gt;は&lt;code&gt;1&lt;/code&gt;と空列の2通りとなる可能性があります。
-よって、&lt;code&gt;Z&lt;/code&gt;もNullableであるといえます。
-このように、その記号自体が空列となるルールを指定していなくても、右辺の記号次第では空列となることがあります。
-ひとつでも空列となるパターンが存在する場合、Nulls集合に含まなければなりません。
-また当然ですが、左辺に現れることのない終端記号はNullableではありません。&lt;/p&gt;
-
-&lt;h4 id=&#34;nulls集合を実装する:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合を実装する&lt;/h4&gt;
-
-&lt;p&gt;なにやら面倒そうですが、実装はそう複雑ではありません。
-NullableSetクラスを作ってみましょう。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// nullableset.ts
-export class NullableSet{
-	private nulls:Set&amp;lt;Token&amp;gt;;
-	constructor(private syntax: SyntaxDefinitions){
-		this.generateNulls();
-	}
-	// nulls初期化
-	private generateNulls(){
-		// 制約条件を導出するために、
-		// 空列になりうる記号の集合nullsを導出
-		this.nulls = new Set&amp;lt;Token&amp;gt;();
-		for(let rule of this.syntax){
-			// 右辺の記号の数が0の規則を持つ記号は空列になりうる
-			if(rule.pattern.length == 0){
-				this.nulls.add(rule.ltoken);
-			}
-		}
-
-		// 変更が起きなくなるまでループする
-		let flg_changed:boolean = true;
-		while(flg_changed){
-			flg_changed = false;
-			for(let rule of this.syntax){
-				// 既にnullsに含まれていればスキップ
-				if(this.isNullable(rule.ltoken)) continue;
-
-				let flg_nulls = true;
-				// 右辺に含まれる記号がすべてnullableの場合はその左辺はnullable
-				for(let token of rule.pattern){
-					if(!this.isNullable(token)){
-						// 一つでもnullableでない記号があるならnon-nullable
-						flg_nulls = false;
-						break;
-					}
-				}
-				if(flg_nulls){
-					flg_changed = true;
-					this.nulls.add(rule.ltoken);
-				}
-			}
-		}
-	}
-	public isNullable(x:Token){
-		return this.nulls.has(x);
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;アルゴリズムは以下の通りです。&lt;br /&gt;
-まず、右辺の記号の数が0になるような規則を持っている記号は明らかにNullableです。
-そのため、初期化段階として、そのような規則を探してNulls集合に追加します。&lt;br /&gt;
-次に、それ以外の記号がNullableであるためには、規則の右辺がすべてNullableな記号である必要があります。
-そこで、すべての規則を調べ、その右辺の記号がすべて既存のNull集合に含まれているならば、その記号もNulls集合に追加します。&lt;br /&gt;
-この処理を、一巡しても新しいNullableな規則が追加されなくなるまで繰り返せば終了です。&lt;/p&gt;
-
-&lt;h3 id=&#34;first集合を求める:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;First集合を求める&lt;/h3&gt;
-
-&lt;h4 id=&#34;first集合とは:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;First集合とは&lt;/h4&gt;
-
-&lt;p&gt;たとえば先ほど挙げた&lt;code&gt;X&lt;/code&gt;が&lt;code&gt;10&lt;/code&gt;や&lt;code&gt;0&lt;/code&gt;となるように、非終端記号は規則をたどっていくと終端記号のみの列に変換することができます。
-構文解析を行うためには、ある非終端記号から得られるそのような終端記号の列のうち、最も左側にどのような終端記号が来るのかを知る必要があります。
-今解析している記号の次に非終端記号が来るときに、実際にどのような終端記号が来るのかを調べることによって、(1)先読み(&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;参照)が可能となるわけです。&lt;/p&gt;
-
-&lt;p&gt;このように、ある非終端記号と、そこから得られる可能性のある終端記号の列の先頭に来る記号の集合を対応付けたものを、First集合またはFirst関数と呼びます。
-たとえば、先ほどの&lt;code&gt;X&lt;/code&gt;を例にすると、&lt;code&gt;First(X)&lt;/code&gt;は、&lt;code&gt;10&lt;/code&gt;と&lt;code&gt;0&lt;/code&gt;のそれぞれ左端の記号をとって&lt;code&gt;{1, 0}&lt;/code&gt;となります。&lt;/p&gt;
-
-&lt;p&gt;Aが終端記号であるなら、&lt;code&gt;First(A)&lt;/code&gt;は&lt;code&gt;{A}&lt;/code&gt;(A自身のみを要素とする集合)です。
-また、Firstに与える引数は記号だけでなく記号列である可能性もあります。
-&lt;code&gt;First(YA)&lt;/code&gt;なら、&lt;code&gt;Y&lt;/code&gt;がNullableであるため、&lt;code&gt;YA&lt;/code&gt;から得られうる文字列の左端になりうるのは&lt;code&gt;1&lt;/code&gt;と&lt;code&gt;A&lt;/code&gt;なので、&lt;code&gt;{1, A}&lt;/code&gt;のようになるでしょう。&lt;/p&gt;
-
-&lt;h4 id=&#34;first集合の実装:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;First集合の実装&lt;/h4&gt;
-
-&lt;p&gt;話がごちゃごちゃしてきましたが、実装に移りましょう。
-基本的なアルゴリズムは、以下のようになります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ある記号&lt;code&gt;A&lt;/code&gt;が終端記号なら、&lt;code&gt;First(A)&lt;/code&gt;は&lt;code&gt;{A}&lt;/code&gt;である。全ての終端記号についてそのように初期化する。&lt;/li&gt;
-&lt;li&gt;非終端記号に対応するFirst集合は、まず空集合で初期化する。&lt;/li&gt;
-&lt;li&gt;ルール &lt;code&gt;X -&amp;gt; Y1 Y2 ... Yi&lt;/code&gt; について、以下の制約を生成する。
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;First(X) ⊇ First(Y1)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Y1&lt;/code&gt;がNullableなら &lt;code&gt;First(X) ⊇ First(Y2)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Y1&lt;/code&gt;および&lt;code&gt;Y2&lt;/code&gt;がともにNullableなら &lt;code&gt;First(X) ⊇ First(Y3)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Y1&lt;/code&gt;および&lt;code&gt;Y2&lt;/code&gt;および&lt;code&gt;Y3&lt;/code&gt;がともにNullableなら &lt;code&gt;First(X) ⊇ First(Y4)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;以下繰り返し&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;生成した制約に従い、スーパーセット側にサブセット側の集合の持つ記号を追加していく(制約の解消)。&lt;/li&gt;
-&lt;li&gt;制約の解消を全ての集合に変化がなくなるまで繰り返す。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;わかりにくいですね。
-ちなみにこのアルゴリズムは、言葉で定義するよりもプログラムを書いたほうがわかりやすい類のものです。&lt;/p&gt;
-
-&lt;p&gt;とはいえちょっとコードが長いので、URLから参照をお願いします。
-&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// firstset.d.ts
-export declare class FirstSet {
-    private syntax;
-    private symbols;
-    private first_map;
-    private nulls;
-    constructor(syntax: SyntaxDefinitions, symbols: SymbolDiscriminator);
-    private generateFirst();
-    get(arg: Token): Set&amp;lt;Token&amp;gt;;
-    get(arg: Array&amp;lt;Token&amp;gt;): Set&amp;lt;Token&amp;gt;;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;実のところNulls集合はFirst集合を求める時にしか使わないので、First関数のprivateメンバとしてNullableSetインスタンスを生成して使用します。
-SymbolDiscriminatorは他でも使いまわす必要があるので、コンストラクタ引数による依存性の注入を行います。&lt;/p&gt;
-
-&lt;p&gt;また、First関数の引数には単一の記号だけでなく、記号列も与えられるようにする必要があります。
-getメソッドではトークンを引数にとるだけでなく、トークンの配列も引数として与えることができるようにします。
-トークンの配列が与えられた場合は、左から順に個別のトークンのFirst関数を呼び、そのトークンがNullableである限り、その右隣のFirst関数も呼び出し、その結果として得られた記号全てを要素とする集合を返すものとします。&lt;/p&gt;
-
-&lt;p&gt;説明が適当かつわかりにくくて申し訳ありませんが、どうせ準備段階なので軽く飛ばして先に進めていきましょう(&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;に参考資料をまとめてあるため、詳細かつ厳密に知りたい方はそちらを参照してください)。&lt;/p&gt;
-
-&lt;p&gt;これでひとまずFirst集合の導出まで終わったので、次回からは構文解析表の作成にとりかかります。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;前回:字句解析器の実装&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;次回:かんたんLR(1)法入門&lt;/a&gt;&lt;/p&gt;
 
       </description>
     </item>
