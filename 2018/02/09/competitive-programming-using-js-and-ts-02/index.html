@@ -69,7 +69,8 @@
         <h1 class="article-title"><a href="http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/">JavaScript/TypeScriptで競技プログラミングをするには 後編</a></h1>
         <span class="article-datetime"><time>2018-02-09 19:30:00</time></span>
         <p class="article-categories">Category:
-        <a href="http://tatamo.81.la/blog/categories/competitive-programming/">competitive-programming</a></p>
+        <a href="http://tatamo.81.la/blog/categories/competitive-programming/">competitive-programming</a>
+        <a href="http://tatamo.81.la/blog/categories/javascript/">javascript</a></p>
         <p class="article-tags">Tag:
         <a href="http://tatamo.81.la/blog/tags/dev/">dev</a></p>
         
@@ -87,7 +88,7 @@
 <h3 id="末尾再帰最適化が実装されていない上にコールスタック上限が小さく-変更できない:0e0dc8f43e8ce1dc88edcad0618067c3">末尾再帰最適化が実装されていない上にコールスタック上限が小さく、変更できない</h3>
 
 <p>JavaScriptではPythonの<code>sys.setrecursionlimit()</code>のように再帰呼び出し回数の最大値を変更することができません。
-コールスタックの上限は処理系に依存しますが、たとえばnode.js v5.12.0では15712です。
+コールスタックの上限は処理系に依存しますが、たとえばnode.js v5.12.0 (x64)では15712です。
 また、末尾再帰最適化はES2015の仕様に盛り込まれていた内容ですが、現在においてもこれを実装している処理系は非常に少ないのが現状です。</p>
 
 <p>これらの要因のため、要素数が数万程度の何かに対して手っ取り早く再帰でDFSを書こうとすると、ほぼ間違いなくMaximum call stack size exceededで落ちます。
@@ -215,12 +216,14 @@ inputに10万行程度の入力を入れて、先頭から1行ずつ<code>shift(
 </code></pre>
 
 <p>となってしまいます。
-そのため、多次元配列を初期化するときは横着せずにforで回すようにします。</p>
+そのため、多次元配列を初期化するときは横着せずにforで回すようにするか、適当な要素を入れてからmapで埋めます。</p>
 
 <pre><code class="language-javascript">const a = new Array(3);
 for(let i=0; i&lt;3; i++){
 	a[i].push(new Array(3).fill(0));
 }
+
+const a = new Array(3).fill([]).map(()=&gt;new Array(3).fill());
 </code></pre>
 
 <hr />
@@ -264,6 +267,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
                 <li><a href="http://tatamo.81.la/blog/categories/diary">diary (4)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/game">game (5)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/javascript">javascript (2)</a></li>
                 <li><a href="http://tatamo.81.la/blog/categories/pc">pc (2)</a></li>
                 </ul>
             </section>
