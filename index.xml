@@ -6,8 +6,250 @@
     <description>Recent content in わたしろぐ on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Fri, 09 Feb 2018 19:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 16 Sep 2018 18:00:01 +0900</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ISUCON8予選 序盤環境構築覚え書き</title>
+      <link>http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/</link>
+      <pubDate>Sun, 16 Sep 2018 18:00:01 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2018/09/16/isucon8-qual/&#34;&gt;一つ前&lt;/a&gt;の記事は予選の流れや感想を書きましたが、こちらは&lt;a href=&#34;http://isucon.net/archives/52193980.html&#34;&gt;ISUCON8&lt;/a&gt;の予選の序盤にやったことのメモです。&lt;/p&gt;
+
+&lt;p&gt;予備知識ほぼゼロで予選に突っ込んだ初心者のメモなので初歩的な内容だと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;今回の予選で使用したリポジトリは &lt;a href=&#34;https://github.com/Tatamo/isucon8-q&#34;&gt;https://github.com/Tatamo/isucon8-q&lt;/a&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;解析ツール&#34;&gt;解析ツール&lt;/h2&gt;
+
+&lt;p&gt;初心者なので、ISUCONをやる人がだいたい入れてるらしいツールを入れました。
+入れるツールは予選前日の夜に適当にググって決めました。&lt;/p&gt;
+
+&lt;h3 id=&#34;netdata-https-github-com-firehol-netdata&#34;&gt;&lt;a href=&#34;https://github.com/firehol/netdata&#34;&gt;netdata&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;自動インストーラが用意されており、コマンド一発でモニタリングができるところまでいくのでとても便利です。
+(私は担当ではなかったのでよくわかりませんが、メンバーは一応これを入れるのに手間取っていました… ファイアウォールの設定はちゃんと見るべきらしいです)
+とりあえずベンチマークを走らせると負荷の状況が一目でわかりますし、負荷が上がることでベンチマークが実行されていることがわかって安心できたりします。&lt;/p&gt;
+
+&lt;h3 id=&#34;alp-https-github-com-tkuchiki-alp&#34;&gt;&lt;a href=&#34;https://github.com/tkuchiki/alp&#34;&gt;alp&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;zipを落としてくるだけなのでこちらも導入が簡単です。
+ただしnginxやh2oのログの形式をalpに対応したフォーマットに変えないといけないので注意が必要です。
+実際これを使って表を眺めるだけでも重そうな処理がだいたいわかってくるような気がするので、入れておくべきだと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;pt-query-digest-https-www-percona-com-doc-percona-toolkit-latest-pt-query-digest-html&#34;&gt;&lt;a href=&#34;https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html&#34;&gt;pt-query-digest&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;入れましたが使いませんでした。
+他の人が使ったのかどうかは知りません。
+そもそもめちゃくちゃ重いクエリはalpのログやソースコードを見れば見当がつきますし、それで発見できない中程度の遅さのクエリの修正にまで取り掛かるだけの時間がありませんでした。&lt;/p&gt;
+
+&lt;p&gt;今回は使用しませんでしたが、docker経由でphpMyAdminを使えばDBの見通しが良くなるので、導入してもよかったかと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;デプロイ環境構築&#34;&gt;デプロイ環境構築&lt;/h2&gt;
+
+&lt;p&gt;アプリケーションをgit管理するにしても、サーバー上で直接編集すると確実にコンフリクトします。
+また、サーバーが3台あったので更新をいちいち手動で反映していると死にます。&lt;/p&gt;
+
+&lt;h3 id=&#34;ssh&#34;&gt;SSH&lt;/h3&gt;
+
+&lt;p&gt;自動デプロイの円滑化に絡んでくるため、SSHの設定は重要です。
+まずローカルでは、メンバー全員で&lt;code&gt;~/.ssh/config&lt;/code&gt;の接続ホストを共有します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Host isuA
+	HostName 222.222.222.221
+	User isucon
+
+Host isuB
+	HostName 222.222.222.222
+	User isucon
+
+Host isuC
+	HostName 222.222.222.223
+	User isucon
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のようにして、メンバー全員が同じ解決名でサーバーに入れるようにすることが必要です。
+また、全メンバーは競技開始直後に&lt;code&gt;ssh-copy-id&lt;/code&gt;で自らの公開鍵を3台のサーバーすべてに送信しておきます。
+&lt;code&gt;ssh-add&lt;/code&gt;で自分の秘密鍵をssh-agentに登録しておけば、SSH鍵のパスフレーズを入力せずサーバーに入れるようになります。&lt;/p&gt;
+
+&lt;p&gt;次に、3台ある競技用マシンすべてで新しく鍵を作成し、これらをすべてGitHubに登録しておきます。&lt;/p&gt;
+
+&lt;h3 id=&#34;github-private-repository&#34;&gt;GitHub private repository&lt;/h3&gt;
+
+&lt;p&gt;メンバーがローカルで編集したファイルをGitHubにpushし、競技用サーバーではそれをpullするという構成にしました。
+publicなリポジトリでこれをやってしまうとレギュレーション違反で失格なので注意が必要です。
+とはいえ不具合が出た時などは直接サーバーに入ったほうが楽なこともあるので、基本は編集衝突を避けてローカルで編集しつつ臨機応変に、という感じです。&lt;/p&gt;
+
+&lt;p&gt;私たちのチームでは、専用のGitHubアカウントを作ってそこに公開鍵を登録するようにしました。
+(※GitHubの利用規約に抵触しないようにするため、 「**-bot」のような名前にして予選終了後は消すことで、&lt;a href=&#34;https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users&#34;&gt;Machine user&lt;/a&gt;と言い張ることにします。実際自動化のために用いるので…)&lt;/p&gt;
+
+&lt;p&gt;そして、前述したSSH公開鍵のGitHubへの登録ができたら、競技用サーバーに用意されているディレクトリをgit管理下に置きます。
+このとき、&lt;code&gt;~/.gitconfig&lt;/code&gt; に以下のように書いておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[url &amp;quot;git@github.com:&amp;quot;]
+	Insteadof = https://github.com/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでgithubへのアクセスがsshを経由して行われるようになります。
+サーバーのファイルを直接編集してもコミットできるように、author情報も同時に書いておくといいかもしれません。&lt;/p&gt;
+
+&lt;p&gt;必要ならssh-agentを起動するなどして、少なくとも認証なしでgit pullできるようになると良いです。&lt;/p&gt;
+
+&lt;p&gt;git管理下に置く方法としては、3台あるうち適当な1台でgit管理したい全ファイルをGitHubにpushして、他のサーバーでは既に存在するファイル群を消してから同じ場所にgit cloneするのが早いと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;デプロイ用スクリプトを用意する&#34;&gt;デプロイ用スクリプトを用意する&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.bitjourney.com/entry/2017/11/09/101740&#34;&gt;https://blog.bitjourney.com/entry/2017/11/09/101740&lt;/a&gt;&lt;br /&gt;
+ここに「デプロイスクリプトは超大事」って書いてありました。
+ここで紹介されている &lt;a href=&#34;https://github.com/gfx/isucon7-qualify&#34;&gt;https://github.com/gfx/isucon7-qualify&lt;/a&gt; のrestart.shとrestart-all-from-local.shを真似します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tatamo/isucon8-q/blob/master/restart.sh&#34;&gt;https://github.com/Tatamo/isucon8-q/blob/master/restart.sh&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://github.com/Tatamo/isucon8-q/blob/master/restart-all-from-local.sh&#34;&gt;https://github.com/Tatamo/isucon8-q/blob/master/restart-all-from-local.sh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;こんな感じになりました。
+おそらく重要だと思うのは、&lt;code&gt;ssh isuA ...&lt;/code&gt; のようにメンバー全員でhost名が共有されていること、ローカルでのsshおよびサーバーの&lt;code&gt;restart.sh&lt;/code&gt;のgitコマンドが認証なしで通るようになっていることだと思います。
+SSHまわりの設定をしておけば、一切の認証が発生しないため&lt;code&gt;./restart-all-from-local.sh&lt;/code&gt;の一発で全サーバーにGitHib上の最新のコミットを反映させることができます。&lt;/p&gt;
+
+&lt;p&gt;実際のところ、おそらく競技サーバー側の鍵生成は必要なくて、ssh-agentで鍵を使い回せばローカルのgithub用公開鍵をそのまま使ってサーバーのgitを触れる気がしますが、あまりよく調べていません。&lt;/p&gt;
+
+&lt;h3 id=&#34;リポジトリで管理する範囲について&#34;&gt;リポジトリで管理する範囲について&lt;/h3&gt;
+
+&lt;p&gt;ホームディレクトリ以下にサービス名のついたフォルダがあったので、そこをgit管理すればいいかなと思いました。
+nginxなどの設定ファイルの類は、リポジトリの下に&lt;code&gt;etc/&lt;/code&gt;みたいなフォルダを作ってそこで管理しました。
+サーバーごとに分ける必要が出てきたらその都度増やします。
+これも自動で反映できるよう、もともとの設定ファイルをシンボリックリンクに置き換えておきます。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;準備のための時間があるなら、これらの構築作業はchefやansibleやシェルスクリプトで自動化しておくと効果は高いと思います。
+競技開始時にやるべきことは予め決めておけるので、そういった作業を簡単なコマンドで行えるようにしておけば確実に節約できます。&lt;/p&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>ISUCON8の予選に出場して負けました</title>
+      <link>http://tatamo.81.la/blog/2018/09/16/isucon8-qual/</link>
+      <pubDate>Sun, 16 Sep 2018 18:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/09/16/isucon8-qual/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;http://isucon.net/archives/52193980.html&#34;&gt;isucon8&lt;/a&gt;の予選に参加しました。&lt;/p&gt;
+
+&lt;p&gt;結果としてスコアなしで敗退しました。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;序盤に行った環境構築の記事は&lt;a href=&#34;http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/&#34;&gt;こちら&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;今回の予選で使用したリポジトリは &lt;a href=&#34;https://github.com/Tatamo/isucon8-q&#34;&gt;https://github.com/Tatamo/isucon8-q&lt;/a&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;メンバー編成&#34;&gt;メンバー編成&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/__tatamo__&#34;&gt;わたし&lt;/a&gt;, &lt;a href=&#34;https://twitter.com/sensu_watson&#34;&gt;@sensu_watson&lt;/a&gt;氏, &lt;a href=&#34;https://twitter.com/uhyo_&#34;&gt;@uhyo_&lt;/a&gt;氏の チーム 🈚️ で参加しました。&lt;/p&gt;
+
+&lt;p&gt;全員多少のサーバー運用経験はありますが、ちゃんとした構築を行ったりした経験はほとんどなく、どちらかというと普段はフロントエンド寄りがメインのメンバーが多い構成です。&lt;/p&gt;
+
+&lt;h2 id=&#34;開始前&#34;&gt;開始前&lt;/h2&gt;
+
+&lt;h3 id=&#34;前日まで&#34;&gt;前日まで&lt;/h3&gt;
+
+&lt;p&gt;メンバー全員があまり暇ではなかったたため、事前の練習は時間が取れませんでした。
+1週間前からConoHaでISUCON7のインスタンスを建てて軽く触った程度の対策しかできていません。&lt;/p&gt;
+
+&lt;p&gt;私と@uhyo_氏がJavaScriptを読み書きできるので、nodejsを使用することにしました。&lt;/p&gt;
+
+&lt;h3 id=&#34;当日朝&#34;&gt;当日朝&lt;/h3&gt;
+
+&lt;p&gt;そもそもスロークエリとか&lt;code&gt;nginx.conf&lt;/code&gt;とか&lt;code&gt;/etc/systemd/system&lt;/code&gt;とか言われてもあまりよくわからないので、役割分担のしようがなさそうという雰囲気が漂っていました。
+そのため開始直後の作業のみ割り振りを決めておき、それ以降はその場で適当になんとかすることにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;経過&#34;&gt;経過&lt;/h2&gt;
+
+&lt;h3 id=&#34;序盤&#34;&gt;序盤&lt;/h3&gt;
+
+&lt;p&gt;それぞれデプロイ環境の構築、解析ツールのインストール、HTTPサーバーとDBの設定確認・変更と最初のベンチマークの起動を担当することになったため、作業にとりかかりました。
+解析ツールとしては、ISUCON7 などでgoogle検索したら1ページ目に出てきた&lt;a href=&#34;https://github.com/tkuchiki/alp&#34;&gt;alp&lt;/a&gt;, &lt;a href=&#34;https://github.com/firehol/netdata&#34;&gt;netdata&lt;/a&gt;, &lt;a href=&#34;https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html&#34;&gt;pt-query-digest&lt;/a&gt;を導入すると決めていました。&lt;/p&gt;
+
+&lt;p&gt;始まる前はてっきりUbuntu+nginx+MySQLとかの構成かと思っていたんですが、蓋を開けてみるとRed Hat+H2O+MariaDBで、&lt;code&gt;nginx.conf&lt;/code&gt;がない…などと困惑することになりました。
+当然H2Oを触ったことのある人は誰もいません。&lt;/p&gt;
+
+&lt;p&gt;この段階で既に何かとトラブルが起きたりしていましたが、1時間経過ぐらいでアプリケーションの中身を読み進めるフェーズに入りました。
+TypeScriptで書かれていたり&lt;code&gt;.prettierrc&lt;/code&gt;が置かれていたりしたのが意外でした(我々はTypeScriptで開発することが多いためこれはありがたいことです)が、@uhyo_氏曰く「&lt;code&gt;any&lt;/code&gt;が多いのでTypeScriptのありがたみが少ない」とのことでした。確かにそんな感じはしました。
+私の環境ではなぜかブラウザでアプリケーションにアクセスした際にフロントのJavaScript側でエラーが出たりしたため、今回のアプリがどのようなものか把握するにも少し手間取ったりしました。&lt;/p&gt;
+
+&lt;p&gt;alpのログと相談しつつ、&lt;code&gt;getEvent()&lt;/code&gt;がid一つごとにクエリを1回発行しているから重いね、などと言いつつも生SQLに怖気づいて手を入れられずにいる横で@uhyo_氏が着実に修正を加えていき、13時ごろにスコアが1,100から1,500に上昇して喜んだりしていました。&lt;/p&gt;
+
+&lt;h3 id=&#34;中盤&#34;&gt;中盤&lt;/h3&gt;
+
+&lt;p&gt;node.jsのログがとれていないのが厳しいという話になり、ログまわりを調べることにしました。
+systemdに慣れている人がおらず、私が担当しましたがログをjournalに流し込んで取得するのに1時間はかかってしまいました。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;code&gt;/var/log/h2o/access.log&lt;/code&gt;がアクセスを受けても更新されないことを見つけたり、かと思えばしばらくして見に行くとログが溜まっていることに気付いたりして首を傾げたりする作業をしました。&lt;/p&gt;
+
+&lt;p&gt;また残り時間が減ってきたので、これまで1台で稼働させていたサーバーを複数台構成に切り替えようという話になり、以降アプリケーションまわりはすべて@uhyo_氏が担当して私と@sensu_watson氏で構築にとりかかることにしました。&lt;/p&gt;
+
+&lt;p&gt;15時に@uhyo_氏が対処していたループ中でのsheetsテーブル取得解消の成果が出て、ここスコアが約1,500点から8,435点に上がったので大喜びしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2018/09/16/isucon8_screenshot.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2018/09/16/isucon8_screenshot.png&#34; alt=&#34;15時時点のスクリーンショット 8435点&#34;&gt;&lt;/a&gt;&lt;br /&gt;
+我々の全盛期の様子 なんと学生1位&lt;/p&gt;
+
+&lt;h3 id=&#34;終盤&#34;&gt;終盤&lt;/h3&gt;
+
+&lt;p&gt;どうでもいいことですが、3台のプライベートIPの末尾が.3, .2, .1となっていることに気付かずにグローバルIPだけ見てサーバーリストの上から順にA,B,Cサーバーと名前をつけたところ、競技中にサーバーリストの並びが.1, .2, .3 に切り替わったので上からC,B,Aとなり一時混乱しました。&lt;/p&gt;
+
+&lt;p&gt;netdataのグラフを見たところ、通信量やメモリ使用量よりもCPU使用率が飛び抜けて高負荷になっているようだったため、アプリケーション部分に2台割り当てて残りの1台をDBとすることに決めました。&lt;/p&gt;
+
+&lt;p&gt;私はまずDBを1つのサーバーに切り出す作業を始め、これはデータベース側でユーザーに外部からのアクセスを許可しないといけない点で少しつまづきつつも、基本的には環境変数の値を変えるだけだったのでおおよそうまくいきました(少なくともこの時はそう思っていました)。&lt;/p&gt;
+
+&lt;p&gt;続いてアプリケーション部分を2台に分けないといけないのですが、nginxですら誰も複数台構成を試した経験がないため非常に先行きが怪しい状況となっていました。
+選択肢としてH2Oを捨ててnginxに切り替えるという手もあるのですが、環境構築にも手間取る我々の戦力では新しくアプリケーションをインストールする際に多大な面倒が生じうることは目に見えています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream supercoolawesomeservice.com{
+	server foo.com;
+	server bar.com;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;などと書けばnginxならロードバランスしてくれるということは知っていました(実際に試したことはない)が、H2Oのドキュメントを探したものの&lt;a href=&#34;https://github.com/h2o/h2o/issues/775&#34;&gt;どうにも難しそう&lt;/a&gt;な気配がしていました。&lt;/p&gt;
+
+&lt;p&gt;とはいえ現状で足りていないのは計算資源であるため、適当な切り分け方だったとしてもサーバー1台よりはきっと良くなるに違いないだろう、ということで、なんとなく負荷が高そうに見えた &lt;code&gt;/api/users&lt;/code&gt; 以下に送られたリクエストだけをすべて2台目に流すことにしました。&lt;/p&gt;
+
+&lt;p&gt;その作業中に、 &lt;code&gt;/initialize&lt;/code&gt;へのアクセスを受けるとDBではなくローカルファイル上の.shファイルが読まれるため、DBサーバーを別に分けると初期化処理に失敗することが判明しました。
+そこでDBサーバーの停止させていたH2Oとnodejsを復活させ、&lt;code&gt;/initialize&lt;/code&gt;へのアクセスはこのDBサーバー上で処理することとしました。
+しかしこの対策は別サーバーへのリダイレクトが成功しないと有効でないため、H2Oをリバースプロキシとして使用する設定が完了するまではDBも動かないという状況になってしまいました。&lt;/p&gt;
+
+&lt;p&gt;この設定変更に2人とも苦戦し、3台構成がまともに動いたのは17時を大きくまわった頃で、残り時間は1時間もありませんでした。&lt;/p&gt;
+
+&lt;p&gt;細々とした不具合を修正したりしたものの、17時40分ごろに走らせたベンチマークがすべて失敗し、スコアが🈚️なのはよくないということでロールバックを決定しました。
+ここで、ネットワークまわりをロールバックする方針を採用したもののうまくいかず、アプリケーション部分も合わせて巻き戻したものの&lt;code&gt;initialize/&lt;/code&gt;か何かの処理が走らず失敗し、制限時間のためスコアなしの失格となりました。&lt;/p&gt;
+
+&lt;p&gt;実際にはこのロールバック方針は誤りで、アプリケーションロジック側に不具合が生じて時おりエラーが出るようになっていたというのが原因でした。
+nodejsのアプリケーション内でエラーが出ているというログは上がっていたのですが、それまで設定に手間取って何度もバグを出していたネットワークまわりが原因であるように思い込んでしまいました。&lt;/p&gt;
+
+&lt;h2 id=&#34;反省会&#34;&gt;反省会&lt;/h2&gt;
+
+&lt;p&gt;明らかな敗因としては練習不足で、これはまあわかりきっていたことなのでよいのですが、最終的にスコアなしで終わってしまった直接の原因としては不具合の出どころを見誤ったことにあると思います。
+複数台構成に切り替える際に断続的に一部のサーバーが動かなくなったり復帰したりを繰り返していたのですが、各自の作業内容のリアルタイムでの共有が不十分だったため、アプリケーションの動作確認ができない時間ができてしまったり、生きているサーバーの情報が行き渡らずに1台構成での動作確認のためのベンチマークを走らせられなかったりしました。
+そのため後半以降にベンチマークを実行できる機会が減ってしまい、結果としてネットワークとアプリケーションのどちらで落ちているのか確証が持てない状況が発生し、時間切れ直前の焦りも加わって大きな失敗となってしまいました。
+これはログをしっかり読んでいれば・ログを取得しやすい環境を構築していれば防げたことでもあると思いますし、チームからはVCを導入しておいたほうがよかったかもしれないという意見もありました。&lt;/p&gt;
+
+&lt;p&gt;まっとうに戦えるチームならこのぐらいのことは一瞬で終わらせているんだろうなあ、と思うことも多々ありました。
+とはいえ、単純な設定変更や環境構築でも何らかの失敗をして時間がかかってしまうのは、ある意味最初から想定していたことではあります。
+しかしせめてアプリケーションがちゃんと動く状態でのスコアがほしかったという悔しさがあります。
+拙いながらも自分たちで考えた構成が動いているところが見たかったですし、アプリケーション側でもスコアへの影響の大きいスロークエリの改善コミットが入っていたので、これをスコアに結びつけられなかったことは残念です。&lt;/p&gt;
+
+&lt;p&gt;私は最初JavaScriptを書いていくことになるかと思っていましたが、蓋を開けてみればアプリケーションはほぼ@uhyo_氏に投げてしまっていました。
+実際生のSQLを動作を変えないまま書き換える能力は今の私にはなさそうな気もしたので、中盤までのスコア上昇を支えてくれた@uhyo_氏の活躍には感謝の念に堪えません。&lt;/p&gt;
+
+&lt;p&gt;結局私がなにをしていたかというと、基本的には@sensu_watson氏と一緒に設定ファイルやログファイルを眺めてウンウン唸っていたのが主な仕事になるような気がしますが、過去10年で打った&lt;code&gt;systemctl&lt;/code&gt;コマンドの数を今日一日で軽く越えたり、見様見真似で全く未経験のサーバー複数台構成をその場ででっちあげたりすることができたので、これはこれで非常に刺激的な経験になったと思います。&lt;/p&gt;
+
+&lt;p&gt;最後にはなりますが、この場で謝辞を述べられるべきすべての方々に感謝です。&lt;/p&gt;
+      </description>
+    </item>
     
     <item>
       <title>JavaScript/TypeScriptで競技プログラミングをするには 後編</title>
@@ -2659,685 +2901,6 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
-      </description>
-    </item>
-    
-    <item>
-      <title>LR(1)パーサジェネレータを自作して構文解析をする 第5回:LR(1)パーサジェネレータの実装</title>
-      <link>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/</link>
-      <pubDate>Tue, 04 Apr 2017 21:54:01 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/</guid>
-      <description>
-        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回&lt;/a&gt;の記事ではLR(1)法の解説を行いました。
-今回は前回解説した部分の実装を行います。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;今回はひたすらパーサジェネレータの実装をしていきます。
-概略やアルゴリズムは既に紹介しているため、基本的に省略します。
-適宜&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回&lt;/a&gt;の記事を参照してください。&lt;/p&gt;
-
-&lt;p&gt;今回取り上げる部分は特にパフォーマンスに与える影響が大きいため、処理速度を重視した設計を行っています。
-そのため、天下り的な解説となる箇所が増えるかもしれませんがご了承ください。&lt;/p&gt;
-
-&lt;h2 id=&#34;syntaxdbクラスの作成&#34;&gt;SyntaxDBクラスの作成&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;第3回&lt;/a&gt;で終端記号と非終端記号の区別を行ったり、First集合を求めたりしたように、与えられた構文から様々な情報を得る必要があります。&lt;/p&gt;
-
-&lt;p&gt;そこで、それらの情報取得を担うクラスとしてSyntaxDBクラスを作成します。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// syntaxdb.d.ts
-export declare class SyntaxDB {
-    private syntax;
-    private _start_symbol;
-    private _first;
-    private _symbols;
-    private tokenmap;
-    private tokenid_counter;
-    private defmap;
-    constructor(grammar: GrammarDefinition);
-    private initDefMap();
-    readonly start_symbol: Token;
-    readonly first: FirstSet;
-    readonly symbols: SymbolDiscriminator;
-    findDef(x: Token): Array&amp;lt;{
-        id: number;
-        def: SyntaxDefinitionSection;
-    }&amp;gt;;
-    getTokenId(token: Token): number;
-    get(id: number): SyntaxDefinitionSection;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;SyntaxDBクラスの読み取り専用メンバとして第3回で作成したFirstSetとSymbolDiscriminatorを持たせており、このクラスから終端記号の区別、First集合の取得が可能です。
-また、開始記号の取得も行えるようにします。
-さらに、構文id(上から何番目かを表す番号)を与えるとそれに対応する規則を返す&lt;code&gt;get&lt;/code&gt;メソッド、記号を与えるとそれが左辺に現れる規則すべてを、構文idとともに返す&lt;code&gt;findDef&lt;/code&gt;メソッド、そして記号を与えるとそれに対応した一意なトークンidを返す&lt;code&gt;getTokenId&lt;/code&gt;メソッドを持ちます。&lt;/p&gt;
-
-&lt;p&gt;findDefメソッドは愚直に実装した場合、複数回呼ばれるとそのたびに&lt;code&gt;O(n)&lt;/code&gt;程度の計算量がかかります。
-そのため、SyntaxDBインスタンスの初期化時に非終端記号と規則群を対応付けたMapを生成する(計算量は&lt;code&gt;O(n)&lt;/code&gt;程度)ことで、findDefの呼び出し時にはMapの中身をそのまま返すだけで済むようにします。&lt;/p&gt;
-
-&lt;p&gt;getTokenIdメソッドは後述するアイテム集合部分で使用する必要がありますが、特に厳密なシリアライズや復元可能性を求めているわけではなく、単にハッシュ代わりに使用されます。
-そのため、同一のSyntaxDBインスタンスのgetTokenIdメソッドにトークンを与えると、同一のトークンならば必ず同じ番号が返ってくるようになっていればそれで構いません。
-よって、以下のような単純な実装で事足ります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// Tokenを与えると一意なidを返す
-public getTokenId(token: Token): number{
-	if(!this.tokenmap.has(token)) this.tokenmap.set(token, this.tokenid_counter++);
-	return this.tokenmap.get(token)!; /// ※ !はTypeScriptのnon-nullable注釈
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このSyntaxDBクラスは、パーサジェネレータ全体を通して一つのインスタンスのみを使いまわすようにします。&lt;/p&gt;
-
-&lt;h2 id=&#34;アイテム集合とクロージャー展開&#34;&gt;アイテム集合とクロージャー展開&lt;/h2&gt;
-
-&lt;p&gt;まずは、LRアイテムおよびその集合を表現するクラスを作っていきます。
-アイテム集合クラスには、自身をクロージャー展開する機能を持たせることとします。&lt;/p&gt;
-
-&lt;p&gt;また、DFAの構築において、「既存のアイテム集合の中に、新しく生成されたアイテム集合と一致するものが存在するかどうか判定する」処理が必要とされます。
-愚直に実装すると、この処理を1回行うだけで&lt;code&gt;O(n^3)&lt;/code&gt;程度の計算量が必要となり、パーサジェネレータの処理全体の中で最大のボトルネックとなりえます。
-そのため、2つのアイテム集合の高速な一致判定を行えるようにする必要があります。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// closure.d.ts
-export declare class ClosureItem {
-    private syntax;
-    private _syntax_id;
-    private _dot_index;
-    private _lookaheads;
-    private _lr0_hash;
-    private _lr1_hash;
-    constructor(syntax: SyntaxDB, _syntax_id: number, _dot_index: number, _lookaheads: Array&amp;lt;Token&amp;gt;);
-    readonly syntax_id: number;
-    readonly dot_index: number;
-    readonly lookaheads: Array&amp;lt;Token&amp;gt;;
-    private sortLA();
-    private updateHash();
-    getLR0Hash(): string;
-    getLR1Hash(): string;
-    isSameLR0(c: ClosureItem): boolean;
-    isSameLR1(c: ClosureItem): boolean;
-    merge(c: ClosureItem): ClosureItem | null;
-}
-export declare class ClosureSet {
-    private syntax;
-    private closureset;
-    private _lr0_hash;
-    private _lr1_hash;
-    constructor(syntax: SyntaxDB, closureset: Array&amp;lt;ClosureItem&amp;gt;);
-    private sort();
-    readonly size: number;
-    getArray(): ClosureItem[];
-    includes(item: ClosureItem): boolean;
-    isSameLR0(c: ClosureSet): boolean;
-    isSameLR1(c: ClosureSet): boolean;
-    private updateHash();
-    getLR0Hash(): string;
-    getLR1Hash(): string;
-    mergeLA(cs: ClosureSet): ClosureSet | null;
-    private expandClosure();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ClosureItemクラスはLRアイテム1つに対応し、構文id、&lt;code&gt;.&lt;/code&gt;の位置、および先読み記号の情報を持ちます。
-ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自身をクロージャー展開することが出来ます。
-さらに、後述するハッシュに関連した機能、および先読み部分のマージ機能などを持ちます。&lt;/p&gt;
-
-&lt;h3 id=&#34;クロージャー展開&#34;&gt;クロージャー展開&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// クロージャー展開を行う
-// TODO: リファクタリング
-private expandClosure(){
-	// 展開処理中はClosureItemのlookaheadsの要素数を常に1に保つこととする
-	// 初期化
-	let set:Array&amp;lt;ClosureItem&amp;gt; = [];
-	// ClosureItemをlookaheadsごとに分解する
-	for(let ci of this.closureset){
-		for(let la of ci.lookaheads){
-			set.push(new ClosureItem(this.syntax, ci.syntax_id, ci.dot_index, [la]));
-		}
-	}
-	this.closureset = set;
-	this.sort();
-
-	// 変更がなくなるまで繰り返す
-	let i=0;
-	while(i&amp;lt;this.closureset.length){
-		let ci = this.closureset[i++];
-		let {ltoken, pattern} = this.syntax.get(ci.syntax_id);
-
-		if(ci.dot_index == pattern.length) continue; // .が末尾にある場合はスキップ
-		let follow = pattern[ci.dot_index];
-		if(!this.syntax.symbols.isNonterminalSymbol(follow)) continue; // .の次の記号が非終端記号でないならばスキップ
-
-		// クロージャー展開を行う
-
-		// 先読み記号を導出
-		// ci.lookaheadsは要素数1のため、0番目のインデックスのみを参照すればよい
-		let lookaheads = [...this.syntax.first.get(pattern.slice(ci.dot_index+1).concat(ci.lookaheads[0])).values()];
-		lookaheads.sort((t1:Token, t2:Token)=&amp;gt;{
-			return this.syntax.getTokenId(t1) - this.syntax.getTokenId(t2);
-		});
-
-		// symbolを左辺にもつ全ての規則を、先読み記号を付与して追加
-		let definitions = this.syntax.findDef(follow);
-		for(let {id, def} of definitions){
-			for(let la of lookaheads){
-				let new_ci = new ClosureItem(this.syntax, id, 0, [la]);
-				// 重複がなければ新しいアイテムを追加する
-				let flg_duplicated = false;
-				for(let existing_item of this.closureset){
-					if(new_ci.isSameLR1(existing_item)){
-						flg_duplicated = true;
-						break;
-					}
-				}
-				if(!flg_duplicated){
-					this.closureset.push(new_ci);
-				}
-			}
-		}
-	}
-	this.sort();
-
-	// ClosureItemの先読み部分をマージする
-	let tmp = this.closureset;
-	this.closureset = [];
-	let lookaheads = [];
-	for(let i=0; i&amp;lt;tmp.length; i++){
-		lookaheads.push(tmp[i].lookaheads[0]);
-		if(i == tmp.length-1 || !tmp[i].isSameLR0(tmp[i+1])){
-			this.closureset.push(new ClosureItem(this.syntax, tmp[i].syntax_id, tmp[i].dot_index, lookaheads));
-			lookaheads = [];
-		}
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;まだリファクタリングしていません。
-すみません。&lt;/p&gt;
-
-&lt;p&gt;ClosureItemは本来複数の先読み記号を保持することができるのですが、クロージャー展開の初期化段階では、まずそれを分解し、一つのClosureItemが必ず一つの先読み記号のみを持つようにします。&lt;/p&gt;
-
-&lt;p&gt;この制約がなければ、たとえば&lt;code&gt;[x,y]&lt;/code&gt;という先読み記号を持ったAというClosureItemの展開処理が済んだあと、BというClosureItemを展開したところ、&lt;code&gt;[y,z]&lt;/code&gt;という先読み記号を持ち、先読み部分以外はAと全く同じClosureItemが生成される、といった自体が発生する可能性があります。
-この場合、先読み記号&lt;code&gt;y&lt;/code&gt;については2度展開されてしまったり、それを防ぐために処理済みのClosureItemの走査を行うことで余計な計算が必要になってしまうなど、様々な弊害が発生します。
-クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けていることで、展開処理が非常に簡潔になります。&lt;/p&gt;
-
-&lt;p&gt;処理が終わった段階で、ClosureItemの先読み部分をマージすることによってクロージャー展開後のClosureSetが完成します。&lt;/p&gt;
-
-&lt;h3 id=&#34;ハッシュ&#34;&gt;ハッシュ&lt;/h3&gt;
-
-&lt;p&gt;先述したように、2つのClosureSetの高速な比較を可能とする必要があります。
-そこで、ClosureItemおよびClosureSetにハッシュ文字列の生成機能を追加し、構文番号、&lt;code&gt;.&lt;/code&gt;の位置、先読み記号という要素が一致していれば同じ文字列を生成するようにすれば、同一性の比較を文字列比較に落としこむことができ、非常に高速になります。
-ハッシュといっても、SHA-1やMD5のようなビット列を出力する必要はなく、要素が同じなら同じ結果が得られ、かつ衝突が発生しなければそれでよいので、単純に要素を文字列化してしまえば事足ります。&lt;/p&gt;
-
-&lt;p&gt;たとえば、構文番号1、&lt;code&gt;.&lt;/code&gt;の位置が左から2番目、先読み記号が&lt;code&gt;[$,x]&lt;/code&gt;のClosureItemなら、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[$,x]&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というような文字列を出力すれば目的は果たせます。
-ClosureItemの集合であるClosureSetの場合は、まず自身の持っているClosureItemを、このハッシュ文字列を使ってソートした上で、以下のような文字列を生成します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[$,x]|2,3,[$]&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ClosureItemが常にソートされていると仮定したならば、こちらも同一性の判定に用いることができます。&lt;/p&gt;
-
-&lt;p&gt;ただしこの場合、ひとつだけ問題が生じます。
-もし上記の&lt;code&gt;x&lt;/code&gt;のかわりに、&lt;code&gt;x]|2,2,[y&lt;/code&gt;という名前の終端記号があったとすると、さきほどのClosureSetのハッシュ文字列は&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[$,x]|2,2,[y]|2,3,[$]&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;となってしまい、&lt;code&gt;2,2,[y]&lt;/code&gt;というClosureItemが存在した時に衝突が発生してしまう可能性があります。
-これを防ぐため、先ほどのSyntaxDBを用いて、それぞれの終端記号を個別の数値に直してしまいます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;&amp;quot;1,2,[0,1]&amp;quot;
-&amp;quot;1,2,[0,1]|2,3,[1]&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のようにすることで、危険性は回避できます。&lt;/p&gt;
-
-&lt;p&gt;また、LALR(1)法のDFAマージの際に、先読み記号を除いた部分が一致しているかどうか調べる必要もあるため、ハッシュ文字列は先読み部分を除いたLR(0)ハッシュと、先読み部分も含めたLR(1)ハッシュの2種類を用意しておきます。&lt;/p&gt;
-
-&lt;h4 id=&#34;closureitemおよびclosuresetのconst性&#34;&gt;ClosureItemおよびClosureSetのconst性&lt;/h4&gt;
-
-&lt;p&gt;ハッシュの再生成や、それに伴うClosureSetのソート処理を回避するため、ClosureItemおよびClosureSetは、初期化終了後は自身の状態を変化させることがないようにします。&lt;/p&gt;
-
-&lt;p&gt;たとえば、クロージャー展開を行うとClosureSetの中身は変化しますが、この処理はコンストラクタ呼び出し時に行うようにすることで、オブジェクトの初期化が終了した時点でクロージャー展開は終わっており、それ以降ClosureSetの状態が変化することはありません。
-また、ClosureSetおよびClosureItemは、LR(0)部分(先読み部分を除いた部分)が同じなら先読み記号をマージするmergeメソッドを持っていますが、このメソッドもそのオブジェクト自身の状態を変更するのではなく、新しいオブジェクトを生成してそれを返すようにしています。&lt;/p&gt;
-
-&lt;h2 id=&#34;dfaの構築&#34;&gt;DFAの構築&lt;/h2&gt;
-
-&lt;p&gt;アイテム集合を扱えるようになったため、次はDFAの構築です。
-DFAGeneratorクラスを作っていきます。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// dfagenerator.d.ts
-export declare type DFAEdge = Map&amp;lt;Token, number&amp;gt;;
-export declare type DFANode = {
-    closure: ClosureSet;
-    edge: DFAEdge;
-};
-export declare type DFA = Array&amp;lt;DFANode&amp;gt;;
-export declare class DFAGenerator {
-    private syntax;
-    private lr_dfa;
-    private lalr_dfa;
-    constructor(syntax: SyntaxDB);
-    getLR1DFA(): DFA;
-    getLALR1DFA(): DFA;
-    private generateNewClosureSets(closureset);
-    private indexOfDuplicatedNode(dfa, new_node);
-    private generateDFA();
-    private mergeLA(dfa);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とはいえ、やるべきことはDFAの構築処理、およびLALR(1)法のDFAを生成するためのマージ処理のみです。&lt;/p&gt;
-
-&lt;p&gt;DFAは、DFANodeの配列として表現します。
-DFANodeは、一つのClosureSetとDFAEdgeを持ちます。
-DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMapであり、これはトークンをラベルとして他のDFANodeに向けて張られた辺の情報を意味します。&lt;/p&gt;
-
-&lt;p&gt;前回紹介したアルゴリズムをそのままコードにするだけなので、DFAの構築処理は特に解説する点はありません。&lt;/p&gt;
-
-&lt;h2 id=&#34;構文解析表の構築&#34;&gt;構文解析表の構築&lt;/h2&gt;
-
-&lt;p&gt;構文解析表と、それに必要な四種類の命令群を定義しておきます。
-また、コンフリクトが発生したことを表す命令も定義します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// parsingtable.ts
-export type ShiftOperation = {type: &amp;quot;shift&amp;quot;, to: number};
-export type ReduceOperation = {type: &amp;quot;reduce&amp;quot;, syntax: number};
-export type ConflictedOperation = {type: &amp;quot;conflict&amp;quot;, shift_to:Array&amp;lt;number&amp;gt;, reduce_syntax:Array&amp;lt;number&amp;gt;};
-export type AcceptOperation = {type: &amp;quot;accept&amp;quot;};
-export type GotoOperation = {type : &amp;quot;goto&amp;quot;, to: number};
-export type ParsingOperation = ShiftOperation|ReduceOperation|ConflictedOperation|AcceptOperation|GotoOperation;
-export type ParsingTable = Array&amp;lt;Map&amp;lt;Token, ParsingOperation&amp;gt;&amp;gt;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;構文解析表の構築処理は、ParserGeneratorクラスのメソッドとして実装します。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;/// parsergenerator.d.ts
-export declare class ParserGenerator {
-    private grammar;
-    private parsing_table;
-    private syntax;
-    private dfa_generator;
-    constructor(grammar: GrammarDefinition);
-    init(): void;
-    getParser(default_callback?: ParserCallback): Parser;
-    getParsingTable(): ParsingTable;
-    private generateParsingTable(dfa);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これも前回紹介したアルゴリズムの通り、DFAを読み取って適切な命令を配置していくだけです。
-ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのインスタンスを生成し、DFAGeneratorから得られたDFAをもとに構文解析表の生成を行います。&lt;/p&gt;
-
-&lt;p&gt;ここまでで構文解析表の構築まで終了したので、パーサジェネレータはほぼ完成となります。
-あとは、この構文解析表を読み取ることのできるパーサの実装が必要です。
-次回はパーサの実装を行いますが、そのパーサの動作等についても前回の記事である程度解説しているため、やはり実装中心となります。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回:かんたんLR(1)法入門&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/&#34;&gt;次回:パーサの実装と構文解析の実行&lt;/a&gt;&lt;/p&gt;
-      </description>
-    </item>
-    
-    <item>
-      <title>LR(1)パーサジェネレータを自作して構文解析をする 第4回:かんたんLR(1)法入門</title>
-      <link>http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/</link>
-      <pubDate>Wed, 22 Mar 2017 15:58:04 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/</guid>
-      <description>
-        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
-ですが相変わらず本題のパーサジェネレータ作成には入らず、まずはLR(1)法のおおまかな理論的概略の紹介を行います。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;では構文解析全体の流れを解説しましたが、実際にどのような過程でパーサを、またパーサジェネレータを作成するかについては触れませんでした。
-今回は、LR法による構文解析の流れを解説するとともに、これからどのような流れでパーサジェネレータを作成していくのかを紹介します。
-今回は解説のみのためソースコードが載りません。&lt;/p&gt;
-
-&lt;h2 id=&#34;lr-1-構文解析の流れ&#34;&gt;LR(1)構文解析の流れ&lt;/h2&gt;
-
-&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;字句規則を用意して字句解析器にかけてトークン列を取得したあと構文規則をもとにFIRST関数とFOLLOW関数を求め、それをもとにgotoグラフを導出することによってLR表を作成して、構築したLRパーサでトークン列を解析して得た抽象構文木を処理すれば構文解析ができると知ったわたし &lt;a href=&#34;https://t.co/aIbxqSf5qj&#34;&gt;pic.twitter.com/aIbxqSf5qj&lt;/a&gt;&lt;/p&gt;&amp;mdash; たたも (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/798837425313189888&#34;&gt;2016年11月16日&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;FOLLOW関数はSLR法などで使用する概念のため、LR(1)法を用いる今回の記事では用いません。忘れてください。&lt;/p&gt;
-
-&lt;p&gt;LR構文解析の流れは、以下の通りとなります。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;First関数を求める&lt;/li&gt;
-&lt;li&gt;アイテム集合およびDFA(gotoグラフ)を作成する&lt;/li&gt;
-&lt;li&gt;(LALR法のみ)DFAの先読み部分をマージし、より状態数が少なく軽量なDFAにする&lt;/li&gt;
-&lt;li&gt;DFAをもとに構文解析表(LR表)を構築する&lt;/li&gt;
-&lt;li&gt;構文解析表を実行できるパーサを作成する&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;1.のFirst関数については、&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;の記事で紹介を済ませているため割愛します。&lt;br /&gt;
-LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ処理を行います。&lt;/p&gt;
-
-&lt;p&gt;パーサジェネレータを作成して解析する構文を自由に決定できるようにする場合、4.の構文解析表までを与えられた構文に合わせて自動的に生成できるようにします。&lt;/p&gt;
-
-&lt;h2 id=&#34;アイテム集合とdfa&#34;&gt;アイテム集合とDFA&lt;/h2&gt;
-
-&lt;p&gt;LR法による構文解析のためには、DFA(決定性有限オートマトン)の作成を行う必要があります。&lt;/p&gt;
-
-&lt;p&gt;LR法によって作られるDFAは、それぞれの状態(ノード)に、アイテム集合と呼ばれる情報と、他の状態への遷移ルールを示すトークンをラベルとした辺情報とを持ちます。
-このLRアイテム集合は、構文解析表やDFA自身の構築のために必要な情報として使用されます。&lt;/p&gt;
-
-&lt;p&gt;アイテム集合は、文字通りアイテム(便宜的にLRアイテムと呼称します)からなる集合です。&lt;/p&gt;
-
-&lt;h3 id=&#34;lrアイテム&#34;&gt;LRアイテム&lt;/h3&gt;
-
-&lt;p&gt;個別のLRアイテムは、以下のようなものです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; A . B C [x,y,$]
-Xは非終端記号
-A,B,Cは終端記号または非終端記号
-x,yは終端記号
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;一見すると&lt;code&gt;X -&amp;gt; A B C&lt;/code&gt;のような構文規則のルールのように見えますが、相違点があります。&lt;/p&gt;
-
-&lt;p&gt;まず、規則の右辺に&lt;code&gt;.&lt;/code&gt;という記号が存在します。
-これは終端記号でも非終端記号でもなく、「現在この部分まで解析した」ということを示すマーカーです。
-上記の場合、&lt;code&gt;X&lt;/code&gt;という記号の解析の途中で既に&lt;code&gt;A&lt;/code&gt;を読み終え、次は&lt;code&gt;B C&lt;/code&gt;が与えられることが期待されているということを意味します。&lt;/p&gt;
-
-&lt;p&gt;次に、規則の右辺のさらに右に、&lt;code&gt;[x,y,$]&lt;/code&gt;という表記が存在します。
-これはLR(1)法の(1)先読みのために用いる先読み記号の集合を表しています。
-解析が進んで&lt;code&gt;X&lt;/code&gt;の解析が終わった場合、つまり&lt;code&gt;.&lt;/code&gt;の位置が右端まで移動した場合、その次には&lt;code&gt;x&lt;/code&gt;,&lt;code&gt;y&lt;/code&gt;,&lt;code&gt;$&lt;/code&gt;のいずれかの記号が来ることを意味します。
-先読み記号は常に終端記号であることに注意してください。
-また、&lt;code&gt;$&lt;/code&gt;は「入力の終わり」を表す記号で、これは便宜的に終端記号として扱います(&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;第2回&lt;/a&gt;で内部的に追加したSymbol(EOF)トークンのことです)。&lt;/p&gt;
-
-&lt;h3 id=&#34;dfaの構築&#34;&gt;DFAの構築&lt;/h3&gt;
-
-&lt;p&gt;まず、DFAを最初の状態で初期化します。
-このとき、DFAのノード数は一つのみであり、そのノードは、以下のようなLRアイテム一つのみを要素とするアイテム集合を持ちます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ただし、&lt;code&gt;S&lt;/code&gt;は開始記号であり、&lt;code&gt;S&#39;&lt;/code&gt;は便宜的に追加した新しい非終端記号です。
-便宜的には、&lt;code&gt;S&#39;&lt;/code&gt;について以下の規則が成り立つこととみなします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; S $
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを自己展開させることによって、構文解析のためのDFAを構築していきます。&lt;/p&gt;
-
-&lt;h4 id=&#34;クロージャー展開&#34;&gt;クロージャー展開&lt;/h4&gt;
-
-&lt;p&gt;まず、初期化時点で存在するこのDFAノードは、まだ完全な状態にはなっていません。
-一定のルールに従い、アイテム集合を「クロージャー展開」する必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; α . Y β [x]
-X,Yは非終端記号(X=Yであってもよい)
-xは終端記号
-α,βは任意の長さの終端記号または非終端記号の列
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というLRアイテムが存在する場合、&lt;code&gt;Y&lt;/code&gt;を左辺として&lt;code&gt;.&lt;/code&gt;が右辺の左端にあるような新しいLRアイテムを、アイテムセットに追加します。
-ただし、先読み記号はFirst(βx)で得られる記号全てとします。
-つまり、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;Y -&amp;gt; γ
-γは任意の長さの終端記号または非終端記号の列
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というような規則があった場合、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;Y -&amp;gt; . γ [First(βx)]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というLRアイテムを新しく追加します。&lt;/p&gt;
-
-&lt;p&gt;これを、新しいアイテムが追加されなくなるまで繰り返します。&lt;/p&gt;
-
-&lt;p&gt;具体的に見て行きましょう。
-以下の規則を仮定します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; 0
-S -&amp;gt; X 1
-X -&amp;gt; 0
-Sは開始記号
-S,Xは非終端記号
-0,1は終端記号
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合、開始記号は&lt;code&gt;S&lt;/code&gt;なので、最初のLRアイテムは以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;.&lt;/code&gt;の次にある&lt;code&gt;S&lt;/code&gt;を展開します。
-先読み記号は&lt;code&gt;First($)=[$]&lt;/code&gt;です。
-以下のアイテムを追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S -&amp;gt; . 0 [$]
-S -&amp;gt; . X 1 [$]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;さらに、新しく追加されたアイテムにも同様の処理を行うと、&lt;code&gt;.&lt;/code&gt;の次に&lt;code&gt;X&lt;/code&gt;があるため、これを展開します。
-&lt;code&gt;0&lt;/code&gt;は終端記号のため、展開は行いません。
-先読み記号は、&lt;code&gt;First(1$)=[1]&lt;/code&gt;です(First関数は終端記号の列の左端の記号を得るので、ここでは&lt;code&gt;1&lt;/code&gt;のみとなります)。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; . 0 [1]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上の規則では&lt;code&gt;0&lt;/code&gt;は終端記号のため、ここで展開は終了します。&lt;/p&gt;
-
-&lt;p&gt;結果として、最初のDFAノードの持つアイテム集合は以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
-S -&amp;gt; . 0 [$]
-S -&amp;gt; . X 1 [$]
-X -&amp;gt; . 0 [1]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;以上がクロージャー展開の処理です。
-こうして展開したアイテム集合をもとに、新しいDFAノードを生成していきます。&lt;/p&gt;
-
-&lt;h4 id=&#34;新しいdfaノードの生成&#34;&gt;新しいDFAノードの生成&lt;/h4&gt;
-
-&lt;p&gt;クロージャー展開が完了したアイテム集合から、一定のルールのもとで新しいDFAノードを生成します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; α . A β [x]
-Xは非終端記号
-Aは終端記号または非終端記号(X=Aであってもよい)
-xは終端記号
-α,βは任意の長さの終端記号または非終端記号の列
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というLRアイテムが存在する場合、以下の新しいLRアイテムを生成します(そのDFAノードのアイテムセットには追加しません)。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;X -&amp;gt; α A . β [x]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;そのDFAノードの持つ全てのLRアイテムについてこの処理が終わったら、&lt;code&gt;.&lt;/code&gt;の左隣の記号、つまり&lt;code&gt;A&lt;/code&gt;の位置の記号ごとに新しいアイテム集合を作り、それを情報としてもつ新しいDFAノードを生成します。
-そして既存のDFAノードから、&lt;code&gt;A&lt;/code&gt;をラベルとして新しいノードに対して辺を張ります。&lt;/p&gt;
-
-&lt;p&gt;具体的には、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; . S [$]
-S -&amp;gt; . 0 [$]
-S -&amp;gt; . X 1 [$]
-X -&amp;gt; . 0 [1]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というアイテム集合を持つDFAからは、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;S&#39; -&amp;gt; S . [$]
-S -&amp;gt; 0 . [$]
-S -&amp;gt; X . 1 [$]
-X -&amp;gt; 0 . [1]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;という4つのLRアイテムが生成され、これは以下の3つに分けられます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;1. ラベル: S
-S&#39; -&amp;gt; S . [$]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;2. ラベル: 0
-S -&amp;gt; 0 . [$]
-X -&amp;gt; 0 . [1]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;3. ラベル: X
-S -&amp;gt; X . 1 [$]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このようにして新しく3つのDFAノードを生成し、もとのノードからそれぞれの記号をラベルとした辺を張ります。
-あとは、新しいノード全てについて、同様にクロージャー展開を行い、さらに新しいDFAノードを生成していきます。
-ただし、その過程で既存のノードと全く同じアイテム集合を持つDFAノードが作られた場合は、新しいノードとしてそこに辺を張るのではなく、かわりに重複する既存のノードに対して辺を張るものとします。&lt;/p&gt;
-
-&lt;p&gt;この処理を繰り返し、DFAノードが新しく生成されなくなればDFAの構築は終了です。&lt;/p&gt;
-
-&lt;h4 id=&#34;lalr法のみ-先読み部分のマージ&#34;&gt;(LALR法のみ)先読み部分のマージ&lt;/h4&gt;
-
-&lt;p&gt;LALR法では、この時点でDFAのサイズ縮小を行います。
-そのアルゴリズムは、以下の通りです。&lt;/p&gt;
-
-&lt;p&gt;まず、DFAの持つアイテム集合から、それぞれのLRアイテムの先読み部分のみを除いた場合に、全く同じアイテム集合を持つようなDFAノードの組を見つけます。
-そして、そのようなDFAノードの組において、LRアイテムの先読み部分をそれぞれの和集合とするような新しいDFAノードを作り、それらのノードに対して辺を張っていたノードがあれば、その辺を新しいノードに対して張り直します。&lt;/p&gt;
-
-&lt;p&gt;具体的に、以下のようなアイテム集合を持つ2つのDFAノードを考えます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;DFAノードA:
-X -&amp;gt; .Y Z [x]
-Y -&amp;gt; .V W [x,y]
-
-DFAノードB:
-X -&amp;gt; .Y Z [z]
-Y -&amp;gt; .V W [y,z]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この2つのDFAノードは、先読み部分を除けば一致しているため、マージして次のDFAノードCを作ります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;DFAノードC:
-X -&amp;gt; .Y Z [x,z]
-Y -&amp;gt; .V W [x,y,z]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;そして、DFAノードAまたはBに対して辺を張っているDFAノードが存在するならば、それらの辺をDFAノードCに向けたものに書き換えます。&lt;/p&gt;
-
-&lt;h2 id=&#34;構文解析表と構文解析器&#34;&gt;構文解析表と構文解析器&lt;/h2&gt;
-
-&lt;p&gt;DFAが完成したら、それをもとにして構文解析表を生成していきます。
-構文解析表はそれ自体がステートマシンの動作仕様を表すものであり、構文解析表が完成してしまえば、それに沿ってステートマシンを動作させることで構文解析が可能となります。&lt;/p&gt;
-
-&lt;h3 id=&#34;構文解析を行うステートマシン&#34;&gt;構文解析を行うステートマシン&lt;/h3&gt;
-
-&lt;p&gt;構文解析表には、ステートマシンの現在の状態、および次の入力に応じて、4種類の命令のいずれかが記述されます。
-構文解析を行うステートマシンは、現在の状態を示すスタックと、構文解析の結果を保持するスタックの2つのスタックを持ちます。
-また、入力を一文字だけ確認するか、入力を消費して一文字先に進めることができます。
-(この仕様自体は変更の余地があります。)&lt;/p&gt;
-
-&lt;p&gt;ステートマシンは、構文解析表から(状態スタックの一番上にある状態, 現在見ている入力)の命令を実行します。
-最初は(初期状態, 一文字目の入力)となります。&lt;/p&gt;
-
-&lt;p&gt;以下に、4つのそれぞれの命令の説明を記します。
-とはいえ、ステートマシンの仕様なんざ読んでいて動きが分かるわけもなく楽しくも何ともないため、参考資料の&lt;a href=&#34;http://www.slideshare.net/ichikaz3/lr-parsing&#34;&gt;LR parsing&lt;/a&gt;のスライドを確認していただくことをおすすめします。
-ステートマシンの動きを視覚的に追いかけることができて非常にわかりやすいです。&lt;/p&gt;
-
-&lt;h4 id=&#34;shift命令&#34;&gt;shift命令&lt;/h4&gt;
-
-&lt;p&gt;shift命令を受けると、ステートマシンは入力を一つ消費します。
-shift命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。&lt;/p&gt;
-
-&lt;h4 id=&#34;reduce命令&#34;&gt;reduce命令&lt;/h4&gt;
-
-&lt;p&gt;reduce命令は文法idが付与されています。
-ステートマシンがreduce命令を受けると、示された文法規則を確認し、その右辺の記号の数だけ状態スタックからポップして取り除きます。
-さらに、結果スタックからも右辺の記号の数だけ取り除き、取り除いた結果すべてを現在見ている規則の左辺の記号を親とする木構造の子にして、そうしてできた木を結果スタックに追加します(または、取り除いた結果および文法idを引数として何らかのプログラムを実行し、その結果をスタックに追加する場合もあります)。&lt;/p&gt;
-
-&lt;p&gt;そしてその処理の終了後、構文解析表の(状態スタックの一番上にある状態、規則の左辺の記号)の位置にあるgoto命令を実行させます。&lt;/p&gt;
-
-&lt;h4 id=&#34;goto命令&#34;&gt;goto命令&lt;/h4&gt;
-
-&lt;p&gt;goto命令は、reduce命令の直後に実行されることが期待されます。
-goto命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。
-shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
-
-&lt;h4 id=&#34;accept命令&#34;&gt;accept命令&lt;/h4&gt;
-
-&lt;p&gt;ステートマシンがaccept命令を受けると、それは構文解析が終了したことを意味します。
-理想的な入力が与えられた場合、入力は全て消費され、結果スタックには最終的な構文解析結果のみが入っていることが期待されます。&lt;/p&gt;
-
-&lt;h3 id=&#34;構文解析器&#34;&gt;構文解析器&lt;/h3&gt;
-
-&lt;p&gt;構文解析器は、上記の仕様をなぞって構文解析表を読み取ることのできるステートマシンそのものです。
-よって、構文解析表さえ個々の構文にあわせて生成することができれば、それを構文解析器に与えることによってさまざまな構文の解析が可能になります。&lt;/p&gt;
-
-&lt;h3 id=&#34;構文解析表の構築&#34;&gt;構文解析表の構築&lt;/h3&gt;
-
-&lt;p&gt;完成したDFAをもとにして、構文解析表を生成することができます。&lt;/p&gt;
-
-&lt;h4 id=&#34;shiftおよびgotoオペレーションの登録&#34;&gt;shiftおよびgotoオペレーションの登録&lt;/h4&gt;
-
-&lt;p&gt;それぞれのDFAノードは、ステートマシンの状態と対応しています。
-簡単のため、個々のDFAノードには一意なid(ステートマシンの状態番号)が割り振られているものとします。
-すべてのDFAノードについて、そのノードから張られている辺を参照します。&lt;/p&gt;
-
-&lt;p&gt;その辺のラベルの記号が終端記号であるならば、構文解析表の(そのDFAノードのid, ラベルの記号)の部分にshift命令を書き込み、その辺の向かう対象となるDFAノードのidを付与します。&lt;/p&gt;
-
-&lt;p&gt;その辺のラベルの記号が非終端記号であるならば、同様にしてgoto命令を書き込みます。&lt;/p&gt;
-
-&lt;h4 id=&#34;acceptおよびreduceオペレーションの登録&#34;&gt;acceptおよびreduceオペレーションの登録&lt;/h4&gt;
-
-&lt;p&gt;すべてのDFAノードについて、そのアイテム集合の持つLRアイテム一つ一つを確認していきます。
-もしも&lt;code&gt;.&lt;/code&gt;の位置が右辺の末尾にある場合、そのLRアイテムの持つ先読み記号それぞれについて、以下の処理を行います。&lt;/p&gt;
-
-&lt;p&gt;構文解析表の(そのDFAノードのid, 先読み記号)の部分にreduce命令を書き込み、そのLRアイテムのもととなっている規則のidを付与。&lt;/p&gt;
-
-&lt;p&gt;ただし、その規則が&lt;code&gt;S&#39;&lt;/code&gt;に対応するものであった場合、かわりにaccept命令を書き込みます。&lt;/p&gt;
-
-&lt;h4 id=&#34;shift-reduceコンフリクト&#34;&gt;shift/reduceコンフリクト&lt;/h4&gt;
-
-&lt;p&gt;shiftオペレーションおよびreduceオペレーションは、表の同じ位置に競合して書き込まれてしまうことがあります。
-このような状況を、shift/reduceコンフリクトと呼びます。
-なお、shift/reduceコンフリクトだけでなく、reduce/reduceコンフリクト、複数回競合しあった3つ以上の命令のコンフリクト等も発生する可能性があります(shift/shiftコンフリクトも発生する可能性があると聞きましたが、上記のアルゴリズムでshiftを登録している場合はDFAが壊れていない限り発生し得ない気がします)。&lt;/p&gt;
-
-&lt;p&gt;コンフリクトが発生してしまった場合の対処法は、大きく分けて二種類存在します。&lt;/p&gt;
-
-&lt;p&gt;まずひとつは、諦めることです。
-コンフリクトが発生した時点でそれはLR(1)文法を逸脱しているため、もともと解析可能な構文ではありません。
-構文規則を等価になるようにいろいろ書き換えるとうまくコンフリクトが消せる(かもしれない)ので、与える構文の見直しをします。&lt;/p&gt;
-
-&lt;p&gt;もうひとつは、規則ごとにオペレーションの優先度を設定し、コンフリクトが発生した場合は強制的にどちらかの命令を実行すると決めてしまうことです。
-これは一般的に行われている方法であり、かなり乱暴ですが大抵の場合はまあなんとかなります。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考資料&#34;&gt;参考資料&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;で紹介したものを今回もそのまま参考資料としているため、基本的にはそちらをご覧ください。
-今回紹介した内容の理解を深めるのに特に役立つと思われるおすすめの資料を抜粋しておきます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.cs.cornell.edu/courses/cs412/2003sp/lectures/lec09.pdf&#34;&gt;Cornell CIS Introduction to Compilers Lecture 9: LR(1) Parsing&lt;/a&gt;&lt;br /&gt;
-LR(1) DFA、クロージャー展開、構文解析表等について詳細な定義や図解等が記載されています。&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/ichikaz3/lr-parsing&#34;&gt;LR parsing&lt;/a&gt;&lt;br /&gt;
-クロージャー展開やDFAの構築、実際のステートマシンの動きに至るまで実際の動作過程を見ることができます。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;今回でおおまかなLR(1)構文解析器作りの解説を済ませたので、次回からは実装をしていくだけです。
-誰も他人のソースコードの解説なんて読む気は起きないでしょうし、これ以上続ける意味があるのか大いに疑問ではあります。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回:儀式の下準備&lt;/a&gt;
-&lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;次回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
       </description>
     </item>
     

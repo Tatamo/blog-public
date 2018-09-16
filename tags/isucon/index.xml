@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Isucon on わたしろぐ</title>
+    <link>http://tatamo.81.la/blog/tags/isucon/</link>
+    <description>Recent content in Isucon on わたしろぐ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 16 Sep 2018 18:00:01 +0900</lastBuildDate>
+    <atom:link href="/tags/isucon/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ISUCON8予選 序盤環境構築覚え書き</title>
+      <link>http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/</link>
+      <pubDate>Sun, 16 Sep 2018 18:00:01 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2018/09/16/isucon8-qual/&#34;&gt;一つ前&lt;/a&gt;の記事は予選の流れや感想を書きましたが、こちらは&lt;a href=&#34;http://isucon.net/archives/52193980.html&#34;&gt;ISUCON8&lt;/a&gt;の予選の序盤にやったことのメモです。&lt;/p&gt;
+
+&lt;p&gt;予備知識ほぼゼロで予選に突っ込んだ初心者のメモなので初歩的な内容だと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;今回の予選で使用したリポジトリは &lt;a href=&#34;https://github.com/Tatamo/isucon8-q&#34;&gt;https://github.com/Tatamo/isucon8-q&lt;/a&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;解析ツール&#34;&gt;解析ツール&lt;/h2&gt;
+
+&lt;p&gt;初心者なので、ISUCONをやる人がだいたい入れてるらしいツールを入れました。
+入れるツールは予選前日の夜に適当にググって決めました。&lt;/p&gt;
+
+&lt;h3 id=&#34;netdata-https-github-com-firehol-netdata&#34;&gt;&lt;a href=&#34;https://github.com/firehol/netdata&#34;&gt;netdata&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;自動インストーラが用意されており、コマンド一発でモニタリングができるところまでいくのでとても便利です。
+(私は担当ではなかったのでよくわかりませんが、メンバーは一応これを入れるのに手間取っていました… ファイアウォールの設定はちゃんと見るべきらしいです)
+とりあえずベンチマークを走らせると負荷の状況が一目でわかりますし、負荷が上がることでベンチマークが実行されていることがわかって安心できたりします。&lt;/p&gt;
+
+&lt;h3 id=&#34;alp-https-github-com-tkuchiki-alp&#34;&gt;&lt;a href=&#34;https://github.com/tkuchiki/alp&#34;&gt;alp&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;zipを落としてくるだけなのでこちらも導入が簡単です。
+ただしnginxやh2oのログの形式をalpに対応したフォーマットに変えないといけないので注意が必要です。
+実際これを使って表を眺めるだけでも重そうな処理がだいたいわかってくるような気がするので、入れておくべきだと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;pt-query-digest-https-www-percona-com-doc-percona-toolkit-latest-pt-query-digest-html&#34;&gt;&lt;a href=&#34;https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html&#34;&gt;pt-query-digest&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;入れましたが使いませんでした。
+他の人が使ったのかどうかは知りません。
+そもそもめちゃくちゃ重いクエリはalpのログやソースコードを見れば見当がつきますし、それで発見できない中程度の遅さのクエリの修正にまで取り掛かるだけの時間がありませんでした。&lt;/p&gt;
+
+&lt;p&gt;今回は使用しませんでしたが、docker経由でphpMyAdminを使えばDBの見通しが良くなるので、導入してもよかったかと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;デプロイ環境構築&#34;&gt;デプロイ環境構築&lt;/h2&gt;
+
+&lt;p&gt;アプリケーションをgit管理するにしても、サーバー上で直接編集すると確実にコンフリクトします。
+また、サーバーが3台あったので更新をいちいち手動で反映していると死にます。&lt;/p&gt;
+
+&lt;h3 id=&#34;ssh&#34;&gt;SSH&lt;/h3&gt;
+
+&lt;p&gt;自動デプロイの円滑化に絡んでくるため、SSHの設定は重要です。
+まずローカルでは、メンバー全員で&lt;code&gt;~/.ssh/config&lt;/code&gt;の接続ホストを共有します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Host isuA
+	HostName 222.222.222.221
+	User isucon
+
+Host isuB
+	HostName 222.222.222.222
+	User isucon
+
+Host isuC
+	HostName 222.222.222.223
+	User isucon
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のようにして、メンバー全員が同じ解決名でサーバーに入れるようにすることが必要です。
+また、全メンバーは競技開始直後に&lt;code&gt;ssh-copy-id&lt;/code&gt;で自らの公開鍵を3台のサーバーすべてに送信しておきます。
+&lt;code&gt;ssh-add&lt;/code&gt;で自分の秘密鍵をssh-agentに登録しておけば、SSH鍵のパスフレーズを入力せずサーバーに入れるようになります。&lt;/p&gt;
+
+&lt;p&gt;次に、3台ある競技用マシンすべてで新しく鍵を作成し、これらをすべてGitHubに登録しておきます。&lt;/p&gt;
+
+&lt;h3 id=&#34;github-private-repository&#34;&gt;GitHub private repository&lt;/h3&gt;
+
+&lt;p&gt;メンバーがローカルで編集したファイルをGitHubにpushし、競技用サーバーではそれをpullするという構成にしました。
+publicなリポジトリでこれをやってしまうとレギュレーション違反で失格なので注意が必要です。
+とはいえ不具合が出た時などは直接サーバーに入ったほうが楽なこともあるので、基本は編集衝突を避けてローカルで編集しつつ臨機応変に、という感じです。&lt;/p&gt;
+
+&lt;p&gt;私たちのチームでは、専用のGitHubアカウントを作ってそこに公開鍵を登録するようにしました。
+(※GitHubの利用規約に抵触しないようにするため、 「**-bot」のような名前にして予選終了後は消すことで、&lt;a href=&#34;https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users&#34;&gt;Machine user&lt;/a&gt;と言い張ることにします。実際自動化のために用いるので…)&lt;/p&gt;
+
+&lt;p&gt;そして、前述したSSH公開鍵のGitHubへの登録ができたら、競技用サーバーに用意されているディレクトリをgit管理下に置きます。
+このとき、&lt;code&gt;~/.gitconfig&lt;/code&gt; に以下のように書いておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[url &amp;quot;git@github.com:&amp;quot;]
+	Insteadof = https://github.com/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでgithubへのアクセスがsshを経由して行われるようになります。
+サーバーのファイルを直接編集してもコミットできるように、author情報も同時に書いておくといいかもしれません。&lt;/p&gt;
+
+&lt;p&gt;必要ならssh-agentを起動するなどして、少なくとも認証なしでgit pullできるようになると良いです。&lt;/p&gt;
+
+&lt;p&gt;git管理下に置く方法としては、3台あるうち適当な1台でgit管理したい全ファイルをGitHubにpushして、他のサーバーでは既に存在するファイル群を消してから同じ場所にgit cloneするのが早いと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;デプロイ用スクリプトを用意する&#34;&gt;デプロイ用スクリプトを用意する&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.bitjourney.com/entry/2017/11/09/101740&#34;&gt;https://blog.bitjourney.com/entry/2017/11/09/101740&lt;/a&gt;&lt;br /&gt;
+ここに「デプロイスクリプトは超大事」って書いてありました。
+ここで紹介されている &lt;a href=&#34;https://github.com/gfx/isucon7-qualify&#34;&gt;https://github.com/gfx/isucon7-qualify&lt;/a&gt; のrestart.shとrestart-all-from-local.shを真似します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tatamo/isucon8-q/blob/master/restart.sh&#34;&gt;https://github.com/Tatamo/isucon8-q/blob/master/restart.sh&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://github.com/Tatamo/isucon8-q/blob/master/restart-all-from-local.sh&#34;&gt;https://github.com/Tatamo/isucon8-q/blob/master/restart-all-from-local.sh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;こんな感じになりました。
+おそらく重要だと思うのは、&lt;code&gt;ssh isuA ...&lt;/code&gt; のようにメンバー全員でhost名が共有されていること、ローカルでのsshおよびサーバーの&lt;code&gt;restart.sh&lt;/code&gt;のgitコマンドが認証なしで通るようになっていることだと思います。
+SSHまわりの設定をしておけば、一切の認証が発生しないため&lt;code&gt;./restart-all-from-local.sh&lt;/code&gt;の一発で全サーバーにGitHib上の最新のコミットを反映させることができます。&lt;/p&gt;
+
+&lt;p&gt;実際のところ、おそらく競技サーバー側の鍵生成は必要なくて、ssh-agentで鍵を使い回せばローカルのgithub用公開鍵をそのまま使ってサーバーのgitを触れる気がしますが、あまりよく調べていません。&lt;/p&gt;
+
+&lt;h3 id=&#34;リポジトリで管理する範囲について&#34;&gt;リポジトリで管理する範囲について&lt;/h3&gt;
+
+&lt;p&gt;ホームディレクトリ以下にサービス名のついたフォルダがあったので、そこをgit管理すればいいかなと思いました。
+nginxなどの設定ファイルの類は、リポジトリの下に&lt;code&gt;etc/&lt;/code&gt;みたいなフォルダを作ってそこで管理しました。
+サーバーごとに分ける必要が出てきたらその都度増やします。
+これも自動で反映できるよう、もともとの設定ファイルをシンボリックリンクに置き換えておきます。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;準備のための時間があるなら、これらの構築作業はchefやansibleやシェルスクリプトで自動化しておくと効果は高いと思います。
+競技開始時にやるべきことは予め決めておけるので、そういった作業を簡単なコマンドで行えるようにしておけば確実に節約できます。&lt;/p&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>ISUCON8の予選に出場して負けました</title>
+      <link>http://tatamo.81.la/blog/2018/09/16/isucon8-qual/</link>
+      <pubDate>Sun, 16 Sep 2018 18:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/09/16/isucon8-qual/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;http://isucon.net/archives/52193980.html&#34;&gt;isucon8&lt;/a&gt;の予選に参加しました。&lt;/p&gt;
+
+&lt;p&gt;結果としてスコアなしで敗退しました。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;序盤に行った環境構築の記事は&lt;a href=&#34;http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/&#34;&gt;こちら&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;今回の予選で使用したリポジトリは &lt;a href=&#34;https://github.com/Tatamo/isucon8-q&#34;&gt;https://github.com/Tatamo/isucon8-q&lt;/a&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;メンバー編成&#34;&gt;メンバー編成&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/__tatamo__&#34;&gt;わたし&lt;/a&gt;, &lt;a href=&#34;https://twitter.com/sensu_watson&#34;&gt;@sensu_watson&lt;/a&gt;氏, &lt;a href=&#34;https://twitter.com/uhyo_&#34;&gt;@uhyo_&lt;/a&gt;氏の チーム 🈚️ で参加しました。&lt;/p&gt;
+
+&lt;p&gt;全員多少のサーバー運用経験はありますが、ちゃんとした構築を行ったりした経験はほとんどなく、どちらかというと普段はフロントエンド寄りがメインのメンバーが多い構成です。&lt;/p&gt;
+
+&lt;h2 id=&#34;開始前&#34;&gt;開始前&lt;/h2&gt;
+
+&lt;h3 id=&#34;前日まで&#34;&gt;前日まで&lt;/h3&gt;
+
+&lt;p&gt;メンバー全員があまり暇ではなかったたため、事前の練習は時間が取れませんでした。
+1週間前からConoHaでISUCON7のインスタンスを建てて軽く触った程度の対策しかできていません。&lt;/p&gt;
+
+&lt;p&gt;私と@uhyo_氏がJavaScriptを読み書きできるので、nodejsを使用することにしました。&lt;/p&gt;
+
+&lt;h3 id=&#34;当日朝&#34;&gt;当日朝&lt;/h3&gt;
+
+&lt;p&gt;そもそもスロークエリとか&lt;code&gt;nginx.conf&lt;/code&gt;とか&lt;code&gt;/etc/systemd/system&lt;/code&gt;とか言われてもあまりよくわからないので、役割分担のしようがなさそうという雰囲気が漂っていました。
+そのため開始直後の作業のみ割り振りを決めておき、それ以降はその場で適当になんとかすることにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;経過&#34;&gt;経過&lt;/h2&gt;
+
+&lt;h3 id=&#34;序盤&#34;&gt;序盤&lt;/h3&gt;
+
+&lt;p&gt;それぞれデプロイ環境の構築、解析ツールのインストール、HTTPサーバーとDBの設定確認・変更と最初のベンチマークの起動を担当することになったため、作業にとりかかりました。
+解析ツールとしては、ISUCON7 などでgoogle検索したら1ページ目に出てきた&lt;a href=&#34;https://github.com/tkuchiki/alp&#34;&gt;alp&lt;/a&gt;, &lt;a href=&#34;https://github.com/firehol/netdata&#34;&gt;netdata&lt;/a&gt;, &lt;a href=&#34;https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html&#34;&gt;pt-query-digest&lt;/a&gt;を導入すると決めていました。&lt;/p&gt;
+
+&lt;p&gt;始まる前はてっきりUbuntu+nginx+MySQLとかの構成かと思っていたんですが、蓋を開けてみるとRed Hat+H2O+MariaDBで、&lt;code&gt;nginx.conf&lt;/code&gt;がない…などと困惑することになりました。
+当然H2Oを触ったことのある人は誰もいません。&lt;/p&gt;
+
+&lt;p&gt;この段階で既に何かとトラブルが起きたりしていましたが、1時間経過ぐらいでアプリケーションの中身を読み進めるフェーズに入りました。
+TypeScriptで書かれていたり&lt;code&gt;.prettierrc&lt;/code&gt;が置かれていたりしたのが意外でした(我々はTypeScriptで開発することが多いためこれはありがたいことです)が、@uhyo_氏曰く「&lt;code&gt;any&lt;/code&gt;が多いのでTypeScriptのありがたみが少ない」とのことでした。確かにそんな感じはしました。
+私の環境ではなぜかブラウザでアプリケーションにアクセスした際にフロントのJavaScript側でエラーが出たりしたため、今回のアプリがどのようなものか把握するにも少し手間取ったりしました。&lt;/p&gt;
+
+&lt;p&gt;alpのログと相談しつつ、&lt;code&gt;getEvent()&lt;/code&gt;がid一つごとにクエリを1回発行しているから重いね、などと言いつつも生SQLに怖気づいて手を入れられずにいる横で@uhyo_氏が着実に修正を加えていき、13時ごろにスコアが1,100から1,500に上昇して喜んだりしていました。&lt;/p&gt;
+
+&lt;h3 id=&#34;中盤&#34;&gt;中盤&lt;/h3&gt;
+
+&lt;p&gt;node.jsのログがとれていないのが厳しいという話になり、ログまわりを調べることにしました。
+systemdに慣れている人がおらず、私が担当しましたがログをjournalに流し込んで取得するのに1時間はかかってしまいました。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;code&gt;/var/log/h2o/access.log&lt;/code&gt;がアクセスを受けても更新されないことを見つけたり、かと思えばしばらくして見に行くとログが溜まっていることに気付いたりして首を傾げたりする作業をしました。&lt;/p&gt;
+
+&lt;p&gt;また残り時間が減ってきたので、これまで1台で稼働させていたサーバーを複数台構成に切り替えようという話になり、以降アプリケーションまわりはすべて@uhyo_氏が担当して私と@sensu_watson氏で構築にとりかかることにしました。&lt;/p&gt;
+
+&lt;p&gt;15時に@uhyo_氏が対処していたループ中でのsheetsテーブル取得解消の成果が出て、ここスコアが約1,500点から8,435点に上がったので大喜びしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2018/09/16/isucon8_screenshot.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2018/09/16/isucon8_screenshot.png&#34; alt=&#34;15時時点のスクリーンショット 8435点&#34;&gt;&lt;/a&gt;&lt;br /&gt;
+我々の全盛期の様子 なんと学生1位&lt;/p&gt;
+
+&lt;h3 id=&#34;終盤&#34;&gt;終盤&lt;/h3&gt;
+
+&lt;p&gt;どうでもいいことですが、3台のプライベートIPの末尾が.3, .2, .1となっていることに気付かずにグローバルIPだけ見てサーバーリストの上から順にA,B,Cサーバーと名前をつけたところ、競技中にサーバーリストの並びが.1, .2, .3 に切り替わったので上からC,B,Aとなり一時混乱しました。&lt;/p&gt;
+
+&lt;p&gt;netdataのグラフを見たところ、通信量やメモリ使用量よりもCPU使用率が飛び抜けて高負荷になっているようだったため、アプリケーション部分に2台割り当てて残りの1台をDBとすることに決めました。&lt;/p&gt;
+
+&lt;p&gt;私はまずDBを1つのサーバーに切り出す作業を始め、これはデータベース側でユーザーに外部からのアクセスを許可しないといけない点で少しつまづきつつも、基本的には環境変数の値を変えるだけだったのでおおよそうまくいきました(少なくともこの時はそう思っていました)。&lt;/p&gt;
+
+&lt;p&gt;続いてアプリケーション部分を2台に分けないといけないのですが、nginxですら誰も複数台構成を試した経験がないため非常に先行きが怪しい状況となっていました。
+選択肢としてH2Oを捨ててnginxに切り替えるという手もあるのですが、環境構築にも手間取る我々の戦力では新しくアプリケーションをインストールする際に多大な面倒が生じうることは目に見えています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream supercoolawesomeservice.com{
+	server foo.com;
+	server bar.com;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;などと書けばnginxならロードバランスしてくれるということは知っていました(実際に試したことはない)が、H2Oのドキュメントを探したものの&lt;a href=&#34;https://github.com/h2o/h2o/issues/775&#34;&gt;どうにも難しそう&lt;/a&gt;な気配がしていました。&lt;/p&gt;
+
+&lt;p&gt;とはいえ現状で足りていないのは計算資源であるため、適当な切り分け方だったとしてもサーバー1台よりはきっと良くなるに違いないだろう、ということで、なんとなく負荷が高そうに見えた &lt;code&gt;/api/users&lt;/code&gt; 以下に送られたリクエストだけをすべて2台目に流すことにしました。&lt;/p&gt;
+
+&lt;p&gt;その作業中に、 &lt;code&gt;/initialize&lt;/code&gt;へのアクセスを受けるとDBではなくローカルファイル上の.shファイルが読まれるため、DBサーバーを別に分けると初期化処理に失敗することが判明しました。
+そこでDBサーバーの停止させていたH2Oとnodejsを復活させ、&lt;code&gt;/initialize&lt;/code&gt;へのアクセスはこのDBサーバー上で処理することとしました。
+しかしこの対策は別サーバーへのリダイレクトが成功しないと有効でないため、H2Oをリバースプロキシとして使用する設定が完了するまではDBも動かないという状況になってしまいました。&lt;/p&gt;
+
+&lt;p&gt;この設定変更に2人とも苦戦し、3台構成がまともに動いたのは17時を大きくまわった頃で、残り時間は1時間もありませんでした。&lt;/p&gt;
+
+&lt;p&gt;細々とした不具合を修正したりしたものの、17時40分ごろに走らせたベンチマークがすべて失敗し、スコアが🈚️なのはよくないということでロールバックを決定しました。
+ここで、ネットワークまわりをロールバックする方針を採用したもののうまくいかず、アプリケーション部分も合わせて巻き戻したものの&lt;code&gt;initialize/&lt;/code&gt;か何かの処理が走らず失敗し、制限時間のためスコアなしの失格となりました。&lt;/p&gt;
+
+&lt;p&gt;実際にはこのロールバック方針は誤りで、アプリケーションロジック側に不具合が生じて時おりエラーが出るようになっていたというのが原因でした。
+nodejsのアプリケーション内でエラーが出ているというログは上がっていたのですが、それまで設定に手間取って何度もバグを出していたネットワークまわりが原因であるように思い込んでしまいました。&lt;/p&gt;
+
+&lt;h2 id=&#34;反省会&#34;&gt;反省会&lt;/h2&gt;
+
+&lt;p&gt;明らかな敗因としては練習不足で、これはまあわかりきっていたことなのでよいのですが、最終的にスコアなしで終わってしまった直接の原因としては不具合の出どころを見誤ったことにあると思います。
+複数台構成に切り替える際に断続的に一部のサーバーが動かなくなったり復帰したりを繰り返していたのですが、各自の作業内容のリアルタイムでの共有が不十分だったため、アプリケーションの動作確認ができない時間ができてしまったり、生きているサーバーの情報が行き渡らずに1台構成での動作確認のためのベンチマークを走らせられなかったりしました。
+そのため後半以降にベンチマークを実行できる機会が減ってしまい、結果としてネットワークとアプリケーションのどちらで落ちているのか確証が持てない状況が発生し、時間切れ直前の焦りも加わって大きな失敗となってしまいました。
+これはログをしっかり読んでいれば・ログを取得しやすい環境を構築していれば防げたことでもあると思いますし、チームからはVCを導入しておいたほうがよかったかもしれないという意見もありました。&lt;/p&gt;
+
+&lt;p&gt;まっとうに戦えるチームならこのぐらいのことは一瞬で終わらせているんだろうなあ、と思うことも多々ありました。
+とはいえ、単純な設定変更や環境構築でも何らかの失敗をして時間がかかってしまうのは、ある意味最初から想定していたことではあります。
+しかしせめてアプリケーションがちゃんと動く状態でのスコアがほしかったという悔しさがあります。
+拙いながらも自分たちで考えた構成が動いているところが見たかったですし、アプリケーション側でもスコアへの影響の大きいスロークエリの改善コミットが入っていたので、これをスコアに結びつけられなかったことは残念です。&lt;/p&gt;
+
+&lt;p&gt;私は最初JavaScriptを書いていくことになるかと思っていましたが、蓋を開けてみればアプリケーションはほぼ@uhyo_氏に投げてしまっていました。
+実際生のSQLを動作を変えないまま書き換える能力は今の私にはなさそうな気もしたので、中盤までのスコア上昇を支えてくれた@uhyo_氏の活躍には感謝の念に堪えません。&lt;/p&gt;
+
+&lt;p&gt;結局私がなにをしていたかというと、基本的には@sensu_watson氏と一緒に設定ファイルやログファイルを眺めてウンウン唸っていたのが主な仕事になるような気がしますが、過去10年で打った&lt;code&gt;systemctl&lt;/code&gt;コマンドの数を今日一日で軽く越えたり、見様見真似で全く未経験のサーバー複数台構成をその場ででっちあげたりすることができたので、これはこれで非常に刺激的な経験になったと思います。&lt;/p&gt;
+
+&lt;p&gt;最後にはなりますが、この場で謝辞を述べられるべきすべての方々に感謝です。&lt;/p&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>

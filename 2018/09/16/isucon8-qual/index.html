@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Tatamo&#39;s weblog">
+    <meta name="author" content="Tatamo">
+    <meta name="viewport" content="width=device-width">
+    
+    <base href="http://tatamo.81.la/blog/">
+    <title>
+      ISUCON8の予選に出場して負けました | わたしろぐ
+    </title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual/">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>
+    
+    window.addEventListener("DOMContentLoaded", () => {
+        const elements = document.getElementsByTagName("code");
+        for (const el of elements) {
+            if (el.parentNode.tagName != "PRE") {
+                
+                el.style.display = "inline";
+                el.style.margin = "0 2px";
+                el.style.padding = "1px 3px";
+                if (el.classList.length == 0) {
+                    
+                    el.classList.add("nohighlight");
+                }
+            }
+            hljs.highlightBlock(el);
+			
+            if (el.classList.contains("nohighlight") ||
+                el.classList.contains("lang-nohighlight") ||
+                el.classList.contains("language-nohighlight")) {
+                el.classList.add("hljs");
+            }
+        }
+    }, false);
+    </script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71305633-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="http://tatamo.81.la/blog/">わたしろぐ</a></h1>
+        <h2 class="site-subtitle">私録</h2>
+    </header>
+    <nav class="head-nav">
+        <ul>
+        <li><a href="about/">about</a></li>
+        <li><a href="https://twitter.com/__tatamo__" target="_blank">twitter</a></li>
+        <li><a href="https://github.com/tatamo" target="_blank">github</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <div class="main-content">
+
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual/">ISUCON8の予選に出場して負けました</a></h1>
+        <span class="article-datetime"><time>2018-09-16 18:00:00</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories/diary/">diary</a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/isucon/">isucon</a></p>
+        <p><a href="http://isucon.net/archives/52193980.html">isucon8</a>の予選に参加しました。</p>
+
+<p>結果としてスコアなしで敗退しました。</p>
+
+<p></p>
+
+<p>序盤に行った環境構築の記事は<a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/">こちら</a></p>
+
+<p>今回の予選で使用したリポジトリは <a href="https://github.com/Tatamo/isucon8-q">https://github.com/Tatamo/isucon8-q</a> です。</p>
+
+<h2 id="メンバー編成">メンバー編成</h2>
+
+<p><a href="https://twitter.com/__tatamo__">わたし</a>, <a href="https://twitter.com/sensu_watson">@sensu_watson</a>氏, <a href="https://twitter.com/uhyo_">@uhyo_</a>氏の チーム 🈚️ で参加しました。</p>
+
+<p>全員多少のサーバー運用経験はありますが、ちゃんとした構築を行ったりした経験はほとんどなく、どちらかというと普段はフロントエンド寄りがメインのメンバーが多い構成です。</p>
+
+<h2 id="開始前">開始前</h2>
+
+<h3 id="前日まで">前日まで</h3>
+
+<p>メンバー全員があまり暇ではなかったたため、事前の練習は時間が取れませんでした。
+1週間前からConoHaでISUCON7のインスタンスを建てて軽く触った程度の対策しかできていません。</p>
+
+<p>私と@uhyo_氏がJavaScriptを読み書きできるので、nodejsを使用することにしました。</p>
+
+<h3 id="当日朝">当日朝</h3>
+
+<p>そもそもスロークエリとか<code>nginx.conf</code>とか<code>/etc/systemd/system</code>とか言われてもあまりよくわからないので、役割分担のしようがなさそうという雰囲気が漂っていました。
+そのため開始直後の作業のみ割り振りを決めておき、それ以降はその場で適当になんとかすることにしました。</p>
+
+<h2 id="経過">経過</h2>
+
+<h3 id="序盤">序盤</h3>
+
+<p>それぞれデプロイ環境の構築、解析ツールのインストール、HTTPサーバーとDBの設定確認・変更と最初のベンチマークの起動を担当することになったため、作業にとりかかりました。
+解析ツールとしては、ISUCON7 などでgoogle検索したら1ページ目に出てきた<a href="https://github.com/tkuchiki/alp">alp</a>, <a href="https://github.com/firehol/netdata">netdata</a>, <a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html">pt-query-digest</a>を導入すると決めていました。</p>
+
+<p>始まる前はてっきりUbuntu+nginx+MySQLとかの構成かと思っていたんですが、蓋を開けてみるとRed Hat+H2O+MariaDBで、<code>nginx.conf</code>がない…などと困惑することになりました。
+当然H2Oを触ったことのある人は誰もいません。</p>
+
+<p>この段階で既に何かとトラブルが起きたりしていましたが、1時間経過ぐらいでアプリケーションの中身を読み進めるフェーズに入りました。
+TypeScriptで書かれていたり<code>.prettierrc</code>が置かれていたりしたのが意外でした(我々はTypeScriptで開発することが多いためこれはありがたいことです)が、@uhyo_氏曰く「<code>any</code>が多いのでTypeScriptのありがたみが少ない」とのことでした。確かにそんな感じはしました。
+私の環境ではなぜかブラウザでアプリケーションにアクセスした際にフロントのJavaScript側でエラーが出たりしたため、今回のアプリがどのようなものか把握するにも少し手間取ったりしました。</p>
+
+<p>alpのログと相談しつつ、<code>getEvent()</code>がid一つごとにクエリを1回発行しているから重いね、などと言いつつも生SQLに怖気づいて手を入れられずにいる横で@uhyo_氏が着実に修正を加えていき、13時ごろにスコアが1,100から1,500に上昇して喜んだりしていました。</p>
+
+<h3 id="中盤">中盤</h3>
+
+<p>node.jsのログがとれていないのが厳しいという話になり、ログまわりを調べることにしました。
+systemdに慣れている人がおらず、私が担当しましたがログをjournalに流し込んで取得するのに1時間はかかってしまいました。</p>
+
+<p>また、<code>/var/log/h2o/access.log</code>がアクセスを受けても更新されないことを見つけたり、かと思えばしばらくして見に行くとログが溜まっていることに気付いたりして首を傾げたりする作業をしました。</p>
+
+<p>また残り時間が減ってきたので、これまで1台で稼働させていたサーバーを複数台構成に切り替えようという話になり、以降アプリケーションまわりはすべて@uhyo_氏が担当して私と@sensu_watson氏で構築にとりかかることにしました。</p>
+
+<p>15時に@uhyo_氏が対処していたループ中でのsheetsテーブル取得解消の成果が出て、ここスコアが約1,500点から8,435点に上がったので大喜びしました。</p>
+
+<p><a href="http://tatamo.81.la/blog/images/post/2018/09/16/isucon8_screenshot.png" target="_blank"><img src="http://tatamo.81.la/blog/images/post/2018/09/16/isucon8_screenshot.png" alt="15時時点のスクリーンショット 8435点"></a><br />
+我々の全盛期の様子 なんと学生1位</p>
+
+<h3 id="終盤">終盤</h3>
+
+<p>どうでもいいことですが、3台のプライベートIPの末尾が.3, .2, .1となっていることに気付かずにグローバルIPだけ見てサーバーリストの上から順にA,B,Cサーバーと名前をつけたところ、競技中にサーバーリストの並びが.1, .2, .3 に切り替わったので上からC,B,Aとなり一時混乱しました。</p>
+
+<p>netdataのグラフを見たところ、通信量やメモリ使用量よりもCPU使用率が飛び抜けて高負荷になっているようだったため、アプリケーション部分に2台割り当てて残りの1台をDBとすることに決めました。</p>
+
+<p>私はまずDBを1つのサーバーに切り出す作業を始め、これはデータベース側でユーザーに外部からのアクセスを許可しないといけない点で少しつまづきつつも、基本的には環境変数の値を変えるだけだったのでおおよそうまくいきました(少なくともこの時はそう思っていました)。</p>
+
+<p>続いてアプリケーション部分を2台に分けないといけないのですが、nginxですら誰も複数台構成を試した経験がないため非常に先行きが怪しい状況となっていました。
+選択肢としてH2Oを捨ててnginxに切り替えるという手もあるのですが、環境構築にも手間取る我々の戦力では新しくアプリケーションをインストールする際に多大な面倒が生じうることは目に見えています。</p>
+
+<pre><code>upstream supercoolawesomeservice.com{
+	server foo.com;
+	server bar.com;
+}
+</code></pre>
+
+<p>などと書けばnginxならロードバランスしてくれるということは知っていました(実際に試したことはない)が、H2Oのドキュメントを探したものの<a href="https://github.com/h2o/h2o/issues/775">どうにも難しそう</a>な気配がしていました。</p>
+
+<p>とはいえ現状で足りていないのは計算資源であるため、適当な切り分け方だったとしてもサーバー1台よりはきっと良くなるに違いないだろう、ということで、なんとなく負荷が高そうに見えた <code>/api/users</code> 以下に送られたリクエストだけをすべて2台目に流すことにしました。</p>
+
+<p>その作業中に、 <code>/initialize</code>へのアクセスを受けるとDBではなくローカルファイル上の.shファイルが読まれるため、DBサーバーを別に分けると初期化処理に失敗することが判明しました。
+そこでDBサーバーの停止させていたH2Oとnodejsを復活させ、<code>/initialize</code>へのアクセスはこのDBサーバー上で処理することとしました。
+しかしこの対策は別サーバーへのリダイレクトが成功しないと有効でないため、H2Oをリバースプロキシとして使用する設定が完了するまではDBも動かないという状況になってしまいました。</p>
+
+<p>この設定変更に2人とも苦戦し、3台構成がまともに動いたのは17時を大きくまわった頃で、残り時間は1時間もありませんでした。</p>
+
+<p>細々とした不具合を修正したりしたものの、17時40分ごろに走らせたベンチマークがすべて失敗し、スコアが🈚️なのはよくないということでロールバックを決定しました。
+ここで、ネットワークまわりをロールバックする方針を採用したもののうまくいかず、アプリケーション部分も合わせて巻き戻したものの<code>initialize/</code>か何かの処理が走らず失敗し、制限時間のためスコアなしの失格となりました。</p>
+
+<p>実際にはこのロールバック方針は誤りで、アプリケーションロジック側に不具合が生じて時おりエラーが出るようになっていたというのが原因でした。
+nodejsのアプリケーション内でエラーが出ているというログは上がっていたのですが、それまで設定に手間取って何度もバグを出していたネットワークまわりが原因であるように思い込んでしまいました。</p>
+
+<h2 id="反省会">反省会</h2>
+
+<p>明らかな敗因としては練習不足で、これはまあわかりきっていたことなのでよいのですが、最終的にスコアなしで終わってしまった直接の原因としては不具合の出どころを見誤ったことにあると思います。
+複数台構成に切り替える際に断続的に一部のサーバーが動かなくなったり復帰したりを繰り返していたのですが、各自の作業内容のリアルタイムでの共有が不十分だったため、アプリケーションの動作確認ができない時間ができてしまったり、生きているサーバーの情報が行き渡らずに1台構成での動作確認のためのベンチマークを走らせられなかったりしました。
+そのため後半以降にベンチマークを実行できる機会が減ってしまい、結果としてネットワークとアプリケーションのどちらで落ちているのか確証が持てない状況が発生し、時間切れ直前の焦りも加わって大きな失敗となってしまいました。
+これはログをしっかり読んでいれば・ログを取得しやすい環境を構築していれば防げたことでもあると思いますし、チームからはVCを導入しておいたほうがよかったかもしれないという意見もありました。</p>
+
+<p>まっとうに戦えるチームならこのぐらいのことは一瞬で終わらせているんだろうなあ、と思うことも多々ありました。
+とはいえ、単純な設定変更や環境構築でも何らかの失敗をして時間がかかってしまうのは、ある意味最初から想定していたことではあります。
+しかしせめてアプリケーションがちゃんと動く状態でのスコアがほしかったという悔しさがあります。
+拙いながらも自分たちで考えた構成が動いているところが見たかったですし、アプリケーション側でもスコアへの影響の大きいスロークエリの改善コミットが入っていたので、これをスコアに結びつけられなかったことは残念です。</p>
+
+<p>私は最初JavaScriptを書いていくことになるかと思っていましたが、蓋を開けてみればアプリケーションはほぼ@uhyo_氏に投げてしまっていました。
+実際生のSQLを動作を変えないまま書き換える能力は今の私にはなさそうな気もしたので、中盤までのスコア上昇を支えてくれた@uhyo_氏の活躍には感謝の念に堪えません。</p>
+
+<p>結局私がなにをしていたかというと、基本的には@sensu_watson氏と一緒に設定ファイルやログファイルを眺めてウンウン唸っていたのが主な仕事になるような気がしますが、過去10年で打った<code>systemctl</code>コマンドの数を今日一日で軽く越えたり、見様見真似で全く未経験のサーバー複数台構成をその場ででっちあげたりすることができたので、これはこれで非常に刺激的な経験になったと思います。</p>
+
+<p>最後にはなりますが、この場で謝辞を述べられるべきすべての方々に感謝です。</p>
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-next"><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/">&lt;- Newer: ISUCON8予選 序盤環境構築覚え書き</a></span>
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/">Older: JavaScript/TypeScriptで競技プログラミングをするには 後編 -&gt;</a></span>
+    </nav>
+
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <section>
+                <h2 class="panel-title">Recent Posts</h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/" class="list-group-item">ISUCON8予選 序盤環境構築覚え書き</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual/" class="list-group-item">ISUCON8の予選に出場して負けました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/" class="list-group-item">JavaScript/TypeScriptで競技プログラミングをするには 後編</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-01/" class="list-group-item">JavaScript/TypeScriptで競技プログラミングをするには 前編</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/02/08/freeciv-right-drag/" class="list-group-item">Freecivの操作、右ドラッグの活用について</a></li>
+                <li><a href="http://tatamo.81.la/blog/2017/12/18/intro-new-moblie-pc/" class="list-group-item">ThinkPad X1 Carbonを購入しました</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (16)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/diary">diary (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/pc">pc (2)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/austin">austin (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/competitive-programming">competitive-programming (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/contest">contest (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/css">css (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/dtp">dtp (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/highlightjs">highlightjs (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/homebuilt_pc">homebuilt_pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/html">html (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/icpc">icpc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/isucon">isucon (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/japari-watch">japari-watch (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/pc">pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/pixijs">pixijs (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/seccamp">seccamp (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/vivliostyle">vivliostyle (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    </div>
+   <footer>
+        <p>Copyright (c) 2015 <a href="about/">Tatamo</a>.</p>
+        <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a></p>
+    </footer>
+</body>
+</html>
+
