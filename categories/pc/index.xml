@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Mon, 18 Dec 2017 21:00:00 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/categories/pc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/pc/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>ThinkPad X1 Carbonを購入しました</title>
@@ -16,16 +16,16 @@
       
       <guid>http://tatamo.81.la/blog/2017/12/18/intro-new-moblie-pc/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の19日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の19日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;新しいモバイルPCが先週届いたので、それについて書きます。&lt;/p&gt;
 
-&lt;h2 id=&#34;購入したpc:e1aff7a4c108ad68177d235e2867a617&#34;&gt;購入したPC&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;購入したpc&#34;&gt;購入したPC&lt;/h2&gt;
 
 &lt;p&gt;Lenovo ThinkPad X1 Carbon(2017モデル)を買いました。
 基本的なスペックは以下の通りです。&lt;/p&gt;
@@ -40,7 +40,7 @@
 &lt;p&gt;液晶サイズは14型、本体重量はおよそ1.13kgです。
 お値段は約161kでした。&lt;/p&gt;
 
-&lt;h2 id=&#34;新pc購入のモチベーション:e1aff7a4c108ad68177d235e2867a617&#34;&gt;新PC購入のモチベーション&lt;/h2&gt;
+&lt;h2 id=&#34;新pc購入のモチベーション&#34;&gt;新PC購入のモチベーション&lt;/h2&gt;
 
 &lt;p&gt;とにかく元々持っていたラップトップが重すぎたというのが大きな要因です。
 大学に行くときなどかなり頻繁にPCを持って出るのですが、サイズが大きくて鞄に入れにくい上に重量が2.5kg以上と決して持ち運びに適したPCではなかったのです。&lt;/p&gt;
@@ -49,21 +49,21 @@
 
 &lt;p&gt;そしていずれPCを変えることになるなら早いほうがいいに決まっているので、タンスに挟まっていた成人祝いの札束などを引っ張り出して新しいPCの購入に踏み切りました。&lt;/p&gt;
 
-&lt;h2 id=&#34;pc選定の条件:e1aff7a4c108ad68177d235e2867a617&#34;&gt;PC選定の条件&lt;/h2&gt;
+&lt;h2 id=&#34;pc選定の条件&#34;&gt;PC選定の条件&lt;/h2&gt;
 
 &lt;p&gt;タンス預金の中身を検めると諭吉氏が16枚あったので、これに財布の中の一万円を加えた17万円を予算上限としました。&lt;/p&gt;
 
 &lt;p&gt;その上で、新しいPCに求めるスペックを想定しました。
 以下はその優先度の高い順に並べています。&lt;/p&gt;
 
-&lt;h3 id=&#34;携帯性:e1aff7a4c108ad68177d235e2867a617&#34;&gt;携帯性&lt;/h3&gt;
+&lt;h3 id=&#34;携帯性&#34;&gt;携帯性&lt;/h3&gt;
 
 &lt;p&gt;今回のPC買い替えの動機でもあるので、軽くて持ち運びやすい、いわゆるモバイルPCにすることにしました。
 とはいえ元のPCがあまりに重いため、ちょっとぐらいの差はわからないので極限まで軽さを求めることはしません。&lt;/p&gt;
 
 &lt;p&gt;大きさについては、鞄に入れやすい程度には小さく収まってほしいですが、あまり小さくて液晶が見難くなっても困るので、やはり一般的なモバイルPCの範疇に収まっていることを条件としました。&lt;/p&gt;
 
-&lt;h3 id=&#34;ストレージ:e1aff7a4c108ad68177d235e2867a617&#34;&gt;ストレージ&lt;/h3&gt;
+&lt;h3 id=&#34;ストレージ&#34;&gt;ストレージ&lt;/h3&gt;
 
 &lt;p&gt;私はデスクトップ機とノートPCで同じ環境を構築し、出先でも開発ができるようにしています。
 これはつまり、WindowsとLinux(Debian)のデュアルブートを行うことを意味します。
@@ -71,25 +71,25 @@
 というか、手元のラップトップを見たところWindowsだけで128GBなんて軽く越えていたので不安しかありません。
 そのため、ストレージには512GB SSDを使用したいと考えました(SSDなのは前提条件として当然です)。&lt;/p&gt;
 
-&lt;h3 id=&#34;メモリ:e1aff7a4c108ad68177d235e2867a617&#34;&gt;メモリ&lt;/h3&gt;
+&lt;h3 id=&#34;メモリ&#34;&gt;メモリ&lt;/h3&gt;
 
 &lt;p&gt;経験上、Chromeを立ち上げまくったりメモリを食うことをたくさんした場合、メモリの消費量がぴったり8GB前後になるという印象があります。
 基本的には8GBで何の問題もありませんが、メモリをたくさん食っている状況下では、メモリが8GBだとちょうど溢れてしまう可能性があります。
 なので16GBあると嬉しいですが、それによって値段が上がりすぎてしまうのであれば8GBのほうが良い、という想定になりました。&lt;/p&gt;
 
-&lt;h3 id=&#34;cpu:e1aff7a4c108ad68177d235e2867a617&#34;&gt;CPU&lt;/h3&gt;
+&lt;h3 id=&#34;cpu&#34;&gt;CPU&lt;/h3&gt;
 
 &lt;p&gt;Core i3はさすがにどうかと思いますが、動画処理や画像処理等はしないですし、ゲームはノートPCなんて使わずに家のデスクトップでやるので高い性能はあまり必要ありません。
 なのでCore i5でも積んでいれば十分と考えました。&lt;/p&gt;
 
-&lt;h3 id=&#34;os:e1aff7a4c108ad68177d235e2867a617&#34;&gt;OS&lt;/h3&gt;
+&lt;h3 id=&#34;os&#34;&gt;OS&lt;/h3&gt;
 
 &lt;p&gt;先述したようにデスクトップとノートPCで環境を揃える予定なので、macOSだと環境が違ってきてしまうのでやや評価が下がります。
 デュアルブート自体Windows+Linuxよりは相性が悪い印象ですし、そもそもMacだとLinuxを入れるまでもなく普通にMac上に環境構築するので、結局デスクトップ機との環境統一が望めません。&lt;/p&gt;
 
 &lt;p&gt;macOSは悪い選択肢ではありませんが、今回の使用目的ではWindowsのほうが優先されます。&lt;/p&gt;
 
-&lt;h3 id=&#34;拡張性-端子類:e1aff7a4c108ad68177d235e2867a617&#34;&gt;拡張性(端子類)&lt;/h3&gt;
+&lt;h3 id=&#34;拡張性-端子類&#34;&gt;拡張性(端子類)&lt;/h3&gt;
 
 &lt;p&gt;モバイルPCは往々にしてUSBポートが1個しか付いていなかったりすることが多いですが、個人的には2個以上あったほうが良いのではないかという考えです。&lt;/p&gt;
 
@@ -102,25 +102,25 @@
 &lt;p&gt;全体的には、モバイルPCでかつ512GBのストレージを積めることを前提条件として考えました。
 またOfficeについてはあまり使う予定がないため、選択可能なら非搭載とすることにしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;候補に上がったもの:e1aff7a4c108ad68177d235e2867a617&#34;&gt;候補に上がったもの&lt;/h2&gt;
+&lt;h2 id=&#34;候補に上がったもの&#34;&gt;候補に上がったもの&lt;/h2&gt;
 
 &lt;p&gt;結局どのPCを買うか悩んでいるときが一番楽しい&lt;/p&gt;
 
-&lt;h3 id=&#34;surface-pro:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Surface Pro&lt;/h3&gt;
+&lt;h3 id=&#34;surface-pro&#34;&gt;Surface Pro&lt;/h3&gt;
 
 &lt;p&gt;2in1は目新しいので気になりましたが、液晶を自立させるために後ろにスタンドを必要とすることから、「新幹線・飛行機の小さいテーブルで使いにくい」「膝上で使いにくい」ということで候補から外しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;surface-laptop:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Surface Laptop&lt;/h3&gt;
+&lt;h3 id=&#34;surface-laptop&#34;&gt;Surface Laptop&lt;/h3&gt;
 
 &lt;p&gt;だったらクラムシェルにしようということで候補に上げました。
 しかしCore i7+メモリ16GBまで積まないと512GBのストレージを選択することができず、しかもその場合のお値段なんと28万円を越えるためこれも除外しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;vaio-z:e1aff7a4c108ad68177d235e2867a617&#34;&gt;VAIO Z&lt;/h3&gt;
+&lt;h3 id=&#34;vaio-z&#34;&gt;VAIO Z&lt;/h3&gt;
 
 &lt;p&gt;これも2in1ですが、天板が半分ぐらいのところで折り曲がってモード変更できるようになっており、通常使用時は普通のクラムシェルとして使えるので膝上性能ばっちりです。
 非常にハイスペックなだけあって高いので、Core i5+メモリ8GB+SSD256GBの時点で20万円を越えることを確認して候補から外しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;macbook-air-macbook-pro:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Macbook Air, Macbook Pro&lt;/h3&gt;
+&lt;h3 id=&#34;macbook-air-macbook-pro&#34;&gt;Macbook Air, Macbook Pro&lt;/h3&gt;
 
 &lt;p&gt;Core i5+メモリ8GB+SSD 512GBの構成で139k、Core i7の場合は155kと、予算的にはいい感じです。
 しかし最大の問題として、そもそも積んでいるCPUが第5世代のものです。
@@ -130,14 +130,14 @@
 
 &lt;p&gt;MBPは第七世代CPUを使用可能ですが、Core i5(2.3GHz)+メモリ8GB+512GBで187kとなるので予算オーバーです。&lt;/p&gt;
 
-&lt;h3 id=&#34;matebook-x:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Matebook X&lt;/h3&gt;
+&lt;h3 id=&#34;matebook-x&#34;&gt;Matebook X&lt;/h3&gt;
 
 &lt;p&gt;華為のモバイルPCで、メモリは8GBのみ、512GB SSDを積むためにはCore i7モデルを選択する必要があります。
 この場合の基本価格は174k程度で予算の上限を越えますが、実際にはもう少し安い価格で買えるようです。&lt;/p&gt;
 
 &lt;p&gt;欠点があるとすれば、デザインがあまりにMacbookに似ているのでちょっと複雑な気持ちになりそうなところでしょうか。&lt;/p&gt;
 
-&lt;h3 id=&#34;thinkpad-x1-carbon-thinkpad-x270:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Thinkpad X1 Carbon, Thinkpad X270&lt;/h3&gt;
+&lt;h3 id=&#34;thinkpad-x1-carbon-thinkpad-x270&#34;&gt;Thinkpad X1 Carbon, Thinkpad X270&lt;/h3&gt;
 
 &lt;p&gt;LenovoのThinkpadは常に割引されている状態で、日時によって割引率がどんどん変わっていくのでちゃんとした値段を出すのが難しいです。
 一度割引率43%までは確認したので、とりあえず40%の割引がなされるものとして計算しました。&lt;/p&gt;
@@ -151,7 +151,7 @@
 &lt;p&gt;また12.5型のThinkpad X270も候補に上げました。
 これはX1 Carbonよりも重い一方でサイズは12.5型のため小さく、また同スペックでも1万円から2万円ほど安く買うことができます。&lt;/p&gt;
 
-&lt;h2 id=&#34;thinkpad-x1-carbon購入:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Thinkpad X1 Carbon購入&lt;/h2&gt;
+&lt;h2 id=&#34;thinkpad-x1-carbon購入&#34;&gt;Thinkpad X1 Carbon購入&lt;/h2&gt;
 
 &lt;p&gt;最終的な候補としてMatebook X, Thinkpad X1 Carbon, Thinkpad X270が残りました。
 デザイン的にはThinkpadが好みだったり、また知名度からの安心感もあるのでMatebookは除外し、X1 CarbonとX270のどちらかを買うことに決めました。&lt;/p&gt;
@@ -167,7 +167,7 @@
 
 &lt;p&gt;ここに来てCore i5+メモリ8GBとi7+16GBのどちらにするかで非常に迷うことになってしまったのですが、高い買い物をするときは多少余計に払ってでも良いものを買えという親の教えを思い出し、Core i7+メモリ16GBにすることに決めました。&lt;/p&gt;
 
-&lt;h2 id=&#34;使用感など:e1aff7a4c108ad68177d235e2867a617&#34;&gt;使用感など&lt;/h2&gt;
+&lt;h2 id=&#34;使用感など&#34;&gt;使用感など&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/blog/2017/12/18/intro-new-moblie-pc/&#34;&gt;ICPC参加&lt;/a&gt;のためにつくばに行く2日ほど前に届きました。
 とても軽い上に鞄に入れやすいサイズのため、持ち運びは明らかに便利になりました。
@@ -176,7 +176,6 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 
 &lt;p&gt;全体的に非常に使いやすいのでとても満足していますが、一点だけ挙げるとすればキーボードの右上にHome/Endキーが搭載されているため、Fnキー+左/右キーの組み合わせではHome/Endキーが使えません。
 キー配置の慣れの問題かもしれませんが、HomeキーとEndキーは頻繁に使用するキーのため今の所やや不便です。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -187,9 +186,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
       
       <guid>http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の7日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の7日の記事です。
 なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -197,7 +194,9 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 &lt;p&gt;私は自作PCerなので、この機会に普段使用しているPCのパーツ構成を紹介していきたいと思います。
 趣味の中でも結構金がかかっている分野です。&lt;/p&gt;
 
-&lt;h2 id=&#34;外観:14cdc902344e522bd60455484bb9d961&#34;&gt;外観&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;外観&#34;&gt;外観&lt;/h2&gt;
 
 &lt;p&gt;クリックすると別タブで拡大表示します。&lt;/p&gt;
 
@@ -205,16 +204,16 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; alt=&#34;自作PC外観(卓上)&#34; width=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;使用用途-スペック:14cdc902344e522bd60455484bb9d961&#34;&gt;使用用途・スペック&lt;/h2&gt;
+&lt;h2 id=&#34;使用用途-スペック&#34;&gt;使用用途・スペック&lt;/h2&gt;
 
 &lt;p&gt;ごく普通のプログラミングやネットサーフィンに加え、ゲームを多くプレイするため、少なくとも比較的新しいゲームを高画質設定でプレイ出来るだけのスペックを目指して構築しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;パーツ構成-本体:14cdc902344e522bd60455484bb9d961&#34;&gt;パーツ構成(本体)&lt;/h2&gt;
+&lt;h2 id=&#34;パーツ構成-本体&#34;&gt;パーツ構成(本体)&lt;/h2&gt;
 
 &lt;p&gt;おおよそ5年前の2011年年末から2012年の年始に組み上げ、そこからパーツを少しずつ更新して現在に至ります。
 当時のパーツで残っているのはCPUとM/B、およびメモリとHDD程度。&lt;/p&gt;
 
-&lt;h3 id=&#34;cpu-マザーボード:14cdc902344e522bd60455484bb9d961&#34;&gt;CPU・マザーボード&lt;/h3&gt;
+&lt;h3 id=&#34;cpu-マザーボード&#34;&gt;CPU・マザーボード&lt;/h3&gt;
 
 &lt;p&gt;CPU: Phenom II X6 1065T&lt;br /&gt;
 M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
@@ -230,7 +229,7 @@ M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
 一方でそれよりも上の性能を目指す場合はIntelの一強状態となっており、ハイエンドでもAMDが多少は追随できていた2011年当時とは状況が異なっています。
 そのため、今からPCを組む場合は何も考えずにAMD製品を選ぶというわけにはいかないように思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;メモリ:14cdc902344e522bd60455484bb9d961&#34;&gt;メモリ&lt;/h3&gt;
+&lt;h3 id=&#34;メモリ&#34;&gt;メモリ&lt;/h3&gt;
 
 &lt;p&gt;PC3-12800の4GBを4枚 計16GB&lt;br /&gt;
 →最近1枚壊れたため3枚12GB&lt;/p&gt;
@@ -239,7 +238,7 @@ M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
 普通に使っていると8GBで足りるか足りないか程度だと思うので、8GBから多少上であればいいと思います。
 今のところ16GBから12GBに減ってもほとんど影響を感じることはありません。&lt;/p&gt;
 
-&lt;h3 id=&#34;グラフィックボード:14cdc902344e522bd60455484bb9d961&#34;&gt;グラフィックボード&lt;/h3&gt;
+&lt;h3 id=&#34;グラフィックボード&#34;&gt;グラフィックボード&lt;/h3&gt;
 
 &lt;p&gt;SAPPHIRE R9 270 2G GDDR5&lt;/p&gt;
 
@@ -250,12 +249,12 @@ PCを組んだ当初は二束三文で売られていたRadeon HD4xxxか5xxxあ�
 
 &lt;p&gt;当然ながらVRをプレイしようと考えるのは無理があります。&lt;/p&gt;
 
-&lt;h3 id=&#34;電源:14cdc902344e522bd60455484bb9d961&#34;&gt;電源&lt;/h3&gt;
+&lt;h3 id=&#34;電源&#34;&gt;電源&lt;/h3&gt;
 
 &lt;p&gt;どのモデルだったか忘れました。
 500Wのものですが、一度壊れたので換装しています。&lt;/p&gt;
 
-&lt;h3 id=&#34;ストレージ:14cdc902344e522bd60455484bb9d961&#34;&gt;ストレージ&lt;/h3&gt;
+&lt;h3 id=&#34;ストレージ&#34;&gt;ストレージ&lt;/h3&gt;
 
 &lt;p&gt;SSD: CFD CSSD-S6T512NHG6Q (512GB)&lt;br /&gt;
 HDD1: HGST HDS721050CLA362 (500GB)&lt;br /&gt;
@@ -268,7 +267,7 @@ SSDは登場当初に比べて随分安くなった印象です。
 
 &lt;p&gt;SSD化までは500GBのHDD1本だけで運用していましたが、通電時間2万時間越えのこのHDDは今でも不良セクタが1つもなくとても健康な状態のようです。&lt;/p&gt;
 
-&lt;h3 id=&#34;光学ドライブ:14cdc902344e522bd60455484bb9d961&#34;&gt;光学ドライブ&lt;/h3&gt;
+&lt;h3 id=&#34;光学ドライブ&#34;&gt;光学ドライブ&lt;/h3&gt;
 
 &lt;p&gt;Pioneer BDR-207JBK&lt;/p&gt;
 
@@ -276,7 +275,7 @@ SSDは登場当初に比べて随分安くなった印象です。
 1万円台中盤程度で、十数万円をどうにか絞り出してPCを組んだ当初これを買っている余裕はなかったため、OSのインストール等は手元にあったUSB外付けDVDドライブでなんとかしのぎ、資金力の回復を待った上で後付けで購入しました。
 耐久性も良好ですし性能も高く良い感じですが、PCケースと干渉してディスクトレイがうまく開かないことがあるのが玉に瑕。&lt;/p&gt;
 
-&lt;h3 id=&#34;pcケース:14cdc902344e522bd60455484bb9d961&#34;&gt;PCケース&lt;/h3&gt;
+&lt;h3 id=&#34;pcケース&#34;&gt;PCケース&lt;/h3&gt;
 
 &lt;p&gt;Antec SOLO II&lt;/p&gt;
 
@@ -284,13 +283,13 @@ SSDは登場当初に比べて随分安くなった印象です。
 最初は似た価格帯のケースが半額で売っていたので買って使っていましたが、サイドパネルがペラペラだったり購入後すぐ前面の開閉部分が壊れたりあまり作りが良くなかったり裏側配線ができなかったりして投げ捨てたので、今使っているこのケースは非常に満足しています。
 唯一前面パネルのUSBポートの作りがやや甘かったのか、購入から1年しないぐらいでUSB2.0のポートが1つ潰れました。&lt;/p&gt;
 
-&lt;h2 id=&#34;周辺機器構成:14cdc902344e522bd60455484bb9d961&#34;&gt;周辺機器構成&lt;/h2&gt;
+&lt;h2 id=&#34;周辺機器構成&#34;&gt;周辺機器構成&lt;/h2&gt;
 
 &lt;p&gt;画像再掲&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; alt=&#34;自作PC外観(卓上)&#34; width=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;モニタ:14cdc902344e522bd60455484bb9d961&#34;&gt;モニタ&lt;/h3&gt;
+&lt;h3 id=&#34;モニタ&#34;&gt;モニタ&lt;/h3&gt;
 
 &lt;p&gt;EIZO FORIS FS2333 2枚&lt;/p&gt;
 
@@ -298,14 +297,14 @@ SSDは登場当初に比べて随分安くなった印象です。
 最近FS2333の同ディスプレイ2枚体制の構築を達成しました。
 このディスプレイは使い勝手もよく文句なしです。&lt;/p&gt;
 
-&lt;h3 id=&#34;スピーカー:14cdc902344e522bd60455484bb9d961&#34;&gt;スピーカー&lt;/h3&gt;
+&lt;h3 id=&#34;スピーカー&#34;&gt;スピーカー&lt;/h3&gt;
 
 &lt;p&gt;Logicool Speakers Z130&lt;/p&gt;
 
 &lt;p&gt;とくにこだわりもなくずっと使ってますが、モニタ内臓のスピーカーよりはよっぽど良いですし値段も安かったため満足しています。
 音楽は作業中にアニソンを流す程度であまり聴きません。&lt;/p&gt;
 
-&lt;h3 id=&#34;トラックボール:14cdc902344e522bd60455484bb9d961&#34;&gt;トラックボール&lt;/h3&gt;
+&lt;h3 id=&#34;トラックボール&#34;&gt;トラックボール&lt;/h3&gt;
 
 &lt;p&gt;サンワサプライ MA-TB38&lt;br /&gt;
 エレコム M-DT1URBK&lt;/p&gt;
@@ -319,7 +318,7 @@ SSDは登場当初に比べて随分安くなった印象です。
 &lt;p&gt;エレコムのトラックボールは1代目のMA-TB38が故障した頃にちょうど新しく出たモデルだったので、ちょっと気になってつなぎ兼予備として購入。有線モデル特有の欠点として、耳を近づけるとわずかにコイル鳴きが聞こえるのが難点。
 使い勝手は悪くないですが、結局2代目のMA-TB38を確保してからはほとんど使っていません。&lt;/p&gt;
 
-&lt;h3 id=&#34;キーボード:14cdc902344e522bd60455484bb9d961&#34;&gt;キーボード&lt;/h3&gt;
+&lt;h3 id=&#34;キーボード&#34;&gt;キーボード&lt;/h3&gt;
 
 &lt;p&gt;Skydigital NKEY-P&lt;/p&gt;
 
@@ -331,14 +330,14 @@ SSDは登場当初に比べて随分安くなった印象です。
 &lt;p&gt;現在の買い換え候補は、2017年に発売が予定されている&lt;a href=&#34;http://www.realforce.co.jp/&#34;&gt;REALFORCE RGB&lt;/a&gt;の日本語配列版です。
 REALFORCEシリーズのゲーミング向けモデルがついに発売されるということで、非常に注目しています。&lt;/p&gt;
 
-&lt;h3 id=&#34;ゲームパッド:14cdc902344e522bd60455484bb9d961&#34;&gt;ゲームパッド&lt;/h3&gt;
+&lt;h3 id=&#34;ゲームパッド&#34;&gt;ゲームパッド&lt;/h3&gt;
 
 &lt;p&gt;Microsoft Xbox 360 Controller for Windows&lt;/p&gt;
 
 &lt;p&gt;もはやデファクトスタンダードといってもよさそうな定番コントローラーで、値段の安さも驚くべきことです。
 ただドライバ周りに少し癖があり、公式ドライバと非公式ドライバの両方を使い分けたほうがいい場合があったりする点には注意が必要です。&lt;/p&gt;
 
-&lt;h2 id=&#34;今後:14cdc902344e522bd60455484bb9d961&#34;&gt;今後&lt;/h2&gt;
+&lt;h2 id=&#34;今後&#34;&gt;今後&lt;/h2&gt;
 
 &lt;p&gt;一度自作PCを組むと、いくらでも機能を向上させたくなるために際限なく金が吸われます。&lt;/p&gt;
 
@@ -348,7 +347,6 @@ REALFORCEシリーズのゲーミング向けモデルがついに発売され�
 そんなにキーボードを光らせたいのか。&lt;/p&gt;
 
 &lt;p&gt;あとはグラフィックボードのVRAMまわりに若干の力不足を感じていますが、そんなに最新のゲームをやりまくるわけでもないですし(Steamでなかなか割引されないので)、最新かつ高いグラフィックを要求するゲームのプレイ頻度がそう高くないので今のところ現状で問題はあまりない気もしています。&lt;/p&gt;
-
       </description>
     </item>
     

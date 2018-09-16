@@ -74,20 +74,20 @@
         <a href="http://tatamo.81.la/blog/tags/japari-watch/">japari-watch</a>
         <a href="http://tatamo.81.la/blog/tags/javascript/">javascript</a>
         <a href="http://tatamo.81.la/blog/tags/pixijs/">pixijs</a></p>
-        
-
-<p>この記事は<a href="https://adventar.org/calendars/2491">Kobe University Advent Calendar 2017</a>の1日の記事です。
+        <p>この記事は<a href="https://adventar.org/calendars/2491">Kobe University Advent Calendar 2017</a>の1日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。</p>
 
 <hr />
 
 <p>ブラウザ上で動作するゲーム「<a href="https://tatamo.github.io/japari-watch/">じゃぱりうぉっち</a>」を作ったので、開発記を書きます。</p>
 
-<h2 id="じゃぱりうぉっち:715a67537c3fb0cd66e102735cb99acd">じゃぱりうぉっち</h2>
+<p></p>
+
+<h2 id="じゃぱりうぉっち">じゃぱりうぉっち</h2>
 
 <p><a href="https://tatamo.github.io/japari-watch/">https://tatamo.github.io/japari-watch/</a> で公開しており、PCとモバイル端末のどちらでも遊ぶことができます。</p>
 
-<h3 id="発端:715a67537c3fb0cd66e102735cb99acd">発端</h3>
+<h3 id="発端">発端</h3>
 
 <p>期末試験前に現実逃避のためにTLを眺めていたところ、以下のツイートが流れてきました。
 <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">フェネック「アライさんに似合いそうな帽子を見つけてきたよー」<br>アライグマ「ありがとうなのだ！」<a href="https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;ref_src=twsrc%5Etfw">#けものフレンズ</a> <a href="https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;ref_src=twsrc%5Etfw">#ドット絵</a> <a href="https://twitter.com/hashtag/pixelart?src=hash&amp;ref_src=twsrc%5Etfw">#pixelart</a> <a href="https://t.co/1VueMavObQ">pic.twitter.com/1VueMavObQ</a></p>&mdash; 鬼雷 昇炎 (@kirai_s) <a href="https://twitter.com/kirai_s/status/934412479597199361?ref_src=twsrc%5Etfw">2017年11月25日</a></blockquote></p>
@@ -96,7 +96,7 @@
 
 <p>作品としての完成度が高く、実際にゲームとして遊べそうに見えたので、これをゲーム化してみました。</p>
 
-<h3 id="素材:715a67537c3fb0cd66e102735cb99acd">素材</h3>
+<h3 id="素材">素材</h3>
 
 <p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">原寸(128*128px)なのだ <a href="https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;ref_src=twsrc%5Etfw">#けものフレンズ</a> <a href="https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;ref_src=twsrc%5Etfw">#ドット絵</a> <a href="https://twitter.com/hashtag/pixelart?src=hash&amp;ref_src=twsrc%5Etfw">#pixelart</a> <a href="https://t.co/BJ0Mc27vR5">pic.twitter.com/BJ0Mc27vR5</a></p>&mdash; 鬼雷 昇炎 (@kirai_s) <a href="https://twitter.com/kirai_s/status/934699058542678016?ref_src=twsrc%5Etfw">2017年11月26日</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
@@ -105,18 +105,18 @@
 
 <p>背景に相当する部分の画像がなかったので自分で加工したり、そのまま矩形状にスプライトを切り出すと被ってしまう部分があったのでいくつかのパーツに分けたりしました。</p>
 
-<h2 id="製作期間:715a67537c3fb0cd66e102735cb99acd">製作期間</h2>
+<h2 id="製作期間">製作期間</h2>
 
 <p>ゲーム本体の作成(アセットの用意・環境構築含む)： 一晩<br />
 公開のためのWebページデザインやTwitterカード、faviconの用意：半日<br />
 公開後の難易度調整+自動モード機能の追加：半日</p>
 
-<h2 id="フレームワーク選定:715a67537c3fb0cd66e102735cb99acd">フレームワーク選定</h2>
+<h2 id="フレームワーク選定">フレームワーク選定</h2>
 
 <p>ブラウザで動作するゲームを作ろうと思ったため、基本的にはNode環境で開発を進めていくことになります。
 高速に開発するためにTypeScriptで記述することとしたうえで、使用するツールを選定していきました。</p>
 
-<h3 id="pixi-js:715a67537c3fb0cd66e102735cb99acd">PIXI.js</h3>
+<h3 id="pixi-js">PIXI.js</h3>
 
 <p>PC・モバイル両方のブラウザで動作するゲームという方針のため、HTML5 Canvas系のライブラリを使うことにしました。
 npm上で型定義が用意されているものを使いたかったので、今回は<a href="http://www.pixijs.com/">PIXI.js</a>を選択しました。</p>
@@ -128,7 +128,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 <p>でPIXI.jsの型情報を使用可能になります。</p>
 
-<h4 id="ビルドシステム:715a67537c3fb0cd66e102735cb99acd">ビルドシステム</h4>
+<h4 id="ビルドシステム">ビルドシステム</h4>
 
 <p>また、今回はブラウザを動作対象とするため、jsファイルのバンドルとBabel化のためにwebpackを使用しました。
 実際のところwebpackもBabelもこれまで使ったことがなかったのですが、なんとかts-loaderとbabel-loaderでTypeScriptのソースコードをBabel化してバンドルするところまでやりました。</p>
@@ -136,7 +136,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 <p>期末試験直前であまり学習コストをかけられず、これ以上webpackであれこれするのは怖くなったので、jsファイル以外の静的ファイルのコピーなどはrimrafやcpxを使い、npm scriptsでビルドすることにしました。
 また開発中の自動コンパイルのために、chokidarとbrowser-syncを使いました。</p>
 
-<h2 id="設計:715a67537c3fb0cd66e102735cb99acd">設計</h2>
+<h2 id="設計">設計</h2>
 
 <p>一定時間ごとにゲームループをまわし、大元のゲームオブジェクトから各マネージャのupdateメソッドを呼び出して処理を行い、最後にレンダリングを行うという基本的な設計としています。</p>
 
@@ -148,7 +148,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 <p>エンティティごとにスプライトのテクスチャを用意しておく必要があり、これはstaticメンバとして各エンティティのクラスに紐付けることにしました。
 このテクスチャの生成はアセットのローディングが終わった後に行う必要があるため、エンティティマネージャの初期化時に各staticメソッドを呼び出すことで初期化するようにしました。</p>
 
-<h3 id="eventemitterによるメッセージング:715a67537c3fb0cd66e102735cb99acd">EventEmitterによるメッセージング</h3>
+<h3 id="eventemitterによるメッセージング">EventEmitterによるメッセージング</h3>
 
 <p>PIXI.jsで用意されているクラスは<a href="https://github.com/primus/eventemitter3">EventEmitter</a>を継承しており、イベント駆動でのオブジェクト間のメッセージングが可能です。
 たとえば<code>アライさん</code>オブジェクトは<code>Hat</code>コレクションに対する参照を持ちませんが、イベントの発火にフックしてエンティティマネージャがメソッド引数にコレクションの参照を流し込むことで、<code>アライさん</code>オブジェクトは外部の参照を持つことなく<code>Hat</code>コレクションにアクセスし、当たり判定の処理を行うことができます。
@@ -157,11 +157,11 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 <p>その他にも、インプットマネージャがキーボード入力を受け取ったり、ゲーム画面上に配置されている透明のスプライトに対するクリック・タッチ入力を受け取った場合に、入力された動作に応じたイベントを発火することで、入力の種類を隠蔽したうえでそれにフックする処理を定義可能になります。</p>
 
-<h2 id="はまりどころ:715a67537c3fb0cd66e102735cb99acd">はまりどころ</h2>
+<h2 id="はまりどころ">はまりどころ</h2>
 
 <p>ちょっとしたミスなどですが、詰まった点について。</p>
 
-<h3 id="エンティティの消去:715a67537c3fb0cd66e102735cb99acd">エンティティの消去</h3>
+<h3 id="エンティティの消去">エンティティの消去</h3>
 
 <p>ループ中にループ対象の配列を変更するな、というのは基本ですが、ゲームの場合当たり判定がヒットしたエンティティを消去したいという場面は多いです。
 <code>Hat</code>コレクションに対してループを回して<code>update()</code>を呼び出し、その処理の中で<code>Hat</code>オブジェクトを消去してしまい、それ以降のオブジェクトの処理がおかしくなるというバグが発生しました。</p>
@@ -183,7 +183,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 最も単純なのはループ前にコレクションをコピーしてループを回すことですが、ゲームプログラムで毎フレームごとに配列のコピーを生成するのはパフォーマンス的に避けたいところでもあります。
 なお今回は、<code>Hat</code>オブジェクトは同時に10個も存在することはないため、毎回配列をコピーして削除用のループを回すことにしました。</p>
 
-<h3 id="faviconの配信:715a67537c3fb0cd66e102735cb99acd">faviconの配信</h3>
+<h3 id="faviconの配信">faviconの配信</h3>
 
 <p><code>favicon.ico</code>を配信しようと思ったのですが、<a href="https://tatamo.github.io/japari-watch/">https://tatamo.github.io/japari-watch/</a> というURLのルートパスは<a href="https://tatamo.github.io/">https://tatamo.github.io/</a> であるため、<a href="https://tatamo.github.io/japari-watch/">https://tatamo.github.io/japari-watch/</a> 直下にfaviconを配置しても正しく読み込ませることができません。
 そのため、<code>&lt;link rel=&quot;shortcut icon href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&quot;&gt;</code>などとして明示的にfavicon.icoの位置を示す必要がありました。</p>
@@ -191,7 +191,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 <p>また、<code>manifest.json</code>を<a href="https://tatamo.github.io/japari-watch/favicons/manifest.json">https://tatamo.github.io/japari-watch/favicons/manifest.json</a> に、同様にandroid用のアイコン画像を<code>favicons/</code>ディレクトリに配置していました。
 <code>manifest.json</code>中の相対パスは基準となるディレクトリが<code>manifest.json</code>自身となることを知らなかったので、srcパスを<code>&quot;favicons\/android-icon-***.png&quot;</code>としたところ、<code>favicons/favicons/</code>が読まれてしまって正しくアイコンを配信できなかったりしました。</p>
 
-<h2 id="おわりに:715a67537c3fb0cd66e102735cb99acd">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <p><a href="http://www.pixijs.com/">PIXI.js</a>はチュートリアルだけは読んだことがあるという状態で、一度実際に使ってみたいと思っていたので使用することができて良かったです。
 ドキュメントをろくに読み込まずに使いたい機能だけ調べて使うといった感じでしたが、かなり高速にゲーム開発ができたので非常に便利でした。
@@ -199,7 +199,6 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 <p>使用した画像については作者である<a href="https://twitter.com/kirai_s">@kirai_s</a>さんに確認を得ないまま加工して作り始めてしまったのですが、使用を快く承諾していただけました。
 この場を借りてお礼申し上げます。</p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

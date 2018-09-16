@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Fri, 09 Feb 2018 19:30:00 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/categories/dev/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/dev/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>JavaScript/TypeScriptで競技プログラミングをするには 後編</title>
@@ -16,19 +16,19 @@
       
       <guid>http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/</guid>
       <description>
-        
-
-&lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
+        &lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
 今回は後者についてです。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-01/&#34;&gt;前回の記事&lt;/a&gt;ではコンテストサイトのJavaScript対応状況をメインに書きました。
 この記事では、実際にJavaScript/TypeScriptで競技プログラミングをする際に気をつけている点について書いていきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;競技プログラミングにおけるjavascriptの致命的な問題点:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;競技プログラミングにおけるJavaScriptの致命的な問題点&lt;/h2&gt;
+&lt;h2 id=&#34;競技プログラミングにおけるjavascriptの致命的な問題点&#34;&gt;競技プログラミングにおけるJavaScriptの致命的な問題点&lt;/h2&gt;
 
 &lt;p&gt;残念ながら、JavaScriptが競技プログラミングに向いていない理由となる仕様がいくつか存在します。&lt;/p&gt;
 
-&lt;h3 id=&#34;末尾再帰最適化が実装されていない上にコールスタック上限が小さく-変更できない:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;末尾再帰最適化が実装されていない上にコールスタック上限が小さく、変更できない&lt;/h3&gt;
+&lt;h3 id=&#34;末尾再帰最適化が実装されていない上にコールスタック上限が小さく-変更できない&#34;&gt;末尾再帰最適化が実装されていない上にコールスタック上限が小さく、変更できない&lt;/h3&gt;
 
 &lt;p&gt;JavaScriptではPythonの&lt;code&gt;sys.setrecursionlimit()&lt;/code&gt;のように再帰呼び出し回数の最大値を変更することができません。
 コールスタックの上限は処理系に依存しますが、たとえばnode.js v5.12.0 (x64)では15712です。
@@ -37,7 +37,7 @@
 &lt;p&gt;これらの要因のため、要素数が数万程度の何かに対して手っ取り早く再帰でDFSを書こうとすると、ほぼ間違いなくMaximum call stack size exceededで落ちます。
 自分で配列をスタックとして使ってBFSと同じような書き方で書くか、DFS専用のイテレータでも自作しましょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;64bit整数値を扱う手段が存在しない:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;64bit整数値を扱う手段が存在しない&lt;/h3&gt;
+&lt;h3 id=&#34;64bit整数値を扱う手段が存在しない&#34;&gt;64bit整数値を扱う手段が存在しない&lt;/h3&gt;
 
 &lt;p&gt;JavaScriptのすべての数値は、いわゆるdouble型で保持されています。
 &lt;code&gt;Number.MAX_SAFE_INTEGER&lt;/code&gt;で確認できますが、整数値としての精度が保証される最大値は2^53-1までです。
@@ -50,7 +50,7 @@
 
 &lt;p&gt;まあできないことを気にしても仕方がありませんので、以上のような問題点が存在することを把握しておく、ということが大切です。&lt;/p&gt;
 
-&lt;h2 id=&#34;入出力テンプレート:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;入出力テンプレート&lt;/h2&gt;
+&lt;h2 id=&#34;入出力テンプレート&#34;&gt;入出力テンプレート&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;import * as fs from &amp;quot;fs&amp;quot;;
 
@@ -83,7 +83,7 @@ const a = input[1].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt
 
 &lt;p&gt;package.jsonやtsconfig.jsonについては、&lt;a href=&#34;https://github.com/Tatamo/comp/tree/master/template/ts&#34;&gt;このへん&lt;/a&gt;に上げています。&lt;/p&gt;
 
-&lt;h2 id=&#34;typescript-複数のプログラムを同時にコンパイルする際の注意:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;(TypeScript) 複数のプログラムを同時にコンパイルする際の注意&lt;/h2&gt;
+&lt;h2 id=&#34;typescript-複数のプログラムを同時にコンパイルする際の注意&#34;&gt;(TypeScript) 複数のプログラムを同時にコンパイルする際の注意&lt;/h2&gt;
 
 &lt;p&gt;npm scripts等で自動コンパイルを行っている場合などに、&lt;a href=&#34;https://www.typescriptlang.org/docs/handbook/modules.html&#34;&gt;モジュール&lt;/a&gt;でない複数のTypeScriptプログラムを同時にコンパイルすると、すべてのプログラムの変数が同一スコープ上で扱われるため、&lt;code&gt;input&lt;/code&gt;などの変数が衝突してエラーになります。&lt;/p&gt;
 
@@ -95,7 +95,7 @@ const a = input[1].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt
 
 &lt;p&gt;&lt;code&gt;export&lt;/code&gt;を行っていなくても、TypeScript的にはこれだけでモジュールとして扱われるようなので、複数のプログラムを同時にコンパイルすることができるようになります。&lt;/p&gt;
 
-&lt;h2 id=&#34;array-prototype-shift-の計算量はo-n:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;Array.prototype.shift()の計算量はO(n)&lt;/h2&gt;
+&lt;h2 id=&#34;array-prototype-shift-の計算量はo-n&#34;&gt;Array.prototype.shift()の計算量はO(n)&lt;/h2&gt;
 
 &lt;p&gt;JavaScriptで計算量について触れられている資料は少ないので、下手をすると&lt;a href=&#34;http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.shift&#34;&gt;仕様書&lt;/a&gt;まで見に行かないと気付けないのですが、&lt;code&gt;shift()&lt;/code&gt;の計算量はO(n)です。
 inputに10万行程度の入力を入れて、先頭から1行ずつ&lt;code&gt;shift()&lt;/code&gt;で取り出すと、それだけで2秒が過ぎます。
@@ -137,7 +137,7 @@ inputに10万行程度の入力を入れて、先頭から1行ずつ&lt;code&gt;
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;array-prototype-fill-は同一オブジェクトで埋められる:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;Array.prototype.fill()は同一オブジェクトで埋められる&lt;/h2&gt;
+&lt;h2 id=&#34;array-prototype-fill-は同一オブジェクトで埋められる&#34;&gt;Array.prototype.fill()は同一オブジェクトで埋められる&lt;/h2&gt;
 
 &lt;p&gt;まあこれは気付かなかった私がよくないという例ですが、一応。&lt;/p&gt;
 
@@ -178,7 +178,6 @@ const a = new Array(3).fill([]).map(()=&amp;gt;new Array(3).fill());
 
 &lt;p&gt;とはいえ、以上のことさえ気に留めていれば、JavaScript/TypeScriptを使っていることが原因で詰むことはほとんどないと思います。
 JavaScriptそのものは非常に書きやすい言語なので、ハマりどころを把握した上で選択肢にしていただける方が増えればいいなと思っています。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -189,10 +188,10 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
       
       <guid>http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-01/</guid>
       <description>
-        
-
-&lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
+        &lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
 今回は前者についてです。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;追記：&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/&#34;&gt;後編&lt;/a&gt;書きました。&lt;/p&gt;
 
@@ -202,7 +201,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
 
 &lt;p&gt;AtCoderレーティングは水色、コンテスト参加回数もぎりぎり二桁に達する程度で、あまり真面目にやっているほうではないので参考になるかどうかはわかりませんが、JavaScriptまたはTypeScriptで競技プログラミングをするときに気をつけるべき点などを書いていきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;javascriptで競技プログラミングをすることについて:88730e2b6d557177ea4657cfdced2c53&#34;&gt;JavaScriptで競技プログラミングをすることについて&lt;/h2&gt;
+&lt;h2 id=&#34;javascriptで競技プログラミングをすることについて&#34;&gt;JavaScriptで競技プログラミングをすることについて&lt;/h2&gt;
 
 &lt;p&gt;こんな記事を書いていて言うのもどうかと思いますが、他の言語ではなくJavaScriptを競技プログラミングに使用することに、何かメリットはあるのか？と聞かれれば、おそらく目立った利点を挙げることはできないと思います。&lt;/p&gt;
 
@@ -215,7 +214,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
 
 &lt;p&gt;JavaScriptを使用する最大のモチベーションは、それが書きやすい・手慣れた言語であるからという点に尽きると思いますが、これは重要なことです。&lt;/p&gt;
 
-&lt;h2 id=&#34;コンテストサイトのモダンjavascriptやtypescript対応状況:88730e2b6d557177ea4657cfdced2c53&#34;&gt;コンテストサイトのモダンJavaScriptやTypeScript対応状況&lt;/h2&gt;
+&lt;h2 id=&#34;コンテストサイトのモダンjavascriptやtypescript対応状況&#34;&gt;コンテストサイトのモダンJavaScriptやTypeScript対応状況&lt;/h2&gt;
 
 &lt;p&gt;JavaScript/TypeScriptで競技プログラミングをするためには、コンテストサイトのオンラインジャッジシステムが少なくともJavaScriptに対応している必要があります。
 特にJavaScriptという言語は、ECMAScript2015の策定によって言語仕様が大きく拡張され、その後もECMAScript2016, ECMAScript2017と機能追加が進んでおり、ここ数年間での移り変わりが非常に激しい言語であるため、言語環境が整備されていることの重要性は大きいです。&lt;/p&gt;
@@ -225,7 +224,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
 &lt;p&gt;まずは、日本である程度知名度がある(と思われる)コンテストサイトについて、2018年2月現在でのJavaScriptの対応状況を見ていきたいと思います。
 なおTopCoderはJavaScript非対応のため除外しています。&lt;/p&gt;
 
-&lt;h3 id=&#34;atcoder-http-atcoder-jp:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;http://atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;atcoder-http-atcoder-jp&#34;&gt;&lt;a href=&#34;http://atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;JavaScript node v5.12.0&lt;/li&gt;
@@ -256,7 +255,7 @@ TypeScriptの仕様を全く使っていないJavaScriptを書いたとしても
 
 &lt;p&gt;なんともいえない感じですが、これでもモダンJavaScriptの対応状況としてはよっぽどマシなほうです。&lt;/p&gt;
 
-&lt;h3 id=&#34;yukicoder-https-yukicoder-me:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;https://yukicoder.me/&#34;&gt;yukicoder&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;yukicoder-https-yukicoder-me&#34;&gt;&lt;a href=&#34;https://yukicoder.me/&#34;&gt;yukicoder&lt;/a&gt;&lt;/h3&gt;
 
 &lt;p&gt;(正直ここがどれくらいの知名度があるのかあまり把握していませんが)&lt;/p&gt;
 
@@ -268,7 +267,7 @@ TypeScriptの仕様を全く使っていないJavaScriptを書いたとしても
 モダンなJavaScriptを書きながら競技プログラミングを楽しみたいなら、このサイトはおすすめといえます。
 TypeScriptには対応していませんが、まあトランスパイルされた.jsファイルを提出すれば済む話でしょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;aizu-online-judge-http-judge-u-aizu-ac-jp-onlinejudge:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;http://judge.u-aizu.ac.jp/onlinejudge/&#34;&gt;AIZU ONLINE JUDGE&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;aizu-online-judge-http-judge-u-aizu-ac-jp-onlinejudge&#34;&gt;&lt;a href=&#34;http://judge.u-aizu.ac.jp/onlinejudge/&#34;&gt;AIZU ONLINE JUDGE&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;JavaScript node 0.10.36&lt;/li&gt;
@@ -279,7 +278,7 @@ TypeScriptには対応していませんが、まあトランスパイルされ�
 &lt;p&gt;ほぼ完全なES5時代の遺物です。
 どうしてもJavaScriptが書きたいなら、babel-polyfillあたりをかませてJavaScriptからさらに古い時代のJavaScriptにトランスパイルして提出するのがいいでしょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;codeforces-http-codeforces-com:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;http://codeforces.com/&#34;&gt;Codeforces&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;codeforces-http-codeforces-com&#34;&gt;&lt;a href=&#34;http://codeforces.com/&#34;&gt;Codeforces&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;JavaScript V8 4.8.0&lt;/li&gt;
@@ -298,7 +297,6 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
 
 &lt;p&gt;ここまで書いていて思った以上に分量が膨らんでしまいました。
 &lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/&#34;&gt;後編&lt;/a&gt;では、実際にJavaScript/TypeScriptで問題を解く上で気をつけている点を書いていきます。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -309,9 +307,7 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
       
       <guid>http://tatamo.81.la/blog/2017/12/06/web-dtp/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の6日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の6日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -319,7 +315,9 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
 &lt;p&gt;&lt;a href=&#34;http://vivliostyle.com/ja/products/&#34;&gt;Vivliostyle&lt;/a&gt;やその他のWeb技術を用いて、HTMLとCSSで課題のレポートを書くための環境を作る話です。
 あと「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」を勝手に販促する記事でもあります。&lt;/p&gt;
 
-&lt;h2 id=&#34;html-cssによる組版:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;HTML+CSSによる組版&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;html-cssによる組版&#34;&gt;HTML+CSSによる組版&lt;/h2&gt;
 
 &lt;p&gt;個人的にはWordもTeXもあまり得意ではない、というか、HTML+CSSで似たようなことができそうなのにわざわざWordやTeXを使うのが大変だと感じています(InDesignはよく知りません)。
 文書構造の明確化という観点においては、構造と見た目が明確に分離しているHTML+CSSに勝るものはありません(筆者個人の主観です)。&lt;/p&gt;
@@ -330,7 +328,7 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
 というあとがきの記述通り、CSS組版全般、また単にCSSの解説本としても読めるようになっており、本書を参考にしてレポートを書くための環境を整えることができました。
 同人誌でもレポートでも論文でも、やりたいことは結局同じ組版であるため、整えるべき環境は変わりません。&lt;/p&gt;
 
-&lt;h2 id=&#34;この記事で書くこと:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;この記事で書くこと&lt;/h2&gt;
+&lt;h2 id=&#34;この記事で書くこと&#34;&gt;この記事で書くこと&lt;/h2&gt;
 
 &lt;p&gt;CSSを用いた組版については、「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」を直接読んでいただくのが一番早いため、今回はあまり詳しくは書きません。
 &lt;a href=&#34;https://pentapod.booth.pm/items/601017&#34;&gt;300円というお手頃価格で電子版も出ている&lt;/a&gt;ので買ってください。
@@ -340,7 +338,7 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
 構築した環境は &lt;a href=&#34;https://github.com/Tatamo/htmldtp&#34;&gt;https://github.com/Tatamo/htmldtp&lt;/a&gt; に上げていますが、「そもそもボイラープレートという単語を数日前にはじめて知った」レベルのためディレクトリ構成ひとつとっても正直褒められたものではないと感じています。
 なのでまたちゃんと体裁を整えたいと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;vivliostyle:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Vivliostyle&lt;/h2&gt;
+&lt;h2 id=&#34;vivliostyle&#34;&gt;Vivliostyle&lt;/h2&gt;
 
 &lt;p&gt;とはいえ、&lt;a href=&#34;http://vivliostyle.com/ja/products/&#34;&gt;Vivliostyle&lt;/a&gt;については触れておかないと話が始まりません。
 これはWeb技術による組版を目的としたプロジェクトで、CSSの将来的な仕様を先取りすることで、より多彩なレイアウトを実現できるようにしているものです。
@@ -357,13 +355,13 @@ HTMLとCSSの状態からPDFを生成する作業を自動化する方法につ�
 &lt;p&gt;恥ずかしい話ですが、最近のCSS3の仕様をしっかり追いかけているわけではないため、どこからどこまでがVivliostyleによって実現されている機能で、どこまでがブラウザの標準機能で既にサポートされている部分なのかがよくわかっていません。
 このあたりは書けば書くほどボロが出るに違いないので適当にごまかします。&lt;/p&gt;
 
-&lt;h2 id=&#34;フレームワーク選定:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;フレームワーク選定&lt;/h2&gt;
+&lt;h2 id=&#34;フレームワーク選定&#34;&gt;フレームワーク選定&lt;/h2&gt;
 
 &lt;p&gt;書籍ではPug+marked+Stylus+Prism.js+MathJax+Browsersync+Gulpの構成が紹介されていましたが、このあたりは好みだと思うので適当に選んでいきました。&lt;/p&gt;
 
 &lt;p&gt;結論としては、Nunjucks+nunjucks-markdown+PostCSS(cssnext+stylelint)+highlight.js+MathJax+Browsersync+Gulpという構成になりました。&lt;/p&gt;
 
-&lt;h3 id=&#34;nunjucks:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Nunjucks&lt;/h3&gt;
+&lt;h3 id=&#34;nunjucks&#34;&gt;Nunjucks&lt;/h3&gt;
 
 &lt;p&gt;まずはHTMLテンプレートエンジンを選びます。
 変数を用いた操作や別のHTMLの継承などの機能を取り入れることで、HTMLをより書きやすくして開発の高速化・再利用の促進を図ります。&lt;/p&gt;
@@ -402,7 +400,7 @@ HTMLとCSSの状態からPDFを生成する作業を自動化する方法につ�
 &lt;p&gt;のような感じでHTMLにいろいろなものをくっつけていきながら書けるようになります。
 Nunjucksで記述したHTMLは、.htmlのほかに.njkなどの拡張子を使ったりするらしいです。&lt;/p&gt;
 
-&lt;h3 id=&#34;nunjucks-markdown:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;nunjucks-markdown&lt;/h3&gt;
+&lt;h3 id=&#34;nunjucks-markdown&#34;&gt;nunjucks-markdown&lt;/h3&gt;
 
 &lt;p&gt;ひたすら文章を書くのにいちいち&lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;タグを書いたりしていられないので、Markdownを使えるようにすることが必要です。
 Nunjucksを使うことにしたので、markedのNunjucks向けプラグインである&lt;a href=&#34;https://www.npmjs.com/package/nunjucks-markdown&#34;&gt;nunjucks-markdown&lt;/a&gt;を使うことにしました。&lt;/p&gt;
@@ -423,7 +421,7 @@ Nunjucksを使うことにしたので、markedのNunjucks向けプラグイン�
 
 &lt;p&gt;のように、&lt;code&gt;{% markdown %}&lt;/code&gt;で囲った部分をMarkdownとして書くことができようになります。&lt;/p&gt;
 
-&lt;h3 id=&#34;postcss-cssnext-stylelint:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;PostCSS(cssnext+stylelint)&lt;/h3&gt;
+&lt;h3 id=&#34;postcss-cssnext-stylelint&#34;&gt;PostCSS(cssnext+stylelint)&lt;/h3&gt;
 
 &lt;p&gt;HTMLだけでなくCSSも次世代仕様を使用できるようにしておくと便利です。
 SassやStylusという選択肢もありますが、この次世代CSS過渡期において独自記法マシマシのcoffeeとあくまでES2015をもとにしたtsならどちらを使うかという話です。
@@ -433,13 +431,13 @@ SassやStylusという選択肢もありますが、この次世代CSS過渡期�
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 これは余談です。&lt;/p&gt;
 
-&lt;h3 id=&#34;highlight-js:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;highlight.js&lt;/h3&gt;
+&lt;h3 id=&#34;highlight-js&#34;&gt;highlight.js&lt;/h3&gt;
 
 &lt;p&gt;プログラムリストを貼り付けることが求められることもあるので、シンタックスハイライターを用意します。
 他の候補としてはPrism.jsなどがあります。
 今回はこのブログで使ったりして使い慣れている&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を用いました。&lt;/p&gt;
 
-&lt;h3 id=&#34;mathjax:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;MathJax&lt;/h3&gt;
+&lt;h3 id=&#34;mathjax&#34;&gt;MathJax&lt;/h3&gt;
 
 &lt;p&gt;TeX形式で書いた数式を表示するために必須です。
 &lt;a href=&#34;https://www.mathjax.org/&#34;&gt;MathJax&lt;/a&gt;以外の選択肢は特にないと言っていいでしょう。
@@ -453,12 +451,12 @@ SassやStylusという選択肢もありますが、この次世代CSS過渡期�
 &lt;p&gt;どうでもいい余談ですが、個人的にはMicrosoft Officeの数式エディタは見た目もきれいですし非常に使いやすいと思っています。
 これについてはあまり同意されたことがない気がします。&lt;/p&gt;
 
-&lt;h3 id=&#34;browsersync:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Browsersync&lt;/h3&gt;
+&lt;h3 id=&#34;browsersync&#34;&gt;Browsersync&lt;/h3&gt;
 
 &lt;p&gt;ソースコードが更新され(、そしてそれを検知してビルドが走って&lt;code&gt;dist/&lt;/code&gt;ディレクトリが更新され)たことを検知し、&lt;a href=&#34;https://www.browsersync.io/&#34;&gt;Browsersync&lt;/a&gt;が自動でブラウザを再読み込みしてくれるようにします。
 わざわざF5を押さなくても変更が反映され、ビルド結果がすぐにブラウザ上で見れて便利…… なのですが、今回はブラウザを更新したあとVivliostyleのChrome拡張を有効化しなければならず、結局F5相当の動作を手で行わなければならないという難点があります。&lt;/p&gt;
 
-&lt;h3 id=&#34;gulp:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Gulp&lt;/h3&gt;
+&lt;h3 id=&#34;gulp&#34;&gt;Gulp&lt;/h3&gt;
 
 &lt;p&gt;ビルドを自動化してくれるようにするためのタスクランナーです。
 &lt;a href=&#34;https://gulpjs.com/&#34;&gt;Gulp&lt;/a&gt;は使っていますがGruntは使ったことがないです。
@@ -466,7 +464,7 @@ SassやStylusという選択肢もありますが、この次世代CSS過渡期�
 
 &lt;p&gt;最近は何でもかんでもnpm-scriptsでやろうという話があって、確かに一理あるなあという感じなのでGulpじゃなくてもよかったかもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;全部突っ込む:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;全部突っ込む&lt;/h2&gt;
+&lt;h2 id=&#34;全部突っ込む&#34;&gt;全部突っ込む&lt;/h2&gt;
 
 &lt;p&gt;JavaScriptから利用するためのパッケージを一つも入れていない、というかJavaScriptを書くつもりがない(gulpfile除く)のに依存パッケージ数が10を越えるのはどういうことなんだ、という感じですが、とりあえず上記のツールを全部組み合わせます。
 highlight.jsとMathJaxに関しては、&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;タグで読み込むだけでいいので&lt;code&gt;npm install&lt;/code&gt;は不要です。
@@ -475,7 +473,7 @@ Nunjucksのテンプレート継承機能を用いて、これらの読み込み
 &lt;p&gt;Nunjucks(+nunjucks-markdown)とPostCSSを用いて、それぞれHTMLファイルとCSSファイルを生成する処理が行われるので、これをGulpのタスクとしてまとめてしまいます。
 あとはソースコードの更新を検知して自動的にこのビルド処理が走るようにしたり、ビルド完了のタイミングでBrowsersyncに更新を伝えたりする処理を&lt;a href=&#34;https://github.com/Tatamo/htmldtp/blob/master/gulpfile.js&#34;&gt;gulpfile.js&lt;/a&gt;に書いて終わりです。&lt;/p&gt;
 
-&lt;h2 id=&#34;使ってみた:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;使ってみた&lt;/h2&gt;
+&lt;h2 id=&#34;使ってみた&#34;&gt;使ってみた&lt;/h2&gt;
 
 &lt;p&gt;大学でパーセプトロンの出力を求めるだけのレポート課題が出たので、構築した環境を用いてレポートを書いてみました。&lt;/p&gt;
 
@@ -517,7 +515,7 @@ img {
 
 &lt;p&gt;そういえば指定するのを忘れていましたが、当然&lt;code&gt;font-size&lt;/code&gt;でフォントサイズをポイント指定することも可能です。&lt;/p&gt;
 
-&lt;h3 id=&#34;相互参照と問題点:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;相互参照と問題点&lt;/h3&gt;
+&lt;h3 id=&#34;相互参照と問題点&#34;&gt;相互参照と問題点&lt;/h3&gt;
 
 &lt;p&gt;図を示している部分のHTMLを抜粋すると、以下のようになります。&lt;/p&gt;
 
@@ -550,7 +548,7 @@ img {
 
 &lt;p&gt;これについては今のところ解決策を見つけられていないので、もう少し調べてみて必要ならissueを飛ばすなりしようと思っています。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわり:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;おわり&lt;/h2&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
 
 &lt;p&gt;レポート・論文程度ならそこまで凝ったデザインである必要がないので、非常に短いCSSでそれなりの印刷が可能になります。
 HTML+CSSを用いてレポートを書くというのは十分に実用の範囲内だと思ったので、これからも試していこうと思っています。&lt;/p&gt;
@@ -559,7 +557,6 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
 &lt;code&gt;target-counter()&lt;/code&gt;は策定中の次期CSS仕様であることから、解決は時間の問題だとは思っているのですが、なんとかしたいところです。&lt;/p&gt;
 
 &lt;p&gt;今の時代のCSSは、もはやWebページだけでなく紙面上のレイアウトも自在に操れるようになってきています。「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」はCSSを使ったさまざまな紙面レイアウトについて書かれており、とてもおすすめなのでぜひ購入してみてください。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -570,20 +567,20 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
       
       <guid>http://tatamo.81.la/blog/2017/12/01/japari-watch/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の1日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の1日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;ブラウザ上で動作するゲーム「&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;じゃぱりうぉっち&lt;/a&gt;」を作ったので、開発記を書きます。&lt;/p&gt;
 
-&lt;h2 id=&#34;じゃぱりうぉっち:715a67537c3fb0cd66e102735cb99acd&#34;&gt;じゃぱりうぉっち&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;じゃぱりうぉっち&#34;&gt;じゃぱりうぉっち&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; で公開しており、PCとモバイル端末のどちらでも遊ぶことができます。&lt;/p&gt;
 
-&lt;h3 id=&#34;発端:715a67537c3fb0cd66e102735cb99acd&#34;&gt;発端&lt;/h3&gt;
+&lt;h3 id=&#34;発端&#34;&gt;発端&lt;/h3&gt;
 
 &lt;p&gt;期末試験前に現実逃避のためにTLを眺めていたところ、以下のツイートが流れてきました。
 &lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;フェネック「アライさんに似合いそうな帽子を見つけてきたよー」&lt;br&gt;アライグマ「ありがとうなのだ！」&lt;a href=&#34;https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#けものフレンズ&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ドット絵&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/pixelart?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#pixelart&lt;/a&gt; &lt;a href=&#34;https://t.co/1VueMavObQ&#34;&gt;pic.twitter.com/1VueMavObQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934412479597199361?ref_src=twsrc%5Etfw&#34;&gt;2017年11月25日&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;
@@ -592,7 +589,7 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
 
 &lt;p&gt;作品としての完成度が高く、実際にゲームとして遊べそうに見えたので、これをゲーム化してみました。&lt;/p&gt;
 
-&lt;h3 id=&#34;素材:715a67537c3fb0cd66e102735cb99acd&#34;&gt;素材&lt;/h3&gt;
+&lt;h3 id=&#34;素材&#34;&gt;素材&lt;/h3&gt;
 
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;原寸(128*128px)なのだ &lt;a href=&#34;https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#けものフレンズ&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ドット絵&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/pixelart?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#pixelart&lt;/a&gt; &lt;a href=&#34;https://t.co/BJ0Mc27vR5&#34;&gt;pic.twitter.com/BJ0Mc27vR5&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934699058542678016?ref_src=twsrc%5Etfw&#34;&gt;2017年11月26日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
@@ -601,18 +598,18 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
 
 &lt;p&gt;背景に相当する部分の画像がなかったので自分で加工したり、そのまま矩形状にスプライトを切り出すと被ってしまう部分があったのでいくつかのパーツに分けたりしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;製作期間:715a67537c3fb0cd66e102735cb99acd&#34;&gt;製作期間&lt;/h2&gt;
+&lt;h2 id=&#34;製作期間&#34;&gt;製作期間&lt;/h2&gt;
 
 &lt;p&gt;ゲーム本体の作成(アセットの用意・環境構築含む)： 一晩&lt;br /&gt;
 公開のためのWebページデザインやTwitterカード、faviconの用意：半日&lt;br /&gt;
 公開後の難易度調整+自動モード機能の追加：半日&lt;/p&gt;
 
-&lt;h2 id=&#34;フレームワーク選定:715a67537c3fb0cd66e102735cb99acd&#34;&gt;フレームワーク選定&lt;/h2&gt;
+&lt;h2 id=&#34;フレームワーク選定&#34;&gt;フレームワーク選定&lt;/h2&gt;
 
 &lt;p&gt;ブラウザで動作するゲームを作ろうと思ったため、基本的にはNode環境で開発を進めていくことになります。
 高速に開発するためにTypeScriptで記述することとしたうえで、使用するツールを選定していきました。&lt;/p&gt;
 
-&lt;h3 id=&#34;pixi-js:715a67537c3fb0cd66e102735cb99acd&#34;&gt;PIXI.js&lt;/h3&gt;
+&lt;h3 id=&#34;pixi-js&#34;&gt;PIXI.js&lt;/h3&gt;
 
 &lt;p&gt;PC・モバイル両方のブラウザで動作するゲームという方針のため、HTML5 Canvas系のライブラリを使うことにしました。
 npm上で型定義が用意されているものを使いたかったので、今回は&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;を選択しました。&lt;/p&gt;
@@ -624,7 +621,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;でPIXI.jsの型情報を使用可能になります。&lt;/p&gt;
 
-&lt;h4 id=&#34;ビルドシステム:715a67537c3fb0cd66e102735cb99acd&#34;&gt;ビルドシステム&lt;/h4&gt;
+&lt;h4 id=&#34;ビルドシステム&#34;&gt;ビルドシステム&lt;/h4&gt;
 
 &lt;p&gt;また、今回はブラウザを動作対象とするため、jsファイルのバンドルとBabel化のためにwebpackを使用しました。
 実際のところwebpackもBabelもこれまで使ったことがなかったのですが、なんとかts-loaderとbabel-loaderでTypeScriptのソースコードをBabel化してバンドルするところまでやりました。&lt;/p&gt;
@@ -632,7 +629,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 &lt;p&gt;期末試験直前であまり学習コストをかけられず、これ以上webpackであれこれするのは怖くなったので、jsファイル以外の静的ファイルのコピーなどはrimrafやcpxを使い、npm scriptsでビルドすることにしました。
 また開発中の自動コンパイルのために、chokidarとbrowser-syncを使いました。&lt;/p&gt;
 
-&lt;h2 id=&#34;設計:715a67537c3fb0cd66e102735cb99acd&#34;&gt;設計&lt;/h2&gt;
+&lt;h2 id=&#34;設計&#34;&gt;設計&lt;/h2&gt;
 
 &lt;p&gt;一定時間ごとにゲームループをまわし、大元のゲームオブジェクトから各マネージャのupdateメソッドを呼び出して処理を行い、最後にレンダリングを行うという基本的な設計としています。&lt;/p&gt;
 
@@ -644,7 +641,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 &lt;p&gt;エンティティごとにスプライトのテクスチャを用意しておく必要があり、これはstaticメンバとして各エンティティのクラスに紐付けることにしました。
 このテクスチャの生成はアセットのローディングが終わった後に行う必要があるため、エンティティマネージャの初期化時に各staticメソッドを呼び出すことで初期化するようにしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;eventemitterによるメッセージング:715a67537c3fb0cd66e102735cb99acd&#34;&gt;EventEmitterによるメッセージング&lt;/h3&gt;
+&lt;h3 id=&#34;eventemitterによるメッセージング&#34;&gt;EventEmitterによるメッセージング&lt;/h3&gt;
 
 &lt;p&gt;PIXI.jsで用意されているクラスは&lt;a href=&#34;https://github.com/primus/eventemitter3&#34;&gt;EventEmitter&lt;/a&gt;を継承しており、イベント駆動でのオブジェクト間のメッセージングが可能です。
 たとえば&lt;code&gt;アライさん&lt;/code&gt;オブジェクトは&lt;code&gt;Hat&lt;/code&gt;コレクションに対する参照を持ちませんが、イベントの発火にフックしてエンティティマネージャがメソッド引数にコレクションの参照を流し込むことで、&lt;code&gt;アライさん&lt;/code&gt;オブジェクトは外部の参照を持つことなく&lt;code&gt;Hat&lt;/code&gt;コレクションにアクセスし、当たり判定の処理を行うことができます。
@@ -653,11 +650,11 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;その他にも、インプットマネージャがキーボード入力を受け取ったり、ゲーム画面上に配置されている透明のスプライトに対するクリック・タッチ入力を受け取った場合に、入力された動作に応じたイベントを発火することで、入力の種類を隠蔽したうえでそれにフックする処理を定義可能になります。&lt;/p&gt;
 
-&lt;h2 id=&#34;はまりどころ:715a67537c3fb0cd66e102735cb99acd&#34;&gt;はまりどころ&lt;/h2&gt;
+&lt;h2 id=&#34;はまりどころ&#34;&gt;はまりどころ&lt;/h2&gt;
 
 &lt;p&gt;ちょっとしたミスなどですが、詰まった点について。&lt;/p&gt;
 
-&lt;h3 id=&#34;エンティティの消去:715a67537c3fb0cd66e102735cb99acd&#34;&gt;エンティティの消去&lt;/h3&gt;
+&lt;h3 id=&#34;エンティティの消去&#34;&gt;エンティティの消去&lt;/h3&gt;
 
 &lt;p&gt;ループ中にループ対象の配列を変更するな、というのは基本ですが、ゲームの場合当たり判定がヒットしたエンティティを消去したいという場面は多いです。
 &lt;code&gt;Hat&lt;/code&gt;コレクションに対してループを回して&lt;code&gt;update()&lt;/code&gt;を呼び出し、その処理の中で&lt;code&gt;Hat&lt;/code&gt;オブジェクトを消去してしまい、それ以降のオブジェクトの処理がおかしくなるというバグが発生しました。&lt;/p&gt;
@@ -679,7 +676,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 最も単純なのはループ前にコレクションをコピーしてループを回すことですが、ゲームプログラムで毎フレームごとに配列のコピーを生成するのはパフォーマンス的に避けたいところでもあります。
 なお今回は、&lt;code&gt;Hat&lt;/code&gt;オブジェクトは同時に10個も存在することはないため、毎回配列をコピーして削除用のループを回すことにしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;faviconの配信:715a67537c3fb0cd66e102735cb99acd&#34;&gt;faviconの配信&lt;/h3&gt;
+&lt;h3 id=&#34;faviconの配信&#34;&gt;faviconの配信&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;favicon.ico&lt;/code&gt;を配信しようと思ったのですが、&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; というURLのルートパスは&lt;a href=&#34;https://tatamo.github.io/&#34;&gt;https://tatamo.github.io/&lt;/a&gt; であるため、&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; 直下にfaviconを配置しても正しく読み込ませることができません。
 そのため、&lt;code&gt;&amp;lt;link rel=&amp;quot;shortcut icon href=&amp;quot;favicon.ico&amp;quot; type=&amp;quot;image/x-icon&amp;quot;&amp;quot;&amp;gt;&lt;/code&gt;などとして明示的にfavicon.icoの位置を示す必要がありました。&lt;/p&gt;
@@ -687,7 +684,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 &lt;p&gt;また、&lt;code&gt;manifest.json&lt;/code&gt;を&lt;a href=&#34;https://tatamo.github.io/japari-watch/favicons/manifest.json&#34;&gt;https://tatamo.github.io/japari-watch/favicons/manifest.json&lt;/a&gt; に、同様にandroid用のアイコン画像を&lt;code&gt;favicons/&lt;/code&gt;ディレクトリに配置していました。
 &lt;code&gt;manifest.json&lt;/code&gt;中の相対パスは基準となるディレクトリが&lt;code&gt;manifest.json&lt;/code&gt;自身となることを知らなかったので、srcパスを&lt;code&gt;&amp;quot;favicons\/android-icon-***.png&amp;quot;&lt;/code&gt;としたところ、&lt;code&gt;favicons/favicons/&lt;/code&gt;が読まれてしまって正しくアイコンを配信できなかったりしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:715a67537c3fb0cd66e102735cb99acd&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;はチュートリアルだけは読んだことがあるという状態で、一度実際に使ってみたいと思っていたので使用することができて良かったです。
 ドキュメントをろくに読み込まずに使いたい機能だけ調べて使うといった感じでしたが、かなり高速にゲーム開発ができたので非常に便利でした。
@@ -695,7 +692,6 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;使用した画像については作者である&lt;a href=&#34;https://twitter.com/kirai_s&#34;&gt;@kirai_s&lt;/a&gt;さんに確認を得ないまま加工して作り始めてしまったのですが、使用を快く承諾していただけました。
 この場を借りてお礼申し上げます。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -706,16 +702,16 @@ npm上で型定義が用意されているものを使いたかったので、�
       
       <guid>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</guid>
       <description>
-        
+        &lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
 
-&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
+&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
 
 &lt;p&gt;プログラムの実行結果など、プログラムそのもの以外を&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグで囲いたくなる場合が何度かありました。
 class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
+&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
 
 &lt;p&gt;さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
 ブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
@@ -727,7 +723,7 @@ class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライ
 
 &lt;p&gt;とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。&lt;/p&gt;
 
-&lt;h2 id=&#34;解決策:0daaccc7bb8856c5021376961a2bf330&#34;&gt;解決策&lt;/h2&gt;
+&lt;h2 id=&#34;解決策&#34;&gt;解決策&lt;/h2&gt;
 
 &lt;p&gt;今のところ&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、&lt;code&gt;nohighlight&lt;/code&gt;を指定した場合でもCSSテーマが適用されるようにします。
 また、インライン要素の場合はデフォルトで&lt;code&gt;nohighlight&lt;/code&gt;にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
@@ -765,7 +761,6 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
 
 &lt;p&gt;あとは既存の記事をこの変更に合わせて修正しました。
 ところどころ不自然なハイライトが行われていた箇所がありましたが、これで改善されました。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -776,15 +771,15 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
       
       <guid>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回&lt;/a&gt;ではLR(1)法による構文解析表の実装を済ませました。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回&lt;/a&gt;ではLR(1)法による構文解析表の実装を済ませました。
 今回はいよいよ、構文解析表をもとに実際に構文解析を行うことのできる構文解析器を実装し、実際に構文解析を行ってみます。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;概略は&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;第4回&lt;/a&gt;で示した通りであり、ステートマシンの仕様に沿って構文解析表を解析できるようにします。
 第4回でアルゴリズム面まで踏み込んで解説してしまったため、あまり書くことがなくてやや後悔しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;astの定義:bed37c78c27b269093985160c6797817&#34;&gt;ASTの定義&lt;/h2&gt;
+&lt;h2 id=&#34;astの定義&#34;&gt;ASTの定義&lt;/h2&gt;
 
 &lt;p&gt;パーサを実装する前に、パーサの出力結果となる抽象構文木の定義を行います。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts&lt;/a&gt;&lt;/p&gt;
@@ -822,7 +817,7 @@ export interface ASTNode{
 
 &lt;p&gt;簡単ですね。&lt;/p&gt;
 
-&lt;h2 id=&#34;パーサの実装:bed37c78c27b269093985160c6797817&#34;&gt;パーサの実装&lt;/h2&gt;
+&lt;h2 id=&#34;パーサの実装&#34;&gt;パーサの実装&lt;/h2&gt;
 
 &lt;p&gt;ではParserクラスを作っていきます。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts&lt;/a&gt;&lt;/p&gt;
@@ -886,9 +881,9 @@ public getParser(default_callback?: ParserCallback):Parser{
 
 &lt;p&gt;これで完成です。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析を実行する:bed37c78c27b269093985160c6797817&#34;&gt;構文解析を実行する&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析を実行する&#34;&gt;構文解析を実行する&lt;/h2&gt;
 
-&lt;h3 id=&#34;構文木を生成する:bed37c78c27b269093985160c6797817&#34;&gt;構文木を生成する&lt;/h3&gt;
+&lt;h3 id=&#34;構文木を生成する&#34;&gt;構文木を生成する&lt;/h3&gt;
 
 &lt;p&gt;では、実際に構文解析を実行してみましょう。
 与える構文は、以下のようになります。&lt;/p&gt;
@@ -986,7 +981,7 @@ const grammar:GrammarDefinition = {
 &lt;p&gt;どこからどう見ても成功ですね。
 おめでとうございます。&lt;/p&gt;
 
-&lt;h3 id=&#34;コールバックを利用して構文木のさらなる解析を行う:bed37c78c27b269093985160c6797817&#34;&gt;コールバックを利用して構文木のさらなる解析を行う&lt;/h3&gt;
+&lt;h3 id=&#34;コールバックを利用して構文木のさらなる解析を行う&#34;&gt;コールバックを利用して構文木のさらなる解析を行う&lt;/h3&gt;
 
 &lt;p&gt;ついに、本記事の目標である構文木の取得を達成しました。
 あとはこれに適当な再帰的処理を挟めば、良い感じに数式処理ができるでしょう。&lt;/p&gt;
@@ -1057,7 +1052,6 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1068,10 +1062,10 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
       
       <guid>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回&lt;/a&gt;の記事ではLR(1)法の解説を行いました。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回&lt;/a&gt;の記事ではLR(1)法の解説を行いました。
 今回は前回解説した部分の実装を行います。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;今回はひたすらパーサジェネレータの実装をしていきます。
 概略やアルゴリズムは既に紹介しているため、基本的に省略します。
@@ -1080,7 +1074,7 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 &lt;p&gt;今回取り上げる部分は特にパフォーマンスに与える影響が大きいため、処理速度を重視した設計を行っています。
 そのため、天下り的な解説となる箇所が増えるかもしれませんがご了承ください。&lt;/p&gt;
 
-&lt;h2 id=&#34;syntaxdbクラスの作成:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;SyntaxDBクラスの作成&lt;/h2&gt;
+&lt;h2 id=&#34;syntaxdbクラスの作成&#34;&gt;SyntaxDBクラスの作成&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;第3回&lt;/a&gt;で終端記号と非終端記号の区別を行ったり、First集合を求めたりしたように、与えられた構文から様々な情報を得る必要があります。&lt;/p&gt;
 
@@ -1130,7 +1124,7 @@ public getTokenId(token: Token): number{
 
 &lt;p&gt;このSyntaxDBクラスは、パーサジェネレータ全体を通して一つのインスタンスのみを使いまわすようにします。&lt;/p&gt;
 
-&lt;h2 id=&#34;アイテム集合とクロージャー展開:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;アイテム集合とクロージャー展開&lt;/h2&gt;
+&lt;h2 id=&#34;アイテム集合とクロージャー展開&#34;&gt;アイテム集合とクロージャー展開&lt;/h2&gt;
 
 &lt;p&gt;まずは、LRアイテムおよびその集合を表現するクラスを作っていきます。
 アイテム集合クラスには、自身をクロージャー展開する機能を持たせることとします。&lt;/p&gt;
@@ -1185,7 +1179,7 @@ export declare class ClosureSet {
 ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自身をクロージャー展開することが出来ます。
 さらに、後述するハッシュに関連した機能、および先読み部分のマージ機能などを持ちます。&lt;/p&gt;
 
-&lt;h3 id=&#34;クロージャー展開:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;クロージャー展開&lt;/h3&gt;
+&lt;h3 id=&#34;クロージャー展開&#34;&gt;クロージャー展開&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// クロージャー展開を行う
 // TODO: リファクタリング
@@ -1263,11 +1257,11 @@ private expandClosure(){
 
 &lt;p&gt;この制約がなければ、たとえば&lt;code&gt;[x,y]&lt;/code&gt;という先読み記号を持ったAというClosureItemの展開処理が済んだあと、BというClosureItemを展開したところ、&lt;code&gt;[y,z]&lt;/code&gt;という先読み記号を持ち、先読み部分以外はAと全く同じClosureItemが生成される、といった自体が発生する可能性があります。
 この場合、先読み記号&lt;code&gt;y&lt;/code&gt;については2度展開されてしまったり、それを防ぐために処理済みのClosureItemの走査を行うことで余計な計算が必要になってしまうなど、様々な弊害が発生します。
-クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けてることで、展開処理が非常に簡潔になります。&lt;/p&gt;
+クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けていることで、展開処理が非常に簡潔になります。&lt;/p&gt;
 
 &lt;p&gt;処理が終わった段階で、ClosureItemの先読み部分をマージすることによってクロージャー展開後のClosureSetが完成します。&lt;/p&gt;
 
-&lt;h3 id=&#34;ハッシュ:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;ハッシュ&lt;/h3&gt;
+&lt;h3 id=&#34;ハッシュ&#34;&gt;ハッシュ&lt;/h3&gt;
 
 &lt;p&gt;先述したように、2つのClosureSetの高速な比較を可能とする必要があります。
 そこで、ClosureItemおよびClosureSetにハッシュ文字列の生成機能を追加し、構文番号、&lt;code&gt;.&lt;/code&gt;の位置、先読み記号という要素が一致していれば同じ文字列を生成するようにすれば、同一性の比較を文字列比較に落としこむことができ、非常に高速になります。
@@ -1303,14 +1297,14 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 
 &lt;p&gt;また、LALR(1)法のDFAマージの際に、先読み記号を除いた部分が一致しているかどうか調べる必要もあるため、ハッシュ文字列は先読み部分を除いたLR(0)ハッシュと、先読み部分も含めたLR(1)ハッシュの2種類を用意しておきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;closureitemおよびclosuresetのconst性:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;ClosureItemおよびClosureSetのconst性&lt;/h4&gt;
+&lt;h4 id=&#34;closureitemおよびclosuresetのconst性&#34;&gt;ClosureItemおよびClosureSetのconst性&lt;/h4&gt;
 
 &lt;p&gt;ハッシュの再生成や、それに伴うClosureSetのソート処理を回避するため、ClosureItemおよびClosureSetは、初期化終了後は自身の状態を変化させることがないようにします。&lt;/p&gt;
 
 &lt;p&gt;たとえば、クロージャー展開を行うとClosureSetの中身は変化しますが、この処理はコンストラクタ呼び出し時に行うようにすることで、オブジェクトの初期化が終了した時点でクロージャー展開は終わっており、それ以降ClosureSetの状態が変化することはありません。
 また、ClosureSetおよびClosureItemは、LR(0)部分(先読み部分を除いた部分)が同じなら先読み記号をマージするmergeメソッドを持っていますが、このメソッドもそのオブジェクト自身の状態を変更するのではなく、新しいオブジェクトを生成してそれを返すようにしています。&lt;/p&gt;
 
-&lt;h2 id=&#34;dfaの構築:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;DFAの構築&lt;/h2&gt;
+&lt;h2 id=&#34;dfaの構築&#34;&gt;DFAの構築&lt;/h2&gt;
 
 &lt;p&gt;アイテム集合を扱えるようになったため、次はDFAの構築です。
 DFAGeneratorクラスを作っていきます。&lt;br /&gt;
@@ -1345,7 +1339,7 @@ DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMap
 
 &lt;p&gt;前回紹介したアルゴリズムをそのままコードにするだけなので、DFAの構築処理は特に解説する点はありません。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析表の構築:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;構文解析表の構築&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析表の構築&#34;&gt;構文解析表の構築&lt;/h2&gt;
 
 &lt;p&gt;構文解析表と、それに必要な四種類の命令群を定義しておきます。
 また、コンフリクトが発生したことを表す命令も定義します。&lt;/p&gt;
@@ -1387,7 +1381,6 @@ ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのイ
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回:かんたんLR(1)法入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/&#34;&gt;次回:パーサの実装と構文解析の実行&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1398,16 +1391,16 @@ ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのイ
       
       <guid>http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
 ですが相変わらず本題のパーサジェネレータ作成には入らず、まずはLR(1)法のおおまかな理論的概略の紹介を行います。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;では構文解析全体の流れを解説しましたが、実際にどのような過程でパーサを、またパーサジェネレータを作成するかについては触れませんでした。
 今回は、LR法による構文解析の流れを解説するとともに、これからどのような流れでパーサジェネレータを作成していくのかを紹介します。
 今回は解説のみのためソースコードが載りません。&lt;/p&gt;
 
-&lt;h2 id=&#34;lr-1-構文解析の流れ:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;LR(1)構文解析の流れ&lt;/h2&gt;
+&lt;h2 id=&#34;lr-1-構文解析の流れ&#34;&gt;LR(1)構文解析の流れ&lt;/h2&gt;
 
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;字句規則を用意して字句解析器にかけてトークン列を取得したあと構文規則をもとにFIRST関数とFOLLOW関数を求め、それをもとにgotoグラフを導出することによってLR表を作成して、構築したLRパーサでトークン列を解析して得た抽象構文木を処理すれば構文解析ができると知ったわたし &lt;a href=&#34;https://t.co/aIbxqSf5qj&#34;&gt;pic.twitter.com/aIbxqSf5qj&lt;/a&gt;&lt;/p&gt;&amp;mdash; たたも (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/798837425313189888&#34;&gt;2016年11月16日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
@@ -1429,7 +1422,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 &lt;p&gt;パーサジェネレータを作成して解析する構文を自由に決定できるようにする場合、4.の構文解析表までを与えられた構文に合わせて自動的に生成できるようにします。&lt;/p&gt;
 
-&lt;h2 id=&#34;アイテム集合とdfa:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;アイテム集合とDFA&lt;/h2&gt;
+&lt;h2 id=&#34;アイテム集合とdfa&#34;&gt;アイテム集合とDFA&lt;/h2&gt;
 
 &lt;p&gt;LR法による構文解析のためには、DFA(決定性有限オートマトン)の作成を行う必要があります。&lt;/p&gt;
 
@@ -1438,7 +1431,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 &lt;p&gt;アイテム集合は、文字通りアイテム(便宜的にLRアイテムと呼称します)からなる集合です。&lt;/p&gt;
 
-&lt;h3 id=&#34;lrアイテム:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;LRアイテム&lt;/h3&gt;
+&lt;h3 id=&#34;lrアイテム&#34;&gt;LRアイテム&lt;/h3&gt;
 
 &lt;p&gt;個別のLRアイテムは、以下のようなものです。&lt;/p&gt;
 
@@ -1460,7 +1453,7 @@ x,yは終端記号
 先読み記号は常に終端記号であることに注意してください。
 また、&lt;code&gt;$&lt;/code&gt;は「入力の終わり」を表す記号で、これは便宜的に終端記号として扱います(&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;第2回&lt;/a&gt;で内部的に追加したSymbol(EOF)トークンのことです)。&lt;/p&gt;
 
-&lt;h3 id=&#34;dfaの構築:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;DFAの構築&lt;/h3&gt;
+&lt;h3 id=&#34;dfaの構築&#34;&gt;DFAの構築&lt;/h3&gt;
 
 &lt;p&gt;まず、DFAを最初の状態で初期化します。
 このとき、DFAのノード数は一つのみであり、そのノードは、以下のようなLRアイテム一つのみを要素とするアイテム集合を持ちます。&lt;/p&gt;
@@ -1476,7 +1469,7 @@ x,yは終端記号
 
 &lt;p&gt;これを自己展開させることによって、構文解析のためのDFAを構築していきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;クロージャー展開:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;クロージャー展開&lt;/h4&gt;
+&lt;h4 id=&#34;クロージャー展開&#34;&gt;クロージャー展開&lt;/h4&gt;
 
 &lt;p&gt;まず、初期化時点で存在するこのDFAノードは、まだ完全な状態にはなっていません。
 一定のルールに従い、アイテム集合を「クロージャー展開」する必要があります。&lt;/p&gt;
@@ -1548,7 +1541,7 @@ X -&amp;gt; . 0 [1]
 &lt;p&gt;以上がクロージャー展開の処理です。
 こうして展開したアイテム集合をもとに、新しいDFAノードを生成していきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;新しいdfaノードの生成:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;新しいDFAノードの生成&lt;/h4&gt;
+&lt;h4 id=&#34;新しいdfaノードの生成&#34;&gt;新しいDFAノードの生成&lt;/h4&gt;
 
 &lt;p&gt;クロージャー展開が完了したアイテム集合から、一定のルールのもとで新しいDFAノードを生成します。&lt;/p&gt;
 
@@ -1604,7 +1597,7 @@ S -&amp;gt; X . 1 [$]
 
 &lt;p&gt;この処理を繰り返し、DFAノードが新しく生成されなくなればDFAの構築は終了です。&lt;/p&gt;
 
-&lt;h4 id=&#34;lalr法のみ-先読み部分のマージ:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;(LALR法のみ)先読み部分のマージ&lt;/h4&gt;
+&lt;h4 id=&#34;lalr法のみ-先読み部分のマージ&#34;&gt;(LALR法のみ)先読み部分のマージ&lt;/h4&gt;
 
 &lt;p&gt;LALR法では、この時点でDFAのサイズ縮小を行います。
 そのアルゴリズムは、以下の通りです。&lt;/p&gt;
@@ -1632,12 +1625,12 @@ Y -&amp;gt; .V W [x,y,z]
 
 &lt;p&gt;そして、DFAノードAまたはBに対して辺を張っているDFAノードが存在するならば、それらの辺をDFAノードCに向けたものに書き換えます。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析表と構文解析器:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析表と構文解析器&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析表と構文解析器&#34;&gt;構文解析表と構文解析器&lt;/h2&gt;
 
 &lt;p&gt;DFAが完成したら、それをもとにして構文解析表を生成していきます。
 構文解析表はそれ自体がステートマシンの動作仕様を表すものであり、構文解析表が完成してしまえば、それに沿ってステートマシンを動作させることで構文解析が可能となります。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析を行うステートマシン:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析を行うステートマシン&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析を行うステートマシン&#34;&gt;構文解析を行うステートマシン&lt;/h3&gt;
 
 &lt;p&gt;構文解析表には、ステートマシンの現在の状態、および次の入力に応じて、4種類の命令のいずれかが記述されます。
 構文解析を行うステートマシンは、現在の状態を示すスタックと、構文解析の結果を保持するスタックの2つのスタックを持ちます。
@@ -1651,12 +1644,12 @@ Y -&amp;gt; .V W [x,y,z]
 とはいえ、ステートマシンの仕様なんざ読んでいて動きが分かるわけもなく楽しくも何ともないため、参考資料の&lt;a href=&#34;http://www.slideshare.net/ichikaz3/lr-parsing&#34;&gt;LR parsing&lt;/a&gt;のスライドを確認していただくことをおすすめします。
 ステートマシンの動きを視覚的に追いかけることができて非常にわかりやすいです。&lt;/p&gt;
 
-&lt;h4 id=&#34;shift命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;shift命令&lt;/h4&gt;
+&lt;h4 id=&#34;shift命令&#34;&gt;shift命令&lt;/h4&gt;
 
 &lt;p&gt;shift命令を受けると、ステートマシンは入力を一つ消費します。
 shift命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。&lt;/p&gt;
 
-&lt;h4 id=&#34;reduce命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;reduce命令&lt;/h4&gt;
+&lt;h4 id=&#34;reduce命令&#34;&gt;reduce命令&lt;/h4&gt;
 
 &lt;p&gt;reduce命令は文法idが付与されています。
 ステートマシンがreduce命令を受けると、示された文法規則を確認し、その右辺の記号の数だけ状態スタックからポップして取り除きます。
@@ -1664,27 +1657,27 @@ shift命令には状態番号が付与されているので、ステートマシ
 
 &lt;p&gt;そしてその処理の終了後、構文解析表の(状態スタックの一番上にある状態、規則の左辺の記号)の位置にあるgoto命令を実行させます。&lt;/p&gt;
 
-&lt;h4 id=&#34;goto命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;goto命令&lt;/h4&gt;
+&lt;h4 id=&#34;goto命令&#34;&gt;goto命令&lt;/h4&gt;
 
 &lt;p&gt;goto命令は、reduce命令の直後に実行されることが期待されます。
 goto命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。
 shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 
-&lt;h4 id=&#34;accept命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;accept命令&lt;/h4&gt;
+&lt;h4 id=&#34;accept命令&#34;&gt;accept命令&lt;/h4&gt;
 
 &lt;p&gt;ステートマシンがaccept命令を受けると、それは構文解析が終了したことを意味します。
 理想的な入力が与えられた場合、入力は全て消費され、結果スタックには最終的な構文解析結果のみが入っていることが期待されます。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析器:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析器&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析器&#34;&gt;構文解析器&lt;/h3&gt;
 
 &lt;p&gt;構文解析器は、上記の仕様をなぞって構文解析表を読み取ることのできるステートマシンそのものです。
 よって、構文解析表さえ個々の構文にあわせて生成することができれば、それを構文解析器に与えることによってさまざまな構文の解析が可能になります。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析表の構築:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析表の構築&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析表の構築&#34;&gt;構文解析表の構築&lt;/h3&gt;
 
 &lt;p&gt;完成したDFAをもとにして、構文解析表を生成することができます。&lt;/p&gt;
 
-&lt;h4 id=&#34;shiftおよびgotoオペレーションの登録:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;shiftおよびgotoオペレーションの登録&lt;/h4&gt;
+&lt;h4 id=&#34;shiftおよびgotoオペレーションの登録&#34;&gt;shiftおよびgotoオペレーションの登録&lt;/h4&gt;
 
 &lt;p&gt;それぞれのDFAノードは、ステートマシンの状態と対応しています。
 簡単のため、個々のDFAノードには一意なid(ステートマシンの状態番号)が割り振られているものとします。
@@ -1694,7 +1687,7 @@ shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 
 &lt;p&gt;その辺のラベルの記号が非終端記号であるならば、同様にしてgoto命令を書き込みます。&lt;/p&gt;
 
-&lt;h4 id=&#34;acceptおよびreduceオペレーションの登録:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;acceptおよびreduceオペレーションの登録&lt;/h4&gt;
+&lt;h4 id=&#34;acceptおよびreduceオペレーションの登録&#34;&gt;acceptおよびreduceオペレーションの登録&lt;/h4&gt;
 
 &lt;p&gt;すべてのDFAノードについて、そのアイテム集合の持つLRアイテム一つ一つを確認していきます。
 もしも&lt;code&gt;.&lt;/code&gt;の位置が右辺の末尾にある場合、そのLRアイテムの持つ先読み記号それぞれについて、以下の処理を行います。&lt;/p&gt;
@@ -1703,7 +1696,7 @@ shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 
 &lt;p&gt;ただし、その規則が&lt;code&gt;S&#39;&lt;/code&gt;に対応するものであった場合、かわりにaccept命令を書き込みます。&lt;/p&gt;
 
-&lt;h4 id=&#34;shift-reduceコンフリクト:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;shift/reduceコンフリクト&lt;/h4&gt;
+&lt;h4 id=&#34;shift-reduceコンフリクト&#34;&gt;shift/reduceコンフリクト&lt;/h4&gt;
 
 &lt;p&gt;shiftオペレーションおよびreduceオペレーションは、表の同じ位置に競合して書き込まれてしまうことがあります。
 このような状況を、shift/reduceコンフリクトと呼びます。
@@ -1718,7 +1711,7 @@ shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 &lt;p&gt;もうひとつは、規則ごとにオペレーションの優先度を設定し、コンフリクトが発生した場合は強制的にどちらかの命令を実行すると決めてしまうことです。
 これは一般的に行われている方法であり、かなり乱暴ですが大抵の場合はまあなんとかなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考資料:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;参考資料&lt;/h2&gt;
+&lt;h2 id=&#34;参考資料&#34;&gt;参考資料&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;で紹介したものを今回もそのまま参考資料としているため、基本的にはそちらをご覧ください。
 今回紹介した内容の理解を深めるのに特に役立つと思われるおすすめの資料を抜粋しておきます。&lt;/p&gt;
@@ -1738,7 +1731,6 @@ LR(1) DFA、クロージャー展開、構文解析表等について詳細な�
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回:儀式の下準備&lt;/a&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;次回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1749,16 +1741,16 @@ LR(1) DFA、クロージャー展開、構文解析表等について詳細な�
       
       <guid>http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;前回&lt;/a&gt;は字句解析器の作成を行ったので、次にLR(1)法による構文解析のためのパーサジェネレータの作成に入っていきます。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;前回&lt;/a&gt;は字句解析器の作成を行ったので、次にLR(1)法による構文解析のためのパーサジェネレータの作成に入っていきます。
 今回は、LR(1)構文解析器の構築のために必要な、終端記号と非終端記号の区別、Nulls集合、First集合の導出等を行えるようにしていきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;いよいよ構文解析部分の実装にとりかかるため、今後はLR(1)法に焦点を絞って解説していきます。&lt;/p&gt;
 
 &lt;p&gt;今回はその準備段階として必要になる部分を作っていくため、どんどん実装を進めていきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文規則を定義する:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;構文規則を定義する&lt;/h2&gt;
+&lt;h2 id=&#34;構文規則を定義する&#34;&gt;構文規則を定義する&lt;/h2&gt;
 
 &lt;p&gt;まずは、前回字句規則を定義したように、構文規則を定義していく必要があります。&lt;/p&gt;
 
@@ -1832,7 +1824,7 @@ const grammar:GrammarDefinition = {
 これは文字通り開始記号のことであり、最初にどの記号から構文解析を開始するか表すために必要です。
 最終的に構文解析を行った結果として構文木を得た場合、この開始記号が構文木の根となります。&lt;/p&gt;
 
-&lt;h2 id=&#34;終端記号と非終端記号を区別する:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;終端記号と非終端記号を区別する&lt;/h2&gt;
+&lt;h2 id=&#34;終端記号と非終端記号を区別する&#34;&gt;終端記号と非終端記号を区別する&lt;/h2&gt;
 
 &lt;p&gt;構文解析器を作るためには、与えられた構文から終端記号と非終端記号を区別できるようにする必要があります。
 定義を再確認しておくと、規則の左辺に現れることのない記号が終端記号、現れる記号が非終端記号です。&lt;/p&gt;
@@ -1884,7 +1876,7 @@ constructor(syntaxdef:SyntaxDefinitions){
 
 &lt;p&gt;なおこの記事において、「トークン」と「記号」は概念上は同様の意味を持ちますが、前者はプログラム内で記号を表すための構造として扱い、理論的な概念について触れる際は後者を使うものとします。&lt;/p&gt;
 
-&lt;h2 id=&#34;nulls集合とfirst集合:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合とFirst集合&lt;/h2&gt;
+&lt;h2 id=&#34;nulls集合とfirst集合&#34;&gt;Nulls集合とFirst集合&lt;/h2&gt;
 
 &lt;p&gt;構文解析器の作成のためには、First集合というものを求める必要があります。
 そしてFisrt集合を求めるためには、Nulls集合が必要です。&lt;/p&gt;
@@ -1900,9 +1892,9 @@ constructor(syntaxdef:SyntaxDefinitions){
 
 &lt;p&gt;が詳しいので厳密な定義等はそちらを参照してください(First,NullableはLL(1)の項で紹介されています)。&lt;/p&gt;
 
-&lt;h3 id=&#34;nulls集合を求める:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合を求める&lt;/h3&gt;
+&lt;h3 id=&#34;nulls集合を求める&#34;&gt;Nulls集合を求める&lt;/h3&gt;
 
-&lt;h4 id=&#34;nulls集合とは:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合とは&lt;/h4&gt;
+&lt;h4 id=&#34;nulls集合とは&#34;&gt;Nulls集合とは&lt;/h4&gt;
 
 &lt;p&gt;ある終端記号または非終端記号について、それが「Nullableである」かどうかを判別する必要があります。
 「Nullableな記号」を集めた集合をNulls集合ということにします。
@@ -1935,7 +1927,7 @@ Y -&amp;gt;
 ひとつでも空列となるパターンが存在する場合、Nulls集合に含まなければなりません。
 また当然ですが、左辺に現れることのない終端記号はNullableではありません。&lt;/p&gt;
 
-&lt;h4 id=&#34;nulls集合を実装する:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;Nulls集合を実装する&lt;/h4&gt;
+&lt;h4 id=&#34;nulls集合を実装する&#34;&gt;Nulls集合を実装する&lt;/h4&gt;
 
 &lt;p&gt;なにやら面倒そうですが、実装はそう複雑ではありません。
 NullableSetクラスを作ってみましょう。&lt;br /&gt;
@@ -1996,9 +1988,9 @@ export class NullableSet{
 そこで、すべての規則を調べ、その右辺の記号がすべて既存のNull集合に含まれているならば、その記号もNulls集合に追加します。&lt;br /&gt;
 この処理を、一巡しても新しいNullableな規則が追加されなくなるまで繰り返せば終了です。&lt;/p&gt;
 
-&lt;h3 id=&#34;first集合を求める:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;First集合を求める&lt;/h3&gt;
+&lt;h3 id=&#34;first集合を求める&#34;&gt;First集合を求める&lt;/h3&gt;
 
-&lt;h4 id=&#34;first集合とは:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;First集合とは&lt;/h4&gt;
+&lt;h4 id=&#34;first集合とは&#34;&gt;First集合とは&lt;/h4&gt;
 
 &lt;p&gt;たとえば先ほど挙げた&lt;code&gt;X&lt;/code&gt;が&lt;code&gt;10&lt;/code&gt;や&lt;code&gt;0&lt;/code&gt;となるように、非終端記号は規則をたどっていくと終端記号のみの列に変換することができます。
 構文解析を行うためには、ある非終端記号から得られるそのような終端記号の列のうち、最も左側にどのような終端記号が来るのかを知る必要があります。
@@ -2011,7 +2003,7 @@ export class NullableSet{
 また、Firstに与える引数は記号だけでなく記号列である可能性もあります。
 &lt;code&gt;First(YA)&lt;/code&gt;なら、&lt;code&gt;Y&lt;/code&gt;がNullableであるため、&lt;code&gt;YA&lt;/code&gt;から得られうる文字列の左端になりうるのは&lt;code&gt;1&lt;/code&gt;と&lt;code&gt;A&lt;/code&gt;なので、&lt;code&gt;{1, A}&lt;/code&gt;のようになるでしょう。&lt;/p&gt;
 
-&lt;h4 id=&#34;first集合の実装:54819cf28b4a2703da41ec17803c8ec7&#34;&gt;First集合の実装&lt;/h4&gt;
+&lt;h4 id=&#34;first集合の実装&#34;&gt;First集合の実装&lt;/h4&gt;
 
 &lt;p&gt;話がごちゃごちゃしてきましたが、実装に移りましょう。
 基本的なアルゴリズムは、以下のようになります。&lt;/p&gt;
@@ -2065,7 +2057,6 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;前回:字句解析器の実装&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;次回:かんたんLR(1)法入門&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -2076,17 +2067,17 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
       
       <guid>http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;前回&lt;/a&gt;は構文解析の概略を紹介したので、今回から実装に移っていきたいと思います。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;前回&lt;/a&gt;は構文解析の概略を紹介したので、今回から実装に移っていきたいと思います。
 まずは字句解析器を用意する必要があるため、今回は字句解析器の作成について紹介します。&lt;/p&gt;
 
 &lt;p&gt;なお今回から実際のプログラムを記述していきますが、使用言語はTypeScriptとします。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;パーサジェネレータを作るのに比べれば字句解析器を作るのは非常に単純です。
 早速はじめていきましょう。&lt;/p&gt;
 
-&lt;h2 id=&#34;字句解析器の仕様を確認する:33ced0e1bdc35ac00ed380cf2d7265fa&#34;&gt;字句解析器の仕様を確認する&lt;/h2&gt;
+&lt;h2 id=&#34;字句解析器の仕様を確認する&#34;&gt;字句解析器の仕様を確認する&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;前回&lt;/a&gt;の記事でも紹介しましたが、字句解析器の行う処理は以下のような流れになります。&lt;/p&gt;
 
@@ -2122,7 +2113,7 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
 
 &lt;p&gt;得られたトークンのリストを構文解析器の入力として渡すことで、構文解析器は文法の解析のみに注力することができます。&lt;/p&gt;
 
-&lt;h2 id=&#34;字句規則を定義する:33ced0e1bdc35ac00ed380cf2d7265fa&#34;&gt;字句規則を定義する&lt;/h2&gt;
+&lt;h2 id=&#34;字句規則を定義する&#34;&gt;字句規則を定義する&lt;/h2&gt;
 
 &lt;p&gt;実際に解析を行うタイミングでは文字列のみを入力として受け取りますが、字句解析器の生成時には字句規則が必要です。
 そのため、予め字句規則を別の設定ファイルなどに書いておくなどして用意しておかなければなりません。
@@ -2153,7 +2144,7 @@ const lex: LexDefinitions = [
 
 &lt;p&gt;Tokenの型定義にsymbolを含めている点についてはここで説明せずに後述することとします。&lt;/p&gt;
 
-&lt;h3 id=&#34;入力の読み捨て:33ced0e1bdc35ac00ed380cf2d7265fa&#34;&gt;入力の読み捨て&lt;/h3&gt;
+&lt;h3 id=&#34;入力の読み捨て&#34;&gt;入力の読み捨て&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;{token:null, pattern:/\s/}
 // (読み捨て): /\s/
@@ -2165,7 +2156,7 @@ const lex: LexDefinitions = [
 
 &lt;p&gt;今回は、トークンのラベル部分にnullを指定することで、読み取った結果をトークンとして保持することなく読み捨てることを表すようにしています。&lt;/p&gt;
 
-&lt;h3 id=&#34;正規表現パターンと文字列パターンの使い分け:33ced0e1bdc35ac00ed380cf2d7265fa&#34;&gt;正規表現パターンと文字列パターンの使い分け&lt;/h3&gt;
+&lt;h3 id=&#34;正規表現パターンと文字列パターンの使い分け&#34;&gt;正規表現パターンと文字列パターンの使い分け&lt;/h3&gt;
 
 &lt;p&gt;(ごちゃごちゃ書いている割に小手先のテクニックという感じが強いため、よくわからなければ読み飛ばしてください)&lt;/p&gt;
 
@@ -2180,7 +2171,7 @@ const lex: LexDefinitions = [
 これは、正規表現で&lt;code&gt;/vwx(?!\w)/&lt;/code&gt; 、&lt;code&gt;/vwxyz(?!\w)/&lt;/code&gt; というような否定的前方先読みをパターンの最後に追加することに相当します。
 このルールを追加することで、正規表現を用いる場合よりも簡潔に記述可能となります。&lt;/p&gt;
 
-&lt;h2 id=&#34;字句解析器を実装する:33ced0e1bdc35ac00ed380cf2d7265fa&#34;&gt;字句解析器を実装する&lt;/h2&gt;
+&lt;h2 id=&#34;字句解析器を実装する&#34;&gt;字句解析器を実装する&lt;/h2&gt;
 
 &lt;p&gt;ではLexerクラスを作っていきましょう。
 とはいえ字句規則さえ定義してしまえば、やることはほとんどありません。
@@ -2309,7 +2300,6 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;前回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;次回:儀式の下準備&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -2320,9 +2310,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
       
       <guid>http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の21日の記事です。また遅刻か。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の21日の記事です。また遅刻か。
 なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -2334,11 +2322,13 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;今回は構文解析自体の入門編となります。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;自作したパーサジェネレータは &lt;a href=&#34;https://github.com/Tatamo/parsergenerator&#34;&gt;https://github.com/Tatamo/parsergenerator&lt;/a&gt; にあります。&lt;br /&gt;
 今のところパーサジェネレータ部分は完成、基本的な構文解析なら問題なくこなせるので構文規則や字句規則を外部から読み取って構文解析してパーサジェネレータに渡すような処理や、全体の見通しを良くするための設計の見直しやリファクタリング等を行っている段階です。
 ドキュメント作ってなくてすみません。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析をしたい:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;構文解析をしたい&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析をしたい&#34;&gt;構文解析をしたい&lt;/h2&gt;
 
 &lt;p&gt;構文解析、時々見かけるフレーズです。
 プログラマなら覚えておいて損はない技術……かどうかはわかりませんが、そういう類のスキルに(傍からは)見えます。&lt;br /&gt;
@@ -2351,7 +2341,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 &lt;p&gt;順を追って説明する必要がありますが、詳細は適宜省略します。
 そのため、まずは今回主に参照した資料を列挙しておきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考資料一覧:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;参考資料一覧&lt;/h2&gt;
+&lt;h2 id=&#34;参考資料一覧&#34;&gt;参考資料一覧&lt;/h2&gt;
 
 &lt;p&gt;より詳しく知りたい方は、下記に挙げる資料やそこで紹介されている参考文献などを参照されるのが良いと思われます。&lt;/p&gt;
 
@@ -2367,7 +2357,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 &lt;li&gt;&lt;a href=&#34;https://twitter.com/uhyo_&#34;&gt;うひょ(@uhyo_)さん&lt;/a&gt; 生き字引。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;構文解析とは-ざっくり:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;構文解析とは？(ざっくり)&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析とは-ざっくり&#34;&gt;構文解析とは？(ざっくり)&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt; という数式を考えてみます。
 構文解析をすることによる最終的な目的は、この数式を(たとえば)文字列として与えると、結果としてこの数式の答えが&lt;code&gt;42&lt;/code&gt;であることを導く、といったことです。&lt;/p&gt;
@@ -2395,7 +2385,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;実際の構文解析を行う手順とはずれてしまいますが、紹介した順番に沿って構文解析器→字句解析器の順に解説していきます。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析器-パーサ:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;構文解析器(パーサ)&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析器-パーサ&#34;&gt;構文解析器(パーサ)&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;9 + 11 * (2 + 1)&lt;/code&gt; という数式を解析するためには、まずこの数式がどのようなルールで記述されているのかを(再)定義する必要があります。
 そのルールをを表すのが構文規則です。
@@ -2438,7 +2428,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;ちなみにですが、この構文規則は解析したい対象ごとにあなたが一から書き上げる必要があります。&lt;/p&gt;
 
-&lt;h3 id=&#34;字句解析器-レキシカルアナライザ:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;字句解析器(レキシカルアナライザ)&lt;/h3&gt;
+&lt;h3 id=&#34;字句解析器-レキシカルアナライザ&#34;&gt;字句解析器(レキシカルアナライザ)&lt;/h3&gt;
 
 &lt;p&gt;上記構文規則では、&lt;code&gt;+&lt;/code&gt;や&lt;code&gt;*&lt;/code&gt;のような演算子、&lt;code&gt;数&lt;/code&gt;についての規定はありません。
 これらの「左辺に現れない記号」を、「終端記号」と呼びます。左辺に現れる記号は非終端記号と呼ばれます。&lt;/p&gt;
@@ -2491,7 +2481,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;与えられた文字列を前から順番に見ていくだけなので、字句解析器の実装はパーサやパーサジェネレータの実装と比べると単純です。&lt;/p&gt;
 
-&lt;h3 id=&#34;パーサジェネレータ:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;パーサジェネレータ&lt;/h3&gt;
+&lt;h3 id=&#34;パーサジェネレータ&#34;&gt;パーサジェネレータ&lt;/h3&gt;
 
 &lt;p&gt;ここまで構文解析器(パーサ)と字句解析器(レキシカルアナライザ)について見てきました。
 基本的にはこの2つによって構文解析を行うことができ、基本的な流れとしては&lt;/p&gt;
@@ -2515,7 +2505,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 もっとも、パーサジェネレータがパーサを生成する際の処理にかかる時間を省略したい場合、予めパーサをコンパイルしておけるようにするのは妥当といえるでしょう。
 字句解析器のための「字句解析器ジェネレータ」も実際に存在していますが、ここでは簡単のために字句解析器はコンストラクタに字句規則を与えれば勝手に良い感じの字句解析を行ってくれるようになるものと思ってもらえればよいです。&lt;/p&gt;
 
-&lt;h3 id=&#34;文脈自由言語について:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;文脈自由言語について&lt;/h3&gt;
+&lt;h3 id=&#34;文脈自由言語について&#34;&gt;文脈自由言語について&lt;/h3&gt;
 
 &lt;p&gt;構文解析器が解析対象とする「言語」がどのようなものであるかについてはいろいろな定義がなされています。&lt;/p&gt;
 
@@ -2531,11 +2521,11 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 &lt;p&gt;構文解析の対象とするのは、基本的に文脈自由言語となります。
 構文解析の手法にも様々なものがありますが、それらの手法の中には文脈自由言語すべてを解析できるわけではないものも多く、たとえばLR(1)法ならLR(1)文法やLR(1)言語というように、ある手法で解析できる文法や、解析できる言語全体をその手法の名前で表される言語として表現することがあります。&lt;/p&gt;
 
-&lt;h3 id=&#34;解析手法と言語のクラス:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;解析手法と言語のクラス&lt;/h3&gt;
+&lt;h3 id=&#34;解析手法と言語のクラス&#34;&gt;解析手法と言語のクラス&lt;/h3&gt;
 
 &lt;p&gt;いくつかの手法を主観を交えて乱暴に紹介していきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;先読み:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;先読み&lt;/h4&gt;
+&lt;h4 id=&#34;先読み&#34;&gt;先読み&lt;/h4&gt;
 
 &lt;p&gt;**この項は下のLR法などの項を「先読み」してから戻ってきて読むことをおすすめします**&lt;/p&gt;
 
@@ -2549,7 +2539,7 @@ ES2015でRegExpに追加されたstickyフラグ(&lt;strong&gt;ほぼ&lt;/strong
 
 &lt;p&gt;2.より、基本的には(1)について考えることが多いようです。&lt;/p&gt;
 
-&lt;h4 id=&#34;ll-1-法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;LL(1)法&lt;/h4&gt;
+&lt;h4 id=&#34;ll-1-法&#34;&gt;LL(1)法&lt;/h4&gt;
 
 &lt;p&gt;「再帰を使って構文解析する」という発想としては単純なもの。
 LL(1)文法のクラスはLR(1)よりも大幅に小さいものの、それでもLALR(1)文法を外れた文法を解析できたりします。&lt;/p&gt;
@@ -2559,21 +2549,21 @@ LL(1)文法のクラスはLR(1)よりも大幅に小さいものの、それで�
 
 &lt;p&gt;というような、右辺の一番左の場所に左辺の記号が登場するような「左再帰則」を読むことができません。ナンセンス。&lt;/p&gt;
 
-&lt;h4 id=&#34;lr-0-法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;LR(0)法&lt;/h4&gt;
+&lt;h4 id=&#34;lr-0-法&#34;&gt;LR(0)法&lt;/h4&gt;
 
 &lt;p&gt;先読み数が0なのでよわい。&lt;/p&gt;
 
-&lt;h4 id=&#34;slr法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;SLR法&lt;/h4&gt;
+&lt;h4 id=&#34;slr法&#34;&gt;SLR法&lt;/h4&gt;
 
 &lt;p&gt;SLRのSはSimpleの意味です。LR(0)から単純な先読みを加えることでLR(0)よりも解析可能な文法が増えますが、それでもLALR(1)には及びません。&lt;/p&gt;
 
-&lt;h4 id=&#34;lr-1-法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;LR(1)法&lt;/h4&gt;
+&lt;h4 id=&#34;lr-1-法&#34;&gt;LR(1)法&lt;/h4&gt;
 
 &lt;p&gt;LR(0)に対し、1文字だけ先読みして次にどのような入力が期待されるかを判断。
 LR(1)文法がそれなりに広いという点で優秀な一方、LR(0)に比べて構文解析表の大きさが爆発しやすいという欠点がある、と言われています。
 しかし今の時代はそんなものは大した欠点になり得ない気がします。&lt;/p&gt;
 
-&lt;h4 id=&#34;lalr-1-法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;LALR(1)法&lt;/h4&gt;
+&lt;h4 id=&#34;lalr-1-法&#34;&gt;LALR(1)法&lt;/h4&gt;
 
 &lt;p&gt;プログラミング言語を解析するコンパイラなどによく使われている手法です。
 基本的に先読み数1で行うので、(1)を略してLALR法と呼ばれることも多くあります。
@@ -2585,14 +2575,14 @@ LALR(1)のLAはLook-Aheadの略で、LR(1)法の構文解析表のうち、文�
 &lt;p&gt;また、LALR法のLAはLook-Aheadの略だと言いましたが、注意しなければならないのは&lt;strong&gt;Look-Ahead(先読み)を行うのはLALR法固有の手法ではない&lt;/strong&gt;ということです。  先読み自体はLR(1)法でもやりますし、LALR(1)はあくまでLR(1)の先読み部分をマージしたものにすぎません。
 私はLALR法の名前の付け方はあまり良くないと思っていて、MLR法(Merged Look-Ahead LR法)とかなんとか、そういう感じの名前に変えたほうが良いと思います。&lt;/p&gt;
 
-&lt;h4 id=&#34;glr法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;GLR法&lt;/h4&gt;
+&lt;h4 id=&#34;glr法&#34;&gt;GLR法&lt;/h4&gt;
 
 &lt;p&gt;「あいまいな」解釈が可能な文法があった場合、考えられうるすべての可能性を探索してしまうことによって解決する手法。&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;「お魚くわえた猫を追いかけるサザエさん」&lt;/code&gt;で魚をくわえているのが猫とサザエさんの両方に解釈できるように、一つの入力に対して複数の結果が得られることがあります。
 どちらかというと自然言語処理向きかもしれません。&lt;/p&gt;
 
-&lt;h4 id=&#34;cyk法:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;CYK法&lt;/h4&gt;
+&lt;h4 id=&#34;cyk法&#34;&gt;CYK法&lt;/h4&gt;
 
 &lt;p&gt;強力なアルゴリズムにより、文脈自由言語すべてを比較的高速に解析可能。
 ただし、&lt;/p&gt;
@@ -2609,7 +2599,7 @@ VP -&amp;gt; v
 
 &lt;p&gt;プログラミング言語の解析では、言語の開発者が文法自体をある程度自由に定義することができるため、文脈自由言語の一部だけでなく全体を解析したいという需要はあまり発生しません。&lt;/p&gt;
 
-&lt;h2 id=&#34;lr-1-パーサジェネレータをつくろう:4f3ac79f73d5f2d4c7087437a39bd22b&#34;&gt;LR(1)パーサジェネレータをつくろう&lt;/h2&gt;
+&lt;h2 id=&#34;lr-1-パーサジェネレータをつくろう&#34;&gt;LR(1)パーサジェネレータをつくろう&lt;/h2&gt;
 
 &lt;p&gt;構文解析の大まかな流れはわかりました。
 とりあえず字句規則と構文規則を用意して、あとはどうにかしてこの構文を読んでくれるようなパーサを用意すれば構文解析ができそうです(字句解析器なんてのは適当にやってもすぐ用意できます)。&lt;/p&gt;
@@ -2627,7 +2617,6 @@ VP -&amp;gt; v
 &lt;p&gt;えっちょっとまって、今パーサジェネレータは既存のものを使えばいいって言ったよね、ねえ&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;次回:字句解析器の実装&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -2638,23 +2627,23 @@ VP -&amp;gt; v
       
       <guid>http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の14日の記事です。遅刻です。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の14日の記事です。遅刻です。
 なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;最近、大学の授業などで少しだけJavaに触れる機会があったので、ちょっとした黒魔術っぽいことでもやってみようと思います。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。&lt;br /&gt;
 * &lt;a href=&#34;http://d.hatena.ne.jp/Nagise/20131121/1385046248&#34;&gt;new T()したいケースへの対処法 - プログラマーの脳みそ&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;もう帰っていいですかね。&lt;/p&gt;
 
-&lt;h2 id=&#34;総称型tに対してt-classやnew-t-したい:c600ddb79433125511402a932eb728b1&#34;&gt;総称型Tに対してT.classやnew T()したい&lt;/h2&gt;
+&lt;h2 id=&#34;総称型tに対してt-classやnew-t-したい&#34;&gt;総称型Tに対してT.classやnew T()したい&lt;/h2&gt;
 
-&lt;h3 id=&#34;ジェネリクスとは:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスとは&lt;/h3&gt;
+&lt;h3 id=&#34;ジェネリクスとは&#34;&gt;ジェネリクスとは&lt;/h3&gt;
 
 &lt;p&gt;わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。&lt;/p&gt;
 
@@ -2679,7 +2668,7 @@ public &amp;lt;T extends SomeClass&amp;gt; void notDoAnything(T arg){
 &lt;p&gt;これらのメソッドを呼び出すときは、&lt;code&gt;hoge.&amp;lt;SomeClass&amp;gt;doSomething();&lt;/code&gt;のようになります。&lt;br /&gt;
 どうして&lt;code&gt;hoge.doSomething&amp;lt;SomeClass&amp;gt;();&lt;/code&gt;じゃないんだろう。&lt;/p&gt;
 
-&lt;h3 id=&#34;ジェネリクスはt-classやnew-t-をさせてくれない:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスはT.classやnew T()をさせてくれない&lt;/h3&gt;
+&lt;h3 id=&#34;ジェネリクスはt-classやnew-t-をさせてくれない&#34;&gt;ジェネリクスはT.classやnew T()をさせてくれない&lt;/h3&gt;
 
 &lt;p&gt;Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。&lt;/p&gt;
 
@@ -2705,9 +2694,9 @@ public &amp;lt;T&amp;gt; void doSomething(String arg){
 &lt;p&gt;ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
 残念でしたね。&lt;/p&gt;
 
-&lt;h2 id=&#34;なぜしたいのか:c600ddb79433125511402a932eb728b1&#34;&gt;なぜしたいのか&lt;/h2&gt;
+&lt;h2 id=&#34;なぜしたいのか&#34;&gt;なぜしたいのか&lt;/h2&gt;
 
-&lt;h3 id=&#34;もしかして-設計が間違っている:c600ddb79433125511402a932eb728b1&#34;&gt;もしかして： 設計が間違っている&lt;/h3&gt;
+&lt;h3 id=&#34;もしかして-設計が間違っている&#34;&gt;もしかして： 設計が間違っている&lt;/h3&gt;
 
 &lt;p&gt;先ほどのgetSubClassListメソッドを見てみましょう。
 正しく動くかどうかはさておき、やりたいことは以下の通りです：&lt;br /&gt;
@@ -2722,7 +2711,7 @@ public &amp;lt;T&amp;gt; void doSomething(String arg){
 
 &lt;p&gt;終わり。&lt;/p&gt;
 
-&lt;h3 id=&#34;そうも言っていられない:c600ddb79433125511402a932eb728b1&#34;&gt;そうも言っていられない&lt;/h3&gt;
+&lt;h3 id=&#34;そうも言っていられない&#34;&gt;そうも言っていられない&lt;/h3&gt;
 
 &lt;p&gt;実際その通りなのですが、それではこの記事が続きません。&lt;/p&gt;
 
@@ -2886,13 +2875,13 @@ public class Enemy extends Entity {
 
 &lt;p&gt;しかしジェネリクス型はnewできないため、コンパイルエラーとなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;解決策:c600ddb79433125511402a932eb728b1&#34;&gt;解決策&lt;/h2&gt;
+&lt;h2 id=&#34;解決策&#34;&gt;解決策&lt;/h2&gt;
 
 &lt;p&gt;さて、だいぶん勿体つけたが、解決編に入ろう。&lt;/p&gt;
 
 &lt;p&gt;……というか、例として取り上げた題材が無理やりすぎた気がしてやる気が尽きかけてきました。&lt;/p&gt;
 
-&lt;h3 id=&#34;リフレクションを使用する:c600ddb79433125511402a932eb728b1&#34;&gt;リフレクションを使用する&lt;/h3&gt;
+&lt;h3 id=&#34;リフレクションを使用する&#34;&gt;リフレクションを使用する&lt;/h3&gt;
 
 &lt;p&gt;Javaにはリフレクションという機能があり、プログラムの実行中にクラス名やメソッド名を動的に取り扱うことができます。
 これのClass&lt;T&gt;型を、ジェネリクスと併用しましょう。
@@ -2956,7 +2945,7 @@ getSubClassList(list, SubClassOfSomeClass.class);
 
 &lt;p&gt;めでたしめでたし。&lt;/p&gt;
 
-&lt;h3 id=&#34;おまけ:c600ddb79433125511402a932eb728b1&#34;&gt;おまけ&lt;/h3&gt;
+&lt;h3 id=&#34;おまけ&#34;&gt;おまけ&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public &amp;lt;T&amp;gt; int getStaticValue(Class&amp;lt;T&amp;gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
 	return (int) cls.getMethod(&amp;quot;getStaticValue&amp;quot;).invoke(null);
@@ -2968,7 +2957,7 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 
 &lt;p&gt;staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわり:c600ddb79433125511402a932eb728b1&#34;&gt;おわり&lt;/h2&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Class&amp;lt;T&amp;gt; cls&lt;/code&gt;を引数にとり、&lt;code&gt;value.getClass() == cls&lt;/code&gt;で比較を行うのは、実質的にはinstanceofの迂回といえます。&lt;br /&gt;
 この程度なら型安全性は一応担保されますが、コンストラクタやメソッドの取得と呼び出しまで始めた場合、throw宣言やcatch節が山のように膨らんだり、メソッドの存在確認や型の確認などに多大なコストを支払う必要がありそうです。
@@ -2982,7 +2971,6 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 &lt;p&gt;私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。&lt;/p&gt;
 
 &lt;p&gt;プログラミングをするときはまともな設計をするようにしましょう。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -2993,11 +2981,11 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
       
       <guid>http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/</guid>
       <description>
-        
-
-&lt;p&gt;Freecivのユニット同士の戦闘勝率を手軽に行えるソフトであるFreecivCalcの新バージョン、FreecivCalc2を公開しました。&lt;/p&gt;
+        &lt;p&gt;Freecivのユニット同士の戦闘勝率を手軽に行えるソフトであるFreecivCalcの新バージョン、FreecivCalc2を公開しました。&lt;/p&gt;
 
 &lt;p&gt;FreecivCalc2: &lt;a href=&#34;http://tatamo.81.la/freecivcalc2/&#34;&gt;http://tatamo.81.la/freecivcalc2/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;以前から公開していた&lt;a href=&#34;http://m06t625.81.la/files/FreecivCalc.html&#34;&gt;FreecivCalc&lt;/a&gt;はSilverlight上で動作するソフトのため、現状では動作するブラウザがほとんどなくなってきています。&lt;/p&gt;
 
@@ -3005,7 +2993,7 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 
 &lt;p&gt;Chrome, Opera, Firefox, Edgeでの動作を確認しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;freecivcalc2の新機能:0fe09111c483b88d0d4fda3fcdc49d63&#34;&gt;FreecivCalc2の新機能&lt;/h2&gt;
+&lt;h2 id=&#34;freecivcalc2の新機能&#34;&gt;FreecivCalc2の新機能&lt;/h2&gt;
 
 &lt;p&gt;FreecivCalc2の画面からユニットを選択し、各種補正情報を入力することで戦闘勝率を表示できます。また詳細結果タブを開くことで、戦闘後のユニットHPの期待値を表示できるほか、タブを保持しておくことで復数の戦闘の予測結果を見比べることなどができます。&lt;/p&gt;
 
@@ -3013,7 +3001,7 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 FreecivCalc2ではこれらの特殊補正は自動で適用されるため、Freecivの複雑な戦闘補正を十分に把握していない場合でも正確に戦闘勝率の予測が可能です。
 ユニットにかけられている補正の一覧は、詳細結果タブ内で確認することができます。&lt;/p&gt;
 
-&lt;h2 id=&#34;複数の言語-多様なルールセットに対応可能な拡張性:0fe09111c483b88d0d4fda3fcdc49d63&#34;&gt;複数の言語、多様なルールセットに対応可能な拡張性&lt;/h2&gt;
+&lt;h2 id=&#34;複数の言語-多様なルールセットに対応可能な拡張性&#34;&gt;複数の言語、多様なルールセットに対応可能な拡張性&lt;/h2&gt;
 
 &lt;p&gt;戦闘補正の自動適用を実現するために、ユニットの情報や補正の条件など、ルールセットに関連するすべての情報を外部データ化しました。
 これによってclassicルールセットだけでなく、多様なルールセットに対応することが可能です。
@@ -3021,7 +3009,7 @@ FreecivCalc2ではこれらの特殊補正は自動で適用されるため、Fr
 
 &lt;p&gt;現状では、classicルールセットを日本語および英語の2か国語で対応しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;開発について:0fe09111c483b88d0d4fda3fcdc49d63&#34;&gt;開発について&lt;/h2&gt;
+&lt;h2 id=&#34;開発について&#34;&gt;開発について&lt;/h2&gt;
 
 &lt;p&gt;FreecivCalc2は三条項BSDライセンス下で公開されています。&lt;/p&gt;
 
@@ -3034,7 +3022,6 @@ FreecivCalc2ではこれらの特殊補正は自動で適用されるため、Fr
 amChartsは簡単にグラフを表示できるライブラリとして使いやすそうだったため使用しました。&lt;/p&gt;
 
 &lt;p&gt;その他、外部JSONファイルからテンプレートを通してHTMLファイルを生成するためのテンプレートエンジンとしてEJSを使用しました。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -3045,11 +3032,11 @@ amChartsは簡単にグラフを表示できるライブラリとして使いや
       
       <guid>http://tatamo.81.la/blog/2016/01/05/hugo-deployment/</guid>
       <description>
-        
+        &lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;werckerを使って自動ビルドする:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Werckerを使って自動ビルドする&lt;/h2&gt;
+&lt;h2 id=&#34;werckerを使って自動ビルドする&#34;&gt;Werckerを使って自動ビルドする&lt;/h2&gt;
 
 &lt;p&gt;まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
 記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
@@ -3059,7 +3046,7 @@ amChartsは簡単にグラフを表示できるライブラリとして使いや
 Werckerを利用した自動デプロイは、&lt;a href=&#34;https://gohugo.io/tutorials/automated-deployments/&#34;&gt;Hugoの公式ドキュメント&lt;/a&gt;に記事があるため、これを参考に行います。
 この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。&lt;/p&gt;
 
-&lt;h3 id=&#34;wercker-ymlの記述:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;wercker.ymlの記述&lt;/h3&gt;
+&lt;h3 id=&#34;wercker-ymlの記述&#34;&gt;wercker.ymlの記述&lt;/h3&gt;
 
 &lt;p&gt;公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
 既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。&lt;/p&gt;
@@ -3074,7 +3061,7 @@ build:
 &lt;p&gt;これだけでHugoのビルドが可能です。
 ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。&lt;/p&gt;
 
-&lt;h2 id=&#34;werckerとdeploybotを使って自動デプロイする:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;WerckerとDeployBotを使って自動デプロイする&lt;/h2&gt;
+&lt;h2 id=&#34;werckerとdeploybotを使って自動デプロイする&#34;&gt;WerckerとDeployBotを使って自動デプロイする&lt;/h2&gt;
 
 &lt;p&gt;前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。&lt;/p&gt;
 
@@ -3134,9 +3121,9 @@ deploy:
 DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
 これで目的のサーバーへの自動デプロイが完了しました。&lt;/p&gt;
 
-&lt;h2 id=&#34;補足など:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;補足など&lt;/h2&gt;
+&lt;h2 id=&#34;補足など&#34;&gt;補足など&lt;/h2&gt;
 
-&lt;h3 id=&#34;githubリポジトリの分割:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;GitHubリポジトリの分割&lt;/h3&gt;
+&lt;h3 id=&#34;githubリポジトリの分割&#34;&gt;GitHubリポジトリの分割&lt;/h3&gt;
 
 &lt;p&gt;Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。&lt;/p&gt;
 
@@ -3150,16 +3137,16 @@ DeployBotはリポジトリが更新されるとその内容をそのままサ�
 
 &lt;p&gt;というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。&lt;/p&gt;
 
-&lt;h3 id=&#34;werckerの設定:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Werckerの設定&lt;/h3&gt;
+&lt;h3 id=&#34;werckerの設定&#34;&gt;Werckerの設定&lt;/h3&gt;
 
-&lt;h4 id=&#34;dockerの使用:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Dockerの使用&lt;/h4&gt;
+&lt;h4 id=&#34;dockerの使用&#34;&gt;Dockerの使用&lt;/h4&gt;
 
 &lt;p&gt;Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
 Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、&lt;a href=&#34;http://thleap.net/blog/recovering-wercker/&#34;&gt;boxが見つからないというエラー&lt;/a&gt;が発生します。
 逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
 (なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)&lt;/p&gt;
 
-&lt;h4 id=&#34;デプロイターゲット登録時のauto-deploy設定:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;デプロイターゲット登録時のAuto deploy設定&lt;/h4&gt;
+&lt;h4 id=&#34;デプロイターゲット登録時のauto-deploy設定&#34;&gt;デプロイターゲット登録時のAuto deploy設定&lt;/h4&gt;
 
 &lt;p&gt;ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&amp;rdquo;auto deploy successful builds to branch(es):&amp;ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
 GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。&lt;/p&gt;
@@ -3177,7 +3164,6 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
 
 &lt;p&gt;また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
 デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -3188,9 +3174,7 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
       
       <guid>http://tatamo.81.la/blog/2015/12/17/hugo-implementation/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/891&#34;&gt;KobeUniv Advent Calendar 2015&lt;/a&gt;の17日の記事です。なんとか期日に間に合いそうです。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/891&#34;&gt;KobeUniv Advent Calendar 2015&lt;/a&gt;の17日の記事です。なんとか期日に間に合いそうです。
 なお私は当該大学の学部1年(2015年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -3198,7 +3182,9 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
 &lt;p&gt;このブログを作るにあたって、&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;を使用しました。
 Hugoを用いたサイト構築の基本的な考え方や流れの紹介、その際に詰まったことなど。&lt;/p&gt;
 
-&lt;h2 id=&#34;そもそもhugoって何:618f10612e6a9a223dbbbddb739583ff&#34;&gt;そもそもHugoって何&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;そもそもhugoって何&#34;&gt;そもそもHugoって何&lt;/h2&gt;
 
 &lt;p&gt;静的なWebサイトを生成するためのエンジンです。
 つまり:&lt;/p&gt;
@@ -3214,11 +3200,11 @@ Hugoを用いたサイト構築の基本的な考え方や流れの紹介、そ�
 &lt;p&gt;これでWebサイトの完成というわけです。
 あくまで静的なサイトなので、サーバーサイドでプログラムを走らせる必要もありません。&lt;/p&gt;
 
-&lt;h2 id=&#34;hugoを使ってみる:618f10612e6a9a223dbbbddb739583ff&#34;&gt;Hugoを使ってみる&lt;/h2&gt;
+&lt;h2 id=&#34;hugoを使ってみる&#34;&gt;Hugoを使ってみる&lt;/h2&gt;
 
 &lt;p&gt;Hugoのインストール等については、既に多くの情報がネット上にあるため割愛します。&lt;/p&gt;
 
-&lt;h3 id=&#34;hugoの基本的なディレクトリ構成:618f10612e6a9a223dbbbddb739583ff&#34;&gt;Hugoの基本的なディレクトリ構成&lt;/h3&gt;
+&lt;h3 id=&#34;hugoの基本的なディレクトリ構成&#34;&gt;Hugoの基本的なディレクトリ構成&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ hugo new site name_of_my_site
 &lt;/code&gt;&lt;/pre&gt;
@@ -3252,9 +3238,9 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 サイトを公開するときは、publicディレクトリ下に生成されたファイルをすべてアップロードします。
 なお、publicディレクトリ内に不要になったファイルがあったとしても、サイト生成時に削除されません。本番サイトの生成時にはpublicディレクトリを一度削除してからビルドを行うのが良いと思われます。&lt;/p&gt;
 
-&lt;h3 id=&#34;レイアウトしてみる:618f10612e6a9a223dbbbddb739583ff&#34;&gt;レイアウトしてみる&lt;/h3&gt;
+&lt;h3 id=&#34;レイアウトしてみる&#34;&gt;レイアウトしてみる&lt;/h3&gt;
 
-&lt;h4 id=&#34;テーマを使う:618f10612e6a9a223dbbbddb739583ff&#34;&gt;テーマを使う&lt;/h4&gt;
+&lt;h4 id=&#34;テーマを使う&#34;&gt;テーマを使う&lt;/h4&gt;
 
 &lt;p&gt;いくつものHugoのレイアウトが&lt;a href=&#34;https://themes.gohugo.io/&#34;&gt;公開されて&lt;/a&gt;います。基本的には、この中から気に入ったものを使うのが良さそうです。themesディレクトリ直下にテーマごとのディレクトリを作り、その中にテーマファイルを配置します。&lt;/p&gt;
 
@@ -3266,25 +3252,25 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 
 &lt;p&gt;既存のテーマを使用する場合、テーマによってconfigに記述する必要のある内容が大きく異なる可能性があります。READMEにどのような項目を記述すればいいかが書かれていると思いますので、必ず確認するのがいいでしょう。&lt;/p&gt;
 
-&lt;h4 id=&#34;自分でレイアウトする:618f10612e6a9a223dbbbddb739583ff&#34;&gt;自分でレイアウトする&lt;/h4&gt;
+&lt;h4 id=&#34;自分でレイアウトする&#34;&gt;自分でレイアウトする&lt;/h4&gt;
 
 &lt;p&gt;HugoはGo言語のテンプレートエンジンを使用しており、各種パラメータを呼び出したり、部分ごとにHTMLファイルを分けて再利用することでサイトのレイアウトを記述していくことができます。&lt;/p&gt;
 
 &lt;p&gt;自分でHugoサイトをレイアウトする場合、確実に一定の学習コストが必要となるので、ここでは詳細には触れません。Hugoは公式ドキュメントが充実しているので、&lt;a href=&#34;https://gohugo.io/tutorials/creating-a-new-theme/&#34;&gt;公式チュートリアル&lt;/a&gt;などから始めるのがいいでしょう。また基本的なことであれば調べれば日本語の情報も得られると思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;詰まったことなど:618f10612e6a9a223dbbbddb739583ff&#34;&gt;詰まったことなど&lt;/h2&gt;
+&lt;h2 id=&#34;詰まったことなど&#34;&gt;詰まったことなど&lt;/h2&gt;
 
 &lt;p&gt;今回はHTMLやCSSを自分で書いてサイトを一つ作りたいと思っていた&lt;del&gt;のと、自分以外のテーマ作者名の表記がページに現れるのが気に食わなかった&lt;/del&gt;ので、このサイトでは既存のテーマを使用せず、自前でレイアウトを記述して構築しました。
 その途中で、いくつか不具合に遭遇して詰まったりしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;バージョン0-14-配列の並び替えにバグがある:618f10612e6a9a223dbbbddb739583ff&#34;&gt;(バージョン0.14)配列の並び替えにバグがある&lt;/h3&gt;
+&lt;h3 id=&#34;バージョン0-14-配列の並び替えにバグがある&#34;&gt;(バージョン0.14)配列の並び替えにバグがある&lt;/h3&gt;
 
 &lt;p&gt;サイドバーに最近の投稿やタグ・カテゴリの一覧を表示させる際、たとえば&lt;code&gt;.Reverse&lt;/code&gt;や&lt;code&gt;.ByDate&lt;/code&gt;で並び替えを行うと、ページによって正常に並び替えが行われなかったり、ビルドするたびに並び順が変わる、低確率で配列の中身が重複して表示されたりします。
 これは並び替えを行う関数が配列そのものに変更を加えているのが原因です。さらにビルド時に並列処理が行われることで処理順がビルドのたびに変化し得るため、同じ記述をしていてもページによって表示される内容が変わるといった不具合が発生したり、そのバグの再現性が低くなったりします。&lt;/p&gt;
 
 &lt;p&gt;このバグは開発版のバージョン0.15では&lt;a href=&#34;https://discuss.gohugo.io/t/error-when-trying-to-sort/1390/4&#34;&gt;修正済み&lt;/a&gt;であり、現行のバージョン0.14まででのみ発生します。&lt;/p&gt;
 
-&lt;h3 id=&#34;rssuriオプションは使ってはいけない:618f10612e6a9a223dbbbddb739583ff&#34;&gt;RSSUriオプションは使ってはいけない&lt;/h3&gt;
+&lt;h3 id=&#34;rssuriオプションは使ってはいけない&#34;&gt;RSSUriオプションは使ってはいけない&lt;/h3&gt;
 
 &lt;p&gt;Hugoではビルド時に自動的にRSSフィードも生成されますが、そのファイル名は常にindex.xmlとなります。&lt;/p&gt;
 
@@ -3299,7 +3285,7 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 &lt;li&gt;RSSファイル内のURLが間違ったものになる&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;hugoを使ってみた感想:618f10612e6a9a223dbbbddb739583ff&#34;&gt;Hugoを使ってみた感想&lt;/h2&gt;
+&lt;h2 id=&#34;hugoを使ってみた感想&#34;&gt;Hugoを使ってみた感想&lt;/h2&gt;
 
 &lt;p&gt;Hugoはシンプルで生成が非常に速いという評判があったため導入してみましたが、実際にサイトを構築してみると確かにそのような設計であることがよく感じられました。必要最小限の機能を持つように出来ており、簡潔なディレクトリ構造はとてもわかりやすいです。
 生成速度についてはまだ記事数が少ないため何とも言えませんが、今のところは一瞬でビルドが完了するので良い感じだと思います。&lt;/p&gt;
@@ -3319,7 +3305,6 @@ Hugoでサイトを作ってからWeb上にデプロイするまでも一苦労�
 
 &lt;p&gt;あとページのデザイン難しいです。
 CSS周りについても記事を書いてみたいですが、あまりに試行錯誤の連続なので何も書くことがないかもしれません……&lt;/p&gt;
-
       </description>
     </item>
     

@@ -75,17 +75,17 @@
         <a href="http://tatamo.81.la/blog/tags/parser-generator/">parser generator</a>
         <a href="http://tatamo.81.la/blog/tags/parser/">parser</a>
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
-        
-
-<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回</a>は構文解析の概略を紹介したので、今回から実装に移っていきたいと思います。
+        <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回</a>は構文解析の概略を紹介したので、今回から実装に移っていきたいと思います。
 まずは字句解析器を用意する必要があるため、今回は字句解析器の作成について紹介します。</p>
 
 <p>なお今回から実際のプログラムを記述していきますが、使用言語はTypeScriptとします。</p>
 
+<p></p>
+
 <p>パーサジェネレータを作るのに比べれば字句解析器を作るのは非常に単純です。
 早速はじめていきましょう。</p>
 
-<h2 id="字句解析器の仕様を確認する:33ced0e1bdc35ac00ed380cf2d7265fa">字句解析器の仕様を確認する</h2>
+<h2 id="字句解析器の仕様を確認する">字句解析器の仕様を確認する</h2>
 
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回</a>の記事でも紹介しましたが、字句解析器の行う処理は以下のような流れになります。</p>
 
@@ -121,7 +121,7 @@
 
 <p>得られたトークンのリストを構文解析器の入力として渡すことで、構文解析器は文法の解析のみに注力することができます。</p>
 
-<h2 id="字句規則を定義する:33ced0e1bdc35ac00ed380cf2d7265fa">字句規則を定義する</h2>
+<h2 id="字句規則を定義する">字句規則を定義する</h2>
 
 <p>実際に解析を行うタイミングでは文字列のみを入力として受け取りますが、字句解析器の生成時には字句規則が必要です。
 そのため、予め字句規則を別の設定ファイルなどに書いておくなどして用意しておかなければなりません。
@@ -152,7 +152,7 @@ const lex: LexDefinitions = [
 
 <p>Tokenの型定義にsymbolを含めている点についてはここで説明せずに後述することとします。</p>
 
-<h3 id="入力の読み捨て:33ced0e1bdc35ac00ed380cf2d7265fa">入力の読み捨て</h3>
+<h3 id="入力の読み捨て">入力の読み捨て</h3>
 
 <pre><code class="language-ts">{token:null, pattern:/\s/}
 // (読み捨て): /\s/
@@ -164,7 +164,7 @@ const lex: LexDefinitions = [
 
 <p>今回は、トークンのラベル部分にnullを指定することで、読み取った結果をトークンとして保持することなく読み捨てることを表すようにしています。</p>
 
-<h3 id="正規表現パターンと文字列パターンの使い分け:33ced0e1bdc35ac00ed380cf2d7265fa">正規表現パターンと文字列パターンの使い分け</h3>
+<h3 id="正規表現パターンと文字列パターンの使い分け">正規表現パターンと文字列パターンの使い分け</h3>
 
 <p>(ごちゃごちゃ書いている割に小手先のテクニックという感じが強いため、よくわからなければ読み飛ばしてください)</p>
 
@@ -179,7 +179,7 @@ const lex: LexDefinitions = [
 これは、正規表現で<code>/vwx(?!\w)/</code> 、<code>/vwxyz(?!\w)/</code> というような否定的前方先読みをパターンの最後に追加することに相当します。
 このルールを追加することで、正規表現を用いる場合よりも簡潔に記述可能となります。</p>
 
-<h2 id="字句解析器を実装する:33ced0e1bdc35ac00ed380cf2d7265fa">字句解析器を実装する</h2>
+<h2 id="字句解析器を実装する">字句解析器を実装する</h2>
 
 <p>ではLexerクラスを作っていきましょう。
 とはいえ字句規則さえ定義してしまえば、やることはほとんどありません。
@@ -308,7 +308,6 @@ ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全て�
 
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回:かんたん構文解析入門</a><br />
 <a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">次回:儀式の下準備</a></p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

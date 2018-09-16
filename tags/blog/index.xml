@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Wed, 08 Nov 2017 18:00:00 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/blog/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>ブログのシンタックスハイライトを改善しました</title>
@@ -16,16 +16,16 @@
       
       <guid>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</guid>
       <description>
-        
+        &lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
 
-&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
+&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
 
 &lt;p&gt;プログラムの実行結果など、プログラムそのもの以外を&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグで囲いたくなる場合が何度かありました。
 class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
+&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
 
 &lt;p&gt;さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
 ブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
@@ -37,7 +37,7 @@ class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライ
 
 &lt;p&gt;とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。&lt;/p&gt;
 
-&lt;h2 id=&#34;解決策:0daaccc7bb8856c5021376961a2bf330&#34;&gt;解決策&lt;/h2&gt;
+&lt;h2 id=&#34;解決策&#34;&gt;解決策&lt;/h2&gt;
 
 &lt;p&gt;今のところ&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、&lt;code&gt;nohighlight&lt;/code&gt;を指定した場合でもCSSテーマが適用されるようにします。
 また、インライン要素の場合はデフォルトで&lt;code&gt;nohighlight&lt;/code&gt;にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
@@ -75,7 +75,6 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
 
 &lt;p&gt;あとは既存の記事をこの変更に合わせて修正しました。
 ところどころ不自然なハイライトが行われていた箇所がありましたが、これで改善されました。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -86,11 +85,11 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
       
       <guid>http://tatamo.81.la/blog/2016/01/05/hugo-deployment/</guid>
       <description>
-        
+        &lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;werckerを使って自動ビルドする:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Werckerを使って自動ビルドする&lt;/h2&gt;
+&lt;h2 id=&#34;werckerを使って自動ビルドする&#34;&gt;Werckerを使って自動ビルドする&lt;/h2&gt;
 
 &lt;p&gt;まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
 記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
@@ -100,7 +99,7 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
 Werckerを利用した自動デプロイは、&lt;a href=&#34;https://gohugo.io/tutorials/automated-deployments/&#34;&gt;Hugoの公式ドキュメント&lt;/a&gt;に記事があるため、これを参考に行います。
 この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。&lt;/p&gt;
 
-&lt;h3 id=&#34;wercker-ymlの記述:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;wercker.ymlの記述&lt;/h3&gt;
+&lt;h3 id=&#34;wercker-ymlの記述&#34;&gt;wercker.ymlの記述&lt;/h3&gt;
 
 &lt;p&gt;公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
 既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。&lt;/p&gt;
@@ -115,7 +114,7 @@ build:
 &lt;p&gt;これだけでHugoのビルドが可能です。
 ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。&lt;/p&gt;
 
-&lt;h2 id=&#34;werckerとdeploybotを使って自動デプロイする:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;WerckerとDeployBotを使って自動デプロイする&lt;/h2&gt;
+&lt;h2 id=&#34;werckerとdeploybotを使って自動デプロイする&#34;&gt;WerckerとDeployBotを使って自動デプロイする&lt;/h2&gt;
 
 &lt;p&gt;前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。&lt;/p&gt;
 
@@ -175,9 +174,9 @@ deploy:
 DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
 これで目的のサーバーへの自動デプロイが完了しました。&lt;/p&gt;
 
-&lt;h2 id=&#34;補足など:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;補足など&lt;/h2&gt;
+&lt;h2 id=&#34;補足など&#34;&gt;補足など&lt;/h2&gt;
 
-&lt;h3 id=&#34;githubリポジトリの分割:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;GitHubリポジトリの分割&lt;/h3&gt;
+&lt;h3 id=&#34;githubリポジトリの分割&#34;&gt;GitHubリポジトリの分割&lt;/h3&gt;
 
 &lt;p&gt;Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。&lt;/p&gt;
 
@@ -191,16 +190,16 @@ DeployBotはリポジトリが更新されるとその内容をそのままサ�
 
 &lt;p&gt;というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。&lt;/p&gt;
 
-&lt;h3 id=&#34;werckerの設定:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Werckerの設定&lt;/h3&gt;
+&lt;h3 id=&#34;werckerの設定&#34;&gt;Werckerの設定&lt;/h3&gt;
 
-&lt;h4 id=&#34;dockerの使用:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;Dockerの使用&lt;/h4&gt;
+&lt;h4 id=&#34;dockerの使用&#34;&gt;Dockerの使用&lt;/h4&gt;
 
 &lt;p&gt;Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
 Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、&lt;a href=&#34;http://thleap.net/blog/recovering-wercker/&#34;&gt;boxが見つからないというエラー&lt;/a&gt;が発生します。
 逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
 (なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)&lt;/p&gt;
 
-&lt;h4 id=&#34;デプロイターゲット登録時のauto-deploy設定:288053c42ac37fddb3dbfcd51f807cce&#34;&gt;デプロイターゲット登録時のAuto deploy設定&lt;/h4&gt;
+&lt;h4 id=&#34;デプロイターゲット登録時のauto-deploy設定&#34;&gt;デプロイターゲット登録時のAuto deploy設定&lt;/h4&gt;
 
 &lt;p&gt;ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&amp;rdquo;auto deploy successful builds to branch(es):&amp;ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
 GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。&lt;/p&gt;
@@ -218,7 +217,6 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
 
 &lt;p&gt;また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
 デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -229,9 +227,7 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
       
       <guid>http://tatamo.81.la/blog/2015/12/17/hugo-implementation/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/891&#34;&gt;KobeUniv Advent Calendar 2015&lt;/a&gt;の17日の記事です。なんとか期日に間に合いそうです。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/891&#34;&gt;KobeUniv Advent Calendar 2015&lt;/a&gt;の17日の記事です。なんとか期日に間に合いそうです。
 なお私は当該大学の学部1年(2015年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -239,7 +235,9 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
 &lt;p&gt;このブログを作るにあたって、&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;を使用しました。
 Hugoを用いたサイト構築の基本的な考え方や流れの紹介、その際に詰まったことなど。&lt;/p&gt;
 
-&lt;h2 id=&#34;そもそもhugoって何:618f10612e6a9a223dbbbddb739583ff&#34;&gt;そもそもHugoって何&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;そもそもhugoって何&#34;&gt;そもそもHugoって何&lt;/h2&gt;
 
 &lt;p&gt;静的なWebサイトを生成するためのエンジンです。
 つまり:&lt;/p&gt;
@@ -255,11 +253,11 @@ Hugoを用いたサイト構築の基本的な考え方や流れの紹介、そ�
 &lt;p&gt;これでWebサイトの完成というわけです。
 あくまで静的なサイトなので、サーバーサイドでプログラムを走らせる必要もありません。&lt;/p&gt;
 
-&lt;h2 id=&#34;hugoを使ってみる:618f10612e6a9a223dbbbddb739583ff&#34;&gt;Hugoを使ってみる&lt;/h2&gt;
+&lt;h2 id=&#34;hugoを使ってみる&#34;&gt;Hugoを使ってみる&lt;/h2&gt;
 
 &lt;p&gt;Hugoのインストール等については、既に多くの情報がネット上にあるため割愛します。&lt;/p&gt;
 
-&lt;h3 id=&#34;hugoの基本的なディレクトリ構成:618f10612e6a9a223dbbbddb739583ff&#34;&gt;Hugoの基本的なディレクトリ構成&lt;/h3&gt;
+&lt;h3 id=&#34;hugoの基本的なディレクトリ構成&#34;&gt;Hugoの基本的なディレクトリ構成&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ hugo new site name_of_my_site
 &lt;/code&gt;&lt;/pre&gt;
@@ -293,9 +291,9 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 サイトを公開するときは、publicディレクトリ下に生成されたファイルをすべてアップロードします。
 なお、publicディレクトリ内に不要になったファイルがあったとしても、サイト生成時に削除されません。本番サイトの生成時にはpublicディレクトリを一度削除してからビルドを行うのが良いと思われます。&lt;/p&gt;
 
-&lt;h3 id=&#34;レイアウトしてみる:618f10612e6a9a223dbbbddb739583ff&#34;&gt;レイアウトしてみる&lt;/h3&gt;
+&lt;h3 id=&#34;レイアウトしてみる&#34;&gt;レイアウトしてみる&lt;/h3&gt;
 
-&lt;h4 id=&#34;テーマを使う:618f10612e6a9a223dbbbddb739583ff&#34;&gt;テーマを使う&lt;/h4&gt;
+&lt;h4 id=&#34;テーマを使う&#34;&gt;テーマを使う&lt;/h4&gt;
 
 &lt;p&gt;いくつものHugoのレイアウトが&lt;a href=&#34;https://themes.gohugo.io/&#34;&gt;公開されて&lt;/a&gt;います。基本的には、この中から気に入ったものを使うのが良さそうです。themesディレクトリ直下にテーマごとのディレクトリを作り、その中にテーマファイルを配置します。&lt;/p&gt;
 
@@ -307,25 +305,25 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 
 &lt;p&gt;既存のテーマを使用する場合、テーマによってconfigに記述する必要のある内容が大きく異なる可能性があります。READMEにどのような項目を記述すればいいかが書かれていると思いますので、必ず確認するのがいいでしょう。&lt;/p&gt;
 
-&lt;h4 id=&#34;自分でレイアウトする:618f10612e6a9a223dbbbddb739583ff&#34;&gt;自分でレイアウトする&lt;/h4&gt;
+&lt;h4 id=&#34;自分でレイアウトする&#34;&gt;自分でレイアウトする&lt;/h4&gt;
 
 &lt;p&gt;HugoはGo言語のテンプレートエンジンを使用しており、各種パラメータを呼び出したり、部分ごとにHTMLファイルを分けて再利用することでサイトのレイアウトを記述していくことができます。&lt;/p&gt;
 
 &lt;p&gt;自分でHugoサイトをレイアウトする場合、確実に一定の学習コストが必要となるので、ここでは詳細には触れません。Hugoは公式ドキュメントが充実しているので、&lt;a href=&#34;https://gohugo.io/tutorials/creating-a-new-theme/&#34;&gt;公式チュートリアル&lt;/a&gt;などから始めるのがいいでしょう。また基本的なことであれば調べれば日本語の情報も得られると思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;詰まったことなど:618f10612e6a9a223dbbbddb739583ff&#34;&gt;詰まったことなど&lt;/h2&gt;
+&lt;h2 id=&#34;詰まったことなど&#34;&gt;詰まったことなど&lt;/h2&gt;
 
 &lt;p&gt;今回はHTMLやCSSを自分で書いてサイトを一つ作りたいと思っていた&lt;del&gt;のと、自分以外のテーマ作者名の表記がページに現れるのが気に食わなかった&lt;/del&gt;ので、このサイトでは既存のテーマを使用せず、自前でレイアウトを記述して構築しました。
 その途中で、いくつか不具合に遭遇して詰まったりしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;バージョン0-14-配列の並び替えにバグがある:618f10612e6a9a223dbbbddb739583ff&#34;&gt;(バージョン0.14)配列の並び替えにバグがある&lt;/h3&gt;
+&lt;h3 id=&#34;バージョン0-14-配列の並び替えにバグがある&#34;&gt;(バージョン0.14)配列の並び替えにバグがある&lt;/h3&gt;
 
 &lt;p&gt;サイドバーに最近の投稿やタグ・カテゴリの一覧を表示させる際、たとえば&lt;code&gt;.Reverse&lt;/code&gt;や&lt;code&gt;.ByDate&lt;/code&gt;で並び替えを行うと、ページによって正常に並び替えが行われなかったり、ビルドするたびに並び順が変わる、低確率で配列の中身が重複して表示されたりします。
 これは並び替えを行う関数が配列そのものに変更を加えているのが原因です。さらにビルド時に並列処理が行われることで処理順がビルドのたびに変化し得るため、同じ記述をしていてもページによって表示される内容が変わるといった不具合が発生したり、そのバグの再現性が低くなったりします。&lt;/p&gt;
 
 &lt;p&gt;このバグは開発版のバージョン0.15では&lt;a href=&#34;https://discuss.gohugo.io/t/error-when-trying-to-sort/1390/4&#34;&gt;修正済み&lt;/a&gt;であり、現行のバージョン0.14まででのみ発生します。&lt;/p&gt;
 
-&lt;h3 id=&#34;rssuriオプションは使ってはいけない:618f10612e6a9a223dbbbddb739583ff&#34;&gt;RSSUriオプションは使ってはいけない&lt;/h3&gt;
+&lt;h3 id=&#34;rssuriオプションは使ってはいけない&#34;&gt;RSSUriオプションは使ってはいけない&lt;/h3&gt;
 
 &lt;p&gt;Hugoではビルド時に自動的にRSSフィードも生成されますが、そのファイル名は常にindex.xmlとなります。&lt;/p&gt;
 
@@ -340,7 +338,7 @@ archetypes/  config.toml  content/  data/  layouts/  static/
 &lt;li&gt;RSSファイル内のURLが間違ったものになる&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;hugoを使ってみた感想:618f10612e6a9a223dbbbddb739583ff&#34;&gt;Hugoを使ってみた感想&lt;/h2&gt;
+&lt;h2 id=&#34;hugoを使ってみた感想&#34;&gt;Hugoを使ってみた感想&lt;/h2&gt;
 
 &lt;p&gt;Hugoはシンプルで生成が非常に速いという評判があったため導入してみましたが、実際にサイトを構築してみると確かにそのような設計であることがよく感じられました。必要最小限の機能を持つように出来ており、簡潔なディレクトリ構造はとてもわかりやすいです。
 生成速度についてはまだ記事数が少ないため何とも言えませんが、今のところは一瞬でビルドが完了するので良い感じだと思います。&lt;/p&gt;
@@ -360,7 +358,6 @@ Hugoでサイトを作ってからWeb上にデプロイするまでも一苦労�
 
 &lt;p&gt;あとページのデザイン難しいです。
 CSS周りについても記事を書いてみたいですが、あまりに試行錯誤の連続なので何も書くことがないかもしれません……&lt;/p&gt;
-
       </description>
     </item>
     
@@ -371,13 +368,13 @@ CSS周りについても記事を書いてみたいですが、あまりに試�
       
       <guid>http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/</guid>
       <description>
-        
-
-&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用しています。&lt;/p&gt;
+        &lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用しています。&lt;/p&gt;
 
 &lt;p&gt;デフォルトでは適用できないインラインのコードのハイライトも行えるようにしましたので、適用の流れなど。&lt;/p&gt;
 
-&lt;h2 id=&#34;highlight-jsって何:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;highlight.jsって何&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;highlight-jsって何&#34;&gt;highlight.jsって何&lt;/h2&gt;
 
 &lt;p&gt;JavaScriptによって、Webページ内のソースコードを色付けしてくれるものです。
 たとえば:&lt;/p&gt;
@@ -390,7 +387,7 @@ CSS周りについても記事を書いてみたいですが、あまりに試�
 (しかし思うのですが、自分のサイトに導入を検討する際に、この濃い赤色の背景色だと白色の背景と感覚が違ってくるのでやや選びにくいのではないでしょうか……。
 コンソールから&lt;code class=&#34;js&#34;&gt;document.body.style.backgroundColor=&amp;ldquo;#FFFFFF&amp;rdquo;;&lt;/code&gt;とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)&lt;/p&gt;
 
-&lt;h2 id=&#34;インライン要素でもハイライトできるようにしてみた:dbe2fecfd9603c43589f9d37f36eba56&#34;&gt;インライン要素でもハイライトできるようにしてみた&lt;/h2&gt;
+&lt;h2 id=&#34;インライン要素でもハイライトできるようにしてみた&#34;&gt;インライン要素でもハイライトできるようにしてみた&lt;/h2&gt;
 
 &lt;p&gt;通常では、highlight.jsによるハイライトは&lt;code class=&#34;html&#34;&gt;&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;&lt;/code&gt;から&lt;code class=&#34;html&#34;&gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。&lt;/p&gt;
 
@@ -429,7 +426,6 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 &lt;p&gt;既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
 たとえば、このように:&lt;code class=&#34;py&#34;&gt;print &amp;ldquo;\n&amp;rdquo;.join([&amp;ldquo;Fizz&amp;rdquo;&lt;em&gt;(not i%3)+&amp;ldquo;Buzz&amp;rdquo;&lt;/em&gt;(not i%5) or str(i) for i in range(1,101)])&lt;/code&gt;1行のコードでもうまくハイライトされているのがわかります。
 やったね。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -442,6 +438,8 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
       <description>
         &lt;p&gt;ブログはじめました。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;まだデザインや機能が十分ではないような感じがしますが、少しずつ改良していこうと思います。&lt;/p&gt;
 
 &lt;p&gt;以下はシンタックスハイライトのテストです。&lt;/p&gt;
@@ -449,7 +447,6 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, function(){
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for x in range(10) :
 	print x
 &lt;/code&gt;&lt;/pre&gt;
-
       </description>
     </item>
     

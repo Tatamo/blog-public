@@ -74,23 +74,23 @@
         <a href="http://tatamo.81.la/blog/tags/java/">java</a>
         <a href="http://tatamo.81.la/blog/tags/generics/">generics</a>
         <a href="http://tatamo.81.la/blog/tags/reflection/">reflection</a></p>
-        
-
-<p>この記事は<a href="http://www.adventar.org/calendars/1881">Kobe University Advent Calendar 2016</a>の14日の記事です。遅刻です。
+        <p>この記事は<a href="http://www.adventar.org/calendars/1881">Kobe University Advent Calendar 2016</a>の14日の記事です。遅刻です。
 なお私は当該大学の学部2年(2016年12月現在)です。</p>
 
 <hr />
 
 <p>最近、大学の授業などで少しだけJavaに触れる機会があったので、ちょっとした黒魔術っぽいことでもやってみようと思います。</p>
 
+<p></p>
+
 <p>と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。<br />
 * <a href="http://d.hatena.ne.jp/Nagise/20131121/1385046248">new T()したいケースへの対処法 - プログラマーの脳みそ</a></p>
 
 <p>もう帰っていいですかね。</p>
 
-<h2 id="総称型tに対してt-classやnew-t-したい:c600ddb79433125511402a932eb728b1">総称型Tに対してT.classやnew T()したい</h2>
+<h2 id="総称型tに対してt-classやnew-t-したい">総称型Tに対してT.classやnew T()したい</h2>
 
-<h3 id="ジェネリクスとは:c600ddb79433125511402a932eb728b1">ジェネリクスとは</h3>
+<h3 id="ジェネリクスとは">ジェネリクスとは</h3>
 
 <p>わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。</p>
 
@@ -115,7 +115,7 @@ public &lt;T extends SomeClass&gt; void notDoAnything(T arg){
 <p>これらのメソッドを呼び出すときは、<code>hoge.&lt;SomeClass&gt;doSomething();</code>のようになります。<br />
 どうして<code>hoge.doSomething&lt;SomeClass&gt;();</code>じゃないんだろう。</p>
 
-<h3 id="ジェネリクスはt-classやnew-t-をさせてくれない:c600ddb79433125511402a932eb728b1">ジェネリクスはT.classやnew T()をさせてくれない</h3>
+<h3 id="ジェネリクスはt-classやnew-t-をさせてくれない">ジェネリクスはT.classやnew T()をさせてくれない</h3>
 
 <p>Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。</p>
 
@@ -141,9 +141,9 @@ public &lt;T&gt; void doSomething(String arg){
 <p>ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
 残念でしたね。</p>
 
-<h2 id="なぜしたいのか:c600ddb79433125511402a932eb728b1">なぜしたいのか</h2>
+<h2 id="なぜしたいのか">なぜしたいのか</h2>
 
-<h3 id="もしかして-設計が間違っている:c600ddb79433125511402a932eb728b1">もしかして： 設計が間違っている</h3>
+<h3 id="もしかして-設計が間違っている">もしかして： 設計が間違っている</h3>
 
 <p>先ほどのgetSubClassListメソッドを見てみましょう。
 正しく動くかどうかはさておき、やりたいことは以下の通りです：<br />
@@ -158,7 +158,7 @@ public &lt;T&gt; void doSomething(String arg){
 
 <p>終わり。</p>
 
-<h3 id="そうも言っていられない:c600ddb79433125511402a932eb728b1">そうも言っていられない</h3>
+<h3 id="そうも言っていられない">そうも言っていられない</h3>
 
 <p>実際その通りなのですが、それではこの記事が続きません。</p>
 
@@ -322,13 +322,13 @@ public class Enemy extends Entity {
 
 <p>しかしジェネリクス型はnewできないため、コンパイルエラーとなります。</p>
 
-<h2 id="解決策:c600ddb79433125511402a932eb728b1">解決策</h2>
+<h2 id="解決策">解決策</h2>
 
 <p>さて、だいぶん勿体つけたが、解決編に入ろう。</p>
 
 <p>……というか、例として取り上げた題材が無理やりすぎた気がしてやる気が尽きかけてきました。</p>
 
-<h3 id="リフレクションを使用する:c600ddb79433125511402a932eb728b1">リフレクションを使用する</h3>
+<h3 id="リフレクションを使用する">リフレクションを使用する</h3>
 
 <p>Javaにはリフレクションという機能があり、プログラムの実行中にクラス名やメソッド名を動的に取り扱うことができます。
 これのClass<T>型を、ジェネリクスと併用しましょう。
@@ -392,7 +392,7 @@ getSubClassList(list, SubClassOfSomeClass.class);
 
 <p>めでたしめでたし。</p>
 
-<h3 id="おまけ:c600ddb79433125511402a932eb728b1">おまけ</h3>
+<h3 id="おまけ">おまけ</h3>
 
 <pre><code class="language-java">public &lt;T&gt; int getStaticValue(Class&lt;T&gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
 	return (int) cls.getMethod(&quot;getStaticValue&quot;).invoke(null);
@@ -404,7 +404,7 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 
 <p>staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。</p>
 
-<h2 id="おわり:c600ddb79433125511402a932eb728b1">おわり</h2>
+<h2 id="おわり">おわり</h2>
 
 <p><code>Class&lt;T&gt; cls</code>を引数にとり、<code>value.getClass() == cls</code>で比較を行うのは、実質的にはinstanceofの迂回といえます。<br />
 この程度なら型安全性は一応担保されますが、コンストラクタやメソッドの取得と呼び出しまで始めた場合、throw宣言やcatch節が山のように膨らんだり、メソッドの存在確認や型の確認などに多大なコストを支払う必要がありそうです。
@@ -418,7 +418,6 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 <p>私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。</p>
 
 <p>プログラミングをするときはまともな設計をするようにしましょう。</p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

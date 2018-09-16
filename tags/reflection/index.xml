@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Thu, 15 Dec 2016 01:11:23 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/tags/reflection/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/reflection/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Javaのリフレクションを悪用してクラス設計してみる</title>
@@ -16,23 +16,23 @@
       
       <guid>http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の14日の記事です。遅刻です。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の14日の記事です。遅刻です。
 なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;最近、大学の授業などで少しだけJavaに触れる機会があったので、ちょっとした黒魔術っぽいことでもやってみようと思います。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。&lt;br /&gt;
 * &lt;a href=&#34;http://d.hatena.ne.jp/Nagise/20131121/1385046248&#34;&gt;new T()したいケースへの対処法 - プログラマーの脳みそ&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;もう帰っていいですかね。&lt;/p&gt;
 
-&lt;h2 id=&#34;総称型tに対してt-classやnew-t-したい:c600ddb79433125511402a932eb728b1&#34;&gt;総称型Tに対してT.classやnew T()したい&lt;/h2&gt;
+&lt;h2 id=&#34;総称型tに対してt-classやnew-t-したい&#34;&gt;総称型Tに対してT.classやnew T()したい&lt;/h2&gt;
 
-&lt;h3 id=&#34;ジェネリクスとは:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスとは&lt;/h3&gt;
+&lt;h3 id=&#34;ジェネリクスとは&#34;&gt;ジェネリクスとは&lt;/h3&gt;
 
 &lt;p&gt;わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。&lt;/p&gt;
 
@@ -57,7 +57,7 @@ public &amp;lt;T extends SomeClass&amp;gt; void notDoAnything(T arg){
 &lt;p&gt;これらのメソッドを呼び出すときは、&lt;code&gt;hoge.&amp;lt;SomeClass&amp;gt;doSomething();&lt;/code&gt;のようになります。&lt;br /&gt;
 どうして&lt;code&gt;hoge.doSomething&amp;lt;SomeClass&amp;gt;();&lt;/code&gt;じゃないんだろう。&lt;/p&gt;
 
-&lt;h3 id=&#34;ジェネリクスはt-classやnew-t-をさせてくれない:c600ddb79433125511402a932eb728b1&#34;&gt;ジェネリクスはT.classやnew T()をさせてくれない&lt;/h3&gt;
+&lt;h3 id=&#34;ジェネリクスはt-classやnew-t-をさせてくれない&#34;&gt;ジェネリクスはT.classやnew T()をさせてくれない&lt;/h3&gt;
 
 &lt;p&gt;Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。&lt;/p&gt;
 
@@ -83,9 +83,9 @@ public &amp;lt;T&amp;gt; void doSomething(String arg){
 &lt;p&gt;ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
 残念でしたね。&lt;/p&gt;
 
-&lt;h2 id=&#34;なぜしたいのか:c600ddb79433125511402a932eb728b1&#34;&gt;なぜしたいのか&lt;/h2&gt;
+&lt;h2 id=&#34;なぜしたいのか&#34;&gt;なぜしたいのか&lt;/h2&gt;
 
-&lt;h3 id=&#34;もしかして-設計が間違っている:c600ddb79433125511402a932eb728b1&#34;&gt;もしかして： 設計が間違っている&lt;/h3&gt;
+&lt;h3 id=&#34;もしかして-設計が間違っている&#34;&gt;もしかして： 設計が間違っている&lt;/h3&gt;
 
 &lt;p&gt;先ほどのgetSubClassListメソッドを見てみましょう。
 正しく動くかどうかはさておき、やりたいことは以下の通りです：&lt;br /&gt;
@@ -100,7 +100,7 @@ public &amp;lt;T&amp;gt; void doSomething(String arg){
 
 &lt;p&gt;終わり。&lt;/p&gt;
 
-&lt;h3 id=&#34;そうも言っていられない:c600ddb79433125511402a932eb728b1&#34;&gt;そうも言っていられない&lt;/h3&gt;
+&lt;h3 id=&#34;そうも言っていられない&#34;&gt;そうも言っていられない&lt;/h3&gt;
 
 &lt;p&gt;実際その通りなのですが、それではこの記事が続きません。&lt;/p&gt;
 
@@ -264,13 +264,13 @@ public class Enemy extends Entity {
 
 &lt;p&gt;しかしジェネリクス型はnewできないため、コンパイルエラーとなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;解決策:c600ddb79433125511402a932eb728b1&#34;&gt;解決策&lt;/h2&gt;
+&lt;h2 id=&#34;解決策&#34;&gt;解決策&lt;/h2&gt;
 
 &lt;p&gt;さて、だいぶん勿体つけたが、解決編に入ろう。&lt;/p&gt;
 
 &lt;p&gt;……というか、例として取り上げた題材が無理やりすぎた気がしてやる気が尽きかけてきました。&lt;/p&gt;
 
-&lt;h3 id=&#34;リフレクションを使用する:c600ddb79433125511402a932eb728b1&#34;&gt;リフレクションを使用する&lt;/h3&gt;
+&lt;h3 id=&#34;リフレクションを使用する&#34;&gt;リフレクションを使用する&lt;/h3&gt;
 
 &lt;p&gt;Javaにはリフレクションという機能があり、プログラムの実行中にクラス名やメソッド名を動的に取り扱うことができます。
 これのClass&lt;T&gt;型を、ジェネリクスと併用しましょう。
@@ -334,7 +334,7 @@ getSubClassList(list, SubClassOfSomeClass.class);
 
 &lt;p&gt;めでたしめでたし。&lt;/p&gt;
 
-&lt;h3 id=&#34;おまけ:c600ddb79433125511402a932eb728b1&#34;&gt;おまけ&lt;/h3&gt;
+&lt;h3 id=&#34;おまけ&#34;&gt;おまけ&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public &amp;lt;T&amp;gt; int getStaticValue(Class&amp;lt;T&amp;gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
 	return (int) cls.getMethod(&amp;quot;getStaticValue&amp;quot;).invoke(null);
@@ -346,7 +346,7 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 
 &lt;p&gt;staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわり:c600ddb79433125511402a932eb728b1&#34;&gt;おわり&lt;/h2&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Class&amp;lt;T&amp;gt; cls&lt;/code&gt;を引数にとり、&lt;code&gt;value.getClass() == cls&lt;/code&gt;で比較を行うのは、実質的にはinstanceofの迂回といえます。&lt;br /&gt;
 この程度なら型安全性は一応担保されますが、コンストラクタやメソッドの取得と呼び出しまで始めた場合、throw宣言やcatch節が山のように膨らんだり、メソッドの存在確認や型の確認などに多大なコストを支払う必要がありそうです。
@@ -360,7 +360,6 @@ getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでい�
 &lt;p&gt;私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。&lt;/p&gt;
 
 &lt;p&gt;プログラミングをするときはまともな設計をするようにしましょう。&lt;/p&gt;
-
       </description>
     </item>
     

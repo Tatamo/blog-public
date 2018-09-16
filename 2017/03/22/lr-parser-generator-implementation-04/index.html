@@ -75,16 +75,16 @@
         <a href="http://tatamo.81.la/blog/tags/parser-generator/">parser generator</a>
         <a href="http://tatamo.81.la/blog/tags/parser/">parser</a>
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
-        
-
-<p><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">前回</a>で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
+        <p><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">前回</a>で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
 ですが相変わらず本題のパーサジェネレータ作成には入らず、まずはLR(1)法のおおまかな理論的概略の紹介を行います。</p>
+
+<p></p>
 
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回</a>では構文解析全体の流れを解説しましたが、実際にどのような過程でパーサを、またパーサジェネレータを作成するかについては触れませんでした。
 今回は、LR法による構文解析の流れを解説するとともに、これからどのような流れでパーサジェネレータを作成していくのかを紹介します。
 今回は解説のみのためソースコードが載りません。</p>
 
-<h2 id="lr-1-構文解析の流れ:aebbcc1e0aae8e4a96be644adf00eb3f">LR(1)構文解析の流れ</h2>
+<h2 id="lr-1-構文解析の流れ">LR(1)構文解析の流れ</h2>
 
 <p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">字句規則を用意して字句解析器にかけてトークン列を取得したあと構文規則をもとにFIRST関数とFOLLOW関数を求め、それをもとにgotoグラフを導出することによってLR表を作成して、構築したLRパーサでトークン列を解析して得た抽象構文木を処理すれば構文解析ができると知ったわたし <a href="https://t.co/aIbxqSf5qj">pic.twitter.com/aIbxqSf5qj</a></p>&mdash; たたも (@<strong>tatamo</strong>) <a href="https://twitter.com/__tatamo__/status/798837425313189888">2016年11月16日</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
@@ -106,7 +106,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 <p>パーサジェネレータを作成して解析する構文を自由に決定できるようにする場合、4.の構文解析表までを与えられた構文に合わせて自動的に生成できるようにします。</p>
 
-<h2 id="アイテム集合とdfa:aebbcc1e0aae8e4a96be644adf00eb3f">アイテム集合とDFA</h2>
+<h2 id="アイテム集合とdfa">アイテム集合とDFA</h2>
 
 <p>LR法による構文解析のためには、DFA(決定性有限オートマトン)の作成を行う必要があります。</p>
 
@@ -115,7 +115,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 <p>アイテム集合は、文字通りアイテム(便宜的にLRアイテムと呼称します)からなる集合です。</p>
 
-<h3 id="lrアイテム:aebbcc1e0aae8e4a96be644adf00eb3f">LRアイテム</h3>
+<h3 id="lrアイテム">LRアイテム</h3>
 
 <p>個別のLRアイテムは、以下のようなものです。</p>
 
@@ -137,7 +137,7 @@ x,yは終端記号
 先読み記号は常に終端記号であることに注意してください。
 また、<code>$</code>は「入力の終わり」を表す記号で、これは便宜的に終端記号として扱います(<a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">第2回</a>で内部的に追加したSymbol(EOF)トークンのことです)。</p>
 
-<h3 id="dfaの構築:aebbcc1e0aae8e4a96be644adf00eb3f">DFAの構築</h3>
+<h3 id="dfaの構築">DFAの構築</h3>
 
 <p>まず、DFAを最初の状態で初期化します。
 このとき、DFAのノード数は一つのみであり、そのノードは、以下のようなLRアイテム一つのみを要素とするアイテム集合を持ちます。</p>
@@ -153,7 +153,7 @@ x,yは終端記号
 
 <p>これを自己展開させることによって、構文解析のためのDFAを構築していきます。</p>
 
-<h4 id="クロージャー展開:aebbcc1e0aae8e4a96be644adf00eb3f">クロージャー展開</h4>
+<h4 id="クロージャー展開">クロージャー展開</h4>
 
 <p>まず、初期化時点で存在するこのDFAノードは、まだ完全な状態にはなっていません。
 一定のルールに従い、アイテム集合を「クロージャー展開」する必要があります。</p>
@@ -225,7 +225,7 @@ X -&gt; . 0 [1]
 <p>以上がクロージャー展開の処理です。
 こうして展開したアイテム集合をもとに、新しいDFAノードを生成していきます。</p>
 
-<h4 id="新しいdfaノードの生成:aebbcc1e0aae8e4a96be644adf00eb3f">新しいDFAノードの生成</h4>
+<h4 id="新しいdfaノードの生成">新しいDFAノードの生成</h4>
 
 <p>クロージャー展開が完了したアイテム集合から、一定のルールのもとで新しいDFAノードを生成します。</p>
 
@@ -281,7 +281,7 @@ S -&gt; X . 1 [$]
 
 <p>この処理を繰り返し、DFAノードが新しく生成されなくなればDFAの構築は終了です。</p>
 
-<h4 id="lalr法のみ-先読み部分のマージ:aebbcc1e0aae8e4a96be644adf00eb3f">(LALR法のみ)先読み部分のマージ</h4>
+<h4 id="lalr法のみ-先読み部分のマージ">(LALR法のみ)先読み部分のマージ</h4>
 
 <p>LALR法では、この時点でDFAのサイズ縮小を行います。
 そのアルゴリズムは、以下の通りです。</p>
@@ -309,12 +309,12 @@ Y -&gt; .V W [x,y,z]
 
 <p>そして、DFAノードAまたはBに対して辺を張っているDFAノードが存在するならば、それらの辺をDFAノードCに向けたものに書き換えます。</p>
 
-<h2 id="構文解析表と構文解析器:aebbcc1e0aae8e4a96be644adf00eb3f">構文解析表と構文解析器</h2>
+<h2 id="構文解析表と構文解析器">構文解析表と構文解析器</h2>
 
 <p>DFAが完成したら、それをもとにして構文解析表を生成していきます。
 構文解析表はそれ自体がステートマシンの動作仕様を表すものであり、構文解析表が完成してしまえば、それに沿ってステートマシンを動作させることで構文解析が可能となります。</p>
 
-<h3 id="構文解析を行うステートマシン:aebbcc1e0aae8e4a96be644adf00eb3f">構文解析を行うステートマシン</h3>
+<h3 id="構文解析を行うステートマシン">構文解析を行うステートマシン</h3>
 
 <p>構文解析表には、ステートマシンの現在の状態、および次の入力に応じて、4種類の命令のいずれかが記述されます。
 構文解析を行うステートマシンは、現在の状態を示すスタックと、構文解析の結果を保持するスタックの2つのスタックを持ちます。
@@ -328,12 +328,12 @@ Y -&gt; .V W [x,y,z]
 とはいえ、ステートマシンの仕様なんざ読んでいて動きが分かるわけもなく楽しくも何ともないため、参考資料の<a href="http://www.slideshare.net/ichikaz3/lr-parsing">LR parsing</a>のスライドを確認していただくことをおすすめします。
 ステートマシンの動きを視覚的に追いかけることができて非常にわかりやすいです。</p>
 
-<h4 id="shift命令:aebbcc1e0aae8e4a96be644adf00eb3f">shift命令</h4>
+<h4 id="shift命令">shift命令</h4>
 
 <p>shift命令を受けると、ステートマシンは入力を一つ消費します。
 shift命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。</p>
 
-<h4 id="reduce命令:aebbcc1e0aae8e4a96be644adf00eb3f">reduce命令</h4>
+<h4 id="reduce命令">reduce命令</h4>
 
 <p>reduce命令は文法idが付与されています。
 ステートマシンがreduce命令を受けると、示された文法規則を確認し、その右辺の記号の数だけ状態スタックからポップして取り除きます。
@@ -341,27 +341,27 @@ shift命令には状態番号が付与されているので、ステートマシ
 
 <p>そしてその処理の終了後、構文解析表の(状態スタックの一番上にある状態、規則の左辺の記号)の位置にあるgoto命令を実行させます。</p>
 
-<h4 id="goto命令:aebbcc1e0aae8e4a96be644adf00eb3f">goto命令</h4>
+<h4 id="goto命令">goto命令</h4>
 
 <p>goto命令は、reduce命令の直後に実行されることが期待されます。
 goto命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。
 shift命令と異なり、入力の消費は行いません。</p>
 
-<h4 id="accept命令:aebbcc1e0aae8e4a96be644adf00eb3f">accept命令</h4>
+<h4 id="accept命令">accept命令</h4>
 
 <p>ステートマシンがaccept命令を受けると、それは構文解析が終了したことを意味します。
 理想的な入力が与えられた場合、入力は全て消費され、結果スタックには最終的な構文解析結果のみが入っていることが期待されます。</p>
 
-<h3 id="構文解析器:aebbcc1e0aae8e4a96be644adf00eb3f">構文解析器</h3>
+<h3 id="構文解析器">構文解析器</h3>
 
 <p>構文解析器は、上記の仕様をなぞって構文解析表を読み取ることのできるステートマシンそのものです。
 よって、構文解析表さえ個々の構文にあわせて生成することができれば、それを構文解析器に与えることによってさまざまな構文の解析が可能になります。</p>
 
-<h3 id="構文解析表の構築:aebbcc1e0aae8e4a96be644adf00eb3f">構文解析表の構築</h3>
+<h3 id="構文解析表の構築">構文解析表の構築</h3>
 
 <p>完成したDFAをもとにして、構文解析表を生成することができます。</p>
 
-<h4 id="shiftおよびgotoオペレーションの登録:aebbcc1e0aae8e4a96be644adf00eb3f">shiftおよびgotoオペレーションの登録</h4>
+<h4 id="shiftおよびgotoオペレーションの登録">shiftおよびgotoオペレーションの登録</h4>
 
 <p>それぞれのDFAノードは、ステートマシンの状態と対応しています。
 簡単のため、個々のDFAノードには一意なid(ステートマシンの状態番号)が割り振られているものとします。
@@ -371,7 +371,7 @@ shift命令と異なり、入力の消費は行いません。</p>
 
 <p>その辺のラベルの記号が非終端記号であるならば、同様にしてgoto命令を書き込みます。</p>
 
-<h4 id="acceptおよびreduceオペレーションの登録:aebbcc1e0aae8e4a96be644adf00eb3f">acceptおよびreduceオペレーションの登録</h4>
+<h4 id="acceptおよびreduceオペレーションの登録">acceptおよびreduceオペレーションの登録</h4>
 
 <p>すべてのDFAノードについて、そのアイテム集合の持つLRアイテム一つ一つを確認していきます。
 もしも<code>.</code>の位置が右辺の末尾にある場合、そのLRアイテムの持つ先読み記号それぞれについて、以下の処理を行います。</p>
@@ -380,7 +380,7 @@ shift命令と異なり、入力の消費は行いません。</p>
 
 <p>ただし、その規則が<code>S'</code>に対応するものであった場合、かわりにaccept命令を書き込みます。</p>
 
-<h4 id="shift-reduceコンフリクト:aebbcc1e0aae8e4a96be644adf00eb3f">shift/reduceコンフリクト</h4>
+<h4 id="shift-reduceコンフリクト">shift/reduceコンフリクト</h4>
 
 <p>shiftオペレーションおよびreduceオペレーションは、表の同じ位置に競合して書き込まれてしまうことがあります。
 このような状況を、shift/reduceコンフリクトと呼びます。
@@ -395,7 +395,7 @@ shift命令と異なり、入力の消費は行いません。</p>
 <p>もうひとつは、規則ごとにオペレーションの優先度を設定し、コンフリクトが発生した場合は強制的にどちらかの命令を実行すると決めてしまうことです。
 これは一般的に行われている方法であり、かなり乱暴ですが大抵の場合はまあなんとかなります。</p>
 
-<h2 id="参考資料:aebbcc1e0aae8e4a96be644adf00eb3f">参考資料</h2>
+<h2 id="参考資料">参考資料</h2>
 
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回</a>で紹介したものを今回もそのまま参考資料としているため、基本的にはそちらをご覧ください。
 今回紹介した内容の理解を深めるのに特に役立つと思われるおすすめの資料を抜粋しておきます。</p>
@@ -415,7 +415,6 @@ LR(1) DFA、クロージャー展開、構文解析表等について詳細な�
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
 <a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">前回:儀式の下準備</a>
 <a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/">次回:LR(1)パーサジェネレータの実装</a></p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

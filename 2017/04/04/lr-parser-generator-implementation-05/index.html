@@ -75,10 +75,10 @@
         <a href="http://tatamo.81.la/blog/tags/parser-generator/">parser generator</a>
         <a href="http://tatamo.81.la/blog/tags/parser/">parser</a>
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
-        
-
-<p><a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回</a>の記事ではLR(1)法の解説を行いました。
+        <p><a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回</a>の記事ではLR(1)法の解説を行いました。
 今回は前回解説した部分の実装を行います。</p>
+
+<p></p>
 
 <p>今回はひたすらパーサジェネレータの実装をしていきます。
 概略やアルゴリズムは既に紹介しているため、基本的に省略します。
@@ -87,7 +87,7 @@
 <p>今回取り上げる部分は特にパフォーマンスに与える影響が大きいため、処理速度を重視した設計を行っています。
 そのため、天下り的な解説となる箇所が増えるかもしれませんがご了承ください。</p>
 
-<h2 id="syntaxdbクラスの作成:3aec03ed6d530aa5eea872bb2e906074">SyntaxDBクラスの作成</h2>
+<h2 id="syntaxdbクラスの作成">SyntaxDBクラスの作成</h2>
 
 <p><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">第3回</a>で終端記号と非終端記号の区別を行ったり、First集合を求めたりしたように、与えられた構文から様々な情報を得る必要があります。</p>
 
@@ -137,7 +137,7 @@ public getTokenId(token: Token): number{
 
 <p>このSyntaxDBクラスは、パーサジェネレータ全体を通して一つのインスタンスのみを使いまわすようにします。</p>
 
-<h2 id="アイテム集合とクロージャー展開:3aec03ed6d530aa5eea872bb2e906074">アイテム集合とクロージャー展開</h2>
+<h2 id="アイテム集合とクロージャー展開">アイテム集合とクロージャー展開</h2>
 
 <p>まずは、LRアイテムおよびその集合を表現するクラスを作っていきます。
 アイテム集合クラスには、自身をクロージャー展開する機能を持たせることとします。</p>
@@ -192,7 +192,7 @@ export declare class ClosureSet {
 ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自身をクロージャー展開することが出来ます。
 さらに、後述するハッシュに関連した機能、および先読み部分のマージ機能などを持ちます。</p>
 
-<h3 id="クロージャー展開:3aec03ed6d530aa5eea872bb2e906074">クロージャー展開</h3>
+<h3 id="クロージャー展開">クロージャー展開</h3>
 
 <pre><code class="language-ts">// クロージャー展開を行う
 // TODO: リファクタリング
@@ -270,11 +270,11 @@ private expandClosure(){
 
 <p>この制約がなければ、たとえば<code>[x,y]</code>という先読み記号を持ったAというClosureItemの展開処理が済んだあと、BというClosureItemを展開したところ、<code>[y,z]</code>という先読み記号を持ち、先読み部分以外はAと全く同じClosureItemが生成される、といった自体が発生する可能性があります。
 この場合、先読み記号<code>y</code>については2度展開されてしまったり、それを防ぐために処理済みのClosureItemの走査を行うことで余計な計算が必要になってしまうなど、様々な弊害が発生します。
-クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けてることで、展開処理が非常に簡潔になります。</p>
+クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けていることで、展開処理が非常に簡潔になります。</p>
 
 <p>処理が終わった段階で、ClosureItemの先読み部分をマージすることによってクロージャー展開後のClosureSetが完成します。</p>
 
-<h3 id="ハッシュ:3aec03ed6d530aa5eea872bb2e906074">ハッシュ</h3>
+<h3 id="ハッシュ">ハッシュ</h3>
 
 <p>先述したように、2つのClosureSetの高速な比較を可能とする必要があります。
 そこで、ClosureItemおよびClosureSetにハッシュ文字列の生成機能を追加し、構文番号、<code>.</code>の位置、先読み記号という要素が一致していれば同じ文字列を生成するようにすれば、同一性の比較を文字列比較に落としこむことができ、非常に高速になります。
@@ -310,14 +310,14 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 
 <p>また、LALR(1)法のDFAマージの際に、先読み記号を除いた部分が一致しているかどうか調べる必要もあるため、ハッシュ文字列は先読み部分を除いたLR(0)ハッシュと、先読み部分も含めたLR(1)ハッシュの2種類を用意しておきます。</p>
 
-<h4 id="closureitemおよびclosuresetのconst性:3aec03ed6d530aa5eea872bb2e906074">ClosureItemおよびClosureSetのconst性</h4>
+<h4 id="closureitemおよびclosuresetのconst性">ClosureItemおよびClosureSetのconst性</h4>
 
 <p>ハッシュの再生成や、それに伴うClosureSetのソート処理を回避するため、ClosureItemおよびClosureSetは、初期化終了後は自身の状態を変化させることがないようにします。</p>
 
 <p>たとえば、クロージャー展開を行うとClosureSetの中身は変化しますが、この処理はコンストラクタ呼び出し時に行うようにすることで、オブジェクトの初期化が終了した時点でクロージャー展開は終わっており、それ以降ClosureSetの状態が変化することはありません。
 また、ClosureSetおよびClosureItemは、LR(0)部分(先読み部分を除いた部分)が同じなら先読み記号をマージするmergeメソッドを持っていますが、このメソッドもそのオブジェクト自身の状態を変更するのではなく、新しいオブジェクトを生成してそれを返すようにしています。</p>
 
-<h2 id="dfaの構築:3aec03ed6d530aa5eea872bb2e906074">DFAの構築</h2>
+<h2 id="dfaの構築">DFAの構築</h2>
 
 <p>アイテム集合を扱えるようになったため、次はDFAの構築です。
 DFAGeneratorクラスを作っていきます。<br />
@@ -352,7 +352,7 @@ DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMap
 
 <p>前回紹介したアルゴリズムをそのままコードにするだけなので、DFAの構築処理は特に解説する点はありません。</p>
 
-<h2 id="構文解析表の構築:3aec03ed6d530aa5eea872bb2e906074">構文解析表の構築</h2>
+<h2 id="構文解析表の構築">構文解析表の構築</h2>
 
 <p>構文解析表と、それに必要な四種類の命令群を定義しておきます。
 また、コンフリクトが発生したことを表す命令も定義します。</p>
@@ -394,7 +394,6 @@ ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのイ
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
 <a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回:かんたんLR(1)法入門</a><br />
 <a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/">次回:パーサの実装と構文解析の実行</a></p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

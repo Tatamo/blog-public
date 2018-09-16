@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>わたしろぐ</title>
+    <title>わたしろぐ on わたしろぐ</title>
     <link>http://tatamo.81.la/blog/</link>
-    <description>Recent content on わたしろぐ</description>
+    <description>Recent content in わたしろぐ on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Fri, 09 Feb 2018 19:30:00 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>JavaScript/TypeScriptで競技プログラミングをするには 後編</title>
@@ -16,19 +16,19 @@
       
       <guid>http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/</guid>
       <description>
-        
-
-&lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
+        &lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
 今回は後者についてです。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-01/&#34;&gt;前回の記事&lt;/a&gt;ではコンテストサイトのJavaScript対応状況をメインに書きました。
 この記事では、実際にJavaScript/TypeScriptで競技プログラミングをする際に気をつけている点について書いていきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;競技プログラミングにおけるjavascriptの致命的な問題点:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;競技プログラミングにおけるJavaScriptの致命的な問題点&lt;/h2&gt;
+&lt;h2 id=&#34;競技プログラミングにおけるjavascriptの致命的な問題点&#34;&gt;競技プログラミングにおけるJavaScriptの致命的な問題点&lt;/h2&gt;
 
 &lt;p&gt;残念ながら、JavaScriptが競技プログラミングに向いていない理由となる仕様がいくつか存在します。&lt;/p&gt;
 
-&lt;h3 id=&#34;末尾再帰最適化が実装されていない上にコールスタック上限が小さく-変更できない:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;末尾再帰最適化が実装されていない上にコールスタック上限が小さく、変更できない&lt;/h3&gt;
+&lt;h3 id=&#34;末尾再帰最適化が実装されていない上にコールスタック上限が小さく-変更できない&#34;&gt;末尾再帰最適化が実装されていない上にコールスタック上限が小さく、変更できない&lt;/h3&gt;
 
 &lt;p&gt;JavaScriptではPythonの&lt;code&gt;sys.setrecursionlimit()&lt;/code&gt;のように再帰呼び出し回数の最大値を変更することができません。
 コールスタックの上限は処理系に依存しますが、たとえばnode.js v5.12.0 (x64)では15712です。
@@ -37,7 +37,7 @@
 &lt;p&gt;これらの要因のため、要素数が数万程度の何かに対して手っ取り早く再帰でDFSを書こうとすると、ほぼ間違いなくMaximum call stack size exceededで落ちます。
 自分で配列をスタックとして使ってBFSと同じような書き方で書くか、DFS専用のイテレータでも自作しましょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;64bit整数値を扱う手段が存在しない:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;64bit整数値を扱う手段が存在しない&lt;/h3&gt;
+&lt;h3 id=&#34;64bit整数値を扱う手段が存在しない&#34;&gt;64bit整数値を扱う手段が存在しない&lt;/h3&gt;
 
 &lt;p&gt;JavaScriptのすべての数値は、いわゆるdouble型で保持されています。
 &lt;code&gt;Number.MAX_SAFE_INTEGER&lt;/code&gt;で確認できますが、整数値としての精度が保証される最大値は2^53-1までです。
@@ -50,7 +50,7 @@
 
 &lt;p&gt;まあできないことを気にしても仕方がありませんので、以上のような問題点が存在することを把握しておく、ということが大切です。&lt;/p&gt;
 
-&lt;h2 id=&#34;入出力テンプレート:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;入出力テンプレート&lt;/h2&gt;
+&lt;h2 id=&#34;入出力テンプレート&#34;&gt;入出力テンプレート&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;import * as fs from &amp;quot;fs&amp;quot;;
 
@@ -83,7 +83,7 @@ const a = input[1].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt
 
 &lt;p&gt;package.jsonやtsconfig.jsonについては、&lt;a href=&#34;https://github.com/Tatamo/comp/tree/master/template/ts&#34;&gt;このへん&lt;/a&gt;に上げています。&lt;/p&gt;
 
-&lt;h2 id=&#34;typescript-複数のプログラムを同時にコンパイルする際の注意:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;(TypeScript) 複数のプログラムを同時にコンパイルする際の注意&lt;/h2&gt;
+&lt;h2 id=&#34;typescript-複数のプログラムを同時にコンパイルする際の注意&#34;&gt;(TypeScript) 複数のプログラムを同時にコンパイルする際の注意&lt;/h2&gt;
 
 &lt;p&gt;npm scripts等で自動コンパイルを行っている場合などに、&lt;a href=&#34;https://www.typescriptlang.org/docs/handbook/modules.html&#34;&gt;モジュール&lt;/a&gt;でない複数のTypeScriptプログラムを同時にコンパイルすると、すべてのプログラムの変数が同一スコープ上で扱われるため、&lt;code&gt;input&lt;/code&gt;などの変数が衝突してエラーになります。&lt;/p&gt;
 
@@ -95,7 +95,7 @@ const a = input[1].split(&amp;quot; &amp;quot;).map((x: string): number =&amp;gt
 
 &lt;p&gt;&lt;code&gt;export&lt;/code&gt;を行っていなくても、TypeScript的にはこれだけでモジュールとして扱われるようなので、複数のプログラムを同時にコンパイルすることができるようになります。&lt;/p&gt;
 
-&lt;h2 id=&#34;array-prototype-shift-の計算量はo-n:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;Array.prototype.shift()の計算量はO(n)&lt;/h2&gt;
+&lt;h2 id=&#34;array-prototype-shift-の計算量はo-n&#34;&gt;Array.prototype.shift()の計算量はO(n)&lt;/h2&gt;
 
 &lt;p&gt;JavaScriptで計算量について触れられている資料は少ないので、下手をすると&lt;a href=&#34;http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.shift&#34;&gt;仕様書&lt;/a&gt;まで見に行かないと気付けないのですが、&lt;code&gt;shift()&lt;/code&gt;の計算量はO(n)です。
 inputに10万行程度の入力を入れて、先頭から1行ずつ&lt;code&gt;shift()&lt;/code&gt;で取り出すと、それだけで2秒が過ぎます。
@@ -137,7 +137,7 @@ inputに10万行程度の入力を入れて、先頭から1行ずつ&lt;code&gt;
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;array-prototype-fill-は同一オブジェクトで埋められる:0e0dc8f43e8ce1dc88edcad0618067c3&#34;&gt;Array.prototype.fill()は同一オブジェクトで埋められる&lt;/h2&gt;
+&lt;h2 id=&#34;array-prototype-fill-は同一オブジェクトで埋められる&#34;&gt;Array.prototype.fill()は同一オブジェクトで埋められる&lt;/h2&gt;
 
 &lt;p&gt;まあこれは気付かなかった私がよくないという例ですが、一応。&lt;/p&gt;
 
@@ -178,7 +178,6 @@ const a = new Array(3).fill([]).map(()=&amp;gt;new Array(3).fill());
 
 &lt;p&gt;とはいえ、以上のことさえ気に留めていれば、JavaScript/TypeScriptを使っていることが原因で詰むことはほとんどないと思います。
 JavaScriptそのものは非常に書きやすい言語なので、ハマりどころを把握した上で選択肢にしていただける方が増えればいいなと思っています。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -189,10 +188,10 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
       
       <guid>http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-01/</guid>
       <description>
-        
-
-&lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
+        &lt;p&gt;主要コンテストサイトのJavaScript対応状況、および私がJavaScript/TypeScriptで競技プログラミングをする時に気をつけていることなどを書きます。
 今回は前者についてです。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;追記：&lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/&#34;&gt;後編&lt;/a&gt;書きました。&lt;/p&gt;
 
@@ -202,7 +201,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
 
 &lt;p&gt;AtCoderレーティングは水色、コンテスト参加回数もぎりぎり二桁に達する程度で、あまり真面目にやっているほうではないので参考になるかどうかはわかりませんが、JavaScriptまたはTypeScriptで競技プログラミングをするときに気をつけるべき点などを書いていきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;javascriptで競技プログラミングをすることについて:88730e2b6d557177ea4657cfdced2c53&#34;&gt;JavaScriptで競技プログラミングをすることについて&lt;/h2&gt;
+&lt;h2 id=&#34;javascriptで競技プログラミングをすることについて&#34;&gt;JavaScriptで競技プログラミングをすることについて&lt;/h2&gt;
 
 &lt;p&gt;こんな記事を書いていて言うのもどうかと思いますが、他の言語ではなくJavaScriptを競技プログラミングに使用することに、何かメリットはあるのか？と聞かれれば、おそらく目立った利点を挙げることはできないと思います。&lt;/p&gt;
 
@@ -215,7 +214,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
 
 &lt;p&gt;JavaScriptを使用する最大のモチベーションは、それが書きやすい・手慣れた言語であるからという点に尽きると思いますが、これは重要なことです。&lt;/p&gt;
 
-&lt;h2 id=&#34;コンテストサイトのモダンjavascriptやtypescript対応状況:88730e2b6d557177ea4657cfdced2c53&#34;&gt;コンテストサイトのモダンJavaScriptやTypeScript対応状況&lt;/h2&gt;
+&lt;h2 id=&#34;コンテストサイトのモダンjavascriptやtypescript対応状況&#34;&gt;コンテストサイトのモダンJavaScriptやTypeScript対応状況&lt;/h2&gt;
 
 &lt;p&gt;JavaScript/TypeScriptで競技プログラミングをするためには、コンテストサイトのオンラインジャッジシステムが少なくともJavaScriptに対応している必要があります。
 特にJavaScriptという言語は、ECMAScript2015の策定によって言語仕様が大きく拡張され、その後もECMAScript2016, ECMAScript2017と機能追加が進んでおり、ここ数年間での移り変わりが非常に激しい言語であるため、言語環境が整備されていることの重要性は大きいです。&lt;/p&gt;
@@ -225,7 +224,7 @@ JavaScriptそのものは非常に書きやすい言語なので、ハマりど�
 &lt;p&gt;まずは、日本である程度知名度がある(と思われる)コンテストサイトについて、2018年2月現在でのJavaScriptの対応状況を見ていきたいと思います。
 なおTopCoderはJavaScript非対応のため除外しています。&lt;/p&gt;
 
-&lt;h3 id=&#34;atcoder-http-atcoder-jp:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;http://atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;atcoder-http-atcoder-jp&#34;&gt;&lt;a href=&#34;http://atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;JavaScript node v5.12.0&lt;/li&gt;
@@ -256,7 +255,7 @@ TypeScriptの仕様を全く使っていないJavaScriptを書いたとしても
 
 &lt;p&gt;なんともいえない感じですが、これでもモダンJavaScriptの対応状況としてはよっぽどマシなほうです。&lt;/p&gt;
 
-&lt;h3 id=&#34;yukicoder-https-yukicoder-me:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;https://yukicoder.me/&#34;&gt;yukicoder&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;yukicoder-https-yukicoder-me&#34;&gt;&lt;a href=&#34;https://yukicoder.me/&#34;&gt;yukicoder&lt;/a&gt;&lt;/h3&gt;
 
 &lt;p&gt;(正直ここがどれくらいの知名度があるのかあまり把握していませんが)&lt;/p&gt;
 
@@ -268,7 +267,7 @@ TypeScriptの仕様を全く使っていないJavaScriptを書いたとしても
 モダンなJavaScriptを書きながら競技プログラミングを楽しみたいなら、このサイトはおすすめといえます。
 TypeScriptには対応していませんが、まあトランスパイルされた.jsファイルを提出すれば済む話でしょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;aizu-online-judge-http-judge-u-aizu-ac-jp-onlinejudge:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;http://judge.u-aizu.ac.jp/onlinejudge/&#34;&gt;AIZU ONLINE JUDGE&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;aizu-online-judge-http-judge-u-aizu-ac-jp-onlinejudge&#34;&gt;&lt;a href=&#34;http://judge.u-aizu.ac.jp/onlinejudge/&#34;&gt;AIZU ONLINE JUDGE&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;JavaScript node 0.10.36&lt;/li&gt;
@@ -279,7 +278,7 @@ TypeScriptには対応していませんが、まあトランスパイルされ�
 &lt;p&gt;ほぼ完全なES5時代の遺物です。
 どうしてもJavaScriptが書きたいなら、babel-polyfillあたりをかませてJavaScriptからさらに古い時代のJavaScriptにトランスパイルして提出するのがいいでしょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;codeforces-http-codeforces-com:88730e2b6d557177ea4657cfdced2c53&#34;&gt;&lt;a href=&#34;http://codeforces.com/&#34;&gt;Codeforces&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;codeforces-http-codeforces-com&#34;&gt;&lt;a href=&#34;http://codeforces.com/&#34;&gt;Codeforces&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;JavaScript V8 4.8.0&lt;/li&gt;
@@ -298,7 +297,6 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
 
 &lt;p&gt;ここまで書いていて思った以上に分量が膨らんでしまいました。
 &lt;a href=&#34;http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/&#34;&gt;後編&lt;/a&gt;では、実際にJavaScript/TypeScriptで問題を解く上で気をつけている点を書いていきます。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -309,9 +307,9 @@ node.jsでは&lt;code&gt;console.log()&lt;/code&gt;で出力しますが、V8の
       
       <guid>http://tatamo.81.la/blog/2018/02/08/freeciv-right-drag/</guid>
       <description>
-        
+        &lt;p&gt;数年前に某所で書いた記事ですが、埋もれていて参照しづらくなっていたので手を加えて再掲することにしました。&lt;/p&gt;
 
-&lt;p&gt;数年前に某所で書いた記事ですが、埋もれていて参照しづらくなっていたので手を加えて再掲することにしました。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Freecivに慣れてくると、迅速な操作のために都市タブを使うと便利だということに気付くでしょう。
 このとき、ゲーム画面での右ドラッグと都市タブを併用するとさらに都市タブを使いやすくすることができます。
@@ -326,12 +324,12 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 &lt;p&gt;Shiftキーとの併用は、既に選択されているものに追加が可能になるという効果があるようです。
 では、右ドラッグ時の動作をいくつかの場合に分けて見てみましょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;1-都市外のユニットの選択:4bc90ac362794db076b1d5dc1688b343&#34;&gt;(1) 都市外のユニットの選択&lt;/h3&gt;
+&lt;h3 id=&#34;1-都市外のユニットの選択&#34;&gt;(1) 都市外のユニットの選択&lt;/h3&gt;
 
 &lt;p&gt;迎撃によるスタックキルを避けるため、艦隊を分散させて敵国領海に突入させることはよくある例です。
 このような場合、右ドラッグで全部隊を選択し、テンキー移動をすることによって、陣形を保持したまま艦隊を前進させることができます。便利。&lt;/p&gt;
 
-&lt;h3 id=&#34;2-都市の選択:4bc90ac362794db076b1d5dc1688b343&#34;&gt;(2) 都市の選択&lt;/h3&gt;
+&lt;h3 id=&#34;2-都市の選択&#34;&gt;(2) 都市の選択&lt;/h3&gt;
 
 &lt;p&gt;右ドラッグで、複数の都市を範囲に含めます。
 そうしたら、都市タブを開きましょう。
@@ -342,7 +340,7 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 都市を左クリックすることによって都市の選択/非選択の切り替えができるので、右ドラッグ選択の微調整に使用できて便利です。
 このモードは、右クリックで視点を移動させたり、都市を含めずに再度右ドラッグするなどして解除できます。&lt;/p&gt;
 
-&lt;h3 id=&#34;3-都市内外のユニットの選択:4bc90ac362794db076b1d5dc1688b343&#34;&gt;(3) 都市内外のユニットの選択&lt;/h3&gt;
+&lt;h3 id=&#34;3-都市内外のユニットの選択&#34;&gt;(3) 都市内外のユニットの選択&lt;/h3&gt;
 
 &lt;p&gt;都市内に待機しているユニット、都市外に駐留しているユニット、それらをまとめて選択できます。
 とはいえ、都市内の防御ユニットもすべて選択されてしまうという欠点はあります。
@@ -368,7 +366,6 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 &lt;p&gt;ヘルプ→「操作」は読んでみるといろいろな発見がありそうです。
 生産物のコピーアンドペーストやユニットの追加選択などは慣れると使い勝手が良いかもしれませんね。
 ショートカットを駆使してfreecivを快適に操作して、より強大な帝国を作っていきましょう。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -379,16 +376,16 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
       
       <guid>http://tatamo.81.la/blog/2017/12/18/intro-new-moblie-pc/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の19日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の19日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;新しいモバイルPCが先週届いたので、それについて書きます。&lt;/p&gt;
 
-&lt;h2 id=&#34;購入したpc:e1aff7a4c108ad68177d235e2867a617&#34;&gt;購入したPC&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;購入したpc&#34;&gt;購入したPC&lt;/h2&gt;
 
 &lt;p&gt;Lenovo ThinkPad X1 Carbon(2017モデル)を買いました。
 基本的なスペックは以下の通りです。&lt;/p&gt;
@@ -403,7 +400,7 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 &lt;p&gt;液晶サイズは14型、本体重量はおよそ1.13kgです。
 お値段は約161kでした。&lt;/p&gt;
 
-&lt;h2 id=&#34;新pc購入のモチベーション:e1aff7a4c108ad68177d235e2867a617&#34;&gt;新PC購入のモチベーション&lt;/h2&gt;
+&lt;h2 id=&#34;新pc購入のモチベーション&#34;&gt;新PC購入のモチベーション&lt;/h2&gt;
 
 &lt;p&gt;とにかく元々持っていたラップトップが重すぎたというのが大きな要因です。
 大学に行くときなどかなり頻繁にPCを持って出るのですが、サイズが大きくて鞄に入れにくい上に重量が2.5kg以上と決して持ち運びに適したPCではなかったのです。&lt;/p&gt;
@@ -412,21 +409,21 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 
 &lt;p&gt;そしていずれPCを変えることになるなら早いほうがいいに決まっているので、タンスに挟まっていた成人祝いの札束などを引っ張り出して新しいPCの購入に踏み切りました。&lt;/p&gt;
 
-&lt;h2 id=&#34;pc選定の条件:e1aff7a4c108ad68177d235e2867a617&#34;&gt;PC選定の条件&lt;/h2&gt;
+&lt;h2 id=&#34;pc選定の条件&#34;&gt;PC選定の条件&lt;/h2&gt;
 
 &lt;p&gt;タンス預金の中身を検めると諭吉氏が16枚あったので、これに財布の中の一万円を加えた17万円を予算上限としました。&lt;/p&gt;
 
 &lt;p&gt;その上で、新しいPCに求めるスペックを想定しました。
 以下はその優先度の高い順に並べています。&lt;/p&gt;
 
-&lt;h3 id=&#34;携帯性:e1aff7a4c108ad68177d235e2867a617&#34;&gt;携帯性&lt;/h3&gt;
+&lt;h3 id=&#34;携帯性&#34;&gt;携帯性&lt;/h3&gt;
 
 &lt;p&gt;今回のPC買い替えの動機でもあるので、軽くて持ち運びやすい、いわゆるモバイルPCにすることにしました。
 とはいえ元のPCがあまりに重いため、ちょっとぐらいの差はわからないので極限まで軽さを求めることはしません。&lt;/p&gt;
 
 &lt;p&gt;大きさについては、鞄に入れやすい程度には小さく収まってほしいですが、あまり小さくて液晶が見難くなっても困るので、やはり一般的なモバイルPCの範疇に収まっていることを条件としました。&lt;/p&gt;
 
-&lt;h3 id=&#34;ストレージ:e1aff7a4c108ad68177d235e2867a617&#34;&gt;ストレージ&lt;/h3&gt;
+&lt;h3 id=&#34;ストレージ&#34;&gt;ストレージ&lt;/h3&gt;
 
 &lt;p&gt;私はデスクトップ機とノートPCで同じ環境を構築し、出先でも開発ができるようにしています。
 これはつまり、WindowsとLinux(Debian)のデュアルブートを行うことを意味します。
@@ -434,25 +431,25 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 というか、手元のラップトップを見たところWindowsだけで128GBなんて軽く越えていたので不安しかありません。
 そのため、ストレージには512GB SSDを使用したいと考えました(SSDなのは前提条件として当然です)。&lt;/p&gt;
 
-&lt;h3 id=&#34;メモリ:e1aff7a4c108ad68177d235e2867a617&#34;&gt;メモリ&lt;/h3&gt;
+&lt;h3 id=&#34;メモリ&#34;&gt;メモリ&lt;/h3&gt;
 
 &lt;p&gt;経験上、Chromeを立ち上げまくったりメモリを食うことをたくさんした場合、メモリの消費量がぴったり8GB前後になるという印象があります。
 基本的には8GBで何の問題もありませんが、メモリをたくさん食っている状況下では、メモリが8GBだとちょうど溢れてしまう可能性があります。
 なので16GBあると嬉しいですが、それによって値段が上がりすぎてしまうのであれば8GBのほうが良い、という想定になりました。&lt;/p&gt;
 
-&lt;h3 id=&#34;cpu:e1aff7a4c108ad68177d235e2867a617&#34;&gt;CPU&lt;/h3&gt;
+&lt;h3 id=&#34;cpu&#34;&gt;CPU&lt;/h3&gt;
 
 &lt;p&gt;Core i3はさすがにどうかと思いますが、動画処理や画像処理等はしないですし、ゲームはノートPCなんて使わずに家のデスクトップでやるので高い性能はあまり必要ありません。
 なのでCore i5でも積んでいれば十分と考えました。&lt;/p&gt;
 
-&lt;h3 id=&#34;os:e1aff7a4c108ad68177d235e2867a617&#34;&gt;OS&lt;/h3&gt;
+&lt;h3 id=&#34;os&#34;&gt;OS&lt;/h3&gt;
 
 &lt;p&gt;先述したようにデスクトップとノートPCで環境を揃える予定なので、macOSだと環境が違ってきてしまうのでやや評価が下がります。
 デュアルブート自体Windows+Linuxよりは相性が悪い印象ですし、そもそもMacだとLinuxを入れるまでもなく普通にMac上に環境構築するので、結局デスクトップ機との環境統一が望めません。&lt;/p&gt;
 
 &lt;p&gt;macOSは悪い選択肢ではありませんが、今回の使用目的ではWindowsのほうが優先されます。&lt;/p&gt;
 
-&lt;h3 id=&#34;拡張性-端子類:e1aff7a4c108ad68177d235e2867a617&#34;&gt;拡張性(端子類)&lt;/h3&gt;
+&lt;h3 id=&#34;拡張性-端子類&#34;&gt;拡張性(端子類)&lt;/h3&gt;
 
 &lt;p&gt;モバイルPCは往々にしてUSBポートが1個しか付いていなかったりすることが多いですが、個人的には2個以上あったほうが良いのではないかという考えです。&lt;/p&gt;
 
@@ -465,25 +462,25 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 &lt;p&gt;全体的には、モバイルPCでかつ512GBのストレージを積めることを前提条件として考えました。
 またOfficeについてはあまり使う予定がないため、選択可能なら非搭載とすることにしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;候補に上がったもの:e1aff7a4c108ad68177d235e2867a617&#34;&gt;候補に上がったもの&lt;/h2&gt;
+&lt;h2 id=&#34;候補に上がったもの&#34;&gt;候補に上がったもの&lt;/h2&gt;
 
 &lt;p&gt;結局どのPCを買うか悩んでいるときが一番楽しい&lt;/p&gt;
 
-&lt;h3 id=&#34;surface-pro:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Surface Pro&lt;/h3&gt;
+&lt;h3 id=&#34;surface-pro&#34;&gt;Surface Pro&lt;/h3&gt;
 
 &lt;p&gt;2in1は目新しいので気になりましたが、液晶を自立させるために後ろにスタンドを必要とすることから、「新幹線・飛行機の小さいテーブルで使いにくい」「膝上で使いにくい」ということで候補から外しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;surface-laptop:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Surface Laptop&lt;/h3&gt;
+&lt;h3 id=&#34;surface-laptop&#34;&gt;Surface Laptop&lt;/h3&gt;
 
 &lt;p&gt;だったらクラムシェルにしようということで候補に上げました。
 しかしCore i7+メモリ16GBまで積まないと512GBのストレージを選択することができず、しかもその場合のお値段なんと28万円を越えるためこれも除外しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;vaio-z:e1aff7a4c108ad68177d235e2867a617&#34;&gt;VAIO Z&lt;/h3&gt;
+&lt;h3 id=&#34;vaio-z&#34;&gt;VAIO Z&lt;/h3&gt;
 
 &lt;p&gt;これも2in1ですが、天板が半分ぐらいのところで折り曲がってモード変更できるようになっており、通常使用時は普通のクラムシェルとして使えるので膝上性能ばっちりです。
 非常にハイスペックなだけあって高いので、Core i5+メモリ8GB+SSD256GBの時点で20万円を越えることを確認して候補から外しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;macbook-air-macbook-pro:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Macbook Air, Macbook Pro&lt;/h3&gt;
+&lt;h3 id=&#34;macbook-air-macbook-pro&#34;&gt;Macbook Air, Macbook Pro&lt;/h3&gt;
 
 &lt;p&gt;Core i5+メモリ8GB+SSD 512GBの構成で139k、Core i7の場合は155kと、予算的にはいい感じです。
 しかし最大の問題として、そもそも積んでいるCPUが第5世代のものです。
@@ -493,14 +490,14 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 
 &lt;p&gt;MBPは第七世代CPUを使用可能ですが、Core i5(2.3GHz)+メモリ8GB+512GBで187kとなるので予算オーバーです。&lt;/p&gt;
 
-&lt;h3 id=&#34;matebook-x:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Matebook X&lt;/h3&gt;
+&lt;h3 id=&#34;matebook-x&#34;&gt;Matebook X&lt;/h3&gt;
 
 &lt;p&gt;華為のモバイルPCで、メモリは8GBのみ、512GB SSDを積むためにはCore i7モデルを選択する必要があります。
 この場合の基本価格は174k程度で予算の上限を越えますが、実際にはもう少し安い価格で買えるようです。&lt;/p&gt;
 
 &lt;p&gt;欠点があるとすれば、デザインがあまりにMacbookに似ているのでちょっと複雑な気持ちになりそうなところでしょうか。&lt;/p&gt;
 
-&lt;h3 id=&#34;thinkpad-x1-carbon-thinkpad-x270:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Thinkpad X1 Carbon, Thinkpad X270&lt;/h3&gt;
+&lt;h3 id=&#34;thinkpad-x1-carbon-thinkpad-x270&#34;&gt;Thinkpad X1 Carbon, Thinkpad X270&lt;/h3&gt;
 
 &lt;p&gt;LenovoのThinkpadは常に割引されている状態で、日時によって割引率がどんどん変わっていくのでちゃんとした値段を出すのが難しいです。
 一度割引率43%までは確認したので、とりあえず40%の割引がなされるものとして計算しました。&lt;/p&gt;
@@ -514,7 +511,7 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 &lt;p&gt;また12.5型のThinkpad X270も候補に上げました。
 これはX1 Carbonよりも重い一方でサイズは12.5型のため小さく、また同スペックでも1万円から2万円ほど安く買うことができます。&lt;/p&gt;
 
-&lt;h2 id=&#34;thinkpad-x1-carbon購入:e1aff7a4c108ad68177d235e2867a617&#34;&gt;Thinkpad X1 Carbon購入&lt;/h2&gt;
+&lt;h2 id=&#34;thinkpad-x1-carbon購入&#34;&gt;Thinkpad X1 Carbon購入&lt;/h2&gt;
 
 &lt;p&gt;最終的な候補としてMatebook X, Thinkpad X1 Carbon, Thinkpad X270が残りました。
 デザイン的にはThinkpadが好みだったり、また知名度からの安心感もあるのでMatebookは除外し、X1 CarbonとX270のどちらかを買うことに決めました。&lt;/p&gt;
@@ -530,7 +527,7 @@ Shift+右クリック後にドラッグ: エリアの内容を既存の選択に
 
 &lt;p&gt;ここに来てCore i5+メモリ8GBとi7+16GBのどちらにするかで非常に迷うことになってしまったのですが、高い買い物をするときは多少余計に払ってでも良いものを買えという親の教えを思い出し、Core i7+メモリ16GBにすることに決めました。&lt;/p&gt;
 
-&lt;h2 id=&#34;使用感など:e1aff7a4c108ad68177d235e2867a617&#34;&gt;使用感など&lt;/h2&gt;
+&lt;h2 id=&#34;使用感など&#34;&gt;使用感など&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/blog/2017/12/18/intro-new-moblie-pc/&#34;&gt;ICPC参加&lt;/a&gt;のためにつくばに行く2日ほど前に届きました。
 とても軽い上に鞄に入れやすいサイズのため、持ち運びは明らかに便利になりました。
@@ -539,7 +536,6 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 
 &lt;p&gt;全体的に非常に使いやすいのでとても満足していますが、一点だけ挙げるとすればキーボードの右上にHome/Endキーが搭載されているため、Fnキー+左/右キーの組み合わせではHome/Endキーが使えません。
 キー配置の慣れの問題かもしれませんが、HomeキーとEndキーは頻繁に使用するキーのため今の所やや不便です。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -550,9 +546,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
       
       <guid>http://tatamo.81.la/blog/2017/12/18/icpc-2017-asia/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の18日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の18日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -561,11 +555,13 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 
 &lt;p&gt;結果としては3問通して&lt;a href=&#34;http://icpc2017.yamagula.ic.i.u-tokyo.ac.jp/standings/&#34;&gt;39位&lt;/a&gt;でした。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;実績「座っているだけのお仕事」&lt;br&gt;解除条件：ICPCで一度たりとも競技用マシンに触れない&lt;br&gt;を達成しました💺💤&lt;/p&gt;&amp;mdash; Tatamo@Super-Srups (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/942290374382383104?ref_src=twsrc%5Etfw&#34;&gt;2017年12月17日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 なにもしないをしました&lt;/p&gt;
 
-&lt;h2 id=&#34;チーム構成-方針:265df706d5a774eea5a09d1b00a6a527&#34;&gt;チーム構成・方針&lt;/h2&gt;
+&lt;h2 id=&#34;チーム構成-方針&#34;&gt;チーム構成・方針&lt;/h2&gt;
 
 &lt;p&gt;私の所属するチームであるSuper-Srupsのメンバー構成は以下の通りです。&lt;/p&gt;
 
@@ -595,46 +591,46 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 そのため私は英語で与えられる問題文の読解、他メンバーの補助および考察少しを担当しました。
 他の2人はUSキーボードのEnterキーが空振りするとかgeditがつらいとかubuntuの使い方がわからないとか大変そうでした。&lt;/p&gt;
 
-&lt;h2 id=&#34;解いた問題:265df706d5a774eea5a09d1b00a6a527&#34;&gt;解いた問題&lt;/h2&gt;
+&lt;h2 id=&#34;解いた問題&#34;&gt;解いた問題&lt;/h2&gt;
 
 &lt;p&gt;問題の内容については&lt;a href=&#34;https://storage.googleapis.com/icpcsec/icpc2017-regional/problems.pdf&#34;&gt;問題文&lt;/a&gt;を参照してください。&lt;/p&gt;
 
-&lt;h3 id=&#34;a:265df706d5a774eea5a09d1b00a6a527&#34;&gt;A&lt;/h3&gt;
+&lt;h3 id=&#34;a&#34;&gt;A&lt;/h3&gt;
 
 &lt;p&gt;やるだけ問です。
 問題文を読んで&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏に投げたらよろしくやってくれました。&lt;/p&gt;
 
-&lt;h3 id=&#34;c:265df706d5a774eea5a09d1b00a6a527&#34;&gt;C&lt;/h3&gt;
+&lt;h3 id=&#34;c&#34;&gt;C&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏と考察を担当し、実装は&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏にやってもらいました。
 値が負になるときの特殊ケースや変数の更新タイミングのミス等のちょっとした考察漏れ・実装ミスを3つほど同時に仕込んでしまって数十分ほど無駄に消費してしまったので反省点が多いです。&lt;/p&gt;
 
-&lt;h3 id=&#34;i:265df706d5a774eea5a09d1b00a6a527&#34;&gt;I&lt;/h3&gt;
+&lt;h3 id=&#34;i&#34;&gt;I&lt;/h3&gt;
 
 &lt;p&gt;B問題・C問題で無限に時間を費やしているうちに他チームは問題をたくさん解いていたので、風船の浮かんでいる状況を見てI,F,G問題に解く対象を絞りました。
 なお今年の問題の並び順は、A,B,C問題までが易しい順に並んでおりそれ以降の問題はランダムになっています。&lt;/p&gt;
 
 &lt;p&gt;I問題は問題文を読んで&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏に丸投げしたら見事に解いてくれました。&lt;/p&gt;
 
-&lt;h2 id=&#34;解けなかった問題:265df706d5a774eea5a09d1b00a6a527&#34;&gt;解けなかった問題&lt;/h2&gt;
+&lt;h2 id=&#34;解けなかった問題&#34;&gt;解けなかった問題&lt;/h2&gt;
 
-&lt;h3 id=&#34;b:265df706d5a774eea5a09d1b00a6a527&#34;&gt;B&lt;/h3&gt;
+&lt;h3 id=&#34;b&#34;&gt;B&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏がメインで担当しました。
 制限実行時間10秒の問題ですが、最初にすべての可能な傾きの同じ線分の集合を持ったりしていたらハマってしまって通せませんでした。
 普通に全探索すれば解けるなどということを終了後に聞きましたが、全然通らなかったのでいっそ早めに放り投げるべきだったのかもしれません。&lt;/p&gt;
 
-&lt;h3 id=&#34;f:265df706d5a774eea5a09d1b00a6a527&#34;&gt;F&lt;/h3&gt;
+&lt;h3 id=&#34;f&#34;&gt;F&lt;/h3&gt;
 
 &lt;p&gt;私はグラフは最短経路の超典型問ぐらいしか解けないので、問題を訳すだけして他の２人に投げました。
 実装の最後の方まで行っていたようなのですが間に合いませんでした。&lt;/p&gt;
 
-&lt;h3 id=&#34;g:265df706d5a774eea5a09d1b00a6a527&#34;&gt;G&lt;/h3&gt;
+&lt;h3 id=&#34;g&#34;&gt;G&lt;/h3&gt;
 
 &lt;p&gt;考察を担当しました。
 座標変換で簡単になるというのは気付きませんでしたが、極座標→XY座標への変換をしてからdX=正三角形の辺の長さの半分, dY=正三角形の高さ で区切って場合分け2回ほどで数学的に求めて終わりです。&lt;/p&gt;
 
-&lt;h2 id=&#34;結果:265df706d5a774eea5a09d1b00a6a527&#34;&gt;結果&lt;/h2&gt;
+&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
 
 &lt;p&gt;A問題解いた直後に沼にはまって時間を無為に費やし、終盤になってB,F,Gの解法が出揃ったが実装時間が圧倒的に足りないという状況に陥り、結局4問目を通せず3完でした。
 予選と全く同じ順位の39位です。&lt;/p&gt;
@@ -645,7 +641,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 &lt;p&gt;とはいえ、そもそも私は自力で問題を解けないので、問題文の和訳と考察補助とただ座っているぐらいしか仕事がない感じです。
 こういう場にカジュアル勢が紛れ込んでしまって肩身が狭いというか申し訳無さです。&lt;/p&gt;
 
-&lt;h2 id=&#34;雑事:265df706d5a774eea5a09d1b00a6a527&#34;&gt;雑事&lt;/h2&gt;
+&lt;h2 id=&#34;雑事&#34;&gt;雑事&lt;/h2&gt;
 
 &lt;p&gt;1日目は昼過ぎに集合で、参加受付+開会式+練習+懇親会だけで、解放される時間がなぜか20時です。
 思うところがないでもありません。&lt;/p&gt;
@@ -657,7 +653,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 
 &lt;p&gt;また他のブースではよくわからないクイズを解くだけでANKERの10000mAhモバイルバッテリー(自分が持っている物の一つ下のモデル)をもらうことができました。&lt;/p&gt;
 
-&lt;h2 id=&#34;つくば:265df706d5a774eea5a09d1b00a6a527&#34;&gt;つくば&lt;/h2&gt;
+&lt;h2 id=&#34;つくば&#34;&gt;つくば&lt;/h2&gt;
 
 &lt;p&gt;交通費補助が新幹線代程度出るものの、宿泊施設の提供なしで宿泊補助費は5000円しか出ないので新幹線で行くと大赤字です。
 そこでLCCで飛んでいくことで交通費を浮かせて2泊するための宿泊費に充てました(これって書いていいんでしょうか)。&lt;/p&gt;
@@ -670,13 +666,12 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 
 &lt;p&gt;1日目は部屋に備え付けの浴室を使いましたが、湯を張るために蛇口を開くと汚れの混じった赤っぽい水が出てきたので、無心でシャワーを浴びてそのまま何も考えずに寝ました。&lt;/p&gt;
 
-&lt;h2 id=&#34;3日目:265df706d5a774eea5a09d1b00a6a527&#34;&gt;3日目&lt;/h2&gt;
+&lt;h2 id=&#34;3日目&#34;&gt;3日目&lt;/h2&gt;
 
 &lt;p&gt;エクスカーションや企業見学に参加する人に合わせて飛行機を取ったので、3日目は夜まで暇です。
 ほとんどの人は企業見学に行ったので、残りの3人で東京観光に行きました。
 大洗は非常に遠かったのでやめておいて、VRの体験や靖国神社に行ったりして所々で先輩におごってもらいました。
 大荷物を持って長距離を移動した上に懇親会等で立ちっぱなしで疲労が蓄積していたので、夕方はカフェで休憩しながら時間を潰していました。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -687,9 +682,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
       
       <guid>http://tatamo.81.la/blog/2017/12/06/web-dtp/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の6日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の6日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -697,7 +690,9 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 &lt;p&gt;&lt;a href=&#34;http://vivliostyle.com/ja/products/&#34;&gt;Vivliostyle&lt;/a&gt;やその他のWeb技術を用いて、HTMLとCSSで課題のレポートを書くための環境を作る話です。
 あと「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」を勝手に販促する記事でもあります。&lt;/p&gt;
 
-&lt;h2 id=&#34;html-cssによる組版:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;HTML+CSSによる組版&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;html-cssによる組版&#34;&gt;HTML+CSSによる組版&lt;/h2&gt;
 
 &lt;p&gt;個人的にはWordもTeXもあまり得意ではない、というか、HTML+CSSで似たようなことができそうなのにわざわざWordやTeXを使うのが大変だと感じています(InDesignはよく知りません)。
 文書構造の明確化という観点においては、構造と見た目が明確に分離しているHTML+CSSに勝るものはありません(筆者個人の主観です)。&lt;/p&gt;
@@ -708,7 +703,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 というあとがきの記述通り、CSS組版全般、また単にCSSの解説本としても読めるようになっており、本書を参考にしてレポートを書くための環境を整えることができました。
 同人誌でもレポートでも論文でも、やりたいことは結局同じ組版であるため、整えるべき環境は変わりません。&lt;/p&gt;
 
-&lt;h2 id=&#34;この記事で書くこと:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;この記事で書くこと&lt;/h2&gt;
+&lt;h2 id=&#34;この記事で書くこと&#34;&gt;この記事で書くこと&lt;/h2&gt;
 
 &lt;p&gt;CSSを用いた組版については、「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」を直接読んでいただくのが一番早いため、今回はあまり詳しくは書きません。
 &lt;a href=&#34;https://pentapod.booth.pm/items/601017&#34;&gt;300円というお手頃価格で電子版も出ている&lt;/a&gt;ので買ってください。
@@ -718,7 +713,7 @@ Linuxとの相性は悪くなく、無線LANドライバなども全く問題な
 構築した環境は &lt;a href=&#34;https://github.com/Tatamo/htmldtp&#34;&gt;https://github.com/Tatamo/htmldtp&lt;/a&gt; に上げていますが、「そもそもボイラープレートという単語を数日前にはじめて知った」レベルのためディレクトリ構成ひとつとっても正直褒められたものではないと感じています。
 なのでまたちゃんと体裁を整えたいと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;vivliostyle:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Vivliostyle&lt;/h2&gt;
+&lt;h2 id=&#34;vivliostyle&#34;&gt;Vivliostyle&lt;/h2&gt;
 
 &lt;p&gt;とはいえ、&lt;a href=&#34;http://vivliostyle.com/ja/products/&#34;&gt;Vivliostyle&lt;/a&gt;については触れておかないと話が始まりません。
 これはWeb技術による組版を目的としたプロジェクトで、CSSの将来的な仕様を先取りすることで、より多彩なレイアウトを実現できるようにしているものです。
@@ -735,13 +730,13 @@ HTMLとCSSの状態からPDFを生成する作業を自動化する方法につ�
 &lt;p&gt;恥ずかしい話ですが、最近のCSS3の仕様をしっかり追いかけているわけではないため、どこからどこまでがVivliostyleによって実現されている機能で、どこまでがブラウザの標準機能で既にサポートされている部分なのかがよくわかっていません。
 このあたりは書けば書くほどボロが出るに違いないので適当にごまかします。&lt;/p&gt;
 
-&lt;h2 id=&#34;フレームワーク選定:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;フレームワーク選定&lt;/h2&gt;
+&lt;h2 id=&#34;フレームワーク選定&#34;&gt;フレームワーク選定&lt;/h2&gt;
 
 &lt;p&gt;書籍ではPug+marked+Stylus+Prism.js+MathJax+Browsersync+Gulpの構成が紹介されていましたが、このあたりは好みだと思うので適当に選んでいきました。&lt;/p&gt;
 
 &lt;p&gt;結論としては、Nunjucks+nunjucks-markdown+PostCSS(cssnext+stylelint)+highlight.js+MathJax+Browsersync+Gulpという構成になりました。&lt;/p&gt;
 
-&lt;h3 id=&#34;nunjucks:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Nunjucks&lt;/h3&gt;
+&lt;h3 id=&#34;nunjucks&#34;&gt;Nunjucks&lt;/h3&gt;
 
 &lt;p&gt;まずはHTMLテンプレートエンジンを選びます。
 変数を用いた操作や別のHTMLの継承などの機能を取り入れることで、HTMLをより書きやすくして開発の高速化・再利用の促進を図ります。&lt;/p&gt;
@@ -780,7 +775,7 @@ HTMLとCSSの状態からPDFを生成する作業を自動化する方法につ�
 &lt;p&gt;のような感じでHTMLにいろいろなものをくっつけていきながら書けるようになります。
 Nunjucksで記述したHTMLは、.htmlのほかに.njkなどの拡張子を使ったりするらしいです。&lt;/p&gt;
 
-&lt;h3 id=&#34;nunjucks-markdown:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;nunjucks-markdown&lt;/h3&gt;
+&lt;h3 id=&#34;nunjucks-markdown&#34;&gt;nunjucks-markdown&lt;/h3&gt;
 
 &lt;p&gt;ひたすら文章を書くのにいちいち&lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;タグを書いたりしていられないので、Markdownを使えるようにすることが必要です。
 Nunjucksを使うことにしたので、markedのNunjucks向けプラグインである&lt;a href=&#34;https://www.npmjs.com/package/nunjucks-markdown&#34;&gt;nunjucks-markdown&lt;/a&gt;を使うことにしました。&lt;/p&gt;
@@ -801,7 +796,7 @@ Nunjucksを使うことにしたので、markedのNunjucks向けプラグイン�
 
 &lt;p&gt;のように、&lt;code&gt;{% markdown %}&lt;/code&gt;で囲った部分をMarkdownとして書くことができようになります。&lt;/p&gt;
 
-&lt;h3 id=&#34;postcss-cssnext-stylelint:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;PostCSS(cssnext+stylelint)&lt;/h3&gt;
+&lt;h3 id=&#34;postcss-cssnext-stylelint&#34;&gt;PostCSS(cssnext+stylelint)&lt;/h3&gt;
 
 &lt;p&gt;HTMLだけでなくCSSも次世代仕様を使用できるようにしておくと便利です。
 SassやStylusという選択肢もありますが、この次世代CSS過渡期において独自記法マシマシのcoffeeとあくまでES2015をもとにしたtsならどちらを使うかという話です。
@@ -811,13 +806,13 @@ SassやStylusという選択肢もありますが、この次世代CSS過渡期�
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 これは余談です。&lt;/p&gt;
 
-&lt;h3 id=&#34;highlight-js:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;highlight.js&lt;/h3&gt;
+&lt;h3 id=&#34;highlight-js&#34;&gt;highlight.js&lt;/h3&gt;
 
 &lt;p&gt;プログラムリストを貼り付けることが求められることもあるので、シンタックスハイライターを用意します。
 他の候補としてはPrism.jsなどがあります。
 今回はこのブログで使ったりして使い慣れている&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を用いました。&lt;/p&gt;
 
-&lt;h3 id=&#34;mathjax:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;MathJax&lt;/h3&gt;
+&lt;h3 id=&#34;mathjax&#34;&gt;MathJax&lt;/h3&gt;
 
 &lt;p&gt;TeX形式で書いた数式を表示するために必須です。
 &lt;a href=&#34;https://www.mathjax.org/&#34;&gt;MathJax&lt;/a&gt;以外の選択肢は特にないと言っていいでしょう。
@@ -831,12 +826,12 @@ SassやStylusという選択肢もありますが、この次世代CSS過渡期�
 &lt;p&gt;どうでもいい余談ですが、個人的にはMicrosoft Officeの数式エディタは見た目もきれいですし非常に使いやすいと思っています。
 これについてはあまり同意されたことがない気がします。&lt;/p&gt;
 
-&lt;h3 id=&#34;browsersync:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Browsersync&lt;/h3&gt;
+&lt;h3 id=&#34;browsersync&#34;&gt;Browsersync&lt;/h3&gt;
 
 &lt;p&gt;ソースコードが更新され(、そしてそれを検知してビルドが走って&lt;code&gt;dist/&lt;/code&gt;ディレクトリが更新され)たことを検知し、&lt;a href=&#34;https://www.browsersync.io/&#34;&gt;Browsersync&lt;/a&gt;が自動でブラウザを再読み込みしてくれるようにします。
 わざわざF5を押さなくても変更が反映され、ビルド結果がすぐにブラウザ上で見れて便利…… なのですが、今回はブラウザを更新したあとVivliostyleのChrome拡張を有効化しなければならず、結局F5相当の動作を手で行わなければならないという難点があります。&lt;/p&gt;
 
-&lt;h3 id=&#34;gulp:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;Gulp&lt;/h3&gt;
+&lt;h3 id=&#34;gulp&#34;&gt;Gulp&lt;/h3&gt;
 
 &lt;p&gt;ビルドを自動化してくれるようにするためのタスクランナーです。
 &lt;a href=&#34;https://gulpjs.com/&#34;&gt;Gulp&lt;/a&gt;は使っていますがGruntは使ったことがないです。
@@ -844,7 +839,7 @@ SassやStylusという選択肢もありますが、この次世代CSS過渡期�
 
 &lt;p&gt;最近は何でもかんでもnpm-scriptsでやろうという話があって、確かに一理あるなあという感じなのでGulpじゃなくてもよかったかもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;全部突っ込む:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;全部突っ込む&lt;/h2&gt;
+&lt;h2 id=&#34;全部突っ込む&#34;&gt;全部突っ込む&lt;/h2&gt;
 
 &lt;p&gt;JavaScriptから利用するためのパッケージを一つも入れていない、というかJavaScriptを書くつもりがない(gulpfile除く)のに依存パッケージ数が10を越えるのはどういうことなんだ、という感じですが、とりあえず上記のツールを全部組み合わせます。
 highlight.jsとMathJaxに関しては、&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;タグで読み込むだけでいいので&lt;code&gt;npm install&lt;/code&gt;は不要です。
@@ -853,7 +848,7 @@ Nunjucksのテンプレート継承機能を用いて、これらの読み込み
 &lt;p&gt;Nunjucks(+nunjucks-markdown)とPostCSSを用いて、それぞれHTMLファイルとCSSファイルを生成する処理が行われるので、これをGulpのタスクとしてまとめてしまいます。
 あとはソースコードの更新を検知して自動的にこのビルド処理が走るようにしたり、ビルド完了のタイミングでBrowsersyncに更新を伝えたりする処理を&lt;a href=&#34;https://github.com/Tatamo/htmldtp/blob/master/gulpfile.js&#34;&gt;gulpfile.js&lt;/a&gt;に書いて終わりです。&lt;/p&gt;
 
-&lt;h2 id=&#34;使ってみた:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;使ってみた&lt;/h2&gt;
+&lt;h2 id=&#34;使ってみた&#34;&gt;使ってみた&lt;/h2&gt;
 
 &lt;p&gt;大学でパーセプトロンの出力を求めるだけのレポート課題が出たので、構築した環境を用いてレポートを書いてみました。&lt;/p&gt;
 
@@ -895,7 +890,7 @@ img {
 
 &lt;p&gt;そういえば指定するのを忘れていましたが、当然&lt;code&gt;font-size&lt;/code&gt;でフォントサイズをポイント指定することも可能です。&lt;/p&gt;
 
-&lt;h3 id=&#34;相互参照と問題点:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;相互参照と問題点&lt;/h3&gt;
+&lt;h3 id=&#34;相互参照と問題点&#34;&gt;相互参照と問題点&lt;/h3&gt;
 
 &lt;p&gt;図を示している部分のHTMLを抜粋すると、以下のようになります。&lt;/p&gt;
 
@@ -928,7 +923,7 @@ img {
 
 &lt;p&gt;これについては今のところ解決策を見つけられていないので、もう少し調べてみて必要ならissueを飛ばすなりしようと思っています。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわり:ed3b1424743a59edb650e822cbfa39a9&#34;&gt;おわり&lt;/h2&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
 
 &lt;p&gt;レポート・論文程度ならそこまで凝ったデザインである必要がないので、非常に短いCSSでそれなりの印刷が可能になります。
 HTML+CSSを用いてレポートを書くというのは十分に実用の範囲内だと思ったので、これからも試していこうと思っています。&lt;/p&gt;
@@ -937,7 +932,6 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
 &lt;code&gt;target-counter()&lt;/code&gt;は策定中の次期CSS仕様であることから、解決は時間の問題だとは思っているのですが、なんとかしたいところです。&lt;/p&gt;
 
 &lt;p&gt;今の時代のCSSは、もはやWebページだけでなく紙面上のレイアウトも自在に操れるようになってきています。「&lt;a href=&#34;https://pentapod.github.io/c92/&#34;&gt;CSSではじめる同人誌制作&lt;/a&gt;」はCSSを使ったさまざまな紙面レイアウトについて書かれており、とてもおすすめなのでぜひ購入してみてください。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -948,20 +942,20 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
       
       <guid>http://tatamo.81.la/blog/2017/12/01/japari-watch/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の1日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の1日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;ブラウザ上で動作するゲーム「&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;じゃぱりうぉっち&lt;/a&gt;」を作ったので、開発記を書きます。&lt;/p&gt;
 
-&lt;h2 id=&#34;じゃぱりうぉっち:715a67537c3fb0cd66e102735cb99acd&#34;&gt;じゃぱりうぉっち&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;じゃぱりうぉっち&#34;&gt;じゃぱりうぉっち&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; で公開しており、PCとモバイル端末のどちらでも遊ぶことができます。&lt;/p&gt;
 
-&lt;h3 id=&#34;発端:715a67537c3fb0cd66e102735cb99acd&#34;&gt;発端&lt;/h3&gt;
+&lt;h3 id=&#34;発端&#34;&gt;発端&lt;/h3&gt;
 
 &lt;p&gt;期末試験前に現実逃避のためにTLを眺めていたところ、以下のツイートが流れてきました。
 &lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;フェネック「アライさんに似合いそうな帽子を見つけてきたよー」&lt;br&gt;アライグマ「ありがとうなのだ！」&lt;a href=&#34;https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#けものフレンズ&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ドット絵&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/pixelart?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#pixelart&lt;/a&gt; &lt;a href=&#34;https://t.co/1VueMavObQ&#34;&gt;pic.twitter.com/1VueMavObQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934412479597199361?ref_src=twsrc%5Etfw&#34;&gt;2017年11月25日&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;
@@ -970,7 +964,7 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
 
 &lt;p&gt;作品としての完成度が高く、実際にゲームとして遊べそうに見えたので、これをゲーム化してみました。&lt;/p&gt;
 
-&lt;h3 id=&#34;素材:715a67537c3fb0cd66e102735cb99acd&#34;&gt;素材&lt;/h3&gt;
+&lt;h3 id=&#34;素材&#34;&gt;素材&lt;/h3&gt;
 
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;原寸(128*128px)なのだ &lt;a href=&#34;https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#けものフレンズ&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ドット絵&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/pixelart?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#pixelart&lt;/a&gt; &lt;a href=&#34;https://t.co/BJ0Mc27vR5&#34;&gt;pic.twitter.com/BJ0Mc27vR5&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934699058542678016?ref_src=twsrc%5Etfw&#34;&gt;2017年11月26日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
@@ -979,18 +973,18 @@ HTML+CSSを用いてレポートを書くというのは十分に実用の範囲
 
 &lt;p&gt;背景に相当する部分の画像がなかったので自分で加工したり、そのまま矩形状にスプライトを切り出すと被ってしまう部分があったのでいくつかのパーツに分けたりしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;製作期間:715a67537c3fb0cd66e102735cb99acd&#34;&gt;製作期間&lt;/h2&gt;
+&lt;h2 id=&#34;製作期間&#34;&gt;製作期間&lt;/h2&gt;
 
 &lt;p&gt;ゲーム本体の作成(アセットの用意・環境構築含む)： 一晩&lt;br /&gt;
 公開のためのWebページデザインやTwitterカード、faviconの用意：半日&lt;br /&gt;
 公開後の難易度調整+自動モード機能の追加：半日&lt;/p&gt;
 
-&lt;h2 id=&#34;フレームワーク選定:715a67537c3fb0cd66e102735cb99acd&#34;&gt;フレームワーク選定&lt;/h2&gt;
+&lt;h2 id=&#34;フレームワーク選定&#34;&gt;フレームワーク選定&lt;/h2&gt;
 
 &lt;p&gt;ブラウザで動作するゲームを作ろうと思ったため、基本的にはNode環境で開発を進めていくことになります。
 高速に開発するためにTypeScriptで記述することとしたうえで、使用するツールを選定していきました。&lt;/p&gt;
 
-&lt;h3 id=&#34;pixi-js:715a67537c3fb0cd66e102735cb99acd&#34;&gt;PIXI.js&lt;/h3&gt;
+&lt;h3 id=&#34;pixi-js&#34;&gt;PIXI.js&lt;/h3&gt;
 
 &lt;p&gt;PC・モバイル両方のブラウザで動作するゲームという方針のため、HTML5 Canvas系のライブラリを使うことにしました。
 npm上で型定義が用意されているものを使いたかったので、今回は&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;を選択しました。&lt;/p&gt;
@@ -1002,7 +996,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;でPIXI.jsの型情報を使用可能になります。&lt;/p&gt;
 
-&lt;h4 id=&#34;ビルドシステム:715a67537c3fb0cd66e102735cb99acd&#34;&gt;ビルドシステム&lt;/h4&gt;
+&lt;h4 id=&#34;ビルドシステム&#34;&gt;ビルドシステム&lt;/h4&gt;
 
 &lt;p&gt;また、今回はブラウザを動作対象とするため、jsファイルのバンドルとBabel化のためにwebpackを使用しました。
 実際のところwebpackもBabelもこれまで使ったことがなかったのですが、なんとかts-loaderとbabel-loaderでTypeScriptのソースコードをBabel化してバンドルするところまでやりました。&lt;/p&gt;
@@ -1010,7 +1004,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 &lt;p&gt;期末試験直前であまり学習コストをかけられず、これ以上webpackであれこれするのは怖くなったので、jsファイル以外の静的ファイルのコピーなどはrimrafやcpxを使い、npm scriptsでビルドすることにしました。
 また開発中の自動コンパイルのために、chokidarとbrowser-syncを使いました。&lt;/p&gt;
 
-&lt;h2 id=&#34;設計:715a67537c3fb0cd66e102735cb99acd&#34;&gt;設計&lt;/h2&gt;
+&lt;h2 id=&#34;設計&#34;&gt;設計&lt;/h2&gt;
 
 &lt;p&gt;一定時間ごとにゲームループをまわし、大元のゲームオブジェクトから各マネージャのupdateメソッドを呼び出して処理を行い、最後にレンダリングを行うという基本的な設計としています。&lt;/p&gt;
 
@@ -1022,7 +1016,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 &lt;p&gt;エンティティごとにスプライトのテクスチャを用意しておく必要があり、これはstaticメンバとして各エンティティのクラスに紐付けることにしました。
 このテクスチャの生成はアセットのローディングが終わった後に行う必要があるため、エンティティマネージャの初期化時に各staticメソッドを呼び出すことで初期化するようにしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;eventemitterによるメッセージング:715a67537c3fb0cd66e102735cb99acd&#34;&gt;EventEmitterによるメッセージング&lt;/h3&gt;
+&lt;h3 id=&#34;eventemitterによるメッセージング&#34;&gt;EventEmitterによるメッセージング&lt;/h3&gt;
 
 &lt;p&gt;PIXI.jsで用意されているクラスは&lt;a href=&#34;https://github.com/primus/eventemitter3&#34;&gt;EventEmitter&lt;/a&gt;を継承しており、イベント駆動でのオブジェクト間のメッセージングが可能です。
 たとえば&lt;code&gt;アライさん&lt;/code&gt;オブジェクトは&lt;code&gt;Hat&lt;/code&gt;コレクションに対する参照を持ちませんが、イベントの発火にフックしてエンティティマネージャがメソッド引数にコレクションの参照を流し込むことで、&lt;code&gt;アライさん&lt;/code&gt;オブジェクトは外部の参照を持つことなく&lt;code&gt;Hat&lt;/code&gt;コレクションにアクセスし、当たり判定の処理を行うことができます。
@@ -1031,11 +1025,11 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;その他にも、インプットマネージャがキーボード入力を受け取ったり、ゲーム画面上に配置されている透明のスプライトに対するクリック・タッチ入力を受け取った場合に、入力された動作に応じたイベントを発火することで、入力の種類を隠蔽したうえでそれにフックする処理を定義可能になります。&lt;/p&gt;
 
-&lt;h2 id=&#34;はまりどころ:715a67537c3fb0cd66e102735cb99acd&#34;&gt;はまりどころ&lt;/h2&gt;
+&lt;h2 id=&#34;はまりどころ&#34;&gt;はまりどころ&lt;/h2&gt;
 
 &lt;p&gt;ちょっとしたミスなどですが、詰まった点について。&lt;/p&gt;
 
-&lt;h3 id=&#34;エンティティの消去:715a67537c3fb0cd66e102735cb99acd&#34;&gt;エンティティの消去&lt;/h3&gt;
+&lt;h3 id=&#34;エンティティの消去&#34;&gt;エンティティの消去&lt;/h3&gt;
 
 &lt;p&gt;ループ中にループ対象の配列を変更するな、というのは基本ですが、ゲームの場合当たり判定がヒットしたエンティティを消去したいという場面は多いです。
 &lt;code&gt;Hat&lt;/code&gt;コレクションに対してループを回して&lt;code&gt;update()&lt;/code&gt;を呼び出し、その処理の中で&lt;code&gt;Hat&lt;/code&gt;オブジェクトを消去してしまい、それ以降のオブジェクトの処理がおかしくなるというバグが発生しました。&lt;/p&gt;
@@ -1057,7 +1051,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 最も単純なのはループ前にコレクションをコピーしてループを回すことですが、ゲームプログラムで毎フレームごとに配列のコピーを生成するのはパフォーマンス的に避けたいところでもあります。
 なお今回は、&lt;code&gt;Hat&lt;/code&gt;オブジェクトは同時に10個も存在することはないため、毎回配列をコピーして削除用のループを回すことにしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;faviconの配信:715a67537c3fb0cd66e102735cb99acd&#34;&gt;faviconの配信&lt;/h3&gt;
+&lt;h3 id=&#34;faviconの配信&#34;&gt;faviconの配信&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;favicon.ico&lt;/code&gt;を配信しようと思ったのですが、&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; というURLのルートパスは&lt;a href=&#34;https://tatamo.github.io/&#34;&gt;https://tatamo.github.io/&lt;/a&gt; であるため、&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; 直下にfaviconを配置しても正しく読み込ませることができません。
 そのため、&lt;code&gt;&amp;lt;link rel=&amp;quot;shortcut icon href=&amp;quot;favicon.ico&amp;quot; type=&amp;quot;image/x-icon&amp;quot;&amp;quot;&amp;gt;&lt;/code&gt;などとして明示的にfavicon.icoの位置を示す必要がありました。&lt;/p&gt;
@@ -1065,7 +1059,7 @@ npm上で型定義が用意されているものを使いたかったので、�
 &lt;p&gt;また、&lt;code&gt;manifest.json&lt;/code&gt;を&lt;a href=&#34;https://tatamo.github.io/japari-watch/favicons/manifest.json&#34;&gt;https://tatamo.github.io/japari-watch/favicons/manifest.json&lt;/a&gt; に、同様にandroid用のアイコン画像を&lt;code&gt;favicons/&lt;/code&gt;ディレクトリに配置していました。
 &lt;code&gt;manifest.json&lt;/code&gt;中の相対パスは基準となるディレクトリが&lt;code&gt;manifest.json&lt;/code&gt;自身となることを知らなかったので、srcパスを&lt;code&gt;&amp;quot;favicons\/android-icon-***.png&amp;quot;&lt;/code&gt;としたところ、&lt;code&gt;favicons/favicons/&lt;/code&gt;が読まれてしまって正しくアイコンを配信できなかったりしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:715a67537c3fb0cd66e102735cb99acd&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;はチュートリアルだけは読んだことがあるという状態で、一度実際に使ってみたいと思っていたので使用することができて良かったです。
 ドキュメントをろくに読み込まずに使いたい機能だけ調べて使うといった感じでしたが、かなり高速にゲーム開発ができたので非常に便利でした。
@@ -1073,7 +1067,6 @@ npm上で型定義が用意されているものを使いたかったので、�
 
 &lt;p&gt;使用した画像については作者である&lt;a href=&#34;https://twitter.com/kirai_s&#34;&gt;@kirai_s&lt;/a&gt;さんに確認を得ないまま加工して作り始めてしまったのですが、使用を快く承諾していただけました。
 この場を借りてお礼申し上げます。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1084,16 +1077,16 @@ npm上で型定義が用意されているものを使いたかったので、�
       
       <guid>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</guid>
       <description>
-        
+        &lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
 
-&lt;p&gt;このブログのシンタックスハイライトには&lt;a href=&#34;https://highlightjs.org/&#34;&gt;highlight.js&lt;/a&gt;を使用していますが、使い勝手を上げるために調整を行いました。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
+&lt;h2 id=&#34;コードの強調は不要だがhighlight-jsのテーマは使いたい&#34;&gt;コードの強調は不要だがhighlight.jsのテーマは使いたい&lt;/h2&gt;
 
 &lt;p&gt;プログラムの実行結果など、プログラムそのもの以外を&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;タグで囲いたくなる場合が何度かありました。
 class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい:0daaccc7bb8856c5021376961a2bf330&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
+&lt;h2 id=&#34;インライン要素のハイライトをデフォルトで無効化したい&#34;&gt;インライン要素のハイライトをデフォルトで無効化したい&lt;/h2&gt;
 
 &lt;p&gt;さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
 ブロック要素ではMarkdownでcode部分を囲う際に&lt;/p&gt;
@@ -1105,7 +1098,7 @@ class要素に&lt;code&gt;nohighlight&lt;/code&gt;を指定すればハイライ
 
 &lt;p&gt;とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。&lt;/p&gt;
 
-&lt;h2 id=&#34;解決策:0daaccc7bb8856c5021376961a2bf330&#34;&gt;解決策&lt;/h2&gt;
+&lt;h2 id=&#34;解決策&#34;&gt;解決策&lt;/h2&gt;
 
 &lt;p&gt;今のところ&lt;code class=&#34;html&#34;&gt;&amp;lt;code&amp;gt;&lt;/code&gt;で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、&lt;code&gt;nohighlight&lt;/code&gt;を指定した場合でもCSSテーマが適用されるようにします。
 また、インライン要素の場合はデフォルトで&lt;code&gt;nohighlight&lt;/code&gt;にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
@@ -1143,7 +1136,6 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
 
 &lt;p&gt;あとは既存の記事をこの変更に合わせて修正しました。
 ところどころ不自然なハイライトが行われていた箇所がありましたが、これで改善されました。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1154,12 +1146,12 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
       
       <guid>http://tatamo.81.la/blog/2017/09/17/indeed-austin-tour/</guid>
       <description>
-        
-
-&lt;p&gt;9月10日から15日まで、Indeed Austin視察ツアーに参加してきました。
+        &lt;p&gt;9月10日から15日まで、Indeed Austin視察ツアーに参加してきました。
 これは、自己負担なしでアメリカのオースティンに連れて行ってもらえるというものです。&lt;/p&gt;
 
-&lt;h2 id=&#34;参加まで:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;参加まで&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参加まで&#34;&gt;参加まで&lt;/h2&gt;
 
 &lt;p&gt;一ヶ月のインターン(東京/オースティン)、一週間の視察ツアーという3つのコースが募集されていたので全部申し込んだところ、インターンには落とされてツアーに連れて行ってもらえることになりました。&lt;/p&gt;
 
@@ -1168,7 +1160,7 @@ window.addEventListener(&amp;quot;DOMContentLoaded&amp;quot;, () =&amp;gt; {
 
 &lt;p&gt;いろいろなお話を英語で聞けるのですが、同行のスタッフが逐一翻訳してくれるので英語力がなくても一応は大丈夫です。&lt;/p&gt;
 
-&lt;h2 id=&#34;1日目:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;1日目&lt;/h2&gt;
+&lt;h2 id=&#34;1日目&#34;&gt;1日目&lt;/h2&gt;
 
 &lt;p&gt;朝から新幹線に乗って羽田空港へ移動。
 他の参加者と一緒に席が取られていたので、自己紹介などをしながら品川へ。&lt;/p&gt;
@@ -1189,7 +1181,7 @@ LAXにはちょうど3ヶ月前に来ていて、これで2度目なので海外
 ひと皿で一食分になりそうなほどの量の食事がどんどん出てきたので、出されたもの全部食べてたら相当苦しくなりました。
 この日から夕食には普通にアルコールが頼めたので、ほぼ毎日飲んでいました。&lt;/p&gt;
 
-&lt;h2 id=&#34;2日目:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;2日目&lt;/h2&gt;
+&lt;h2 id=&#34;2日目&#34;&gt;2日目&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505577496161.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505577496161.jpg&#34; alt=&#34;indeed本社&#34; style=&#34;width:45%;&#34;&gt;&lt;/a&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505577506288.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505577506288.jpg&#34; alt=&#34;we help people get jobs.&#34; style=&#34;width:45%;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -1248,7 +1240,7 @@ sushiは人がとてもたくさん並んでいたので諦めました。
 
 &lt;p&gt;夜はかなり時間があったので、4人で集まってカードゲームに興じたりしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;3日目:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;3日目&lt;/h2&gt;
+&lt;h2 id=&#34;3日目&#34;&gt;3日目&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505578674596.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505578674596.jpg&#34; alt=&#34;市庁舎&#34; style=&#34;width:45%;&#34;&gt;&lt;/a&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505578681788.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505578681788.jpg&#34; alt=&#34;景色&#34; style=&#34;width:45%;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -1266,7 +1258,7 @@ sushiは人がとてもたくさん並んでいたので諦めました。
 
 &lt;p&gt;夕食はtempuraとsushiで、ネタが大きかったりアボカドロールがおいしかったりしたのが印象的でした。&lt;/p&gt;
 
-&lt;h2 id=&#34;4日目:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;4日目&lt;/h2&gt;
+&lt;h2 id=&#34;4日目&#34;&gt;4日目&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505579496959.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505579496959.jpg&#34; alt=&#34;UT&#34; style=&#34;width:45%;&#34;&gt;&lt;/a&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505578843235.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2017/09/17/1505578843235.jpg&#34; alt=&#34;肉の塊&#34; style=&#34;width:45%;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -1285,7 +1277,7 @@ sushiは人がとてもたくさん並んでいたので諦めました。
 
 &lt;p&gt;ホテルに戻ってから何人かで買い出しに行き、お酒を買ってきてしばらく飲み続けていました。&lt;/p&gt;
 
-&lt;h2 id=&#34;5-6日目:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;5,6日目&lt;/h2&gt;
+&lt;h2 id=&#34;5-6日目&#34;&gt;5,6日目&lt;/h2&gt;
 
 &lt;p&gt;日に日に集合時刻が早くなっていったのですが、この日は朝5:30にホテルを出て帰国のため空港に向かいました。&lt;/p&gt;
 
@@ -1295,20 +1287,20 @@ sushiは人がとてもたくさん並んでいたので諦めました。
 
 &lt;p&gt;羽田で解散し、東京らしいことは何もなくそのまま新幹線で帰りました。&lt;/p&gt;
 
-&lt;h2 id=&#34;運動:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;運動&lt;/h2&gt;
+&lt;h2 id=&#34;運動&#34;&gt;運動&lt;/h2&gt;
 
 &lt;p&gt;応募した際の面接で1時間×3本のホワイトボードコーディングを課せられて疲れ果てて、体力の必要性を痛感したというのがあります(インターンの応募の際の面接で、ツアーのみの応募の場合はここまでやらされないそうなので安心してください)。
 それから家で少しずつ筋トレを続けてきましたが、アメリカ滞在中は何故か毎日運動しまくる機会がありました。&lt;/p&gt;
 
-&lt;h3 id=&#34;1日目-1:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;1日目&lt;/h3&gt;
+&lt;h3 id=&#34;1日目-1&#34;&gt;1日目&lt;/h3&gt;
 
 &lt;p&gt;夕食後、ホテルに24時間利用可能なトレーニングルームがあったため、ランニングマシーンで30分走ったりダンベルを持ち上げたりして1時間ほどこもっていました。&lt;/p&gt;
 
-&lt;h3 id=&#34;2日目-1:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;2日目&lt;/h3&gt;
+&lt;h3 id=&#34;2日目-1&#34;&gt;2日目&lt;/h3&gt;
 
 &lt;p&gt;夕食前に一時間ほどホテルで自由時間があったので、前日同様にトレーニングルームに行きました。&lt;/p&gt;
 
-&lt;h3 id=&#34;3日目-1:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;3日目&lt;/h3&gt;
+&lt;h3 id=&#34;3日目-1&#34;&gt;3日目&lt;/h3&gt;
 
 &lt;p&gt;前日から朝にランニングをしている人たちがいたので加わりました。
 案の定自分が一番走れなかったので、開始早々から息を切らしながらなんとかついていく感じでした。
@@ -1316,18 +1308,18 @@ sushiは人がとてもたくさん並んでいたので諦めました。
 
 &lt;p&gt;これで完全に疲れ果ててしまったので、日中のセグウェイでさらに体力を奪われたこともあって、夜ホテルに帰るとそのままベッドに倒れ込みました。&lt;/p&gt;
 
-&lt;h3 id=&#34;4日目-1:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;4日目&lt;/h3&gt;
+&lt;h3 id=&#34;4日目-1&#34;&gt;4日目&lt;/h3&gt;
 
 &lt;p&gt;前日の影響で筋肉痛でしたが、朝から少し走り、前日に走っている途中に見つけていたバスケコートに行って8人でバスケットボールをしました。
 ルールや動き方がよくわかっていなかったのでチームに貢献は出来ていないですが、それでも走り回っているととても体力を使いました。
 歩くと足が痛いくらい筋肉痛になってしまった上、日中のUT見学はずっと立って歩き回ったので大変でした。&lt;/p&gt;
 
-&lt;h3 id=&#34;5-6日目-1:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;5,6日目&lt;/h3&gt;
+&lt;h3 id=&#34;5-6日目-1&#34;&gt;5,6日目&lt;/h3&gt;
 
 &lt;p&gt;朝5:30集合のため特に運動している時間はありませんでした。
 筋肉痛は残っていて、歩くと普通に痛かったです。&lt;/p&gt;
 
-&lt;h2 id=&#34;感想:7d508d443e6568cd0e0d6f78cc04e2ad&#34;&gt;感想&lt;/h2&gt;
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
 
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-cards=&#34;hidden&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;君の名は。見てました あれは良い映画ですね &lt;a href=&#34;https://t.co/lgMoEoBXTG&#34;&gt;pic.twitter.com/lgMoEoBXTG&lt;/a&gt;&lt;/p&gt;&amp;mdash; たたもさん@がんばらない (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/908578060579958784&#34;&gt;2017年9月15日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
@@ -1368,7 +1360,6 @@ sushiは人がとてもたくさん並んでいたので諦めました。
 
 &lt;p&gt;とはいえ、日本的な価値観で生きてきた以上、大学生のうちは自己投資なんざにかまけていないでモラトリアムを満喫したいという気持ちがあります。
 アメリカの大学生なんかはみんな至る所で勉強していて、のんびりとしていたらどんどん差をつけられてしまう気もするので、悩ましい限りです。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1379,21 +1370,21 @@ sushiは人がとてもたくさん並んでいたので諦めました。
       
       <guid>http://tatamo.81.la/blog/2017/08/27/seccamp-2017/</guid>
       <description>
-        
-
-&lt;p&gt;8/14から8/18まで開かれたセキュリティキャンプに参加してきました。
+        &lt;p&gt;8/14から8/18まで開かれたセキュリティキャンプに参加してきました。
 応募用紙に書いた内容は&lt;a href=&#34;http://tatamo.81.la/blog/2017/05/29/seccamp-2017-sheet/&#34;&gt;こちら&lt;/a&gt;の記事に書いてあります。&lt;/p&gt;
 
 &lt;p&gt;今日中に感想文を上げないといけないらしいので、参加記を書きます。&lt;/p&gt;
 
-&lt;h2 id=&#34;0日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;0日目&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;0日目&#34;&gt;0日目&lt;/h2&gt;
 
 &lt;p&gt;開始日前日がC92最終日だったのでもしかしたらコミケ行けるのでは？などと思っていましたが、大学の試験期間中は事前課題に全く手をつけていなかったのでいろいろ山積していてだめでした。&lt;/p&gt;
 
 &lt;p&gt;夕方のうちに名刺を刷っておこうと思っていたのですが、Windows 10 Creators Updateが入ってノートPCが数時間使えなくなった上にGRUBが上書きされてデュアルブート環境が壊れました。
 修復用のディスクの用意やGRUBの再インストールなどでかなり時間を使ってしまい、睡眠時間を削って名刺を刷る羽目になりました。&lt;/p&gt;
 
-&lt;h2 id=&#34;1日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;1日目&lt;/h2&gt;
+&lt;h2 id=&#34;1日目&#34;&gt;1日目&lt;/h2&gt;
 
 &lt;p&gt;すいみん不足。&lt;/p&gt;
 
@@ -1413,18 +1404,18 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;22時に終了したので風呂に入ってそのまま寝ました。&lt;/p&gt;
 
-&lt;h2 id=&#34;2日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;2日目&lt;/h2&gt;
+&lt;h2 id=&#34;2日目&#34;&gt;2日目&lt;/h2&gt;
 
 &lt;p&gt;最初の講義は8:30開始でしたが、目が覚めたのは8:20でした。
 空腹だったので食堂に行き(8:24)、時間がなかったので、ひと皿だけ取って食べて講義の教室に入り(8:29)ました。&lt;/p&gt;
 
-&lt;h3 id=&#34;c1-ブラウザの脆弱性とそのインパクト:d32a538f907a1c066600df8908f4c6c9&#34;&gt;C1 ブラウザの脆弱性とそのインパクト&lt;/h3&gt;
+&lt;h3 id=&#34;c1-ブラウザの脆弱性とそのインパクト&#34;&gt;C1 ブラウザの脆弱性とそのインパクト&lt;/h3&gt;
 
 &lt;p&gt;ブラウザの脆弱性を見つけて生計を立てていた人がどのように脆弱性を見つけていたのか、を教えてもらいました。
 やっぱり場数かなあ、と思いました。
 リリースノートを監視していくのは単純に面白そう。&lt;/p&gt;
 
-&lt;h3 id=&#34;d2-3-カーネルエクスプロイトによるシステム権限奪取:d32a538f907a1c066600df8908f4c6c9&#34;&gt;D2~3 カーネルエクスプロイトによるシステム権限奪取&lt;/h3&gt;
+&lt;h3 id=&#34;d2-3-カーネルエクスプロイトによるシステム権限奪取&#34;&gt;D2~3 カーネルエクスプロイトによるシステム権限奪取&lt;/h3&gt;
 
 &lt;p&gt;講師の方が同じ大学の先輩なのですが、リアルでは会ったことがなくセキュキャン会場ではじめてお会いしました。
 グループワークの聞き込みで名前と所属を聞かないといけなかったのですが、「ああ知ってます、イノベーションなんとか科のるくすくん(&lt;a href=&#34;https://twitter.com/RKX1209&#34;&gt;@RKX1209&lt;/a&gt;)さんですよね？」って言ったら覚えてろよって言われました。&lt;/p&gt;
@@ -1444,13 +1435,13 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;この日は早めに寝ました。&lt;/p&gt;
 
-&lt;h2 id=&#34;3日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;3日目&lt;/h2&gt;
+&lt;h2 id=&#34;3日目&#34;&gt;3日目&lt;/h2&gt;
 
 &lt;p&gt;朝6:30に起きてグループで集まって話し合いをしました。
 聞き取り結果などをまとめて部屋に戻ったら、ちょうどけものフレンズが始まったところだったので見ました。
 早起きしたのでちょっと睡眠が足りていないかな？という感じでした。&lt;/p&gt;
 
-&lt;h3 id=&#34;e4-サイバー犯罪捜査の現場:d32a538f907a1c066600df8908f4c6c9&#34;&gt;E4 サイバー犯罪捜査の現場&lt;/h3&gt;
+&lt;h3 id=&#34;e4-サイバー犯罪捜査の現場&#34;&gt;E4 サイバー犯罪捜査の現場&lt;/h3&gt;
 
 &lt;p&gt;事前学習スレに講師からの投稿が100件以上あってヒーヒー言ってました。&lt;/p&gt;
 
@@ -1463,14 +1454,14 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;その後の昼食で担当してもらった(というか逮捕した)警察の方に色々と話を聞かせてもらったのもとても楽しかったです。&lt;/p&gt;
 
-&lt;h3 id=&#34;c5-暗号運用技術:d32a538f907a1c066600df8908f4c6c9&#34;&gt;C5 暗号運用技術&lt;/h3&gt;
+&lt;h3 id=&#34;c5-暗号運用技術&#34;&gt;C5 暗号運用技術&lt;/h3&gt;
 
 &lt;p&gt;なかなか重い講義が多いセキュキャンでしたが、これは入門講義という感じで割とふんわりしていました。
 ちょっと座学が多かった(=眠くなった)気がします。
 普段使ってる「証明書」って何なの？という感じだったので、運用面まで含めて教えてもらえたのは良かったです。
 ある二つのRSA鍵が共通の秘密鍵を使っている場合、公開鍵同士の最大公約数は簡単に求まるためクラック可能だというのはなるほどと思いました。&lt;/p&gt;
 
-&lt;h3 id=&#34;bof-企業プレゼン:d32a538f907a1c066600df8908f4c6c9&#34;&gt;BoF、企業プレゼン&lt;/h3&gt;
+&lt;h3 id=&#34;bof-企業プレゼン&#34;&gt;BoF、企業プレゼン&lt;/h3&gt;
 
 &lt;p&gt;BoFが終わったら既に企業プレゼンが始まっている時間でした。&lt;/p&gt;
 
@@ -1484,11 +1475,11 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;お酒が飲みたくても飲めないのでふてくされつつ、ゆっくりお茶をいれてお菓子を食べていたら寝る時間が削れました。&lt;/p&gt;
 
-&lt;h2 id=&#34;4日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;4日目&lt;/h2&gt;
+&lt;h2 id=&#34;4日目&#34;&gt;4日目&lt;/h2&gt;
 
 &lt;p&gt;選択講義は4日目が最終日です。&lt;/p&gt;
 
-&lt;h3 id=&#34;c6-スマートフォン向けゲームのセキュリティ:d32a538f907a1c066600df8908f4c6c9&#34;&gt;C6 スマートフォン向けゲームのセキュリティ&lt;/h3&gt;
+&lt;h3 id=&#34;c6-スマートフォン向けゲームのセキュリティ&#34;&gt;C6 スマートフォン向けゲームのセキュリティ&lt;/h3&gt;
 
 &lt;p&gt;超楽しかったです。&lt;/p&gt;
 
@@ -1508,7 +1499,7 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;これ一般に出回っているゲームアプリに普通にチート仕掛けられるのでは？と心配になるほどいろいろやったので、全体講義で口うるさく言われたセキュリティ倫理を早くも試されているのか、という気持ちになりました。&lt;/p&gt;
 
-&lt;h3 id=&#34;a7-ファジング実習:d32a538f907a1c066600df8908f4c6c9&#34;&gt;A7 ファジング実習&lt;/h3&gt;
+&lt;h3 id=&#34;a7-ファジング実習&#34;&gt;A7 ファジング実習&lt;/h3&gt;
 
 &lt;p&gt;ファジング #とは という感じだったうえに事前課題でルータを渡されて「調査してみてください」と言われ、資料通りに何時間かファジングしてみたものの何も起こらず、？？？という気持ちだったので不安でしたが、講義では詳細に教えてもらえてむしろ事前課題とは何だったのか、という感じになりました。&lt;/p&gt;
 
@@ -1533,7 +1524,7 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;早めに寝ようと思っていたのですが、ちょっとtwitterを開いたばかりに40分ほど持って行かれました。&lt;/p&gt;
 
-&lt;h2 id=&#34;5日目:d32a538f907a1c066600df8908f4c6c9&#34;&gt;5日目&lt;/h2&gt;
+&lt;h2 id=&#34;5日目&#34;&gt;5日目&lt;/h2&gt;
 
 &lt;p&gt;最終日です。
 まずはグループワークの総仕上げと発表で、我々のチームは既にプレゼンも仕上げてもらっていたので、最後の作業時間はのんびりと過ごしていました。&lt;/p&gt;
@@ -1544,7 +1535,7 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 &lt;p&gt;その後昼食を挟んで成果報告、その後閉会式でした。
 終始時間に追われていたセキュキャンで何をどうやれば閉会式に90分も割り当てられるのか不思議でたまりません。&lt;/p&gt;
 
-&lt;h2 id=&#34;感想:d32a538f907a1c066600df8908f4c6c9&#34;&gt;感想&lt;/h2&gt;
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
 
 &lt;p&gt;まず、全体的にハードな時間配分だったように感じます。
 8:30の講義開始に間に合わせるように起床して、次に自由が得られるのは22:00です。
@@ -1585,7 +1576,6 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;私はこれをやりたいなというものがあまりないですし、何か見つけられるかなと思ってセキュキャンに行ってみた、という側面もあるのですが、結局セキュリティに興味を持ったか？といわれるとウーンそこまでかなあという感じで、なにをやりたいかを見つけるのは大変なようです。
 そういった面では、セキュキャンに行ったからといって何かが変わるということはなく、得られた知見をきっかけにして進捗を出していくほかはないようです。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1596,11 +1586,11 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
       
       <guid>http://tatamo.81.la/blog/2017/07/11/freeciv-arago-challenge-02/</guid>
       <description>
-        
+        &lt;p&gt;&lt;a href=&#34;https://www.arago.co/hiro-freeciv&#34;&gt;aragoのFreeciv Strategy Challenge&lt;/a&gt;の企画である&lt;a href=&#34;https://freeciv-leader-board.hiro.community/about&#34;&gt;HIRO-ic Challenge&lt;/a&gt;に参加していましたが、結果が出ました。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://www.arago.co/hiro-freeciv&#34;&gt;aragoのFreeciv Strategy Challenge&lt;/a&gt;の企画である&lt;a href=&#34;https://freeciv-leader-board.hiro.community/about&#34;&gt;HIRO-ic Challenge&lt;/a&gt;に参加していましたが、結果が出ました。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;結果:978a3bb5c6b03edc57663e490ab06a5b&#34;&gt;結果&lt;/h2&gt;
+&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
 
 &lt;p&gt;それぞれのゲームプレイをもとにして、各プレイヤーの行動を模したAIが作成されます。
 そのAI同士で対戦を行うことで、順位が決定されます。&lt;/p&gt;
@@ -1616,18 +1606,18 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 &lt;p&gt;さらに自分のゲームプレイから考えると、自分がプレイしたゲームでは近い位置に隣国がいるようなマップを引かなかったので、完全に内政寄りのAIになっていてゲーム序盤から戦争を仕掛けられた場合に不利になっていたのではないかと考えられます。
 また、都市数を抑えて交易路で準備を整えてから祝祭ブーストによって国力を一気に引き上げるため、準備が整うまでにゲーム終了となると都市数を多く増やした国家に勝つことができません。&lt;/p&gt;
 
-&lt;h2 id=&#34;報酬:978a3bb5c6b03edc57663e490ab06a5b&#34;&gt;報酬&lt;/h2&gt;
+&lt;h2 id=&#34;報酬&#34;&gt;報酬&lt;/h2&gt;
 
 &lt;p&gt;初期のアナウンスによると、上位数人の参加者には&lt;a href=&#34;http://south.paxsite.com/&#34;&gt;PAX South 2017&lt;/a&gt;へ招待されるとのことでしたが、結果発表時には既に開催日を過ぎていたので、後のアナウンスによって&lt;a href=&#34;https://www.e3expo.com/&#34;&gt;E3 2017&lt;/a&gt;のチケットがもらえるという報酬に変更されました。
 また、上位20名にはCiv6が提供されるとのことです。&lt;/p&gt;
 
 &lt;p&gt;私は2位ですので、その両方の報酬がもらえます。&lt;/p&gt;
 
-&lt;h2 id=&#34;ゲームプレイ:978a3bb5c6b03edc57663e490ab06a5b&#34;&gt;ゲームプレイ&lt;/h2&gt;
+&lt;h2 id=&#34;ゲームプレイ&#34;&gt;ゲームプレイ&lt;/h2&gt;
 
 &lt;p&gt;前回の記事では紹介しなかったゲームについても振り返ってみたいと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;2回目:978a3bb5c6b03edc57663e490ab06a5b&#34;&gt;2回目&lt;/h3&gt;
+&lt;h3 id=&#34;2回目&#34;&gt;2回目&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/09/29/freeciv-arago-challenge-01/&#34;&gt;以前の記事&lt;/a&gt;で1度目のプレイを紹介しましたが、以降もう一度後半戦のゲームプレイを行いました。&lt;/p&gt;
 
@@ -1643,7 +1633,7 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 コンピュータまで直行してニュートン+SETIで研究をブーストし、一気にロケットを打ち上げます。
 ロケット打ち上げ後に首都防衛のためこちらから他国家に打って出たところ、「あとはロケットの到着を待つだけなのになぜ戦争をするのか？」と担当者に不思議がられました。&lt;/p&gt;
 
-&lt;h3 id=&#34;3回目:978a3bb5c6b03edc57663e490ab06a5b&#34;&gt;3回目&lt;/h3&gt;
+&lt;h3 id=&#34;3回目&#34;&gt;3回目&lt;/h3&gt;
 
 &lt;p&gt;本来ゲームプレイは2回で終了のはずだったのですが、2回めのゲーム終了からしばらくして先方からまた連絡が入りました。
 曰く、もっとプレイを見せてほしいとのこと。&lt;/p&gt;
@@ -1657,13 +1647,12 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;p&gt;戦闘機の時代になった時点で攻勢に出ることにして、圧倒的技術差から特に問題なく勝利。&lt;/p&gt;
 
-&lt;h3 id=&#34;4回目:978a3bb5c6b03edc57663e490ab06a5b&#34;&gt;4回目&lt;/h3&gt;
+&lt;h3 id=&#34;4回目&#34;&gt;4回目&lt;/h3&gt;
 
 &lt;p&gt;4回目のマップは、それまでとは全く違ったマップでした。
 国家は2つしか存在せず、それぞれが別の広大な大陸からのスタート。
 さらに大陸と大陸の間には広い海とやたら多い島があったのですが、大陸内に10都市建ててもまだ大陸の半分程度しか埋まらない広さだったので、ある程度植民してから島嶼部は無視して他大陸と交易。
 大砲を使って敵大陸に殴りこみ、物量差で押し込んで征服し勝利。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -1674,13 +1663,13 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
       
       <guid>http://tatamo.81.la/blog/2017/05/29/seccamp-2017-sheet/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;https://www.ipa.go.jp/jinzai/camp/2017/zenkoku2017.html&#34;&gt;セキュリティ・キャンプ2017&lt;/a&gt;の応募用紙を提出したので、どうせなので公開します。
+        &lt;p&gt;&lt;a href=&#34;https://www.ipa.go.jp/jinzai/camp/2017/zenkoku2017.html&#34;&gt;セキュリティ・キャンプ2017&lt;/a&gt;の応募用紙を提出したので、どうせなので公開します。
 私はこの記事がアップロードされたことを確認したら寝ます。
 いい加減期限が迫ってから焦って取り組もうとするのはやめたほうが良いと思います。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;追記: 受かりました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;推敲まで行っている余裕がとてもなかったため、悪文・乱文が多い可能性があります。
 審査員の方々には申し訳ない限りです。&lt;/p&gt;
@@ -1696,9 +1685,9 @@ JSON形式のプロフィール文をcatしたものを印刷しただけ、と�
 
 &lt;hr /&gt;
 
-&lt;h2 id=&#34;共通問題:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共通問題&lt;/h2&gt;
+&lt;h2 id=&#34;共通問題&#34;&gt;共通問題&lt;/h2&gt;
 
-&lt;h3 id=&#34;共-1-1:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-1（1）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-1-1&#34;&gt;共-1（1）.&lt;/h3&gt;
 
 &lt;p&gt;あなたが今まで作ってきたものにはどのようなものがありますか？
 いくつでもいいので、ありったけ自慢してください。
@@ -1770,7 +1759,7 @@ Pythonから起動するほか、Windows用にexe形式の実行ファイルも�
 構文ファイルに使うための構文規則が自分自身の構文を定義しているため、構文を表現する方法を拡張したり、別の表現を用いることができるようにすることが容易です。
 また、作っているうちにこれはYaccやBisonとよばれるパーサジェネレータの二番煎じにしかならないことに早々に気付いたため、単にパーサジェネレータの開発を進めるだけでなく、並行して開発の流れや理論的概略を紹介する記事をブログに書くことにしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;共-1-2:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-1（2）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-1-2&#34;&gt;共-1（2）.&lt;/h3&gt;
 
 &lt;p&gt;それをどのように作りましたか？
 ソフトウェアの場合には、どんな言語で作ったのか、どんなライブラリを使ったのかなども教えてください。追加したい機能や改善の案があれば、それも教えてください。&lt;/p&gt;
@@ -1862,7 +1851,7 @@ LR法による構文解析は行う手順が多く、それらの手順が明確
 現状ではコールバックを渡すことで同様の処理が可能ですが、渡した関数の中で今どの規則の解析を行ったのかを判断しないといけないため、煩雑になりがちです。
 そのため、規則とコードを直接結びつけて構文ファイルに記述できるようにするのがよいと考えています。&lt;/p&gt;
 
-&lt;h3 id=&#34;共-1-3:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-1（3）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-1-3&#34;&gt;共-1（3）.&lt;/h3&gt;
 
 &lt;p&gt;開発記のブログ、スライドなどの資料があれば、それも教えてください。コンテストなどに出品したことがあれば、それも教えてください。&lt;/p&gt;
 
@@ -1873,7 +1862,7 @@ LR法による構文解析は行う手順が多く、それらの手順が明確
 
 &lt;p&gt;また、8.のパーサジェネレータについても、構文解析入門、およびパーサジェネレータの自作方法の解説という体裁で紹介記事を同じブログで公開しています(&lt;a href=&#34;http://tatamo.81.la/blog/tags/parser-generator/&#34;&gt;http://tatamo.81.la/blog/tags/parser-generator/&lt;/a&gt; )。&lt;/p&gt;
 
-&lt;h3 id=&#34;共-1-4:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-1（4）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-1-4&#34;&gt;共-1（4）.&lt;/h3&gt;
 
 &lt;p&gt;Twitterアカウント、Github、ブログをお持ちでしたら、アカウント名、URL等を記載してください。&lt;/p&gt;
 
@@ -1881,7 +1870,7 @@ LR法による構文解析は行う手順が多く、それらの手順が明確
 GitHub: &lt;a href=&#34;https://github.com/tatamo&#34;&gt;https://github.com/tatamo&lt;/a&gt;&lt;br /&gt;
 ブログ: &lt;a href=&#34;http://tatamo.81.la/blog/&#34;&gt;http://tatamo.81.la/blog/&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;共-2-1:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-2（1）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-2-1&#34;&gt;共-2（1）.&lt;/h3&gt;
 
 &lt;p&gt;あなたが経験した中で印象に残っている技術的な壁はなんでしょうか？
 （例えば、C言語プログラムを複数ファイルに分割する方法など）&lt;/p&gt;
@@ -1891,7 +1880,7 @@ GitHub: &lt;a href=&#34;https://github.com/tatamo&#34;&gt;https://github.com/tat
 そして、実際にいろいろな言語で提供されているゲーム制作用のライブラリのリファレンスやソースコードを読んで、どのような機能が提供されていて、他の機能とどこで分けられているのか、それがどのような使い方をされるように作られているのかを調べました。
 そして実際に、ゲームを作るというよりゲームのフレームワークを作るようにすれば、それを使って簡潔にゲームが作れるようになるのではないかと思い、自分でプログラムを作っていきました。&lt;/p&gt;
 
-&lt;h3 id=&#34;共-2-2:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-2（2）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-2-2&#34;&gt;共-2（2）.&lt;/h3&gt;
 
 &lt;p&gt;また、その壁を乗り越えるためにとった解決法を具体的に教えてください。
 （例えば、知人に勧められた「○○」という書籍を読んだなど）&lt;/p&gt;
@@ -1921,7 +1910,7 @@ GitHub: &lt;a href=&#34;https://github.com/tatamo&#34;&gt;https://github.com/tat
 */
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;共-2-3:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-2（3）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-2-3&#34;&gt;共-2（3）.&lt;/h3&gt;
 
 &lt;p&gt;その壁を今経験しているであろう初心者にアドバイスをするとしたら、あなたはどんなアドバイスをしますか？&lt;/p&gt;
 
@@ -1937,7 +1926,7 @@ GitHub: &lt;a href=&#34;https://github.com/tatamo&#34;&gt;https://github.com/tat
 しかしながら、既存の良く考えて設計されたフレームワークを使えば、その設計に触れ親しむことにもなり、また肝心のゲームを面白くすることにより注意を払うことができるようになります。
 そのため、まずはあまり深く考えるのをやめて、とにかく動くゲームを作ってみたり、既存のライブラリやフレームワークを使ってみたりするほうがいい、とアドバイスしたいです。&lt;/p&gt;
 
-&lt;h3 id=&#34;共-3-1:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-3（1）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-3-1&#34;&gt;共-3（1）.&lt;/h3&gt;
 
 &lt;p&gt;あなたが今年のセキュリティ・キャンプで受講したいと思っている講義は何ですか？（複数可）
 そこで、どのようなことを学びたいですか？なぜそれを学びたいのですか？&lt;/p&gt;
@@ -1973,7 +1962,7 @@ GitHub: &lt;a href=&#34;https://github.com/tatamo&#34;&gt;https://github.com/tat
 ブラウザの脆弱性同様、自分がこれまで触れてきたことに関係する分野であり、それでいてセキュリティと結びつけて考えたことはありませんでした。
 ゲームとセキュリティをどのように結び付けて考えればいいのか？どのように解析されうるのか？といったことを実際に行って学び取ることができればと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;共-3-2:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;共-3（2）.&lt;/h3&gt;
+&lt;h3 id=&#34;共-3-2&#34;&gt;共-3（2）.&lt;/h3&gt;
 
 &lt;p&gt;あなたがセキュリティ・キャンプでやりたいことは何ですか？　身につけたいものは何ですか？（複数可）
 自由に答えてください。&lt;/p&gt;
@@ -2006,9 +1995,9 @@ OSとCPUがどのように協調して動作しているのか、仮想メモリ
 一緒に学んでいける人がいるということには、数えきれないほどのメリットがあるからです。
 そしてそのような人々が詳しいこと、私が詳しいことは人によって皆違うはずなので、詳しい人からたくさん学ぶことができるようになり、セキュリティキャンプが終わった後も良い影響を及ぼしあうようになることができればと考えています。&lt;/p&gt;
 
-&lt;h2 id=&#34;選択問題:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;選択問題&lt;/h2&gt;
+&lt;h2 id=&#34;選択問題&#34;&gt;選択問題&lt;/h2&gt;
 
-&lt;h3 id=&#34;選-a-1:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;選-A-1.&lt;/h3&gt;
+&lt;h3 id=&#34;選-a-1&#34;&gt;選-A-1.&lt;/h3&gt;
 
 &lt;p&gt;添付したファイルに記録された通信を検知しました。この通信が意図するものは何か、攻撃であると判断する場合は何の脆弱性を狙っているか。また、通信フローに欠けている箇所があるがどのような内容が想定されるか、考えられるだけ全て回答してください。なお、通信内容を検証した結果があれば評価に加えます。&lt;/p&gt;
 
@@ -2086,7 +2075,7 @@ TCPヘッダにFINフラグがセットされているため、これは通信�
 また、リクエストが/struts2-rest-showcase/orders.xhtml であることから、記録された通信においても私が検証に用いたのと全く同じサンプルアプリケーションが使われていたのではないかと推測できます。
 仮にそうであるならば、このアクセスに対する正常なレスポンスではデータ長が1000バイト前後に収まるはずであるため、Acknowledgment numberが1463も増えている今回の通信においては、このサーバー側システムには脆弱性が存在し、攻撃者は任意コード実行に成功したものと考えられます。&lt;/p&gt;
 
-&lt;h3 id=&#34;選-a-3:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;選-A-3.&lt;/h3&gt;
+&lt;h3 id=&#34;選-a-3&#34;&gt;選-A-3.&lt;/h3&gt;
 
 &lt;p&gt;自分がソフトウェア・ハードウェアを実装した部分について、自分とは意見が異なる実装を提案してきた人が現れた場合、あなたはどうしますか。&lt;br /&gt;
 - 自分の実装のほうが優れていると思った場合どうしますか？&lt;br /&gt;
@@ -2148,7 +2137,7 @@ IRCのようなテキストチャットは、発言のログが残り、かつ�
 &lt;p&gt;全体を通して、できるだけお互いに間違った認識がないように注意を払いながら議論を続けていくことで合意を目指す、というのが基本的な方針です。
 そして、状況が難しくなりそうならできるだけ早く第三者にも意見を求めていくべきだと思っています。&lt;/p&gt;
 
-&lt;h3 id=&#34;選-a-5:ba10b11125a0bfb60081de5c3341fee7&#34;&gt;選-A-5.&lt;/h3&gt;
+&lt;h3 id=&#34;選-a-5&#34;&gt;選-A-5.&lt;/h3&gt;
 
 &lt;p&gt;以下のプログラムはLinuxカーネル3.8〜4.4に存在する脆弱性を悪用しています。このプログラムの実行により発生する不具合を説明してください。また、この脆弱性をさらに悪用することでroot権限昇格を行うエクスプロイトを記述し、自分が試した動作環境や工夫点等を説明してください。加えて、このような攻撃を緩和する対策手法をなるべく多く挙げ、それらを説明してください。
 完全には分からなくても構いませんので、理解できたところまでの情報や試行の過程、感じた事等について自分の言葉で記述してください。また参考にしたサイトや文献があれば、それらの情報源を明記してください。&lt;/p&gt;
@@ -2379,7 +2368,6 @@ SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実�
 &lt;hr /&gt;
 
 &lt;p&gt;お目汚し失礼致しました。&lt;/p&gt;
-
       </description>
     </item>
     
@@ -2390,15 +2378,15 @@ SMAPはIntel製のCPUでサポートされている機能であり、SMEPの実�
       
       <guid>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回&lt;/a&gt;ではLR(1)法による構文解析表の実装を済ませました。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回&lt;/a&gt;ではLR(1)法による構文解析表の実装を済ませました。
 今回はいよいよ、構文解析表をもとに実際に構文解析を行うことのできる構文解析器を実装し、実際に構文解析を行ってみます。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;概略は&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;第4回&lt;/a&gt;で示した通りであり、ステートマシンの仕様に沿って構文解析表を解析できるようにします。
 第4回でアルゴリズム面まで踏み込んで解説してしまったため、あまり書くことがなくてやや後悔しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;astの定義:bed37c78c27b269093985160c6797817&#34;&gt;ASTの定義&lt;/h2&gt;
+&lt;h2 id=&#34;astの定義&#34;&gt;ASTの定義&lt;/h2&gt;
 
 &lt;p&gt;パーサを実装する前に、パーサの出力結果となる抽象構文木の定義を行います。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts&lt;/a&gt;&lt;/p&gt;
@@ -2436,7 +2424,7 @@ export interface ASTNode{
 
 &lt;p&gt;簡単ですね。&lt;/p&gt;
 
-&lt;h2 id=&#34;パーサの実装:bed37c78c27b269093985160c6797817&#34;&gt;パーサの実装&lt;/h2&gt;
+&lt;h2 id=&#34;パーサの実装&#34;&gt;パーサの実装&lt;/h2&gt;
 
 &lt;p&gt;ではParserクラスを作っていきます。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts&#34;&gt;https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts&lt;/a&gt;&lt;/p&gt;
@@ -2500,9 +2488,9 @@ public getParser(default_callback?: ParserCallback):Parser{
 
 &lt;p&gt;これで完成です。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析を実行する:bed37c78c27b269093985160c6797817&#34;&gt;構文解析を実行する&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析を実行する&#34;&gt;構文解析を実行する&lt;/h2&gt;
 
-&lt;h3 id=&#34;構文木を生成する:bed37c78c27b269093985160c6797817&#34;&gt;構文木を生成する&lt;/h3&gt;
+&lt;h3 id=&#34;構文木を生成する&#34;&gt;構文木を生成する&lt;/h3&gt;
 
 &lt;p&gt;では、実際に構文解析を実行してみましょう。
 与える構文は、以下のようになります。&lt;/p&gt;
@@ -2600,7 +2588,7 @@ const grammar:GrammarDefinition = {
 &lt;p&gt;どこからどう見ても成功ですね。
 おめでとうございます。&lt;/p&gt;
 
-&lt;h3 id=&#34;コールバックを利用して構文木のさらなる解析を行う:bed37c78c27b269093985160c6797817&#34;&gt;コールバックを利用して構文木のさらなる解析を行う&lt;/h3&gt;
+&lt;h3 id=&#34;コールバックを利用して構文木のさらなる解析を行う&#34;&gt;コールバックを利用して構文木のさらなる解析を行う&lt;/h3&gt;
 
 &lt;p&gt;ついに、本記事の目標である構文木の取得を達成しました。
 あとはこれに適当な再帰的処理を挟めば、良い感じに数式処理ができるでしょう。&lt;/p&gt;
@@ -2671,7 +2659,6 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;前回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -2682,10 +2669,10 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
       
       <guid>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回&lt;/a&gt;の記事ではLR(1)法の解説を行いました。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回&lt;/a&gt;の記事ではLR(1)法の解説を行いました。
 今回は前回解説した部分の実装を行います。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;今回はひたすらパーサジェネレータの実装をしていきます。
 概略やアルゴリズムは既に紹介しているため、基本的に省略します。
@@ -2694,7 +2681,7 @@ let solve = (arg:ParserCallbackArg)=&amp;gt;{
 &lt;p&gt;今回取り上げる部分は特にパフォーマンスに与える影響が大きいため、処理速度を重視した設計を行っています。
 そのため、天下り的な解説となる箇所が増えるかもしれませんがご了承ください。&lt;/p&gt;
 
-&lt;h2 id=&#34;syntaxdbクラスの作成:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;SyntaxDBクラスの作成&lt;/h2&gt;
+&lt;h2 id=&#34;syntaxdbクラスの作成&#34;&gt;SyntaxDBクラスの作成&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;第3回&lt;/a&gt;で終端記号と非終端記号の区別を行ったり、First集合を求めたりしたように、与えられた構文から様々な情報を得る必要があります。&lt;/p&gt;
 
@@ -2744,7 +2731,7 @@ public getTokenId(token: Token): number{
 
 &lt;p&gt;このSyntaxDBクラスは、パーサジェネレータ全体を通して一つのインスタンスのみを使いまわすようにします。&lt;/p&gt;
 
-&lt;h2 id=&#34;アイテム集合とクロージャー展開:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;アイテム集合とクロージャー展開&lt;/h2&gt;
+&lt;h2 id=&#34;アイテム集合とクロージャー展開&#34;&gt;アイテム集合とクロージャー展開&lt;/h2&gt;
 
 &lt;p&gt;まずは、LRアイテムおよびその集合を表現するクラスを作っていきます。
 アイテム集合クラスには、自身をクロージャー展開する機能を持たせることとします。&lt;/p&gt;
@@ -2799,7 +2786,7 @@ export declare class ClosureSet {
 ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自身をクロージャー展開することが出来ます。
 さらに、後述するハッシュに関連した機能、および先読み部分のマージ機能などを持ちます。&lt;/p&gt;
 
-&lt;h3 id=&#34;クロージャー展開:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;クロージャー展開&lt;/h3&gt;
+&lt;h3 id=&#34;クロージャー展開&#34;&gt;クロージャー展開&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-ts&#34;&gt;// クロージャー展開を行う
 // TODO: リファクタリング
@@ -2877,11 +2864,11 @@ private expandClosure(){
 
 &lt;p&gt;この制約がなければ、たとえば&lt;code&gt;[x,y]&lt;/code&gt;という先読み記号を持ったAというClosureItemの展開処理が済んだあと、BというClosureItemを展開したところ、&lt;code&gt;[y,z]&lt;/code&gt;という先読み記号を持ち、先読み部分以外はAと全く同じClosureItemが生成される、といった自体が発生する可能性があります。
 この場合、先読み記号&lt;code&gt;y&lt;/code&gt;については2度展開されてしまったり、それを防ぐために処理済みのClosureItemの走査を行うことで余計な計算が必要になってしまうなど、様々な弊害が発生します。
-クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けてることで、展開処理が非常に簡潔になります。&lt;/p&gt;
+クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けていることで、展開処理が非常に簡潔になります。&lt;/p&gt;
 
 &lt;p&gt;処理が終わった段階で、ClosureItemの先読み部分をマージすることによってクロージャー展開後のClosureSetが完成します。&lt;/p&gt;
 
-&lt;h3 id=&#34;ハッシュ:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;ハッシュ&lt;/h3&gt;
+&lt;h3 id=&#34;ハッシュ&#34;&gt;ハッシュ&lt;/h3&gt;
 
 &lt;p&gt;先述したように、2つのClosureSetの高速な比較を可能とする必要があります。
 そこで、ClosureItemおよびClosureSetにハッシュ文字列の生成機能を追加し、構文番号、&lt;code&gt;.&lt;/code&gt;の位置、先読み記号という要素が一致していれば同じ文字列を生成するようにすれば、同一性の比較を文字列比較に落としこむことができ、非常に高速になります。
@@ -2917,14 +2904,14 @@ ClosureItemの集合であるClosureSetの場合は、まず自身の持って�
 
 &lt;p&gt;また、LALR(1)法のDFAマージの際に、先読み記号を除いた部分が一致しているかどうか調べる必要もあるため、ハッシュ文字列は先読み部分を除いたLR(0)ハッシュと、先読み部分も含めたLR(1)ハッシュの2種類を用意しておきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;closureitemおよびclosuresetのconst性:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;ClosureItemおよびClosureSetのconst性&lt;/h4&gt;
+&lt;h4 id=&#34;closureitemおよびclosuresetのconst性&#34;&gt;ClosureItemおよびClosureSetのconst性&lt;/h4&gt;
 
 &lt;p&gt;ハッシュの再生成や、それに伴うClosureSetのソート処理を回避するため、ClosureItemおよびClosureSetは、初期化終了後は自身の状態を変化させることがないようにします。&lt;/p&gt;
 
 &lt;p&gt;たとえば、クロージャー展開を行うとClosureSetの中身は変化しますが、この処理はコンストラクタ呼び出し時に行うようにすることで、オブジェクトの初期化が終了した時点でクロージャー展開は終わっており、それ以降ClosureSetの状態が変化することはありません。
 また、ClosureSetおよびClosureItemは、LR(0)部分(先読み部分を除いた部分)が同じなら先読み記号をマージするmergeメソッドを持っていますが、このメソッドもそのオブジェクト自身の状態を変更するのではなく、新しいオブジェクトを生成してそれを返すようにしています。&lt;/p&gt;
 
-&lt;h2 id=&#34;dfaの構築:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;DFAの構築&lt;/h2&gt;
+&lt;h2 id=&#34;dfaの構築&#34;&gt;DFAの構築&lt;/h2&gt;
 
 &lt;p&gt;アイテム集合を扱えるようになったため、次はDFAの構築です。
 DFAGeneratorクラスを作っていきます。&lt;br /&gt;
@@ -2959,7 +2946,7 @@ DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMap
 
 &lt;p&gt;前回紹介したアルゴリズムをそのままコードにするだけなので、DFAの構築処理は特に解説する点はありません。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析表の構築:3aec03ed6d530aa5eea872bb2e906074&#34;&gt;構文解析表の構築&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析表の構築&#34;&gt;構文解析表の構築&lt;/h2&gt;
 
 &lt;p&gt;構文解析表と、それに必要な四種類の命令群を定義しておきます。
 また、コンフリクトが発生したことを表す命令も定義します。&lt;/p&gt;
@@ -3001,7 +2988,6 @@ ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのイ
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/&#34;&gt;前回:かんたんLR(1)法入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/&#34;&gt;次回:パーサの実装と構文解析の実行&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     
@@ -3012,16 +2998,16 @@ ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのイ
       
       <guid>http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/</guid>
       <description>
-        
-
-&lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
+        &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回&lt;/a&gt;で構文解析器を生成する際に必要となる準備を済ませたため、LR(1)法ベースのパーサジェネレータを作る用意が整いました。
 ですが相変わらず本題のパーサジェネレータ作成には入らず、まずはLR(1)法のおおまかな理論的概略の紹介を行います。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;では構文解析全体の流れを解説しましたが、実際にどのような過程でパーサを、またパーサジェネレータを作成するかについては触れませんでした。
 今回は、LR法による構文解析の流れを解説するとともに、これからどのような流れでパーサジェネレータを作成していくのかを紹介します。
 今回は解説のみのためソースコードが載りません。&lt;/p&gt;
 
-&lt;h2 id=&#34;lr-1-構文解析の流れ:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;LR(1)構文解析の流れ&lt;/h2&gt;
+&lt;h2 id=&#34;lr-1-構文解析の流れ&#34;&gt;LR(1)構文解析の流れ&lt;/h2&gt;
 
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;字句規則を用意して字句解析器にかけてトークン列を取得したあと構文規則をもとにFIRST関数とFOLLOW関数を求め、それをもとにgotoグラフを導出することによってLR表を作成して、構築したLRパーサでトークン列を解析して得た抽象構文木を処理すれば構文解析ができると知ったわたし &lt;a href=&#34;https://t.co/aIbxqSf5qj&#34;&gt;pic.twitter.com/aIbxqSf5qj&lt;/a&gt;&lt;/p&gt;&amp;mdash; たたも (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/798837425313189888&#34;&gt;2016年11月16日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
@@ -3043,7 +3029,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 &lt;p&gt;パーサジェネレータを作成して解析する構文を自由に決定できるようにする場合、4.の構文解析表までを与えられた構文に合わせて自動的に生成できるようにします。&lt;/p&gt;
 
-&lt;h2 id=&#34;アイテム集合とdfa:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;アイテム集合とDFA&lt;/h2&gt;
+&lt;h2 id=&#34;アイテム集合とdfa&#34;&gt;アイテム集合とDFA&lt;/h2&gt;
 
 &lt;p&gt;LR法による構文解析のためには、DFA(決定性有限オートマトン)の作成を行う必要があります。&lt;/p&gt;
 
@@ -3052,7 +3038,7 @@ LALR法のLR(1)法との相違点は3.のみで、他はLR(1)法と全く同じ�
 
 &lt;p&gt;アイテム集合は、文字通りアイテム(便宜的にLRアイテムと呼称します)からなる集合です。&lt;/p&gt;
 
-&lt;h3 id=&#34;lrアイテム:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;LRアイテム&lt;/h3&gt;
+&lt;h3 id=&#34;lrアイテム&#34;&gt;LRアイテム&lt;/h3&gt;
 
 &lt;p&gt;個別のLRアイテムは、以下のようなものです。&lt;/p&gt;
 
@@ -3074,7 +3060,7 @@ x,yは終端記号
 先読み記号は常に終端記号であることに注意してください。
 また、&lt;code&gt;$&lt;/code&gt;は「入力の終わり」を表す記号で、これは便宜的に終端記号として扱います(&lt;a href=&#34;http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/&#34;&gt;第2回&lt;/a&gt;で内部的に追加したSymbol(EOF)トークンのことです)。&lt;/p&gt;
 
-&lt;h3 id=&#34;dfaの構築:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;DFAの構築&lt;/h3&gt;
+&lt;h3 id=&#34;dfaの構築&#34;&gt;DFAの構築&lt;/h3&gt;
 
 &lt;p&gt;まず、DFAを最初の状態で初期化します。
 このとき、DFAのノード数は一つのみであり、そのノードは、以下のようなLRアイテム一つのみを要素とするアイテム集合を持ちます。&lt;/p&gt;
@@ -3090,7 +3076,7 @@ x,yは終端記号
 
 &lt;p&gt;これを自己展開させることによって、構文解析のためのDFAを構築していきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;クロージャー展開:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;クロージャー展開&lt;/h4&gt;
+&lt;h4 id=&#34;クロージャー展開&#34;&gt;クロージャー展開&lt;/h4&gt;
 
 &lt;p&gt;まず、初期化時点で存在するこのDFAノードは、まだ完全な状態にはなっていません。
 一定のルールに従い、アイテム集合を「クロージャー展開」する必要があります。&lt;/p&gt;
@@ -3162,7 +3148,7 @@ X -&amp;gt; . 0 [1]
 &lt;p&gt;以上がクロージャー展開の処理です。
 こうして展開したアイテム集合をもとに、新しいDFAノードを生成していきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;新しいdfaノードの生成:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;新しいDFAノードの生成&lt;/h4&gt;
+&lt;h4 id=&#34;新しいdfaノードの生成&#34;&gt;新しいDFAノードの生成&lt;/h4&gt;
 
 &lt;p&gt;クロージャー展開が完了したアイテム集合から、一定のルールのもとで新しいDFAノードを生成します。&lt;/p&gt;
 
@@ -3218,7 +3204,7 @@ S -&amp;gt; X . 1 [$]
 
 &lt;p&gt;この処理を繰り返し、DFAノードが新しく生成されなくなればDFAの構築は終了です。&lt;/p&gt;
 
-&lt;h4 id=&#34;lalr法のみ-先読み部分のマージ:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;(LALR法のみ)先読み部分のマージ&lt;/h4&gt;
+&lt;h4 id=&#34;lalr法のみ-先読み部分のマージ&#34;&gt;(LALR法のみ)先読み部分のマージ&lt;/h4&gt;
 
 &lt;p&gt;LALR法では、この時点でDFAのサイズ縮小を行います。
 そのアルゴリズムは、以下の通りです。&lt;/p&gt;
@@ -3246,12 +3232,12 @@ Y -&amp;gt; .V W [x,y,z]
 
 &lt;p&gt;そして、DFAノードAまたはBに対して辺を張っているDFAノードが存在するならば、それらの辺をDFAノードCに向けたものに書き換えます。&lt;/p&gt;
 
-&lt;h2 id=&#34;構文解析表と構文解析器:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析表と構文解析器&lt;/h2&gt;
+&lt;h2 id=&#34;構文解析表と構文解析器&#34;&gt;構文解析表と構文解析器&lt;/h2&gt;
 
 &lt;p&gt;DFAが完成したら、それをもとにして構文解析表を生成していきます。
 構文解析表はそれ自体がステートマシンの動作仕様を表すものであり、構文解析表が完成してしまえば、それに沿ってステートマシンを動作させることで構文解析が可能となります。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析を行うステートマシン:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析を行うステートマシン&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析を行うステートマシン&#34;&gt;構文解析を行うステートマシン&lt;/h3&gt;
 
 &lt;p&gt;構文解析表には、ステートマシンの現在の状態、および次の入力に応じて、4種類の命令のいずれかが記述されます。
 構文解析を行うステートマシンは、現在の状態を示すスタックと、構文解析の結果を保持するスタックの2つのスタックを持ちます。
@@ -3265,12 +3251,12 @@ Y -&amp;gt; .V W [x,y,z]
 とはいえ、ステートマシンの仕様なんざ読んでいて動きが分かるわけもなく楽しくも何ともないため、参考資料の&lt;a href=&#34;http://www.slideshare.net/ichikaz3/lr-parsing&#34;&gt;LR parsing&lt;/a&gt;のスライドを確認していただくことをおすすめします。
 ステートマシンの動きを視覚的に追いかけることができて非常にわかりやすいです。&lt;/p&gt;
 
-&lt;h4 id=&#34;shift命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;shift命令&lt;/h4&gt;
+&lt;h4 id=&#34;shift命令&#34;&gt;shift命令&lt;/h4&gt;
 
 &lt;p&gt;shift命令を受けると、ステートマシンは入力を一つ消費します。
 shift命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。&lt;/p&gt;
 
-&lt;h4 id=&#34;reduce命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;reduce命令&lt;/h4&gt;
+&lt;h4 id=&#34;reduce命令&#34;&gt;reduce命令&lt;/h4&gt;
 
 &lt;p&gt;reduce命令は文法idが付与されています。
 ステートマシンがreduce命令を受けると、示された文法規則を確認し、その右辺の記号の数だけ状態スタックからポップして取り除きます。
@@ -3278,27 +3264,27 @@ shift命令には状態番号が付与されているので、ステートマシ
 
 &lt;p&gt;そしてその処理の終了後、構文解析表の(状態スタックの一番上にある状態、規則の左辺の記号)の位置にあるgoto命令を実行させます。&lt;/p&gt;
 
-&lt;h4 id=&#34;goto命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;goto命令&lt;/h4&gt;
+&lt;h4 id=&#34;goto命令&#34;&gt;goto命令&lt;/h4&gt;
 
 &lt;p&gt;goto命令は、reduce命令の直後に実行されることが期待されます。
 goto命令には状態番号が付与されているので、ステートマシンは状態スタックにその数値を追加します。
 shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 
-&lt;h4 id=&#34;accept命令:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;accept命令&lt;/h4&gt;
+&lt;h4 id=&#34;accept命令&#34;&gt;accept命令&lt;/h4&gt;
 
 &lt;p&gt;ステートマシンがaccept命令を受けると、それは構文解析が終了したことを意味します。
 理想的な入力が与えられた場合、入力は全て消費され、結果スタックには最終的な構文解析結果のみが入っていることが期待されます。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析器:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析器&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析器&#34;&gt;構文解析器&lt;/h3&gt;
 
 &lt;p&gt;構文解析器は、上記の仕様をなぞって構文解析表を読み取ることのできるステートマシンそのものです。
 よって、構文解析表さえ個々の構文にあわせて生成することができれば、それを構文解析器に与えることによってさまざまな構文の解析が可能になります。&lt;/p&gt;
 
-&lt;h3 id=&#34;構文解析表の構築:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;構文解析表の構築&lt;/h3&gt;
+&lt;h3 id=&#34;構文解析表の構築&#34;&gt;構文解析表の構築&lt;/h3&gt;
 
 &lt;p&gt;完成したDFAをもとにして、構文解析表を生成することができます。&lt;/p&gt;
 
-&lt;h4 id=&#34;shiftおよびgotoオペレーションの登録:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;shiftおよびgotoオペレーションの登録&lt;/h4&gt;
+&lt;h4 id=&#34;shiftおよびgotoオペレーションの登録&#34;&gt;shiftおよびgotoオペレーションの登録&lt;/h4&gt;
 
 &lt;p&gt;それぞれのDFAノードは、ステートマシンの状態と対応しています。
 簡単のため、個々のDFAノードには一意なid(ステートマシンの状態番号)が割り振られているものとします。
@@ -3308,7 +3294,7 @@ shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 
 &lt;p&gt;その辺のラベルの記号が非終端記号であるならば、同様にしてgoto命令を書き込みます。&lt;/p&gt;
 
-&lt;h4 id=&#34;acceptおよびreduceオペレーションの登録:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;acceptおよびreduceオペレーションの登録&lt;/h4&gt;
+&lt;h4 id=&#34;acceptおよびreduceオペレーションの登録&#34;&gt;acceptおよびreduceオペレーションの登録&lt;/h4&gt;
 
 &lt;p&gt;すべてのDFAノードについて、そのアイテム集合の持つLRアイテム一つ一つを確認していきます。
 もしも&lt;code&gt;.&lt;/code&gt;の位置が右辺の末尾にある場合、そのLRアイテムの持つ先読み記号それぞれについて、以下の処理を行います。&lt;/p&gt;
@@ -3317,7 +3303,7 @@ shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 
 &lt;p&gt;ただし、その規則が&lt;code&gt;S&#39;&lt;/code&gt;に対応するものであった場合、かわりにaccept命令を書き込みます。&lt;/p&gt;
 
-&lt;h4 id=&#34;shift-reduceコンフリクト:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;shift/reduceコンフリクト&lt;/h4&gt;
+&lt;h4 id=&#34;shift-reduceコンフリクト&#34;&gt;shift/reduceコンフリクト&lt;/h4&gt;
 
 &lt;p&gt;shiftオペレーションおよびreduceオペレーションは、表の同じ位置に競合して書き込まれてしまうことがあります。
 このような状況を、shift/reduceコンフリクトと呼びます。
@@ -3332,7 +3318,7 @@ shift命令と異なり、入力の消費は行いません。&lt;/p&gt;
 &lt;p&gt;もうひとつは、規則ごとにオペレーションの優先度を設定し、コンフリクトが発生した場合は強制的にどちらかの命令を実行すると決めてしまうことです。
 これは一般的に行われている方法であり、かなり乱暴ですが大抵の場合はまあなんとかなります。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考資料:aebbcc1e0aae8e4a96be644adf00eb3f&#34;&gt;参考資料&lt;/h2&gt;
+&lt;h2 id=&#34;参考資料&#34;&gt;参考資料&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回&lt;/a&gt;で紹介したものを今回もそのまま参考資料としているため、基本的にはそちらをご覧ください。
 今回紹介した内容の理解を深めるのに特に役立つと思われるおすすめの資料を抜粋しておきます。&lt;/p&gt;
@@ -3352,7 +3338,6 @@ LR(1) DFA、クロージャー展開、構文解析表等について詳細な�
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/&#34;&gt;第1回:かんたん構文解析入門&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/&#34;&gt;前回:儀式の下準備&lt;/a&gt;
 &lt;a href=&#34;http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/&#34;&gt;次回:LR(1)パーサジェネレータの実装&lt;/a&gt;&lt;/p&gt;
-
       </description>
     </item>
     

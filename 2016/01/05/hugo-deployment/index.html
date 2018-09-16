@@ -76,11 +76,11 @@
         <a href="http://tatamo.81.la/blog/tags/github/">GitHub</a>
         <a href="http://tatamo.81.la/blog/tags/wercker/">wercker</a>
         <a href="http://tatamo.81.la/blog/tags/deploybot/">DeployBot</a></p>
-        
+        <p><a href="https://gohugo.io/">Hugo</a>によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。</p>
 
-<p><a href="https://gohugo.io/">Hugo</a>によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。</p>
+<p></p>
 
-<h2 id="werckerを使って自動ビルドする:288053c42ac37fddb3dbfcd51f807cce">Werckerを使って自動ビルドする</h2>
+<h2 id="werckerを使って自動ビルドする">Werckerを使って自動ビルドする</h2>
 
 <p>まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
 記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
@@ -90,7 +90,7 @@
 Werckerを利用した自動デプロイは、<a href="https://gohugo.io/tutorials/automated-deployments/">Hugoの公式ドキュメント</a>に記事があるため、これを参考に行います。
 この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。</p>
 
-<h3 id="wercker-ymlの記述:288053c42ac37fddb3dbfcd51f807cce">wercker.ymlの記述</h3>
+<h3 id="wercker-ymlの記述">wercker.ymlの記述</h3>
 
 <p>公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
 既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。</p>
@@ -105,7 +105,7 @@ build:
 <p>これだけでHugoのビルドが可能です。
 ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。</p>
 
-<h2 id="werckerとdeploybotを使って自動デプロイする:288053c42ac37fddb3dbfcd51f807cce">WerckerとDeployBotを使って自動デプロイする</h2>
+<h2 id="werckerとdeploybotを使って自動デプロイする">WerckerとDeployBotを使って自動デプロイする</h2>
 
 <p>前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。</p>
 
@@ -165,9 +165,9 @@ deploy:
 DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
 これで目的のサーバーへの自動デプロイが完了しました。</p>
 
-<h2 id="補足など:288053c42ac37fddb3dbfcd51f807cce">補足など</h2>
+<h2 id="補足など">補足など</h2>
 
-<h3 id="githubリポジトリの分割:288053c42ac37fddb3dbfcd51f807cce">GitHubリポジトリの分割</h3>
+<h3 id="githubリポジトリの分割">GitHubリポジトリの分割</h3>
 
 <p>Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。</p>
 
@@ -181,16 +181,16 @@ DeployBotはリポジトリが更新されるとその内容をそのままサ�
 
 <p>というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。</p>
 
-<h3 id="werckerの設定:288053c42ac37fddb3dbfcd51f807cce">Werckerの設定</h3>
+<h3 id="werckerの設定">Werckerの設定</h3>
 
-<h4 id="dockerの使用:288053c42ac37fddb3dbfcd51f807cce">Dockerの使用</h4>
+<h4 id="dockerの使用">Dockerの使用</h4>
 
 <p>Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
 Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、<a href="http://thleap.net/blog/recovering-wercker/">boxが見つからないというエラー</a>が発生します。
 逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
 (なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)</p>
 
-<h4 id="デプロイターゲット登録時のauto-deploy設定:288053c42ac37fddb3dbfcd51f807cce">デプロイターゲット登録時のAuto deploy設定</h4>
+<h4 id="デプロイターゲット登録時のauto-deploy設定">デプロイターゲット登録時のAuto deploy設定</h4>
 
 <p>ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&rdquo;auto deploy successful builds to branch(es):&ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
 GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。</p>
@@ -208,7 +208,6 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
 
 <p>また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
 デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。</p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

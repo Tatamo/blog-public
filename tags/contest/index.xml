@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Mon, 18 Dec 2017 01:30:00 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/tags/contest/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/contest/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>ACM-ICPC2017アジアつくば大会に参加しました</title>
@@ -16,9 +16,7 @@
       
       <guid>http://tatamo.81.la/blog/2017/12/18/icpc-2017-asia/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の18日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の18日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -27,11 +25,13 @@
 
 &lt;p&gt;結果としては3問通して&lt;a href=&#34;http://icpc2017.yamagula.ic.i.u-tokyo.ac.jp/standings/&#34;&gt;39位&lt;/a&gt;でした。&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;実績「座っているだけのお仕事」&lt;br&gt;解除条件：ICPCで一度たりとも競技用マシンに触れない&lt;br&gt;を達成しました💺💤&lt;/p&gt;&amp;mdash; Tatamo@Super-Srups (@&lt;strong&gt;tatamo&lt;/strong&gt;) &lt;a href=&#34;https://twitter.com/__tatamo__/status/942290374382383104?ref_src=twsrc%5Etfw&#34;&gt;2017年12月17日&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 なにもしないをしました&lt;/p&gt;
 
-&lt;h2 id=&#34;チーム構成-方針:265df706d5a774eea5a09d1b00a6a527&#34;&gt;チーム構成・方針&lt;/h2&gt;
+&lt;h2 id=&#34;チーム構成-方針&#34;&gt;チーム構成・方針&lt;/h2&gt;
 
 &lt;p&gt;私の所属するチームであるSuper-Srupsのメンバー構成は以下の通りです。&lt;/p&gt;
 
@@ -61,46 +61,46 @@
 そのため私は英語で与えられる問題文の読解、他メンバーの補助および考察少しを担当しました。
 他の2人はUSキーボードのEnterキーが空振りするとかgeditがつらいとかubuntuの使い方がわからないとか大変そうでした。&lt;/p&gt;
 
-&lt;h2 id=&#34;解いた問題:265df706d5a774eea5a09d1b00a6a527&#34;&gt;解いた問題&lt;/h2&gt;
+&lt;h2 id=&#34;解いた問題&#34;&gt;解いた問題&lt;/h2&gt;
 
 &lt;p&gt;問題の内容については&lt;a href=&#34;https://storage.googleapis.com/icpcsec/icpc2017-regional/problems.pdf&#34;&gt;問題文&lt;/a&gt;を参照してください。&lt;/p&gt;
 
-&lt;h3 id=&#34;a:265df706d5a774eea5a09d1b00a6a527&#34;&gt;A&lt;/h3&gt;
+&lt;h3 id=&#34;a&#34;&gt;A&lt;/h3&gt;
 
 &lt;p&gt;やるだけ問です。
 問題文を読んで&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏に投げたらよろしくやってくれました。&lt;/p&gt;
 
-&lt;h3 id=&#34;c:265df706d5a774eea5a09d1b00a6a527&#34;&gt;C&lt;/h3&gt;
+&lt;h3 id=&#34;c&#34;&gt;C&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏と考察を担当し、実装は&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏にやってもらいました。
 値が負になるときの特殊ケースや変数の更新タイミングのミス等のちょっとした考察漏れ・実装ミスを3つほど同時に仕込んでしまって数十分ほど無駄に消費してしまったので反省点が多いです。&lt;/p&gt;
 
-&lt;h3 id=&#34;i:265df706d5a774eea5a09d1b00a6a527&#34;&gt;I&lt;/h3&gt;
+&lt;h3 id=&#34;i&#34;&gt;I&lt;/h3&gt;
 
 &lt;p&gt;B問題・C問題で無限に時間を費やしているうちに他チームは問題をたくさん解いていたので、風船の浮かんでいる状況を見てI,F,G問題に解く対象を絞りました。
 なお今年の問題の並び順は、A,B,C問題までが易しい順に並んでおりそれ以降の問題はランダムになっています。&lt;/p&gt;
 
 &lt;p&gt;I問題は問題文を読んで&lt;a href=&#34;https://twitter.com/kurenai3110&#34;&gt;@kurenai3110&lt;/a&gt;氏に丸投げしたら見事に解いてくれました。&lt;/p&gt;
 
-&lt;h2 id=&#34;解けなかった問題:265df706d5a774eea5a09d1b00a6a527&#34;&gt;解けなかった問題&lt;/h2&gt;
+&lt;h2 id=&#34;解けなかった問題&#34;&gt;解けなかった問題&lt;/h2&gt;
 
-&lt;h3 id=&#34;b:265df706d5a774eea5a09d1b00a6a527&#34;&gt;B&lt;/h3&gt;
+&lt;h3 id=&#34;b&#34;&gt;B&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://twitter.com/mmxsrup&#34;&gt;@mmxsrup&lt;/a&gt;氏がメインで担当しました。
 制限実行時間10秒の問題ですが、最初にすべての可能な傾きの同じ線分の集合を持ったりしていたらハマってしまって通せませんでした。
 普通に全探索すれば解けるなどということを終了後に聞きましたが、全然通らなかったのでいっそ早めに放り投げるべきだったのかもしれません。&lt;/p&gt;
 
-&lt;h3 id=&#34;f:265df706d5a774eea5a09d1b00a6a527&#34;&gt;F&lt;/h3&gt;
+&lt;h3 id=&#34;f&#34;&gt;F&lt;/h3&gt;
 
 &lt;p&gt;私はグラフは最短経路の超典型問ぐらいしか解けないので、問題を訳すだけして他の２人に投げました。
 実装の最後の方まで行っていたようなのですが間に合いませんでした。&lt;/p&gt;
 
-&lt;h3 id=&#34;g:265df706d5a774eea5a09d1b00a6a527&#34;&gt;G&lt;/h3&gt;
+&lt;h3 id=&#34;g&#34;&gt;G&lt;/h3&gt;
 
 &lt;p&gt;考察を担当しました。
 座標変換で簡単になるというのは気付きませんでしたが、極座標→XY座標への変換をしてからdX=正三角形の辺の長さの半分, dY=正三角形の高さ で区切って場合分け2回ほどで数学的に求めて終わりです。&lt;/p&gt;
 
-&lt;h2 id=&#34;結果:265df706d5a774eea5a09d1b00a6a527&#34;&gt;結果&lt;/h2&gt;
+&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
 
 &lt;p&gt;A問題解いた直後に沼にはまって時間を無為に費やし、終盤になってB,F,Gの解法が出揃ったが実装時間が圧倒的に足りないという状況に陥り、結局4問目を通せず3完でした。
 予選と全く同じ順位の39位です。&lt;/p&gt;
@@ -111,7 +111,7 @@
 &lt;p&gt;とはいえ、そもそも私は自力で問題を解けないので、問題文の和訳と考察補助とただ座っているぐらいしか仕事がない感じです。
 こういう場にカジュアル勢が紛れ込んでしまって肩身が狭いというか申し訳無さです。&lt;/p&gt;
 
-&lt;h2 id=&#34;雑事:265df706d5a774eea5a09d1b00a6a527&#34;&gt;雑事&lt;/h2&gt;
+&lt;h2 id=&#34;雑事&#34;&gt;雑事&lt;/h2&gt;
 
 &lt;p&gt;1日目は昼過ぎに集合で、参加受付+開会式+練習+懇親会だけで、解放される時間がなぜか20時です。
 思うところがないでもありません。&lt;/p&gt;
@@ -123,7 +123,7 @@
 
 &lt;p&gt;また他のブースではよくわからないクイズを解くだけでANKERの10000mAhモバイルバッテリー(自分が持っている物の一つ下のモデル)をもらうことができました。&lt;/p&gt;
 
-&lt;h2 id=&#34;つくば:265df706d5a774eea5a09d1b00a6a527&#34;&gt;つくば&lt;/h2&gt;
+&lt;h2 id=&#34;つくば&#34;&gt;つくば&lt;/h2&gt;
 
 &lt;p&gt;交通費補助が新幹線代程度出るものの、宿泊施設の提供なしで宿泊補助費は5000円しか出ないので新幹線で行くと大赤字です。
 そこでLCCで飛んでいくことで交通費を浮かせて2泊するための宿泊費に充てました(これって書いていいんでしょうか)。&lt;/p&gt;
@@ -136,13 +136,12 @@
 
 &lt;p&gt;1日目は部屋に備え付けの浴室を使いましたが、湯を張るために蛇口を開くと汚れの混じった赤っぽい水が出てきたので、無心でシャワーを浴びてそのまま何も考えずに寝ました。&lt;/p&gt;
 
-&lt;h2 id=&#34;3日目:265df706d5a774eea5a09d1b00a6a527&#34;&gt;3日目&lt;/h2&gt;
+&lt;h2 id=&#34;3日目&#34;&gt;3日目&lt;/h2&gt;
 
 &lt;p&gt;エクスカーションや企業見学に参加する人に合わせて飛行機を取ったので、3日目は夜まで暇です。
 ほとんどの人は企業見学に行ったので、残りの3人で東京観光に行きました。
 大洗は非常に遠かったのでやめておいて、VRの体験や靖国神社に行ったりして所々で先輩におごってもらいました。
 大荷物を持って長距離を移動した上に懇親会等で立ちっぱなしで疲労が蓄積していたので、夕方はカフェで休憩しながら時間を潰していました。&lt;/p&gt;
-
       </description>
     </item>
     

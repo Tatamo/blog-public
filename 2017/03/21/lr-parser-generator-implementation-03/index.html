@@ -75,16 +75,16 @@
         <a href="http://tatamo.81.la/blog/tags/parser-generator/">parser generator</a>
         <a href="http://tatamo.81.la/blog/tags/parser/">parser</a>
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
-        
-
-<p><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">前回</a>は字句解析器の作成を行ったので、次にLR(1)法による構文解析のためのパーサジェネレータの作成に入っていきます。
+        <p><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">前回</a>は字句解析器の作成を行ったので、次にLR(1)法による構文解析のためのパーサジェネレータの作成に入っていきます。
 今回は、LR(1)構文解析器の構築のために必要な、終端記号と非終端記号の区別、Nulls集合、First集合の導出等を行えるようにしていきます。</p>
+
+<p></p>
 
 <p>いよいよ構文解析部分の実装にとりかかるため、今後はLR(1)法に焦点を絞って解説していきます。</p>
 
 <p>今回はその準備段階として必要になる部分を作っていくため、どんどん実装を進めていきます。</p>
 
-<h2 id="構文規則を定義する:54819cf28b4a2703da41ec17803c8ec7">構文規則を定義する</h2>
+<h2 id="構文規則を定義する">構文規則を定義する</h2>
 
 <p>まずは、前回字句規則を定義したように、構文規則を定義していく必要があります。</p>
 
@@ -158,7 +158,7 @@ const grammar:GrammarDefinition = {
 これは文字通り開始記号のことであり、最初にどの記号から構文解析を開始するか表すために必要です。
 最終的に構文解析を行った結果として構文木を得た場合、この開始記号が構文木の根となります。</p>
 
-<h2 id="終端記号と非終端記号を区別する:54819cf28b4a2703da41ec17803c8ec7">終端記号と非終端記号を区別する</h2>
+<h2 id="終端記号と非終端記号を区別する">終端記号と非終端記号を区別する</h2>
 
 <p>構文解析器を作るためには、与えられた構文から終端記号と非終端記号を区別できるようにする必要があります。
 定義を再確認しておくと、規則の左辺に現れることのない記号が終端記号、現れる記号が非終端記号です。</p>
@@ -210,7 +210,7 @@ constructor(syntaxdef:SyntaxDefinitions){
 
 <p>なおこの記事において、「トークン」と「記号」は概念上は同様の意味を持ちますが、前者はプログラム内で記号を表すための構造として扱い、理論的な概念について触れる際は後者を使うものとします。</p>
 
-<h2 id="nulls集合とfirst集合:54819cf28b4a2703da41ec17803c8ec7">Nulls集合とFirst集合</h2>
+<h2 id="nulls集合とfirst集合">Nulls集合とFirst集合</h2>
 
 <p>構文解析器の作成のためには、First集合というものを求める必要があります。
 そしてFisrt集合を求めるためには、Nulls集合が必要です。</p>
@@ -226,9 +226,9 @@ constructor(syntaxdef:SyntaxDefinitions){
 
 <p>が詳しいので厳密な定義等はそちらを参照してください(First,NullableはLL(1)の項で紹介されています)。</p>
 
-<h3 id="nulls集合を求める:54819cf28b4a2703da41ec17803c8ec7">Nulls集合を求める</h3>
+<h3 id="nulls集合を求める">Nulls集合を求める</h3>
 
-<h4 id="nulls集合とは:54819cf28b4a2703da41ec17803c8ec7">Nulls集合とは</h4>
+<h4 id="nulls集合とは">Nulls集合とは</h4>
 
 <p>ある終端記号または非終端記号について、それが「Nullableである」かどうかを判別する必要があります。
 「Nullableな記号」を集めた集合をNulls集合ということにします。
@@ -261,7 +261,7 @@ Y -&gt;
 ひとつでも空列となるパターンが存在する場合、Nulls集合に含まなければなりません。
 また当然ですが、左辺に現れることのない終端記号はNullableではありません。</p>
 
-<h4 id="nulls集合を実装する:54819cf28b4a2703da41ec17803c8ec7">Nulls集合を実装する</h4>
+<h4 id="nulls集合を実装する">Nulls集合を実装する</h4>
 
 <p>なにやら面倒そうですが、実装はそう複雑ではありません。
 NullableSetクラスを作ってみましょう。<br />
@@ -322,9 +322,9 @@ export class NullableSet{
 そこで、すべての規則を調べ、その右辺の記号がすべて既存のNull集合に含まれているならば、その記号もNulls集合に追加します。<br />
 この処理を、一巡しても新しいNullableな規則が追加されなくなるまで繰り返せば終了です。</p>
 
-<h3 id="first集合を求める:54819cf28b4a2703da41ec17803c8ec7">First集合を求める</h3>
+<h3 id="first集合を求める">First集合を求める</h3>
 
-<h4 id="first集合とは:54819cf28b4a2703da41ec17803c8ec7">First集合とは</h4>
+<h4 id="first集合とは">First集合とは</h4>
 
 <p>たとえば先ほど挙げた<code>X</code>が<code>10</code>や<code>0</code>となるように、非終端記号は規則をたどっていくと終端記号のみの列に変換することができます。
 構文解析を行うためには、ある非終端記号から得られるそのような終端記号の列のうち、最も左側にどのような終端記号が来るのかを知る必要があります。
@@ -337,7 +337,7 @@ export class NullableSet{
 また、Firstに与える引数は記号だけでなく記号列である可能性もあります。
 <code>First(YA)</code>なら、<code>Y</code>がNullableであるため、<code>YA</code>から得られうる文字列の左端になりうるのは<code>1</code>と<code>A</code>なので、<code>{1, A}</code>のようになるでしょう。</p>
 
-<h4 id="first集合の実装:54819cf28b4a2703da41ec17803c8ec7">First集合の実装</h4>
+<h4 id="first集合の実装">First集合の実装</h4>
 
 <p>話がごちゃごちゃしてきましたが、実装に移りましょう。
 基本的なアルゴリズムは、以下のようになります。</p>
@@ -391,7 +391,6 @@ getメソッドではトークンを引数にとるだけでなく、トーク�
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
 <a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">前回:字句解析器の実装</a><br />
 <a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">次回:かんたんLR(1)法入門</a></p>
-
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </article>

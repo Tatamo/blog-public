@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on わたしろぐ</title>
+    <link>http://tatamo.81.la/blog/categories/</link>
+    <description>Recent content in Categories on わたしろぐ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <atom:link href="/categories/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Dev</title>
+      <link>http://tatamo.81.la/blog/categories/dev/</link>
+      <pubDate>Fri, 09 Feb 2018 19:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/categories/dev/</guid>
+      <description>
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Diary</title>
+      <link>http://tatamo.81.la/blog/categories/diary/</link>
+      <pubDate>Mon, 18 Dec 2017 01:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/categories/diary/</guid>
+      <description>
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Game</title>
+      <link>http://tatamo.81.la/blog/categories/game/</link>
+      <pubDate>Thu, 08 Feb 2018 00:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/categories/game/</guid>
+      <description>
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Info</title>
+      <link>http://tatamo.81.la/blog/categories/info/</link>
+      <pubDate>Fri, 11 Dec 2015 00:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/categories/info/</guid>
+      <description>
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Pc</title>
+      <link>http://tatamo.81.la/blog/categories/pc/</link>
+      <pubDate>Mon, 18 Dec 2017 21:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/categories/pc/</guid>
+      <description>
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

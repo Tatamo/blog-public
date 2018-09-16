@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Wed, 07 Dec 2016 13:53:12 +0900</lastBuildDate>
-    <atom:link href="http://tatamo.81.la/blog/tags/homebuilt_pc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/homebuilt_pc/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>自作PCの紹介</title>
@@ -16,9 +16,7 @@
       
       <guid>http://tatamo.81.la/blog/2016/12/07/intro-my-homebuilt-pc/</guid>
       <description>
-        
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の7日の記事です。
+        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/1881&#34;&gt;Kobe University Advent Calendar 2016&lt;/a&gt;の7日の記事です。
 なお私は当該大学の学部2年(2016年12月現在)です。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -26,7 +24,9 @@
 &lt;p&gt;私は自作PCerなので、この機会に普段使用しているPCのパーツ構成を紹介していきたいと思います。
 趣味の中でも結構金がかかっている分野です。&lt;/p&gt;
 
-&lt;h2 id=&#34;外観:14cdc902344e522bd60455484bb9d961&#34;&gt;外観&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;外観&#34;&gt;外観&lt;/h2&gt;
 
 &lt;p&gt;クリックすると別タブで拡大表示します。&lt;/p&gt;
 
@@ -34,16 +34,16 @@
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; alt=&#34;自作PC外観(卓上)&#34; width=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;使用用途-スペック:14cdc902344e522bd60455484bb9d961&#34;&gt;使用用途・スペック&lt;/h2&gt;
+&lt;h2 id=&#34;使用用途-スペック&#34;&gt;使用用途・スペック&lt;/h2&gt;
 
 &lt;p&gt;ごく普通のプログラミングやネットサーフィンに加え、ゲームを多くプレイするため、少なくとも比較的新しいゲームを高画質設定でプレイ出来るだけのスペックを目指して構築しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;パーツ構成-本体:14cdc902344e522bd60455484bb9d961&#34;&gt;パーツ構成(本体)&lt;/h2&gt;
+&lt;h2 id=&#34;パーツ構成-本体&#34;&gt;パーツ構成(本体)&lt;/h2&gt;
 
 &lt;p&gt;おおよそ5年前の2011年年末から2012年の年始に組み上げ、そこからパーツを少しずつ更新して現在に至ります。
 当時のパーツで残っているのはCPUとM/B、およびメモリとHDD程度。&lt;/p&gt;
 
-&lt;h3 id=&#34;cpu-マザーボード:14cdc902344e522bd60455484bb9d961&#34;&gt;CPU・マザーボード&lt;/h3&gt;
+&lt;h3 id=&#34;cpu-マザーボード&#34;&gt;CPU・マザーボード&lt;/h3&gt;
 
 &lt;p&gt;CPU: Phenom II X6 1065T&lt;br /&gt;
 M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
@@ -59,7 +59,7 @@ M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
 一方でそれよりも上の性能を目指す場合はIntelの一強状態となっており、ハイエンドでもAMDが多少は追随できていた2011年当時とは状況が異なっています。
 そのため、今からPCを組む場合は何も考えずにAMD製品を選ぶというわけにはいかないように思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;メモリ:14cdc902344e522bd60455484bb9d961&#34;&gt;メモリ&lt;/h3&gt;
+&lt;h3 id=&#34;メモリ&#34;&gt;メモリ&lt;/h3&gt;
 
 &lt;p&gt;PC3-12800の4GBを4枚 計16GB&lt;br /&gt;
 →最近1枚壊れたため3枚12GB&lt;/p&gt;
@@ -68,7 +68,7 @@ M/B: GIGABYTE GA-990FXA-UD5&lt;/p&gt;
 普通に使っていると8GBで足りるか足りないか程度だと思うので、8GBから多少上であればいいと思います。
 今のところ16GBから12GBに減ってもほとんど影響を感じることはありません。&lt;/p&gt;
 
-&lt;h3 id=&#34;グラフィックボード:14cdc902344e522bd60455484bb9d961&#34;&gt;グラフィックボード&lt;/h3&gt;
+&lt;h3 id=&#34;グラフィックボード&#34;&gt;グラフィックボード&lt;/h3&gt;
 
 &lt;p&gt;SAPPHIRE R9 270 2G GDDR5&lt;/p&gt;
 
@@ -79,12 +79,12 @@ PCを組んだ当初は二束三文で売られていたRadeon HD4xxxか5xxxあ�
 
 &lt;p&gt;当然ながらVRをプレイしようと考えるのは無理があります。&lt;/p&gt;
 
-&lt;h3 id=&#34;電源:14cdc902344e522bd60455484bb9d961&#34;&gt;電源&lt;/h3&gt;
+&lt;h3 id=&#34;電源&#34;&gt;電源&lt;/h3&gt;
 
 &lt;p&gt;どのモデルだったか忘れました。
 500Wのものですが、一度壊れたので換装しています。&lt;/p&gt;
 
-&lt;h3 id=&#34;ストレージ:14cdc902344e522bd60455484bb9d961&#34;&gt;ストレージ&lt;/h3&gt;
+&lt;h3 id=&#34;ストレージ&#34;&gt;ストレージ&lt;/h3&gt;
 
 &lt;p&gt;SSD: CFD CSSD-S6T512NHG6Q (512GB)&lt;br /&gt;
 HDD1: HGST HDS721050CLA362 (500GB)&lt;br /&gt;
@@ -97,7 +97,7 @@ SSDは登場当初に比べて随分安くなった印象です。
 
 &lt;p&gt;SSD化までは500GBのHDD1本だけで運用していましたが、通電時間2万時間越えのこのHDDは今でも不良セクタが1つもなくとても健康な状態のようです。&lt;/p&gt;
 
-&lt;h3 id=&#34;光学ドライブ:14cdc902344e522bd60455484bb9d961&#34;&gt;光学ドライブ&lt;/h3&gt;
+&lt;h3 id=&#34;光学ドライブ&#34;&gt;光学ドライブ&lt;/h3&gt;
 
 &lt;p&gt;Pioneer BDR-207JBK&lt;/p&gt;
 
@@ -105,7 +105,7 @@ SSDは登場当初に比べて随分安くなった印象です。
 1万円台中盤程度で、十数万円をどうにか絞り出してPCを組んだ当初これを買っている余裕はなかったため、OSのインストール等は手元にあったUSB外付けDVDドライブでなんとかしのぎ、資金力の回復を待った上で後付けで購入しました。
 耐久性も良好ですし性能も高く良い感じですが、PCケースと干渉してディスクトレイがうまく開かないことがあるのが玉に瑕。&lt;/p&gt;
 
-&lt;h3 id=&#34;pcケース:14cdc902344e522bd60455484bb9d961&#34;&gt;PCケース&lt;/h3&gt;
+&lt;h3 id=&#34;pcケース&#34;&gt;PCケース&lt;/h3&gt;
 
 &lt;p&gt;Antec SOLO II&lt;/p&gt;
 
@@ -113,13 +113,13 @@ SSDは登場当初に比べて随分安くなった印象です。
 最初は似た価格帯のケースが半額で売っていたので買って使っていましたが、サイドパネルがペラペラだったり購入後すぐ前面の開閉部分が壊れたりあまり作りが良くなかったり裏側配線ができなかったりして投げ捨てたので、今使っているこのケースは非常に満足しています。
 唯一前面パネルのUSBポートの作りがやや甘かったのか、購入から1年しないぐらいでUSB2.0のポートが1つ潰れました。&lt;/p&gt;
 
-&lt;h2 id=&#34;周辺機器構成:14cdc902344e522bd60455484bb9d961&#34;&gt;周辺機器構成&lt;/h2&gt;
+&lt;h2 id=&#34;周辺機器構成&#34;&gt;周辺機器構成&lt;/h2&gt;
 
 &lt;p&gt;画像再掲&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://tatamo.81.la/blog/images/post/2016/12/07/img02.jpg&#34; alt=&#34;自作PC外観(卓上)&#34; width=&#34;600&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;モニタ:14cdc902344e522bd60455484bb9d961&#34;&gt;モニタ&lt;/h3&gt;
+&lt;h3 id=&#34;モニタ&#34;&gt;モニタ&lt;/h3&gt;
 
 &lt;p&gt;EIZO FORIS FS2333 2枚&lt;/p&gt;
 
@@ -127,14 +127,14 @@ SSDは登場当初に比べて随分安くなった印象です。
 最近FS2333の同ディスプレイ2枚体制の構築を達成しました。
 このディスプレイは使い勝手もよく文句なしです。&lt;/p&gt;
 
-&lt;h3 id=&#34;スピーカー:14cdc902344e522bd60455484bb9d961&#34;&gt;スピーカー&lt;/h3&gt;
+&lt;h3 id=&#34;スピーカー&#34;&gt;スピーカー&lt;/h3&gt;
 
 &lt;p&gt;Logicool Speakers Z130&lt;/p&gt;
 
 &lt;p&gt;とくにこだわりもなくずっと使ってますが、モニタ内臓のスピーカーよりはよっぽど良いですし値段も安かったため満足しています。
 音楽は作業中にアニソンを流す程度であまり聴きません。&lt;/p&gt;
 
-&lt;h3 id=&#34;トラックボール:14cdc902344e522bd60455484bb9d961&#34;&gt;トラックボール&lt;/h3&gt;
+&lt;h3 id=&#34;トラックボール&#34;&gt;トラックボール&lt;/h3&gt;
 
 &lt;p&gt;サンワサプライ MA-TB38&lt;br /&gt;
 エレコム M-DT1URBK&lt;/p&gt;
@@ -148,7 +148,7 @@ SSDは登場当初に比べて随分安くなった印象です。
 &lt;p&gt;エレコムのトラックボールは1代目のMA-TB38が故障した頃にちょうど新しく出たモデルだったので、ちょっと気になってつなぎ兼予備として購入。有線モデル特有の欠点として、耳を近づけるとわずかにコイル鳴きが聞こえるのが難点。
 使い勝手は悪くないですが、結局2代目のMA-TB38を確保してからはほとんど使っていません。&lt;/p&gt;
 
-&lt;h3 id=&#34;キーボード:14cdc902344e522bd60455484bb9d961&#34;&gt;キーボード&lt;/h3&gt;
+&lt;h3 id=&#34;キーボード&#34;&gt;キーボード&lt;/h3&gt;
 
 &lt;p&gt;Skydigital NKEY-P&lt;/p&gt;
 
@@ -160,14 +160,14 @@ SSDは登場当初に比べて随分安くなった印象です。
 &lt;p&gt;現在の買い換え候補は、2017年に発売が予定されている&lt;a href=&#34;http://www.realforce.co.jp/&#34;&gt;REALFORCE RGB&lt;/a&gt;の日本語配列版です。
 REALFORCEシリーズのゲーミング向けモデルがついに発売されるということで、非常に注目しています。&lt;/p&gt;
 
-&lt;h3 id=&#34;ゲームパッド:14cdc902344e522bd60455484bb9d961&#34;&gt;ゲームパッド&lt;/h3&gt;
+&lt;h3 id=&#34;ゲームパッド&#34;&gt;ゲームパッド&lt;/h3&gt;
 
 &lt;p&gt;Microsoft Xbox 360 Controller for Windows&lt;/p&gt;
 
 &lt;p&gt;もはやデファクトスタンダードといってもよさそうな定番コントローラーで、値段の安さも驚くべきことです。
 ただドライバ周りに少し癖があり、公式ドライバと非公式ドライバの両方を使い分けたほうがいい場合があったりする点には注意が必要です。&lt;/p&gt;
 
-&lt;h2 id=&#34;今後:14cdc902344e522bd60455484bb9d961&#34;&gt;今後&lt;/h2&gt;
+&lt;h2 id=&#34;今後&#34;&gt;今後&lt;/h2&gt;
 
 &lt;p&gt;一度自作PCを組むと、いくらでも機能を向上させたくなるために際限なく金が吸われます。&lt;/p&gt;
 
@@ -177,7 +177,6 @@ REALFORCEシリーズのゲーミング向けモデルがついに発売され�
 そんなにキーボードを光らせたいのか。&lt;/p&gt;
 
 &lt;p&gt;あとはグラフィックボードのVRAMまわりに若干の力不足を感じていますが、そんなに最新のゲームをやりまくるわけでもないですし(Steamでなかなか割引されないので)、最新かつ高いグラフィックを要求するゲームのプレイ頻度がそう高くないので今のところ現状で問題はあまりない気もしています。&lt;/p&gt;
-
       </description>
     </item>
     
