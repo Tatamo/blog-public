@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Tatamo&#39;s weblog">
+    <meta name="author" content="Tatamo">
+    <meta name="viewport" content="width=device-width">
+    
+    <base href="http://tatamo.81.la/blog/">
+    <title>
+      コマンドラインツールatcoder-cliを公開しました | わたしろぐ
+    </title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link rel="canonical" href="http://tatamo.81.la/blog/2018/12/07/atcoder-cli/">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>
+    
+    window.addEventListener("DOMContentLoaded", () => {
+        const elements = document.getElementsByTagName("code");
+        for (const el of elements) {
+            if (el.parentNode.tagName != "PRE") {
+                
+                el.style.display = "inline";
+                el.style.margin = "0 2px";
+                el.style.padding = "1px 3px";
+                if (el.classList.length == 0) {
+                    
+                    el.classList.add("nohighlight");
+                }
+            }
+            hljs.highlightBlock(el);
+			
+            if (el.classList.contains("nohighlight") ||
+                el.classList.contains("lang-nohighlight") ||
+                el.classList.contains("language-nohighlight")) {
+                el.classList.add("hljs");
+            }
+        }
+    }, false);
+    </script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71305633-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="http://tatamo.81.la/blog/">わたしろぐ</a></h1>
+        <h2 class="site-subtitle">私録</h2>
+    </header>
+    <nav class="head-nav">
+        <ul>
+        <li><a href="about/">about</a></li>
+        <li><a href="https://twitter.com/__tatamo__" target="_blank">twitter</a></li>
+        <li><a href="https://github.com/tatamo" target="_blank">github</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+    <div class="main-content">
+
+    <article class="article">
+        <h1 class="article-title"><a href="http://tatamo.81.la/blog/2018/12/07/atcoder-cli/">コマンドラインツールatcoder-cliを公開しました</a></h1>
+        <span class="article-datetime"><time>2018-12-07 23:20:00</time></span>
+        <p class="article-categories">Category:
+        <a href="http://tatamo.81.la/blog/categories/dev/">dev</a></p>
+        <p class="article-tags">Tag:
+        <a href="http://tatamo.81.la/blog/tags/competitive-programming/">competitive-programming</a>
+        <a href="http://tatamo.81.la/blog/tags/atcoder/">atcoder</a>
+        <a href="http://tatamo.81.la/blog/tags/atcoder-cli/">atcoder-cli</a></p>
+        <p><a href="https://beta.atcoder.jp/">AtCoder</a>のためのコマンドラインツール、<a href="https://www.npmjs.com/package/atcoder-cli">atcoder-cli</a>をリリースしました。</p>
+
+<p><a href="2018/12/07/atcoder-cli-installation-guide/">インストールガイド</a>と<a href="2018/12/07/atcoder-cli-tutorial/">チュートリアル</a>の記事も用意しています。</p>
+
+<p></p>
+
+<h2 id="モチベーション">モチベーション</h2>
+
+<p><a href="https://beta.atcoder.jp/">AtCoder</a>のコンテストで問題を解く際に、問題用のディレクトリを作る、プログラム用のファイルを用意する、問題を解き終わったらソースコードをコピーして提出するなど、プログラムを書く以外の部分で手間がかかることがあります。
+そのため、問題を提出する、プログラムがサンプルケースで失敗しないかチェックする、問題を解くのに必要なファイルやディレクトリを構築する、といった処理をコマンドラインから実行できればコンテスト中の処理の自動化が可能になり、快適に問題を解くことができるようになります。</p>
+
+<p>コマンドラインからAtCoderに問題を提出したりするツールとしては、<a href="https://github.com/kmyk/online-judge-tools">online-judge-tools</a>などが存在します。</p>
+
+<p>とはいえ、既存のツールでは複数のコンテストサイトを動作対象としていることなどから、「プログラムを提出するたびに提出先の問題IDやURLを指定しなければならない」といった問題点がありました。
+提出ファイルのコピペなどの手間を省くためにコマンドラインツールを使っているはずなのに、その提出先を指定するためにURLをブラウザからコピーしてくる必要があるのでは本末転倒感があります。</p>
+
+<p>また、問題を一問解く度にプログラムのテンプレートを用意したり、既存ツールを用いてサンプルケースをダウンロードしてくるのも手間がかかります。</p>
+
+<p>そこで、数ある競技プログラミングのサイトの中からAtCoderに特化することで、コンテスト中にコンソールに打ち込むコマンドの数を極限まで減らせるようにするツールとして、<a href="https://www.npmjs.com/package/atcoder-cli">atcoder-cli</a>を開発しました。</p>
+
+<p>atcoder-cliはディレクトリ構成から自動的に提出するコンテスト・問題を検出し、短いコマンドの入力だけで問題を提出できるようにするのみならず、テンプレートを自動的に展開する機能などを備えており、AtCoder用のプロジェクト管理ツールとしても機能するソフトウェアです。
+また、online-judge-toolsとの連携によって、サンプルケースの自動ダウンロードなどの機能を余計なURL指定なしで快適に使用できるようになります。</p>
+
+<h2 id="インストール方法">インストール方法</h2>
+
+<pre><code class="language-sh">$ npm install -g atcoder-cli
+$ acc -v # 正しくインストールされたかどうか確認する
+</code></pre>
+
+<p>atcoder-cliはnpmパッケージとして公開しているため、node.jsが必要です。
+また、<a href="https://github.com/kmyk/online-judge-tools">online-judge-tools</a>はインストールされていなくても問題なく動作しますが、連携機能のため同時にインストールしておくことを強く推奨します。</p>
+
+<p><a href="2018/12/07/atcoder-cli-installation-guide/">atcoder-cli インストールガイド</a>を公開していますので、詳しいインストール手順はそちらをお読みください。</p>
+
+<h2 id="特徴">特徴</h2>
+
+<p>詳細な機能については<a href="https://github.com/Tatamo/atcoder-cli">README</a>や<code>acc [COMMAND] -h</code>コマンドを参照してください。
+日本語の解説記事として、<a href="2018/12/07/atcoder-cli-tutorial/">atcoder-cli チュートリアル</a>があります。</p>
+
+<h3 id="コンテスト情報取得">コンテスト情報取得</h3>
+
+<pre><code class="language-nohighlight">$ acc contest abc100
+AtCoder Beginner Contest 100  https://beta.atcoder.jp/contests/abc100
+$ acc tasks abc100
+A  Happy Birthday!           https://beta.atcoder.jp/contests/abc100/tasks/abc100_a
+B  Ringo's Favorite Numbers  https://beta.atcoder.jp/contests/abc100/tasks/abc100_b
+C  *3 or /2                  https://beta.atcoder.jp/contests/abc100/tasks/abc100_c
+D  Patisserie ABC            https://beta.atcoder.jp/contests/abc100/tasks/abc100_d
+</code></pre>
+
+<p>CLIツールとして、問題のURLなどをコマンドラインから取得できます。他のシェルコマンドと組み合わせることで、AtCoderに関連する処理を自動化する際に役立てることができます。</p>
+
+<h3 id="コンテスト用ディレクトリ作成">コンテスト用ディレクトリ作成</h3>
+
+<pre><code class="language-sh">$ acc new abc100 # abc100用のディレクトリを作成
+$ cd abc100
+$ cat contest.acc.json
+{
+  &quot;contest&quot;: {
+    &quot;id&quot;: &quot;abc100&quot;,
+    &quot;title&quot;: &quot;AtCoder Beginner Contest 100&quot;,
+    &quot;url&quot;: &quot;https://beta.atcoder.jp/contests/abc100&quot;
+  },
+  &quot;tasks&quot;: [
+    {
+      &quot;id&quot;: &quot;abc100_a&quot;,
+      &quot;label&quot;: &quot;A&quot;,
+      &quot;title&quot;: &quot;Happy Birthday!&quot;,
+      &quot;url&quot;: &quot;https://beta.atcoder.jp/contests/abc100/tasks/abc100_a&quot;,
+      &quot;directory&quot;: {
+        &quot;path&quot;: &quot;a&quot;,
+        &quot;testdir&quot;: &quot;tests&quot;
+      }
+    },
+    ...
+}
+</code></pre>
+
+<p>atcoder-cliでは、コンテストごとにディレクトリを作成してプログラムを管理します。
+デフォルトではコンテストディレクトリ内でさらに問題ごとにディレクトリを分け、その中で問題を解いていくことを想定していますが、コンテストディレクトリ直下でディレクトリを分けずに複数のプログラムファイルを配置することもサポートしています。</p>
+
+<p>この際に、以下のような処理を自動的に行うことができます。</p>
+
+<ul>
+<li>サンプルケースの自動ダウンロード (online-judge-toolsが必要)</li>
+<li>テンプレートを予め用意しておくことで、プログラム等のファイルを問題ディレクトリにコピー</li>
+<li>任意のシェルコマンドを実行</li>
+</ul>
+
+<p>これらを組み合わせることで、コンテスト用ディレクトリを作成した時点であらゆる前準備を終えることができます。</p>
+
+<h3 id="提出機能">提出機能</h3>
+
+<p>atcoder-cli本体は今のところAtCoderにファイルを提出する機能を備えていませんが、内側でonline-judge-toolsを呼び出すことにより、もともとのonline-judge-toolsの機能よりもさらに簡単に問題を提出することができるようになっています。</p>
+
+<pre><code class="language-sh">$ oj s https://beta.atcoder.jp/contests/abc100/tasks/abc100_a main.cpp
+</code></pre>
+
+<p>online-judge-toolsでは問題の提出のために上記のコマンドが必要でしたが、</p>
+
+<pre><code class="language-sh">$ acc s main.cpp # s はsubmitの省略名
+</code></pre>
+
+<p>atcoder-cliはファイルが配置されたディレクトリから自動的に提出するべき問題を判別し、URLなどを明示する必要がなくなっています。</p>
+
+<p>さらに、問題テンプレート機能を使用すれば提出するプログラムのファイル名を予め指定しておくことができるため、以下のように一切の引数を与えることなく提出が可能になります。</p>
+
+<pre><code class="language-sh">$ acc s # これだけで提出ができる！
+</code></pre>
+
+<h3 id="高速な応答性">高速な応答性</h3>
+
+<p>レスポンスの速さはCLIツールにとって重要な要素であるため、依存パッケージのロードを必要なタイミングまで遅延させることで、そのコマンドの実行時に使用されないパッケージの読み込みを防止して応答性を高めています。</p>
+
+<pre><code class="language-sh">$ time acc -h
+...
+real    0m0.093s
+user    0m0.080s
+sys     0m0.008s
+</code></pre>
+
+<h2 id="類似ツール">類似ツール</h2>
+
+<h3 id="kmyk-online-judge-tools-https-github-com-kmyk-online-judge-tools"><a href="https://github.com/kmyk/online-judge-tools">kmyk/online-judge-tools</a></h3>
+
+<ul>
+<li>AtCoderに限定せず様々なサイトに対応
+
+<ul>
+<li>それ故にややコマンドのタイプ数が増えやすい傾向にある</li>
+</ul></li>
+<li>テストツールとしての機能も有する</li>
+</ul>
+
+<p>atcoder-cliは現状online-judge-toolsにどっぷり依存しているので頭が上がりません。
+便利なツールを作って頂いてありがとうございます。</p>
+
+<p>とはいえatcoder-cliはnpm, ojはpipでインストールしないといけないため、atcoder-cli単体で同等の機能が提供できたほうがインストールの手間は減ると思うので好ましいのかもしれません(サンプルケースの取得はアドホックにやらざるを得ないし、提出ファイルの言語指定も割とつらさがあるので既にあるものをあまり再実装したくない)。</p>
+
+<h3 id="nodchip-onlinejudgehelper-https-github-com-nodchip-onlinejudgehelper"><a href="https://github.com/nodchip/OnlineJudgeHelper">nodchip/OnlineJudgeHelper</a></h3>
+
+<ul>
+<li>様々なサイトに対応、多機能</li>
+<li>outdated</li>
+</ul>
+
+<p>URLをすべて入力しなくても、コンテストID+問題IDでの提出ができるため少しは楽です。
+年単位でメンテナンスされていなかったり、アカウントのパスワードをローカルに置いておくことを求められたりするので、今使うには微妙かもしれません。</p>
+
+<h3 id="xmlpro-atam-https-github-com-xmlpro-atam"><a href="https://github.com/XMLPro/atam">XMLPro/atam</a></h3>
+
+<ul>
+<li>AtCoder用の問題提出ツール</li>
+<li>node.jsで動作</li>
+</ul>
+
+<p>AtCoder専用のツールで、現状では問題提出のみの機能を持っています。
+npmからインストールすることができ、連携が比較的容易と思われるので、今後連携機能の実装を行うかもしれません。</p>
+
+<h2 id="contribution">Contribution</h2>
+
+<p>バグ報告、要望などは<a href="https://github.com/Tatamo/atcoder-cli/issues">https://github.com/Tatamo/atcoder-cli/issues</a>で受け付けています。</p>
+
+<h2 id="余談">余談</h2>
+
+<p>このツールが良いと思っていただけましたら、ぜひ<strong><a href="https://github.com/Tatamo/atcoder-cli">★Starをください</a></strong>。</p>
+
+<p>というのも、AtCoder勢で利用していない人はほとんどいないであろう<a href="https://kenkoooo.com/atcoder/">AtCoder Problems</a>が、その圧倒的な知名度と比較して<a href="https://github.com/kenkoooo/AtCoderProblems">GitHubリポジトリ</a>についている★の数があまりに少ないのではないか、という話があります。</p>
+
+<p>★とはTwitterの<del>ふぁぼ</del>いいねのようなものです。
+競プロ勢はGitHubの使い方もよくわからないのだ、という不名誉な評判がつきかねませんから、ぜひ良いと思ったリポジトリには★を投げてみましょう。</p>
+
+<p>ここに<a href="https://github.com/Tatamo/atcoder-cli">良い練習台 (Tatamo/atcoder-cli)</a>がありますね。</p>
+
+<p>GitHubのアカウントを持っていない方は、有効なメールアドレスとユーザー名、パスワードだけあれば<a href="https://github.com/join">https://github.com/join</a>から簡単にアカウントの作成を行うことができます。
+(<a href="https://www.google.co.jp/search?q=github+登録">参考</a>)</p>
+
+<p>ログインができたら<a href="https://github.com/Tatamo/atcoder-cli">適当なソフトウェア (Tatamo/atcoder-cli)</a>のページに行き、ページの上の方にある「★Star」をクリック/タップするだけで★をつけることができます。</p>
+
+<p>(露骨な宣伝で申し訳ありません。
+私のツールに★を投げる必要はありませんが、AtCoder Problemsは実際もっと★がついていてもよいのではと思っています。
+皆さんどんどんGitHubで★を投げあいましょう)</p>
+        <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </article>
+    <nav class="article-nav-adjacent">
+        <span class="article-link-next"><a href="http://tatamo.81.la/blog/2018/12/07/atcoder-cli-installation-guide/">&lt;- Newer: atcoder-cli インストールガイド</a></span>
+        <span class="article-link-border"></span>
+        <span class="article-link-prev"><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/">Older: ISUCON8予選 序盤環境構築覚え書き -&gt;</a></span>
+    </nav>
+
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <section>
+                <h2 class="panel-title">Recent Posts</h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/2018/12/07/atcoder-cli-tutorial/" class="list-group-item">atcoder-cli チュートリアル</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/12/07/atcoder-cli-installation-guide/" class="list-group-item">atcoder-cli インストールガイド</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/12/07/atcoder-cli/" class="list-group-item">コマンドラインツールatcoder-cliを公開しました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/" class="list-group-item">ISUCON8予選 序盤環境構築覚え書き</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual/" class="list-group-item">ISUCON8の予選に出場して負けました</a></li>
+                <li><a href="http://tatamo.81.la/blog/2018/02/09/competitive-programming-using-js-and-ts-02/" class="list-group-item">JavaScript/TypeScriptで競技プログラミングをするには 後編</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/categories/">Categories</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/categories/dev">dev (19)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/diary">diary (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/game">game (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/categories/pc">pc (2)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="panel-title"><a href="http://tatamo.81.la/blog/tags/">Tags</a></h2>
+                <ul>
+                <li><a href="http://tatamo.81.la/blog/tags/arago">arago (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/atcoder">atcoder (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/atcoder-cli">atcoder-cli (3)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/austin">austin (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/blog">blog (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/competitive-programming">competitive-programming (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/contest">contest (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/css">css (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/deploybot">deploybot (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/dtp">dtp (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freeciv">freeciv (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/freecivcalc">freecivcalc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/generics">generics (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/github">github (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/highlightjs">highlightjs (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/homebuilt_pc">homebuilt_pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/html">html (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/hugo">hugo (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/icpc">icpc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/info">info (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/isucon">isucon (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/japari-watch">japari-watch (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/java">java (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/javascript">javascript (5)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/lexer">lexer (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser">parser (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parser-generator">parser-generator (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/parsing">parsing (6)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/pc">pc (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/pixijs">pixijs (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/reflection">reflection (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/seccamp">seccamp (2)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/vivliostyle">vivliostyle (1)</a></li>
+                <li><a href="http://tatamo.81.la/blog/tags/wercker">wercker (1)</a></li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    </div>
+   <footer>
+        <p>Copyright (c) 2015 <a href="about/">Tatamo</a>.</p>
+        <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a></p>
+    </footer>
+</body>
+</html>
+

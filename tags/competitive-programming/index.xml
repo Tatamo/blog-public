@@ -6,8 +6,612 @@
     <description>Recent content in Competitive Programming on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Fri, 09 Feb 2018 19:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 07 Dec 2018 23:22:00 +0900</lastBuildDate>
     <atom:link href="/tags/competitive-programming/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>atcoder-cli チュートリアル</title>
+      <link>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-tutorial/</link>
+      <pubDate>Fri, 07 Dec 2018 23:22:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-tutorial/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;の使用方法を解説していきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;atcoder-cliは、&lt;a href=&#34;https://beta.atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;用のコマンドラインツールです。
+このツールの特徴については、&lt;a href=&#34;http://tatamo.81.la/blog/2018/12/07/atcoder-cli/&#34;&gt;紹介記事&lt;/a&gt;をご覧ください。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ pip3 install online-judge-tools
+$ npm install -g atcoder-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳細なインストール手順は、&lt;a href=&#34;2018/12/07/atcoder-cli-installation-guide/&#34;&gt;atcoder-cli インストールガイド&lt;/a&gt; を参照してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;atcoder-cliのインストール確認&#34;&gt;atcoder-cliのインストール確認&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※行頭の「&lt;code&gt;$&lt;/code&gt;」は入力しないでください&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;acc&lt;/code&gt;コマンドが使用できれば、インストールは正しく行えています。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/kmyk/online-judge-tools&#34;&gt;online-judge-tools&lt;/a&gt;がインストールされている場合、atcoder-cliは自動的にそれを検知します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc check-oj
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を入力して、availableと表示されれば連携機能が有効になっています。&lt;/p&gt;
+
+&lt;h2 id=&#34;atcoderへのログイン&#34;&gt;AtCoderへのログイン&lt;/h2&gt;
+
+&lt;p&gt;atcoder-cliを使用するためには、初回使用時にAtCoderへのログインが必要になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc login
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コマンドでAtCoderにログインしてください。
+ユーザー名とパスワードの入力を求められますが、パスワードは安全のため入力しても画面には表示されないので注意してください。&lt;/p&gt;
+
+&lt;p&gt;ユーザー名・パスワードはatcoder-cliによって保存されることはありません。
+そのかわりにログインセッションの情報が設定ファイルとして保存されますが、共用のPCなどで他の人が使用する可能性がある場合は&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc logout
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で現在のログイン状態を破棄することができます。&lt;/p&gt;
+
+&lt;p&gt;ログインしている状態かどうか知るためには、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc session
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を使用してください。&lt;/p&gt;
+
+&lt;p&gt;online-judge-toolsを使用している場合は、&lt;code&gt;oj&lt;/code&gt;コマンドを使用してそちらでもログインしておく必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ oj login https://beta.atcoder.jp/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;でログインを行ってください。&lt;/p&gt;
+
+&lt;h2 id=&#34;atcoder-cliでコンテスト用ディレクトリを作成する&#34;&gt;atcoder-cliでコンテスト用ディレクトリを作成する&lt;/h2&gt;
+
+&lt;p&gt;以後、online-judge-toolsを使用している前提とします。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://beta.atcoder.jp/contests/abc101&#34;&gt;ABC101&lt;/a&gt;のコンテストの問題を解くことを想定してみましょう。&lt;/p&gt;
+
+&lt;p&gt;ABC101のURLは &lt;a href=&#34;https://beta.atcoder.jp/contests/abc101&#34;&gt;https://beta.atcoder.jp/contests/abc101&lt;/a&gt; ですが、この末尾の&lt;code&gt;abc101&lt;/code&gt;がこのコンテストのIDとなります。
+&lt;code&gt;acc n&lt;/code&gt;コマンドにこのIDを指定することで、ABC101用のディレクトリを作らせてみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc new abc101
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コマンドを実行すると、問題の一覧が表示されます。
+上下キーでカーソルを移動し、スペースキーで選択することで、サンプルケースをダウンロードしてくる問題を選ぶことができます。
+この問題は後から追加することもできます。
+一番上のA問題は予め選択されているはずなので、今回はそのままエンターキーを押しましょう。&lt;/p&gt;
+
+&lt;p&gt;コマンドの実行が完了すると、&lt;code&gt;abc101&lt;/code&gt;という名前のディレクトリが作られていると思います。
+このディレクトリの中に移動してみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ cd abc101
+$ ls # ディレクトリの中身を表示
+a  contest.acc.json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;a/&lt;/code&gt;という名前のディレクトリと、&lt;code&gt;contest.acc.json&lt;/code&gt;というファイルが一つ存在していると思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;contest.acc.json&lt;/code&gt;は、atcoder-cliがコンテストや問題の情報を取得したり、問題ディレクトリの情報を管理するためのファイルです。
+通常の使用中は、このファイルに触る機会はありません。&lt;/p&gt;
+
+&lt;p&gt;ディレクトリ&lt;code&gt;a/&lt;/code&gt;に移動してみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ cd a/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このディレクトリの中には、&lt;code&gt;tests/&lt;/code&gt;という名前のディレクトリが既に存在しています。
+&lt;code&gt;online-judge-tools&lt;/code&gt;との連携機能により、自動的に問題のサンプルケースがダウンロードされたものです。&lt;/p&gt;
+
+&lt;p&gt;この&lt;code&gt;a/&lt;/code&gt;ディレクトリの中で、問題を解いていきます。
+たとえば、&lt;code&gt;main.cpp&lt;/code&gt;という名前のファイルを作り、&lt;a href=&#34;https://beta.atcoder.jp/contests/abc101/tasks/abc101_a&#34;&gt;A問題&lt;/a&gt;を解くプログラムを書いてみましょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;問題を提出する&#34;&gt;問題を提出する&lt;/h2&gt;
+
+&lt;p&gt;書き終わったら、正しくプログラムが書けているか確認します。&lt;/p&gt;
+
+&lt;p&gt;online-judge-toolsは入出力ケースの自動テスト機能を備えているため、自動ダウンロードされたサンプルケースを用いてテストができます。
+現在atcoder-cliはテストに関する機能の連携が未実装のため、詳しくは&lt;a href=&#34;https://kimiyuki.net/blog/2017/01/19/pr-online-judge-tools/&#34;&gt;online-judge-toolsの解説記事&lt;/a&gt;を参照してください。&lt;/p&gt;
+
+&lt;p&gt;問題文で与えられた入力例について正しい答えが得られていることを確認したら、プログラムの提出をしましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc submit main.cpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;atcoder-cliでは、提出するファイルを指定するだけで提出先を自動的に判別します。
+たとえば、&lt;code&gt;abc101/a/&lt;/code&gt;ディレクトリの中にあるプログラムはABC101のA問題のプログラムとして提出が行われます。&lt;/p&gt;
+
+&lt;p&gt;提出が完了してA問題を解き終わったら、一つ上のディレクトリに戻りましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ cd ..
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;問題用ディレクトリを追加する&#34;&gt;問題用ディレクトリを追加する&lt;/h2&gt;
+
+&lt;p&gt;次はB問題を解いていくので、B問題用の新しいディレクトリを作る必要があります。
+コンテストディレクトリの中で&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc add
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コマンドを入力すると、再び問題を選択する画面になります。
+先程既にディレクトリを作ったA問題は選択できなくなっています。&lt;/p&gt;
+
+&lt;p&gt;このようにして問題用のディレクトリを作って問題を解いていくのが、atcoder-cliでコンテストに取り組む流れになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;デフォルト動作の設定&#34;&gt;デフォルト動作の設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;acc new&lt;/code&gt;コマンドや&lt;code&gt;acc add&lt;/code&gt;コマンドで問題ディレクトリを作成する際、毎回問題を選択してエンターキーを押さないといけないのが煩雑に感じるかもしれません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc config
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コマンドによって、現在のグローバル設定を確認することができます。
+この中に、&lt;code&gt;default-task-choice: inquire&lt;/code&gt; と書かれた行があるのではないかと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc config default-task-choice next
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;などとすることで、問題の選択方法を変更することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;next&lt;/code&gt;を指定することで、問題を選ぶ画面を出さずに次の一問だけを自動で選ぶようにしたり、&lt;code&gt;all&lt;/code&gt;を指定することで全ての問題ディレクトリを最初に作るようにできます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;default-task-choice&lt;/code&gt;に設定可能な選択肢については、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc add -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で確認することができます。&lt;/p&gt;
+
+&lt;p&gt;また、グローバル設定で設定可能な項目の一覧は、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc cnfig -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で確認できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;テンプレート設定&#34;&gt;テンプレート設定&lt;/h2&gt;
+
+&lt;p&gt;予めマクロの定義や入力を受け付ける部分などの雛形が書かれたプログラムファイルを用意しておくことで、問題ディレクトリを作成する際にそのファイルをコピーして配置することができます。&lt;/p&gt;
+
+&lt;p&gt;たとえば、C++用のテンプレートを用意するには、まずatcoder-cliの設定ファイルが配置されたディレクトリに移動し、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ cd `acc config-dir`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここに&lt;code&gt;cpp&lt;/code&gt; という名前のディレクトリを作ります。
+テンプレートの名前は、このディレクトリ名によって決定されます。&lt;/p&gt;
+
+&lt;p&gt;その中に、コピーしたい雛形である&lt;code&gt;main.cpp&lt;/code&gt;ファイルと、&lt;code&gt;template.json&lt;/code&gt;ファイルを作成します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;template.json&lt;/code&gt;ファイルには以下のように記述します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;task&amp;quot;:{
+    &amp;quot;program&amp;quot;: [&amp;quot;main.cpp&amp;quot;],
+    &amp;quot;submit&amp;quot;: &amp;quot;main.cpp&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;template.json&lt;/code&gt;を配置したら、&lt;code&gt;acc templates&lt;/code&gt;コマンドを使ってテンプレートが正常に認識されているか確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc templates
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正しく読み込まれていれば、&lt;code&gt;cpp&lt;/code&gt;という名前の項目が表示されます。&lt;/p&gt;
+
+&lt;p&gt;実際にこのテンプレートを利用するには、&lt;code&gt;acc new&lt;/code&gt;コマンドと&lt;code&gt;acc add&lt;/code&gt;コマンドを実行する際に、&lt;code&gt;--template&lt;/code&gt;オプションを使用して使用するテンプレートを指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc add --template cpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにして問題ディレクトリを作成すると、その中に&lt;code&gt;main.cpp&lt;/code&gt;がコピーされます。
+また&lt;code&gt;template.json&lt;/code&gt;の&lt;code&gt;&amp;quot;submit&amp;quot;&lt;/code&gt;プロパティに&lt;code&gt;main.cpp&lt;/code&gt;を設定しているため、問題ディレクトリの中にいる場合は&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc submit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のように、明示的にファイルを指定しなくても&lt;code&gt;main.cpp&lt;/code&gt;が提出対象のファイルであると判断されます。&lt;/p&gt;
+
+&lt;p&gt;頻繁に使用するテンプレートは、常に&lt;code&gt;--template&lt;/code&gt;オプションをつけるかわりに、グローバル設定からデフォルトのテンプレートとして設定することが可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc config defaullt-template cpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これにより、&lt;code&gt;acc new&lt;/code&gt;コマンドと&lt;code&gt;acc add&lt;/code&gt;コマンドの実行時に自動的に&lt;code&gt;cpp&lt;/code&gt;テンプレートが使用されるようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;template.json&lt;/code&gt;についてのより詳細な情報は、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc template -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;と入力すると知ることができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
+
+&lt;p&gt;使用可能なコマンドの一覧は、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で表示することができます。&lt;/p&gt;
+
+&lt;p&gt;また、コマンドごとの詳細な解説、利用可能なオプションを知るためには、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc &amp;lt;コマンド名&amp;gt; -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を使用してください。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;以上がatcoder-cliの基本的な使い方になります。
+このツールによってAtCoderで問題を解く作業の効率化ができることを願っています。&lt;/p&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>atcoder-cli インストールガイド</title>
+      <link>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-installation-guide/</link>
+      <pubDate>Fri, 07 Dec 2018 23:21:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-installation-guide/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;のインストール方法を解説していきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;わかる人向け&#34;&gt;わかる人向け&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ pip3 install online-judge-tools
+$ npm install -g atcoder-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上です。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;インストールガイド&#34;&gt;インストールガイド&lt;/h2&gt;
+
+&lt;p&gt;atcoder-cliをインストールするためには、Node.js環境が必要です。
+また、Python3で動作する&lt;a href=&#34;https://github.com/kmyk/online-judge-tools&#34;&gt;online-judge-tools&lt;/a&gt;を併用することを強く推奨しているため、こちらも同時にインストールします。&lt;/p&gt;
+
+&lt;p&gt;※ 以後、コマンド例の行頭の「&lt;code&gt;$&lt;/code&gt;」はターミナルのプロンプト記号を表しているため、実際に入力する必要はありません。
+&lt;code&gt;$&lt;/code&gt;より後の部分を入力して実行してください。&lt;/p&gt;
+
+&lt;h3 id=&#34;事前準備-windowsでwslを使う場合&#34;&gt;事前準備：WindowsでWSLを使う場合&lt;/h3&gt;
+
+&lt;p&gt;Windowsの場合、直接言語環境をインストールする方法と、&lt;abbr title=&#34;Windows Subsystem for Linux&#34;&gt;WSL&lt;/abbr&gt;を使う方法があります。
+どちらを使用するかはお好みですが、Linuxの使い方がわかるという方はWSLを選択するとよいでしょう。
+WSLを使う場合は設定より有効化し、ストアからUbuntuなどのLinuxディストリビューションをインストールします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;参考: &lt;a href=&#34;https://qiita.com/yoshikingt/items/ab86411e6031459db805&#34;&gt;https://qiita.com/yoshikingt/items/ab86411e6031459db805&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;WSLのインストール後は、Linuxの場合のインストール方法を参照してください。&lt;/p&gt;
+
+&lt;h3 id=&#34;事前準備-macの場合&#34;&gt;事前準備：Macの場合&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://brew.sh/index_ja&#34;&gt;Homebrew&lt;/a&gt;の使用を想定します。
+&lt;code&gt;brew&lt;/code&gt;コマンドが存在しない場合、以下のコマンドをターミナルで実行することでインストールしてください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ /usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行が完了したら、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ brew -v
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コマンドをターミナルで実行して、エラーなどが起きずにHomebrewのバージョン名が表示されていることを確認してください。&lt;/p&gt;
+
+&lt;h3 id=&#34;必要な環境のインストール&#34;&gt;必要な環境のインストール&lt;/h3&gt;
+
+&lt;p&gt;Python3とNode.jsの両方をインストールしてください。
+OSごとにインストール方法が違うため、お使いのOSの欄を参照してください。&lt;/p&gt;
+
+&lt;p&gt;環境によってはもう少し良いやり方がある場合もありますが、この記事では少ない手順でインストールが完了することを目的として方法を選んでいます。&lt;/p&gt;
+
+&lt;h4 id=&#34;windows&#34;&gt;Windows&lt;/h4&gt;
+
+&lt;h5 id=&#34;python3&#34;&gt;Python3&lt;/h5&gt;
+
+&lt;p&gt;公式インストーラーより&lt;a href=&#34;https://www.python.org/downloads/windows/&#34;&gt;Python&lt;/a&gt;をインストールします。
+最新バージョンの&amp;rdquo;Download Windows x86-64 web-based installer&amp;rdquo;からインストーラーをダウンロードし、実行してください。
+インストール時に、&amp;rdquo;Add Python 3.x to PATH&amp;rdquo;のチェックを忘れずに入れるようにしましょう。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;参考: &lt;a href=&#34;https://azriton.github.io/2017/07/25/Python-3.6-64bit%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB/&#34;&gt;https://azriton.github.io/2017/07/25/Python-3.6-64bit%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;node-js&#34;&gt;Node.js&lt;/h5&gt;
+
+&lt;p&gt;公式インストーラーより&lt;a href=&#34;https://nodejs.org/ja/download/&#34;&gt;Node.js&lt;/a&gt;をインストールします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;参考: &lt;a href=&#34;https://qiita.com/taiponrock/items/9001ae194571feb63a5e&#34;&gt;https://qiita.com/taiponrock/items/9001ae194571feb63a5e&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;mac-linux&#34;&gt;Mac/Linux&lt;/h4&gt;
+
+&lt;p&gt;端末コンソールを開いて作業をしてください。&lt;/p&gt;
+
+&lt;h5 id=&#34;python3-1&#34;&gt;Python3&lt;/h5&gt;
+
+&lt;p&gt;Linuxの場合は、&lt;code&gt;brew&lt;/code&gt;のかわりにディストリビューションごとのパッケージマネージャを使用してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ # Macの場合はこちらを実行してください
+$ brew install python3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ # UbuntuまたはDebianを使用している場合はこちらを実行してください
+$ # 他のLinuxディストリビューションを使っている人はこんな記事を読むまでもなくインストールを終わらせていると思われるため触れません
+$ sudo apt-get install python3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;node-js-1&#34;&gt;Node.js&lt;/h5&gt;
+
+&lt;p&gt;パッケージマネージャによって古いバージョンのNodeしか手に入らないことがあるので、&lt;a href=&#34;https://github.com/creationix/nvm&#34;&gt;nvm&lt;/a&gt;を使ってインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このコマンドの実行が完了したら、一度ターミナルを閉じてください。
+新しいターミナルを開き、続きのコマンドを実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ nvm install node
+$ npm install -g npm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;atcoder-cli-online-judge-toolsのインストール&#34;&gt;atcoder-cli, online-judge-toolsのインストール&lt;/h3&gt;
+
+&lt;p&gt;言語環境のインストールが正しく行われていることを確認します。
+Windowsの場合はコマンドプロンプトを、Mac/Linuxの場合は端末コンソールを開いてください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pip3 -V
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;と入力してエンターキーを押し、バージョン番号が表示されることを確認してください。&lt;/p&gt;
+
+&lt;p&gt;同様にして、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm -v
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を実行し、バージョン番号が表示されることを確認してください。&lt;/p&gt;
+
+&lt;p&gt;「コマンドが見つかりません」や「command not found」、それに似たメッセージが表示される場合はPython3およびNode.jsのインストールに失敗している可能性があります。
+その場合は再度手順を確認してインストールし直したり、「Python3 インストール (+OS名)」などで検索して調べてください。&lt;/p&gt;
+
+&lt;p&gt;問題がなかった場合は、atcoder-cliおよびonline-judge-toolsのインストールを行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install -g atcoder-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;pip3 install online-judge-tools
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とそれぞれ入力してエンターキーを押すことで、atcoder-cliとonline-judge-toolsがインストールされます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;acc -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;oj -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とそれぞれ入力し、ヘルプが表示されることを確認してください。&lt;/p&gt;
+
+&lt;p&gt;ここまででインストール作業は完了です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;2018/12/07/atcoder-cli-tutorial/&#34;&gt;atcoder-cli チュートリアル&lt;/a&gt;に進み、atcoder-cliの基本的な使い方を確認しましょう。&lt;/p&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>コマンドラインツールatcoder-cliを公開しました</title>
+      <link>http://tatamo.81.la/blog/2018/12/07/atcoder-cli/</link>
+      <pubDate>Fri, 07 Dec 2018 23:20:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2018/12/07/atcoder-cli/</guid>
+      <description>
+        &lt;p&gt;&lt;a href=&#34;https://beta.atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;のためのコマンドラインツール、&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;をリリースしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;2018/12/07/atcoder-cli-installation-guide/&#34;&gt;インストールガイド&lt;/a&gt;と&lt;a href=&#34;2018/12/07/atcoder-cli-tutorial/&#34;&gt;チュートリアル&lt;/a&gt;の記事も用意しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;モチベーション&#34;&gt;モチベーション&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://beta.atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;のコンテストで問題を解く際に、問題用のディレクトリを作る、プログラム用のファイルを用意する、問題を解き終わったらソースコードをコピーして提出するなど、プログラムを書く以外の部分で手間がかかることがあります。
+そのため、問題を提出する、プログラムがサンプルケースで失敗しないかチェックする、問題を解くのに必要なファイルやディレクトリを構築する、といった処理をコマンドラインから実行できればコンテスト中の処理の自動化が可能になり、快適に問題を解くことができるようになります。&lt;/p&gt;
+
+&lt;p&gt;コマンドラインからAtCoderに問題を提出したりするツールとしては、&lt;a href=&#34;https://github.com/kmyk/online-judge-tools&#34;&gt;online-judge-tools&lt;/a&gt;などが存在します。&lt;/p&gt;
+
+&lt;p&gt;とはいえ、既存のツールでは複数のコンテストサイトを動作対象としていることなどから、「プログラムを提出するたびに提出先の問題IDやURLを指定しなければならない」といった問題点がありました。
+提出ファイルのコピペなどの手間を省くためにコマンドラインツールを使っているはずなのに、その提出先を指定するためにURLをブラウザからコピーしてくる必要があるのでは本末転倒感があります。&lt;/p&gt;
+
+&lt;p&gt;また、問題を一問解く度にプログラムのテンプレートを用意したり、既存ツールを用いてサンプルケースをダウンロードしてくるのも手間がかかります。&lt;/p&gt;
+
+&lt;p&gt;そこで、数ある競技プログラミングのサイトの中からAtCoderに特化することで、コンテスト中にコンソールに打ち込むコマンドの数を極限まで減らせるようにするツールとして、&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;を開発しました。&lt;/p&gt;
+
+&lt;p&gt;atcoder-cliはディレクトリ構成から自動的に提出するコンテスト・問題を検出し、短いコマンドの入力だけで問題を提出できるようにするのみならず、テンプレートを自動的に展開する機能などを備えており、AtCoder用のプロジェクト管理ツールとしても機能するソフトウェアです。
+また、online-judge-toolsとの連携によって、サンプルケースの自動ダウンロードなどの機能を余計なURL指定なしで快適に使用できるようになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール方法&#34;&gt;インストール方法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ npm install -g atcoder-cli
+$ acc -v # 正しくインストールされたかどうか確認する
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;atcoder-cliはnpmパッケージとして公開しているため、node.jsが必要です。
+また、&lt;a href=&#34;https://github.com/kmyk/online-judge-tools&#34;&gt;online-judge-tools&lt;/a&gt;はインストールされていなくても問題なく動作しますが、連携機能のため同時にインストールしておくことを強く推奨します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;2018/12/07/atcoder-cli-installation-guide/&#34;&gt;atcoder-cli インストールガイド&lt;/a&gt;を公開していますので、詳しいインストール手順はそちらをお読みください。&lt;/p&gt;
+
+&lt;h2 id=&#34;特徴&#34;&gt;特徴&lt;/h2&gt;
+
+&lt;p&gt;詳細な機能については&lt;a href=&#34;https://github.com/Tatamo/atcoder-cli&#34;&gt;README&lt;/a&gt;や&lt;code&gt;acc [COMMAND] -h&lt;/code&gt;コマンドを参照してください。
+日本語の解説記事として、&lt;a href=&#34;2018/12/07/atcoder-cli-tutorial/&#34;&gt;atcoder-cli チュートリアル&lt;/a&gt;があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;コンテスト情報取得&#34;&gt;コンテスト情報取得&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;$ acc contest abc100
+AtCoder Beginner Contest 100  https://beta.atcoder.jp/contests/abc100
+$ acc tasks abc100
+A  Happy Birthday!           https://beta.atcoder.jp/contests/abc100/tasks/abc100_a
+B  Ringo&#39;s Favorite Numbers  https://beta.atcoder.jp/contests/abc100/tasks/abc100_b
+C  *3 or /2                  https://beta.atcoder.jp/contests/abc100/tasks/abc100_c
+D  Patisserie ABC            https://beta.atcoder.jp/contests/abc100/tasks/abc100_d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CLIツールとして、問題のURLなどをコマンドラインから取得できます。他のシェルコマンドと組み合わせることで、AtCoderに関連する処理を自動化する際に役立てることができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;コンテスト用ディレクトリ作成&#34;&gt;コンテスト用ディレクトリ作成&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ acc new abc100 # abc100用のディレクトリを作成
+$ cd abc100
+$ cat contest.acc.json
+{
+  &amp;quot;contest&amp;quot;: {
+    &amp;quot;id&amp;quot;: &amp;quot;abc100&amp;quot;,
+    &amp;quot;title&amp;quot;: &amp;quot;AtCoder Beginner Contest 100&amp;quot;,
+    &amp;quot;url&amp;quot;: &amp;quot;https://beta.atcoder.jp/contests/abc100&amp;quot;
+  },
+  &amp;quot;tasks&amp;quot;: [
+    {
+      &amp;quot;id&amp;quot;: &amp;quot;abc100_a&amp;quot;,
+      &amp;quot;label&amp;quot;: &amp;quot;A&amp;quot;,
+      &amp;quot;title&amp;quot;: &amp;quot;Happy Birthday!&amp;quot;,
+      &amp;quot;url&amp;quot;: &amp;quot;https://beta.atcoder.jp/contests/abc100/tasks/abc100_a&amp;quot;,
+      &amp;quot;directory&amp;quot;: {
+        &amp;quot;path&amp;quot;: &amp;quot;a&amp;quot;,
+        &amp;quot;testdir&amp;quot;: &amp;quot;tests&amp;quot;
+      }
+    },
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;atcoder-cliでは、コンテストごとにディレクトリを作成してプログラムを管理します。
+デフォルトではコンテストディレクトリ内でさらに問題ごとにディレクトリを分け、その中で問題を解いていくことを想定していますが、コンテストディレクトリ直下でディレクトリを分けずに複数のプログラムファイルを配置することもサポートしています。&lt;/p&gt;
+
+&lt;p&gt;この際に、以下のような処理を自動的に行うことができます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;サンプルケースの自動ダウンロード (online-judge-toolsが必要)&lt;/li&gt;
+&lt;li&gt;テンプレートを予め用意しておくことで、プログラム等のファイルを問題ディレクトリにコピー&lt;/li&gt;
+&lt;li&gt;任意のシェルコマンドを実行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これらを組み合わせることで、コンテスト用ディレクトリを作成した時点であらゆる前準備を終えることができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;提出機能&#34;&gt;提出機能&lt;/h3&gt;
+
+&lt;p&gt;atcoder-cli本体は今のところAtCoderにファイルを提出する機能を備えていませんが、内側でonline-judge-toolsを呼び出すことにより、もともとのonline-judge-toolsの機能よりもさらに簡単に問題を提出することができるようになっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ oj s https://beta.atcoder.jp/contests/abc100/tasks/abc100_a main.cpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;online-judge-toolsでは問題の提出のために上記のコマンドが必要でしたが、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ acc s main.cpp # s はsubmitの省略名
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;atcoder-cliはファイルが配置されたディレクトリから自動的に提出するべき問題を判別し、URLなどを明示する必要がなくなっています。&lt;/p&gt;
+
+&lt;p&gt;さらに、問題テンプレート機能を使用すれば提出するプログラムのファイル名を予め指定しておくことができるため、以下のように一切の引数を与えることなく提出が可能になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ acc s # これだけで提出ができる！
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;高速な応答性&#34;&gt;高速な応答性&lt;/h3&gt;
+
+&lt;p&gt;レスポンスの速さはCLIツールにとって重要な要素であるため、依存パッケージのロードを必要なタイミングまで遅延させることで、そのコマンドの実行時に使用されないパッケージの読み込みを防止して応答性を高めています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ time acc -h
+...
+real    0m0.093s
+user    0m0.080s
+sys     0m0.008s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;類似ツール&#34;&gt;類似ツール&lt;/h2&gt;
+
+&lt;h3 id=&#34;kmyk-online-judge-tools-https-github-com-kmyk-online-judge-tools&#34;&gt;&lt;a href=&#34;https://github.com/kmyk/online-judge-tools&#34;&gt;kmyk/online-judge-tools&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AtCoderに限定せず様々なサイトに対応
+
+&lt;ul&gt;
+&lt;li&gt;それ故にややコマンドのタイプ数が増えやすい傾向にある&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;テストツールとしての機能も有する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;atcoder-cliは現状online-judge-toolsにどっぷり依存しているので頭が上がりません。
+便利なツールを作って頂いてありがとうございます。&lt;/p&gt;
+
+&lt;p&gt;とはいえatcoder-cliはnpm, ojはpipでインストールしないといけないため、atcoder-cli単体で同等の機能が提供できたほうがインストールの手間は減ると思うので好ましいのかもしれません(サンプルケースの取得はアドホックにやらざるを得ないし、提出ファイルの言語指定も割とつらさがあるので既にあるものをあまり再実装したくない)。&lt;/p&gt;
+
+&lt;h3 id=&#34;nodchip-onlinejudgehelper-https-github-com-nodchip-onlinejudgehelper&#34;&gt;&lt;a href=&#34;https://github.com/nodchip/OnlineJudgeHelper&#34;&gt;nodchip/OnlineJudgeHelper&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;様々なサイトに対応、多機能&lt;/li&gt;
+&lt;li&gt;outdated&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;URLをすべて入力しなくても、コンテストID+問題IDでの提出ができるため少しは楽です。
+年単位でメンテナンスされていなかったり、アカウントのパスワードをローカルに置いておくことを求められたりするので、今使うには微妙かもしれません。&lt;/p&gt;
+
+&lt;h3 id=&#34;xmlpro-atam-https-github-com-xmlpro-atam&#34;&gt;&lt;a href=&#34;https://github.com/XMLPro/atam&#34;&gt;XMLPro/atam&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AtCoder用の問題提出ツール&lt;/li&gt;
+&lt;li&gt;node.jsで動作&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;AtCoder専用のツールで、現状では問題提出のみの機能を持っています。
+npmからインストールすることができ、連携が比較的容易と思われるので、今後連携機能の実装を行うかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;contribution&#34;&gt;Contribution&lt;/h2&gt;
+
+&lt;p&gt;バグ報告、要望などは&lt;a href=&#34;https://github.com/Tatamo/atcoder-cli/issues&#34;&gt;https://github.com/Tatamo/atcoder-cli/issues&lt;/a&gt;で受け付けています。&lt;/p&gt;
+
+&lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;このツールが良いと思っていただけましたら、ぜひ&lt;strong&gt;&lt;a href=&#34;https://github.com/Tatamo/atcoder-cli&#34;&gt;★Starをください&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;というのも、AtCoder勢で利用していない人はほとんどいないであろう&lt;a href=&#34;https://kenkoooo.com/atcoder/&#34;&gt;AtCoder Problems&lt;/a&gt;が、その圧倒的な知名度と比較して&lt;a href=&#34;https://github.com/kenkoooo/AtCoderProblems&#34;&gt;GitHubリポジトリ&lt;/a&gt;についている★の数があまりに少ないのではないか、という話があります。&lt;/p&gt;
+
+&lt;p&gt;★とはTwitterの&lt;del&gt;ふぁぼ&lt;/del&gt;いいねのようなものです。
+競プロ勢はGitHubの使い方もよくわからないのだ、という不名誉な評判がつきかねませんから、ぜひ良いと思ったリポジトリには★を投げてみましょう。&lt;/p&gt;
+
+&lt;p&gt;ここに&lt;a href=&#34;https://github.com/Tatamo/atcoder-cli&#34;&gt;良い練習台 (Tatamo/atcoder-cli)&lt;/a&gt;がありますね。&lt;/p&gt;
+
+&lt;p&gt;GitHubのアカウントを持っていない方は、有効なメールアドレスとユーザー名、パスワードだけあれば&lt;a href=&#34;https://github.com/join&#34;&gt;https://github.com/join&lt;/a&gt;から簡単にアカウントの作成を行うことができます。
+(&lt;a href=&#34;https://www.google.co.jp/search?q=github+登録&#34;&gt;参考&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;ログインができたら&lt;a href=&#34;https://github.com/Tatamo/atcoder-cli&#34;&gt;適当なソフトウェア (Tatamo/atcoder-cli)&lt;/a&gt;のページに行き、ページの上の方にある「★Star」をクリック/タップするだけで★をつけることができます。&lt;/p&gt;
+
+&lt;p&gt;(露骨な宣伝で申し訳ありません。
+私のツールに★を投げる必要はありませんが、AtCoder Problemsは実際もっと★がついていてもよいのではと思っています。
+皆さんどんどんGitHubで★を投げあいましょう)&lt;/p&gt;
+      </description>
+    </item>
     
     <item>
       <title>JavaScript/TypeScriptで競技プログラミングをするには 後編</title>

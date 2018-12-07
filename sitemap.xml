@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-tutorial/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-installation-guide/</loc>
+    <lastmod>2018-12-07T23:21:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/2018/12/07/atcoder-cli/</loc>
+    <lastmod>2018-12-07T23:20:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/</loc>
     <lastmod>2018-09-16T18:00:01+09:00</lastmod>
   </url>
@@ -163,6 +178,18 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/atcoder/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/atcoder-cli/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/tags/austin/</loc>
     <lastmod>2017-09-17T01:54:04+09:00</lastmod>
     <priority>0</priority>
@@ -181,7 +208,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/tags/competitive-programming/</loc>
-    <lastmod>2018-02-09T19:30:00+09:00</lastmod>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -205,7 +232,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/categories/dev/</loc>
-    <lastmod>2018-02-09T19:30:00+09:00</lastmod>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -361,7 +388,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/post/</loc>
-    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -397,7 +424,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/</loc>
-    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
