@@ -428,7 +428,11 @@ Windowsの場合はコマンドプロンプトを、Mac/Linuxの場合は端末�
       
       <guid>http://tatamo.81.la/blog/2018/12/07/atcoder-cli/</guid>
       <description>
-        &lt;p&gt;&lt;a href=&#34;https://beta.atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;のためのコマンドラインツール、&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;をリリースしました。&lt;/p&gt;
+        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/3095&#34;&gt;Competitive Programming (2) Advent Calendar 2018&lt;/a&gt;の21日の記事です。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://beta.atcoder.jp/&#34;&gt;AtCoder&lt;/a&gt;のためのコマンドラインツール、&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;をリリースしました。&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;2018/12/07/atcoder-cli-installation-guide/&#34;&gt;インストールガイド&lt;/a&gt;と&lt;a href=&#34;2018/12/07/atcoder-cli-tutorial/&#34;&gt;チュートリアル&lt;/a&gt;の記事も用意しています。&lt;/p&gt;
 
