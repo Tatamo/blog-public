@@ -230,7 +230,7 @@ a  contest.acc.json
 
 &lt;p&gt;頻繁に使用するテンプレートは、常に&lt;code&gt;--template&lt;/code&gt;オプションをつけるかわりに、グローバル設定からデフォルトのテンプレートとして設定することが可能です。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc config defaullt-template cpp
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ acc config default-template cpp
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;これにより、&lt;code&gt;acc new&lt;/code&gt;コマンドと&lt;code&gt;acc add&lt;/code&gt;コマンドの実行時に自動的に&lt;code&gt;cpp&lt;/code&gt;テンプレートが使用されるようになります。&lt;/p&gt;
