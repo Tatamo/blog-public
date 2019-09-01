@@ -309,13 +309,13 @@
   </url>
   
   <url>
-    <loc>http://tatamo.81.la/blog/categories/info/</loc>
+    <loc>http://tatamo.81.la/blog/tags/info/</loc>
     <lastmod>2015-12-11T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://tatamo.81.la/blog/tags/info/</loc>
+    <loc>http://tatamo.81.la/blog/categories/info/</loc>
     <lastmod>2015-12-11T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
@@ -369,13 +369,13 @@
   </url>
   
   <url>
-    <loc>http://tatamo.81.la/blog/categories/pc/</loc>
+    <loc>http://tatamo.81.la/blog/tags/pc/</loc>
     <lastmod>2017-12-18T21:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://tatamo.81.la/blog/tags/pc/</loc>
+    <loc>http://tatamo.81.la/blog/categories/pc/</loc>
     <lastmod>2017-12-18T21:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
