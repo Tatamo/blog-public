@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tatamo.81.la/blog/2019/12/10/automation-games/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2019/09/04/symphonic-rain/</loc>
     <lastmod>2019-09-04T21:43:24+09:00</lastmod>
   </url>
@@ -201,6 +206,12 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/automation/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/tags/blog/</loc>
     <lastmod>2017-11-08T18:00:00+09:00</lastmod>
     <priority>0</priority>
@@ -237,7 +248,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/categories/dev/</loc>
-    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -393,7 +404,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/post/</loc>
-    <lastmod>2019-09-04T21:43:24+09:00</lastmod>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -435,7 +446,7 @@
   
   <url>
     <loc>http://tatamo.81.la/blog/</loc>
-    <lastmod>2019-09-04T21:43:24+09:00</lastmod>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
     <priority>0</priority>
   </url>
   
