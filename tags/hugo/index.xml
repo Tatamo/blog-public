@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hugo on わたしろぐ</title>
@@ -7,7 +7,9 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Tue, 05 Jan 2016 20:50:32 +0900</lastBuildDate>
-    <atom:link href="/tags/hugo/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://tatamo.81.la/blog/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Hugoを導入してブログを作った デプロイ編</title>
@@ -15,140 +17,7 @@
       <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/2016/01/05/hugo-deployment/</guid>
-      <description>
-        &lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;werckerを使って自動ビルドする&#34;&gt;Werckerを使って自動ビルドする&lt;/h2&gt;
-
-&lt;p&gt;まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
-記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
-また、Hugoの環境がなくても、gitさえ使うことができれば記事の更新を行うことができるようになります。&lt;/p&gt;
-
-&lt;p&gt;今回使用した&lt;a href=&#34;http://wercker.com/&#34;&gt;Wercker&lt;/a&gt;は、このような自動ビルド作業およびデプロイ作業を自動化してくれるCIサービスです。
-Werckerを利用した自動デプロイは、&lt;a href=&#34;https://gohugo.io/tutorials/automated-deployments/&#34;&gt;Hugoの公式ドキュメント&lt;/a&gt;に記事があるため、これを参考に行います。
-この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。&lt;/p&gt;
-
-&lt;h3 id=&#34;wercker-ymlの記述&#34;&gt;wercker.ymlの記述&lt;/h3&gt;
-
-&lt;p&gt;公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
-既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &amp;quot;0.14&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これだけでHugoのビルドが可能です。
-ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。&lt;/p&gt;
-
-&lt;h2 id=&#34;werckerとdeploybotを使って自動デプロイする&#34;&gt;WerckerとDeployBotを使って自動デプロイする&lt;/h2&gt;
-
-&lt;p&gt;前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &amp;quot;0.14&amp;quot;
-deploy:
-  steps:
-    - install-packages:
-        packages: lftp
-    - script:
-        name: mirror over lftp
-        code: |
-            lftp -u $DEPLOY_FTP_USER,$DEPLOY_FTP_PASS -e &amp;quot;set ftp:passive-mode off;set ftp:ssl-allow off;set net:timeout 5;set net:max-retries 3;set net:reconnect-interval-max 60;mirror -enR public /blog;quit&amp;quot; $DEPLOY_FTP_SERVER
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;lftpでの接続に失敗し、アップロードを行うことができませんでした。
-PASVモードのon/off、sslを使用しないようにするなどのオプションを試みましたが、コネクションがうまく確立できず失敗しました。&lt;/p&gt;
-
-&lt;p&gt;後日また調べてみたいと思っていますが、ひとまずFTPでのアップロードを行うため、別のサービスを利用することにしました。
-&lt;a href=&#34;http://deploybot.com/&#34;&gt;DeployBot&lt;/a&gt;は1プロジェクトまで無料で利用できるサービスで、FTPによるアップロードにも対応しているため、これを利用しました。
-DeployBotによるデプロイは、&lt;a href=&#34;http://creative-tweet.net/blog/2015/10/usage-hugo-2.html&#34;&gt;Hugoをセットアップしてデプロイするまで［後編］CIサービスでビルドからデプロイを自動化するまで | creative tweet.&lt;/a&gt;で解説されているので、ここを参考にして行いました。&lt;/p&gt;
-
-&lt;p&gt;全体としては、&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;記事を書いてGitHub上にpushする&lt;/li&gt;
-&lt;li&gt;Werckerが更新を検知して自動的にビルドを行い、別のGitHubリポジトリを更新する&lt;/li&gt;
-&lt;li&gt;そのリポジトリの更新を検知してDeployBotによって自動的にサーバーへアップロードする&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;というような流れでのデプロイを行いました。&lt;/p&gt;
-
-&lt;p&gt;Werckerから別のGitHubリポジトリへのpushを行うようにするため、公式ドキュメントに書かれている通りにwercker.ymlを書き換えます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &amp;quot;0.14&amp;quot;
-deploy:
-  steps:
-    - install-packages:
-        packages: git ssh-client
-    - leipert/git-push:
-        gh-oauth: $GIT_TOKEN
-        basedir: public
-        repo: $GITHUB_REPO
-        clean_removed_files: true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;$GIT_TOKEN&lt;/code&gt;および&lt;code&gt;$GITHUB_REPO&lt;/code&gt;は、werckerの設定画面でdeploy targetごとに変数を定義できるため、そこに記述します。$GIT_TOKENはprotectedにチェックを入れ、外部から取得できないようにしておきます。&lt;/p&gt;
-
-&lt;p&gt;あとはwerckerのデプロイ先に指定したGitHubリポジトリをDeployBotに登録するだけです。
-DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
-これで目的のサーバーへの自動デプロイが完了しました。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足など&#34;&gt;補足など&lt;/h2&gt;
-
-&lt;h3 id=&#34;githubリポジトリの分割&#34;&gt;GitHubリポジトリの分割&lt;/h3&gt;
-
-&lt;p&gt;Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nohighlight&#34;&gt;public/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;リポジトリA:publicディレクトリを除くHugoディレクトリ&lt;/li&gt;
-&lt;li&gt;リポジトリB:生成されたpublicディレクトリの内容&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。&lt;/p&gt;
-
-&lt;h3 id=&#34;werckerの設定&#34;&gt;Werckerの設定&lt;/h3&gt;
-
-&lt;h4 id=&#34;dockerの使用&#34;&gt;Dockerの使用&lt;/h4&gt;
-
-&lt;p&gt;Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
-Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、&lt;a href=&#34;http://thleap.net/blog/recovering-wercker/&#34;&gt;boxが見つからないというエラー&lt;/a&gt;が発生します。
-逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
-(なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)&lt;/p&gt;
-
-&lt;h4 id=&#34;デプロイターゲット登録時のauto-deploy設定&#34;&gt;デプロイターゲット登録時のAuto deploy設定&lt;/h4&gt;
-
-&lt;p&gt;ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&amp;rdquo;auto deploy successful builds to branch(es):&amp;ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
-GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。&lt;/p&gt;
-
-&lt;p&gt;なお、デプロイ先のGitHubブランチ名は前述したwercker.yml内に指定する箇所があります。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;以上で、Hugoで生成したサイトを自動的にデプロイすることができました。
-とはいえWerckerから直接デプロイすることに失敗したためにやや回りくどい方法をとっており、いずれ改善したいと思っています。&lt;/p&gt;
-
-&lt;p&gt;Werckerはビルドごとに環境を最初から設定するため、ライブラリのインストールなども毎回行われ、ビルド環境が整うまでに1分ほどかかります。
-手元でビルドができる環境ならばローカルでビルドしてアップロードしたほうが明らかに速いので、すぐに更新したいときなどはデプロイまでにかなり時間がかかる印象を受けます。
-Werckerを経由せず、手動でアップロードできる方法も用意しておいたほうがいいのかもしれません。&lt;/p&gt;
-
-&lt;p&gt;また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
-デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。&lt;/p&gt;
-      </description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -157,139 +26,11 @@ Werckerを経由せず、手動でアップロードできる方法も用意し�
       <pubDate>Thu, 17 Dec 2015 03:51:04 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/2015/12/17/hugo-implementation/</guid>
-      <description>
-        &lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/891&#34;&gt;KobeUniv Advent Calendar 2015&lt;/a&gt;の17日の記事です。なんとか期日に間に合いそうです。
+      <description>&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/891&#34;&gt;KobeUniv Advent Calendar 2015&lt;/a&gt;の17日の記事です。なんとか期日に間に合いそうです。
 なお私は当該大学の学部1年(2015年12月現在)です。&lt;/p&gt;
-
-&lt;hr /&gt;
-
+&lt;hr&gt;
 &lt;p&gt;このブログを作るにあたって、&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;を使用しました。
-Hugoを用いたサイト構築の基本的な考え方や流れの紹介、その際に詰まったことなど。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;そもそもhugoって何&#34;&gt;そもそもHugoって何&lt;/h2&gt;
-
-&lt;p&gt;静的なWebサイトを生成するためのエンジンです。
-つまり:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;まずレイアウトを用意します&lt;/li&gt;
-&lt;li&gt;次に記事を書きます&lt;/li&gt;
-&lt;li&gt;hugoを実行します&lt;/li&gt;
-&lt;li&gt;記事がHTMLに変換され、Webサイトが生成されます&lt;/li&gt;
-&lt;li&gt;生成されたサイトをまるごとサーバーにアップロードします&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;これでWebサイトの完成というわけです。
-あくまで静的なサイトなので、サーバーサイドでプログラムを走らせる必要もありません。&lt;/p&gt;
-
-&lt;h2 id=&#34;hugoを使ってみる&#34;&gt;Hugoを使ってみる&lt;/h2&gt;
-
-&lt;p&gt;Hugoのインストール等については、既に多くの情報がネット上にあるため割愛します。&lt;/p&gt;
-
-&lt;h3 id=&#34;hugoの基本的なディレクトリ構成&#34;&gt;Hugoの基本的なディレクトリ構成&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ hugo new site name_of_my_site
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;を実行することで、サイト用のディレクトリが生成されます。
-中には、config.tomlといくつかのディレクトリが生成されているはずです。
-config.tomlはサイト全体の設定を記述するファイルです。なお、代わりにconfig.yamlとしてYAMLで記述することなども可能です。お好みで変更しましょう。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ cd name_of_my_site/
-$ ls -p
-archetypes/  config.toml  content/  data/  layouts/  static/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;contentディレクトリは、記事ファイルを配置する場所です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ hugo new hoge.md
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;などとするとcontent内にmdファイル(記事は主にMarkdownで記述します)が生成されますので、これを編集して記事を作ることになります。&lt;/p&gt;
-
-&lt;p&gt;また、layoutディレクトリにはWebサイトの基礎となるテンプレートを配置します。
-基本的には独自のテンプレート記法が用いられたhtmlファイルを使います。
-既存のテーマを利用する場合は、themesディレクトリを作り、そこに同様のテンプレートが同梱されたテーマを配置することになります。&lt;/p&gt;
-
-&lt;p&gt;staticディレクトリには、CSSや画像などの静的なファイルを配置します。
-このディレクトリ内にあるファイルは、生成時にサイトのルートディレクトリにそのままコピーされます。&lt;/p&gt;
-
-&lt;p&gt;基本的には、この3つ(または4つ)のディレクトリの働きを把握しておけば、Hugoでサイトを作りはじめるのに不足はないかと思われます。&lt;/p&gt;
-
-&lt;p&gt;また、hugoコマンドなどによって生成された完成品のサイトは、publicというディレクトリが作られてそこに配置されます。
-サイトを公開するときは、publicディレクトリ下に生成されたファイルをすべてアップロードします。
-なお、publicディレクトリ内に不要になったファイルがあったとしても、サイト生成時に削除されません。本番サイトの生成時にはpublicディレクトリを一度削除してからビルドを行うのが良いと思われます。&lt;/p&gt;
-
-&lt;h3 id=&#34;レイアウトしてみる&#34;&gt;レイアウトしてみる&lt;/h3&gt;
-
-&lt;h4 id=&#34;テーマを使う&#34;&gt;テーマを使う&lt;/h4&gt;
-
-&lt;p&gt;いくつものHugoのレイアウトが&lt;a href=&#34;https://themes.gohugo.io/&#34;&gt;公開されて&lt;/a&gt;います。基本的には、この中から気に入ったものを使うのが良さそうです。themesディレクトリ直下にテーマごとのディレクトリを作り、その中にテーマファイルを配置します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ git clone --recursive https://github.com/spf13/hyde themes/hyde
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;テーマを適用するときは、configファイル内でテーマを指定するか、hugoコマンドの実行時に&lt;code&gt;hugo -t hyde&lt;/code&gt;または&lt;code&gt;hugo server -t hyde&lt;/code&gt;のように-tオプションでテーマを指定します。ここで指定するテーマ名は、themes直下に配置したディレクトリの名前となります。
-テーマを適用すると、hugoディレクトリ直下のファイルが読み込まれるよりも先に、そのテーマディレクトリ下に存在するファイルが読み込まれるようになります。&lt;/p&gt;
-
-&lt;p&gt;既存のテーマを使用する場合、テーマによってconfigに記述する必要のある内容が大きく異なる可能性があります。READMEにどのような項目を記述すればいいかが書かれていると思いますので、必ず確認するのがいいでしょう。&lt;/p&gt;
-
-&lt;h4 id=&#34;自分でレイアウトする&#34;&gt;自分でレイアウトする&lt;/h4&gt;
-
-&lt;p&gt;HugoはGo言語のテンプレートエンジンを使用しており、各種パラメータを呼び出したり、部分ごとにHTMLファイルを分けて再利用することでサイトのレイアウトを記述していくことができます。&lt;/p&gt;
-
-&lt;p&gt;自分でHugoサイトをレイアウトする場合、確実に一定の学習コストが必要となるので、ここでは詳細には触れません。Hugoは公式ドキュメントが充実しているので、&lt;a href=&#34;https://gohugo.io/tutorials/creating-a-new-theme/&#34;&gt;公式チュートリアル&lt;/a&gt;などから始めるのがいいでしょう。また基本的なことであれば調べれば日本語の情報も得られると思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;詰まったことなど&#34;&gt;詰まったことなど&lt;/h2&gt;
-
-&lt;p&gt;今回はHTMLやCSSを自分で書いてサイトを一つ作りたいと思っていた&lt;del&gt;のと、自分以外のテーマ作者名の表記がページに現れるのが気に食わなかった&lt;/del&gt;ので、このサイトでは既存のテーマを使用せず、自前でレイアウトを記述して構築しました。
-その途中で、いくつか不具合に遭遇して詰まったりしました。&lt;/p&gt;
-
-&lt;h3 id=&#34;バージョン0-14-配列の並び替えにバグがある&#34;&gt;(バージョン0.14)配列の並び替えにバグがある&lt;/h3&gt;
-
-&lt;p&gt;サイドバーに最近の投稿やタグ・カテゴリの一覧を表示させる際、たとえば&lt;code&gt;.Reverse&lt;/code&gt;や&lt;code&gt;.ByDate&lt;/code&gt;で並び替えを行うと、ページによって正常に並び替えが行われなかったり、ビルドするたびに並び順が変わる、低確率で配列の中身が重複して表示されたりします。
-これは並び替えを行う関数が配列そのものに変更を加えているのが原因です。さらにビルド時に並列処理が行われることで処理順がビルドのたびに変化し得るため、同じ記述をしていてもページによって表示される内容が変わるといった不具合が発生したり、そのバグの再現性が低くなったりします。&lt;/p&gt;
-
-&lt;p&gt;このバグは開発版のバージョン0.15では&lt;a href=&#34;https://discuss.gohugo.io/t/error-when-trying-to-sort/1390/4&#34;&gt;修正済み&lt;/a&gt;であり、現行のバージョン0.14まででのみ発生します。&lt;/p&gt;
-
-&lt;h3 id=&#34;rssuriオプションは使ってはいけない&#34;&gt;RSSUriオプションは使ってはいけない&lt;/h3&gt;
-
-&lt;p&gt;Hugoではビルド時に自動的にRSSフィードも生成されますが、そのファイル名は常にindex.xmlとなります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;rssuri = &amp;quot;rss.xml&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のようにconfigファイル中に記述することで、RSSファイル名を変更する機能がありますが、この機能には&lt;a href=&#34;https://github.com/spf13/hugo/issues/1147&#34;&gt;いくつもの欠陥がある&lt;/a&gt;ため使ってはいけません。(2015年12月、バージョン0.14時点)&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ルートディレクトリ直下のRSSファイルのファイル名はこの設定によって変更できるが、それ以外のRSSファイルはすべてindex.xmlのままになってしまう&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;.RSSlink&lt;/code&gt;などの変数を呼び出すと、間違ったリンクが返される&lt;/li&gt;
-&lt;li&gt;RSSファイル内のURLが間違ったものになる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;hugoを使ってみた感想&#34;&gt;Hugoを使ってみた感想&lt;/h2&gt;
-
-&lt;p&gt;Hugoはシンプルで生成が非常に速いという評判があったため導入してみましたが、実際にサイトを構築してみると確かにそのような設計であることがよく感じられました。必要最小限の機能を持つように出来ており、簡潔なディレクトリ構造はとてもわかりやすいです。
-生成速度についてはまだ記事数が少ないため何とも言えませんが、今のところは一瞬でビルドが完了するので良い感じだと思います。&lt;/p&gt;
-
-&lt;p&gt;とはいえ、レイアウトから自前で書き始めるといくつかの不満点が出てきます。
-レイアウトに使用するテンプレートはHugoの全体の印象に反して煩雑です。そのため、Hugo特有のレイアウトの記述方法にある程度習熟しておくことは不可欠となります。
-しかし、Hugoは公式ドキュメントが非常に豊富ではあるのですが、決して使いやすいというわけではないと思います。
-全体を通して解説風のドキュメントとなっているために最初はわかりやすいのですが、それ故にリファレンスとしての機能を十分に果たしておらず、また別途APIリファレンスなどがあるわけでもないので、テンプレートなどの機能を調べるのがやや困難です。
-(とはいえ、基本はGo言語のテンプレートエンジンを用いているらしいので、既にGoに慣れている方にとっては問題ないのかもしれません)&lt;/p&gt;
-
-&lt;p&gt;Hugoで使用するパラメータは、TaxonomyやPaginatorの概念が存在していることによってやや複雑な構造をしているため、ドキュメントの見通しが悪いのは問題になりがちだと思います。(rangeで.Data等で提供される配列の中身を回す時とTaxonomyを回すときの扱い方が微妙に異なるなど)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;以上、Hugoを使ったサイト構築の紹介でした。
-Hugoでサイトを作ってからWeb上にデプロイするまでも一苦労あったので、後日その流れについても書いてみたいと思っています。&lt;/p&gt;
-
-&lt;p&gt;あとページのデザイン難しいです。
-CSS周りについても記事を書いてみたいですが、あまりに試行錯誤の連続なので何も書くことがないかもしれません……&lt;/p&gt;
-      </description>
+Hugoを用いたサイト構築の基本的な考え方や流れの紹介、その際に詰まったことなど。&lt;/p&gt;</description>
     </item>
     
   </channel>

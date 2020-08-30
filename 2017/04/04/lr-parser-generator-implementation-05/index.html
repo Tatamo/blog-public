@@ -77,322 +77,256 @@
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
         <p><a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回</a>の記事ではLR(1)法の解説を行いました。
 今回は前回解説した部分の実装を行います。</p>
-
-<p></p>
-
 <p>今回はひたすらパーサジェネレータの実装をしていきます。
 概略やアルゴリズムは既に紹介しているため、基本的に省略します。
 適宜<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回</a>の記事を参照してください。</p>
-
 <p>今回取り上げる部分は特にパフォーマンスに与える影響が大きいため、処理速度を重視した設計を行っています。
 そのため、天下り的な解説となる箇所が増えるかもしれませんがご了承ください。</p>
-
 <h2 id="syntaxdbクラスの作成">SyntaxDBクラスの作成</h2>
-
 <p><a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">第3回</a>で終端記号と非終端記号の区別を行ったり、First集合を求めたりしたように、与えられた構文から様々な情報を得る必要があります。</p>
-
-<p>そこで、それらの情報取得を担うクラスとしてSyntaxDBクラスを作成します。<br />
+<p>そこで、それらの情報取得を担うクラスとしてSyntaxDBクラスを作成します。<br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/syntaxdb.ts</a></p>
-
-<pre><code class="language-ts">/// syntaxdb.d.ts
-export declare class SyntaxDB {
-    private syntax;
-    private _start_symbol;
-    private _first;
-    private _symbols;
-    private tokenmap;
-    private tokenid_counter;
-    private defmap;
-    constructor(grammar: GrammarDefinition);
-    private initDefMap();
-    readonly start_symbol: Token;
-    readonly first: FirstSet;
-    readonly symbols: SymbolDiscriminator;
-    findDef(x: Token): Array&lt;{
-        id: number;
-        def: SyntaxDefinitionSection;
-    }&gt;;
-    getTokenId(token: Token): number;
-    get(id: number): SyntaxDefinitionSection;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// syntaxdb.d.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SyntaxDB</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_start_symbol</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_first</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_symbols</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">tokenmap</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">tokenid_counter</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">defmap</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">grammar</span>: <span style="color:#66d9ef">GrammarDefinition</span>);
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">initDefMap</span>();
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">start_symbol</span>: <span style="color:#66d9ef">Token</span>;
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">first</span>: <span style="color:#66d9ef">FirstSet</span>;
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">symbols</span>: <span style="color:#66d9ef">SymbolDiscriminator</span>;
+    <span style="color:#a6e22e">findDef</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">Token</span>)<span style="color:#f92672">:</span> Array<span style="color:#f92672">&lt;</span>{
+        <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">number</span>;
+        <span style="color:#a6e22e">def</span>: <span style="color:#66d9ef">SyntaxDefinitionSection</span>;
+    }<span style="color:#f92672">&gt;</span>;
+    <span style="color:#a6e22e">getTokenId</span>(<span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">Token</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span>;
+    <span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">number</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">SyntaxDefinitionSection</span>;
 }
-</code></pre>
-
-<p>SyntaxDBクラスの読み取り専用メンバとして第3回で作成したFirstSetとSymbolDiscriminatorを持たせており、このクラスから終端記号の区別、First集合の取得が可能です。
+</code></pre></div><p>SyntaxDBクラスの読み取り専用メンバとして第3回で作成したFirstSetとSymbolDiscriminatorを持たせており、このクラスから終端記号の区別、First集合の取得が可能です。
 また、開始記号の取得も行えるようにします。
 さらに、構文id(上から何番目かを表す番号)を与えるとそれに対応する規則を返す<code>get</code>メソッド、記号を与えるとそれが左辺に現れる規則すべてを、構文idとともに返す<code>findDef</code>メソッド、そして記号を与えるとそれに対応した一意なトークンidを返す<code>getTokenId</code>メソッドを持ちます。</p>
-
 <p>findDefメソッドは愚直に実装した場合、複数回呼ばれるとそのたびに<code>O(n)</code>程度の計算量がかかります。
 そのため、SyntaxDBインスタンスの初期化時に非終端記号と規則群を対応付けたMapを生成する(計算量は<code>O(n)</code>程度)ことで、findDefの呼び出し時にはMapの中身をそのまま返すだけで済むようにします。</p>
-
 <p>getTokenIdメソッドは後述するアイテム集合部分で使用する必要がありますが、特に厳密なシリアライズや復元可能性を求めているわけではなく、単にハッシュ代わりに使用されます。
 そのため、同一のSyntaxDBインスタンスのgetTokenIdメソッドにトークンを与えると、同一のトークンならば必ず同じ番号が返ってくるようになっていればそれで構いません。
 よって、以下のような単純な実装で事足ります。</p>
-
-<pre><code class="language-ts">// Tokenを与えると一意なidを返す
-public getTokenId(token: Token): number{
-	if(!this.tokenmap.has(token)) this.tokenmap.set(token, this.tokenid_counter++);
-	return this.tokenmap.get(token)!; /// ※ !はTypeScriptのnon-nullable注釈
-}
-</code></pre>
-
-<p>このSyntaxDBクラスは、パーサジェネレータ全体を通して一つのインスタンスのみを使いまわすようにします。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">// Tokenを与えると一意なidを返す
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">getTokenId</span>(<span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">Token</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span>{
+	<span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tokenmap</span>.<span style="color:#a6e22e">has</span>(<span style="color:#a6e22e">token</span>)) <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tokenmap</span>.<span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">token</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tokenid_counter</span><span style="color:#f92672">++</span>);
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tokenmap</span>.<span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">token</span>)<span style="color:#f92672">!</span>; <span style="color:#75715e">/// ※ !はTypeScriptのnon-nullable注釈
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>このSyntaxDBクラスは、パーサジェネレータ全体を通して一つのインスタンスのみを使いまわすようにします。</p>
 <h2 id="アイテム集合とクロージャー展開">アイテム集合とクロージャー展開</h2>
-
 <p>まずは、LRアイテムおよびその集合を表現するクラスを作っていきます。
 アイテム集合クラスには、自身をクロージャー展開する機能を持たせることとします。</p>
-
 <p>また、DFAの構築において、「既存のアイテム集合の中に、新しく生成されたアイテム集合と一致するものが存在するかどうか判定する」処理が必要とされます。
 愚直に実装すると、この処理を1回行うだけで<code>O(n^3)</code>程度の計算量が必要となり、パーサジェネレータの処理全体の中で最大のボトルネックとなりえます。
 そのため、2つのアイテム集合の高速な一致判定を行えるようにする必要があります。</p>
-
 <p><a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/closure.ts</a></p>
-
-<pre><code class="language-ts">/// closure.d.ts
-export declare class ClosureItem {
-    private syntax;
-    private _syntax_id;
-    private _dot_index;
-    private _lookaheads;
-    private _lr0_hash;
-    private _lr1_hash;
-    constructor(syntax: SyntaxDB, _syntax_id: number, _dot_index: number, _lookaheads: Array&lt;Token&gt;);
-    readonly syntax_id: number;
-    readonly dot_index: number;
-    readonly lookaheads: Array&lt;Token&gt;;
-    private sortLA();
-    private updateHash();
-    getLR0Hash(): string;
-    getLR1Hash(): string;
-    isSameLR0(c: ClosureItem): boolean;
-    isSameLR1(c: ClosureItem): boolean;
-    merge(c: ClosureItem): ClosureItem | null;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// closure.d.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClosureItem</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_syntax_id</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_dot_index</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_lookaheads</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_lr0_hash</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_lr1_hash</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDB</span>, <span style="color:#a6e22e">_syntax_id</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">_dot_index</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">_lookaheads</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">Token</span>&gt;);
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">syntax_id</span>: <span style="color:#66d9ef">number</span>;
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">dot_index</span>: <span style="color:#66d9ef">number</span>;
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">lookaheads</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">Token</span>&gt;;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">sortLA</span>();
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">updateHash</span>();
+    <span style="color:#a6e22e">getLR0Hash</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
+    <span style="color:#a6e22e">getLR1Hash</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
+    <span style="color:#a6e22e">isSameLR0</span>(<span style="color:#a6e22e">c</span>: <span style="color:#66d9ef">ClosureItem</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
+    <span style="color:#a6e22e">isSameLR1</span>(<span style="color:#a6e22e">c</span>: <span style="color:#66d9ef">ClosureItem</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
+    <span style="color:#a6e22e">merge</span>(<span style="color:#a6e22e">c</span>: <span style="color:#66d9ef">ClosureItem</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ClosureItem</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>;
 }
-export declare class ClosureSet {
-    private syntax;
-    private closureset;
-    private _lr0_hash;
-    private _lr1_hash;
-    constructor(syntax: SyntaxDB, closureset: Array&lt;ClosureItem&gt;);
-    private sort();
-    readonly size: number;
-    getArray(): ClosureItem[];
-    includes(item: ClosureItem): boolean;
-    isSameLR0(c: ClosureSet): boolean;
-    isSameLR1(c: ClosureSet): boolean;
-    private updateHash();
-    getLR0Hash(): string;
-    getLR1Hash(): string;
-    mergeLA(cs: ClosureSet): ClosureSet | null;
-    private expandClosure();
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClosureSet</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">closureset</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_lr0_hash</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_lr1_hash</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDB</span>, <span style="color:#a6e22e">closureset</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">ClosureItem</span>&gt;);
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">sort</span>();
+    <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">size</span>: <span style="color:#66d9ef">number</span>;
+    <span style="color:#a6e22e">getArray</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">ClosureItem</span>[];
+    <span style="color:#a6e22e">includes</span>(<span style="color:#a6e22e">item</span>: <span style="color:#66d9ef">ClosureItem</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
+    <span style="color:#a6e22e">isSameLR0</span>(<span style="color:#a6e22e">c</span>: <span style="color:#66d9ef">ClosureSet</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
+    <span style="color:#a6e22e">isSameLR1</span>(<span style="color:#a6e22e">c</span>: <span style="color:#66d9ef">ClosureSet</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">updateHash</span>();
+    <span style="color:#a6e22e">getLR0Hash</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
+    <span style="color:#a6e22e">getLR1Hash</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
+    <span style="color:#a6e22e">mergeLA</span>(<span style="color:#a6e22e">cs</span>: <span style="color:#66d9ef">ClosureSet</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">ClosureSet</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">expandClosure</span>();
 }
-</code></pre>
-
-<p>ClosureItemクラスはLRアイテム1つに対応し、構文id、<code>.</code>の位置、および先読み記号の情報を持ちます。
+</code></pre></div><p>ClosureItemクラスはLRアイテム1つに対応し、構文id、<code>.</code>の位置、および先読み記号の情報を持ちます。
 ClosureSetクラスは複数のClosureItemをまとめた集合を表し、自身をクロージャー展開することが出来ます。
 さらに、後述するハッシュに関連した機能、および先読み部分のマージ機能などを持ちます。</p>
-
 <h3 id="クロージャー展開">クロージャー展開</h3>
-
-<pre><code class="language-ts">// クロージャー展開を行う
-// TODO: リファクタリング
-private expandClosure(){
-	// 展開処理中はClosureItemのlookaheadsの要素数を常に1に保つこととする
-	// 初期化
-	let set:Array&lt;ClosureItem&gt; = [];
-	// ClosureItemをlookaheadsごとに分解する
-	for(let ci of this.closureset){
-		for(let la of ci.lookaheads){
-			set.push(new ClosureItem(this.syntax, ci.syntax_id, ci.dot_index, [la]));
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">// クロージャー展開を行う
+</span><span style="color:#75715e">// TODO: リファクタリング
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">expandClosure</span>(){
+	<span style="color:#75715e">// 展開処理中はClosureItemのlookaheadsの要素数を常に1に保つこととする
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 初期化
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">set</span>:<span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">ClosureItem</span>&gt; <span style="color:#f92672">=</span> [];
+	<span style="color:#75715e">// ClosureItemをlookaheadsごとに分解する
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">ci</span> <span style="color:#a6e22e">of</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">closureset</span>){
+		<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">la</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">ci</span>.<span style="color:#a6e22e">lookaheads</span>){
+			<span style="color:#a6e22e">set</span>.<span style="color:#a6e22e">push</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ClosureItem</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>, <span style="color:#a6e22e">ci</span>.<span style="color:#a6e22e">syntax_id</span>, <span style="color:#a6e22e">ci</span>.<span style="color:#a6e22e">dot_index</span>, [<span style="color:#a6e22e">la</span>]));
 		}
 	}
-	this.closureset = set;
-	this.sort();
+	<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">closureset</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">set</span>;
+	<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">sort</span>();
 
-	// 変更がなくなるまで繰り返す
-	let i=0;
-	while(i&lt;this.closureset.length){
-		let ci = this.closureset[i++];
-		let {ltoken, pattern} = this.syntax.get(ci.syntax_id);
+	<span style="color:#75715e">// 変更がなくなるまで繰り返す
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+	<span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">i</span>&lt;<span style="color:#f92672">this.closureset.length</span><span style="color:#960050;background-color:#1e0010">)</span>{
+		<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">ci </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">this.closureset</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">++];</span>
+		<span style="color:#a6e22e">let</span> {<span style="color:#a6e22e">ltoken</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">pattern</span>} <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#a6e22e">this.syntax.get</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">ci.syntax_id</span><span style="color:#960050;background-color:#1e0010">);</span>
 
-		if(ci.dot_index == pattern.length) continue; // .が末尾にある場合はスキップ
-		let follow = pattern[ci.dot_index];
-		if(!this.syntax.symbols.isNonterminalSymbol(follow)) continue; // .の次の記号が非終端記号でないならばスキップ
+		<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">ci.dot_index</span> <span style="color:#960050;background-color:#1e0010">==</span> <span style="color:#a6e22e">pattern.length</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">.が末尾にある場合はスキップ</span>
+		<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">follow </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">pattern</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">ci.dot_index</span><span style="color:#960050;background-color:#1e0010">];</span>
+		<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(!</span><span style="color:#a6e22e">this.syntax.symbols.isNonterminalSymbol</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">follow</span><span style="color:#960050;background-color:#1e0010">))</span> <span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">.の次の記号が非終端記号でないならばスキップ</span>
 
-		// クロージャー展開を行う
+		<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">クロージャー展開を行う</span>
 
-		// 先読み記号を導出
-		// ci.lookaheadsは要素数1のため、0番目のインデックスのみを参照すればよい
-		let lookaheads = [...this.syntax.first.get(pattern.slice(ci.dot_index+1).concat(ci.lookaheads[0])).values()];
-		lookaheads.sort((t1:Token, t2:Token)=&gt;{
-			return this.syntax.getTokenId(t1) - this.syntax.getTokenId(t2);
+		<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">先読み記号を導出</span>
+		<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">ci.lookaheadsは要素数1のため</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#a6e22e">0番目のインデックスのみを参照すればよい</span>
+		<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">lookaheads </span><span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">...this.syntax.first.get</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">pattern.slice</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">ci.dot_index</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#a6e22e">1</span><span style="color:#960050;background-color:#1e0010">)</span><span style="color:#a6e22e">.concat</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">ci.lookaheads</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">]))</span><span style="color:#a6e22e">.values</span><span style="color:#960050;background-color:#1e0010">()];</span>
+		<span style="color:#a6e22e">lookaheads.sort</span><span style="color:#960050;background-color:#1e0010">((</span><span style="color:#a6e22e">t1</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">Token</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">t2</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">Token</span><span style="color:#960050;background-color:#1e0010">)=</span>&gt;{
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>.<span style="color:#a6e22e">getTokenId</span>(<span style="color:#a6e22e">t1</span>) <span style="color:#f92672">-</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>.<span style="color:#a6e22e">getTokenId</span>(<span style="color:#a6e22e">t2</span>);
 		});
 
-		// symbolを左辺にもつ全ての規則を、先読み記号を付与して追加
-		let definitions = this.syntax.findDef(follow);
-		for(let {id, def} of definitions){
-			for(let la of lookaheads){
-				let new_ci = new ClosureItem(this.syntax, id, 0, [la]);
-				// 重複がなければ新しいアイテムを追加する
-				let flg_duplicated = false;
-				for(let existing_item of this.closureset){
-					if(new_ci.isSameLR1(existing_item)){
-						flg_duplicated = true;
-						break;
+		<span style="color:#75715e">// symbolを左辺にもつ全ての規則を、先読み記号を付与して追加
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">definitions</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>.<span style="color:#a6e22e">findDef</span>(<span style="color:#a6e22e">follow</span>);
+		<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> {<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">def</span>} <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">definitions</span>){
+			<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">la</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">lookaheads</span>){
+				<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_ci</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ClosureItem</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>, <span style="color:#a6e22e">id</span>, <span style="color:#ae81ff">0</span>, [<span style="color:#a6e22e">la</span>]);
+				<span style="color:#75715e">// 重複がなければ新しいアイテムを追加する
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">flg_duplicated</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+				<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">existing_item</span> <span style="color:#a6e22e">of</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">closureset</span>){
+					<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">new_ci</span>.<span style="color:#a6e22e">isSameLR1</span>(<span style="color:#a6e22e">existing_item</span>)){
+						<span style="color:#a6e22e">flg_duplicated</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+						<span style="color:#66d9ef">break</span>;
 					}
 				}
-				if(!flg_duplicated){
-					this.closureset.push(new_ci);
+				<span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#a6e22e">flg_duplicated</span>){
+					<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">closureset</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">new_ci</span>);
 				}
 			}
 		}
 	}
-	this.sort();
+	<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">sort</span>();
 
-	// ClosureItemの先読み部分をマージする
-	let tmp = this.closureset;
-	this.closureset = [];
-	let lookaheads = [];
-	for(let i=0; i&lt;tmp.length; i++){
-		lookaheads.push(tmp[i].lookaheads[0]);
-		if(i == tmp.length-1 || !tmp[i].isSameLR0(tmp[i+1])){
-			this.closureset.push(new ClosureItem(this.syntax, tmp[i].syntax_id, tmp[i].dot_index, lookaheads));
-			lookaheads = [];
+	<span style="color:#75715e">// ClosureItemの先読み部分をマージする
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">tmp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">closureset</span>;
+	<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">closureset</span> <span style="color:#f92672">=</span> [];
+	<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">lookaheads</span> <span style="color:#f92672">=</span> [];
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span>&lt;<span style="color:#f92672">tmp.length</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">++)</span>{
+		<span style="color:#a6e22e">lookaheads.push</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">tmp</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.lookaheads</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">]);</span>
+		<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">i </span><span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#a6e22e">tmp.length</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">1</span> <span style="color:#960050;background-color:#1e0010">||</span> <span style="color:#960050;background-color:#1e0010">!</span><span style="color:#a6e22e">tmp</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.isSameLR0</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">tmp</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#a6e22e">1</span><span style="color:#960050;background-color:#1e0010">]))</span>{
+			<span style="color:#a6e22e">this.closureset.push</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">new</span> <span style="color:#a6e22e">ClosureItem</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">this.syntax</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">tmp</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.syntax_id</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">tmp</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.dot_index</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">lookaheads</span><span style="color:#960050;background-color:#1e0010">));</span>
+			<span style="color:#a6e22e">lookaheads </span><span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">[];</span>
 		}
 	}
 }
-</code></pre>
-
-<p>まだリファクタリングしていません。
+</code></pre></div><p>まだリファクタリングしていません。
 すみません。</p>
-
 <p>ClosureItemは本来複数の先読み記号を保持することができるのですが、クロージャー展開の初期化段階では、まずそれを分解し、一つのClosureItemが必ず一つの先読み記号のみを持つようにします。</p>
-
 <p>この制約がなければ、たとえば<code>[x,y]</code>という先読み記号を持ったAというClosureItemの展開処理が済んだあと、BというClosureItemを展開したところ、<code>[y,z]</code>という先読み記号を持ち、先読み部分以外はAと全く同じClosureItemが生成される、といった自体が発生する可能性があります。
 この場合、先読み記号<code>y</code>については2度展開されてしまったり、それを防ぐために処理済みのClosureItemの走査を行うことで余計な計算が必要になってしまうなど、様々な弊害が発生します。
 クロージャー展開の処理中だけはClosureItemの先読み記号は常に一つであるという制約を設けていることで、展開処理が非常に簡潔になります。</p>
-
 <p>処理が終わった段階で、ClosureItemの先読み部分をマージすることによってクロージャー展開後のClosureSetが完成します。</p>
-
 <h3 id="ハッシュ">ハッシュ</h3>
-
 <p>先述したように、2つのClosureSetの高速な比較を可能とする必要があります。
 そこで、ClosureItemおよびClosureSetにハッシュ文字列の生成機能を追加し、構文番号、<code>.</code>の位置、先読み記号という要素が一致していれば同じ文字列を生成するようにすれば、同一性の比較を文字列比較に落としこむことができ、非常に高速になります。
 ハッシュといっても、SHA-1やMD5のようなビット列を出力する必要はなく、要素が同じなら同じ結果が得られ、かつ衝突が発生しなければそれでよいので、単純に要素を文字列化してしまえば事足ります。</p>
-
 <p>たとえば、構文番号1、<code>.</code>の位置が左から2番目、先読み記号が<code>[$,x]</code>のClosureItemなら、</p>
-
-<pre><code class="language-shell">&quot;1,2,[$,x]&quot;
-</code></pre>
-
-<p>というような文字列を出力すれば目的は果たせます。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">&#34;1,2,[</span>$<span style="color:#e6db74">,x]&#34;</span>
+</code></pre></div><p>というような文字列を出力すれば目的は果たせます。
 ClosureItemの集合であるClosureSetの場合は、まず自身の持っているClosureItemを、このハッシュ文字列を使ってソートした上で、以下のような文字列を生成します。</p>
-
-<pre><code class="language-shell">&quot;1,2,[$,x]|2,3,[$]&quot;
-</code></pre>
-
-<p>ClosureItemが常にソートされていると仮定したならば、こちらも同一性の判定に用いることができます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">&#34;1,2,[</span>$<span style="color:#e6db74">,x]|2,3,[</span>$<span style="color:#e6db74">]&#34;</span>
+</code></pre></div><p>ClosureItemが常にソートされていると仮定したならば、こちらも同一性の判定に用いることができます。</p>
 <p>ただしこの場合、ひとつだけ問題が生じます。
 もし上記の<code>x</code>のかわりに、<code>x]|2,2,[y</code>という名前の終端記号があったとすると、さきほどのClosureSetのハッシュ文字列は</p>
-
-<pre><code class="language-shell">&quot;1,2,[$,x]|2,2,[y]|2,3,[$]&quot;
-</code></pre>
-
-<p>となってしまい、<code>2,2,[y]</code>というClosureItemが存在した時に衝突が発生してしまう可能性があります。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">&#34;1,2,[</span>$<span style="color:#e6db74">,x]|2,2,[y]|2,3,[</span>$<span style="color:#e6db74">]&#34;</span>
+</code></pre></div><p>となってしまい、<code>2,2,[y]</code>というClosureItemが存在した時に衝突が発生してしまう可能性があります。
 これを防ぐため、先ほどのSyntaxDBを用いて、それぞれの終端記号を個別の数値に直してしまいます。</p>
-
-<pre><code class="language-shell">&quot;1,2,[0,1]&quot;
-&quot;1,2,[0,1]|2,3,[1]&quot;
-</code></pre>
-
-<p>のようにすることで、危険性は回避できます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">&#34;1,2,[0,1]&#34;</span>
+<span style="color:#e6db74">&#34;1,2,[0,1]|2,3,[1]&#34;</span>
+</code></pre></div><p>のようにすることで、危険性は回避できます。</p>
 <p>また、LALR(1)法のDFAマージの際に、先読み記号を除いた部分が一致しているかどうか調べる必要もあるため、ハッシュ文字列は先読み部分を除いたLR(0)ハッシュと、先読み部分も含めたLR(1)ハッシュの2種類を用意しておきます。</p>
-
 <h4 id="closureitemおよびclosuresetのconst性">ClosureItemおよびClosureSetのconst性</h4>
-
 <p>ハッシュの再生成や、それに伴うClosureSetのソート処理を回避するため、ClosureItemおよびClosureSetは、初期化終了後は自身の状態を変化させることがないようにします。</p>
-
 <p>たとえば、クロージャー展開を行うとClosureSetの中身は変化しますが、この処理はコンストラクタ呼び出し時に行うようにすることで、オブジェクトの初期化が終了した時点でクロージャー展開は終わっており、それ以降ClosureSetの状態が変化することはありません。
 また、ClosureSetおよびClosureItemは、LR(0)部分(先読み部分を除いた部分)が同じなら先読み記号をマージするmergeメソッドを持っていますが、このメソッドもそのオブジェクト自身の状態を変更するのではなく、新しいオブジェクトを生成してそれを返すようにしています。</p>
-
 <h2 id="dfaの構築">DFAの構築</h2>
-
 <p>アイテム集合を扱えるようになったため、次はDFAの構築です。
-DFAGeneratorクラスを作っていきます。<br />
+DFAGeneratorクラスを作っていきます。<br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/dfagenerator.ts</a></p>
-
-<pre><code class="language-ts">/// dfagenerator.d.ts
-export declare type DFAEdge = Map&lt;Token, number&gt;;
-export declare type DFANode = {
-    closure: ClosureSet;
-    edge: DFAEdge;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// dfagenerator.d.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">DFAEdge</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Map</span>&lt;<span style="color:#f92672">Token</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">number</span>&gt;;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">DFANode</span> <span style="color:#f92672">=</span> {
+    <span style="color:#a6e22e">closure</span>: <span style="color:#66d9ef">ClosureSet</span>;
+    <span style="color:#a6e22e">edge</span>: <span style="color:#66d9ef">DFAEdge</span>;
 };
-export declare type DFA = Array&lt;DFANode&gt;;
-export declare class DFAGenerator {
-    private syntax;
-    private lr_dfa;
-    private lalr_dfa;
-    constructor(syntax: SyntaxDB);
-    getLR1DFA(): DFA;
-    getLALR1DFA(): DFA;
-    private generateNewClosureSets(closureset);
-    private indexOfDuplicatedNode(dfa, new_node);
-    private generateDFA();
-    private mergeLA(dfa);
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">DFA</span> <span style="color:#f92672">=</span> Array&lt;<span style="color:#f92672">DFANode</span>&gt;;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DFAGenerator</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">lr_dfa</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">lalr_dfa</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDB</span>);
+    <span style="color:#a6e22e">getLR1DFA</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">DFA</span>;
+    <span style="color:#a6e22e">getLALR1DFA</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">DFA</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateNewClosureSets</span>(<span style="color:#a6e22e">closureset</span>);
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">indexOfDuplicatedNode</span>(<span style="color:#a6e22e">dfa</span>, <span style="color:#a6e22e">new_node</span>);
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateDFA</span>();
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">mergeLA</span>(<span style="color:#a6e22e">dfa</span>);
 }
-</code></pre>
-
-<p>とはいえ、やるべきことはDFAの構築処理、およびLALR(1)法のDFAを生成するためのマージ処理のみです。</p>
-
+</code></pre></div><p>とはいえ、やるべきことはDFAの構築処理、およびLALR(1)法のDFAを生成するためのマージ処理のみです。</p>
 <p>DFAは、DFANodeの配列として表現します。
 DFANodeは、一つのClosureSetとDFAEdgeを持ちます。
 DFAEdgeはトークンをキーとしてDFANodeのインデックスを持つMapであり、これはトークンをラベルとして他のDFANodeに向けて張られた辺の情報を意味します。</p>
-
 <p>前回紹介したアルゴリズムをそのままコードにするだけなので、DFAの構築処理は特に解説する点はありません。</p>
-
 <h2 id="構文解析表の構築">構文解析表の構築</h2>
-
 <p>構文解析表と、それに必要な四種類の命令群を定義しておきます。
 また、コンフリクトが発生したことを表す命令も定義します。</p>
-
-<pre><code class="language-ts">/// parsingtable.ts
-export type ShiftOperation = {type: &quot;shift&quot;, to: number};
-export type ReduceOperation = {type: &quot;reduce&quot;, syntax: number};
-export type ConflictedOperation = {type: &quot;conflict&quot;, shift_to:Array&lt;number&gt;, reduce_syntax:Array&lt;number&gt;};
-export type AcceptOperation = {type: &quot;accept&quot;};
-export type GotoOperation = {type : &quot;goto&quot;, to: number};
-export type ParsingOperation = ShiftOperation|ReduceOperation|ConflictedOperation|AcceptOperation|GotoOperation;
-export type ParsingTable = Array&lt;Map&lt;Token, ParsingOperation&gt;&gt;;
-</code></pre>
-
-<p>構文解析表の構築処理は、ParserGeneratorクラスのメソッドとして実装します。<br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// parsingtable.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ShiftOperation</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;shift&#34;</span>, <span style="color:#a6e22e">to</span>: <span style="color:#66d9ef">number</span>};
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ReduceOperation</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;reduce&#34;</span>, <span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">number</span>};
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ConflictedOperation</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;conflict&#34;</span>, <span style="color:#a6e22e">shift_to</span>:<span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">number</span>&gt;, <span style="color:#a6e22e">reduce_syntax</span>:<span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">number</span>&gt;};
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">AcceptOperation</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;accept&#34;</span>};
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">GotoOperation</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">type</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;goto&#34;</span>, <span style="color:#a6e22e">to</span>: <span style="color:#66d9ef">number</span>};
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ParsingOperation</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ShiftOperation</span><span style="color:#f92672">|</span><span style="color:#a6e22e">ReduceOperation</span><span style="color:#f92672">|</span><span style="color:#a6e22e">ConflictedOperation</span><span style="color:#f92672">|</span><span style="color:#a6e22e">AcceptOperation</span><span style="color:#f92672">|</span><span style="color:#a6e22e">GotoOperation</span>;
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ParsingTable</span> <span style="color:#f92672">=</span> Array&lt;<span style="color:#f92672">Map</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#a6e22e">Token</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">ParsingOperation</span>&gt;<span style="color:#f92672">&gt;</span>;
+</code></pre></div><p>構文解析表の構築処理は、ParserGeneratorクラスのメソッドとして実装します。<br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts</a></p>
-
-<pre><code class="language-ts">/// parsergenerator.d.ts
-export declare class ParserGenerator {
-    private grammar;
-    private parsing_table;
-    private syntax;
-    private dfa_generator;
-    constructor(grammar: GrammarDefinition);
-    init(): void;
-    getParser(default_callback?: ParserCallback): Parser;
-    getParsingTable(): ParsingTable;
-    private generateParsingTable(dfa);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// parsergenerator.d.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ParserGenerator</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">grammar</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">parsing_table</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">dfa_generator</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">grammar</span>: <span style="color:#66d9ef">GrammarDefinition</span>);
+    <span style="color:#a6e22e">init</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span>;
+    <span style="color:#a6e22e">getParser</span>(<span style="color:#a6e22e">default_callback?</span>: <span style="color:#66d9ef">ParserCallback</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Parser</span>;
+    <span style="color:#a6e22e">getParsingTable</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">ParsingTable</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateParsingTable</span>(<span style="color:#a6e22e">dfa</span>);
 }
-</code></pre>
-
-<p>これも前回紹介したアルゴリズムの通り、DFAを読み取って適切な命令を配置していくだけです。
+</code></pre></div><p>これも前回紹介したアルゴリズムの通り、DFAを読み取って適切な命令を配置していくだけです。
 ParserGeneratorクラスは、初期化時にSyntaxDBおよびDFAGeneratorのインスタンスを生成し、DFAGeneratorから得られたDFAをもとに構文解析表の生成を行います。</p>
-
 <p>ここまでで構文解析表の構築まで終了したので、パーサジェネレータはほぼ完成となります。
 あとは、この構文解析表を読み取ることのできるパーサの実装が必要です。
 次回はパーサの実装を行いますが、そのパーサの動作等についても前回の記事である程度解説しているため、やはり実装中心となります。</p>
-
-<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
-<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回:かんたんLR(1)法入門</a><br />
+<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br>
+<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">前回:かんたんLR(1)法入門</a><br>
 <a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/">次回:パーサの実装と構文解析の実行</a></p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

@@ -77,135 +77,94 @@
         <a href="http://tatamo.81.la/blog/tags/wercker/">wercker</a>
         <a href="http://tatamo.81.la/blog/tags/deploybot/">DeployBot</a></p>
         <p><a href="https://gohugo.io/">Hugo</a>によって構築したサイトを、GitHub,Wercker,DeployBotを経由してWebサーバー上にデプロイした流れです。今回はHugo自体はほとんど触れていません。</p>
-
-<p></p>
-
 <h2 id="werckerを使って自動ビルドする">Werckerを使って自動ビルドする</h2>
-
 <p>まずはビルドを手元ではなくオンライン上で自動的に行うようにします。
 記事を書いて反映させる際は記事編集→ビルド→アップロードという3つの手順を踏みますが、これによってビルド作業を手元で行わなくてもよくなります。
 また、Hugoの環境がなくても、gitさえ使うことができれば記事の更新を行うことができるようになります。</p>
-
 <p>今回使用した<a href="http://wercker.com/">Wercker</a>は、このような自動ビルド作業およびデプロイ作業を自動化してくれるCIサービスです。
 Werckerを利用した自動デプロイは、<a href="https://gohugo.io/tutorials/automated-deployments/">Hugoの公式ドキュメント</a>に記事があるため、これを参考に行います。
 この記事はGitHub Pagesへのデプロイまで解説してありますが、今回の環境ではFTPによるサーバーへのアップロードが必要だったため、もうひと手間かける必要がありました。</p>
-
-<h3 id="wercker-ymlの記述">wercker.ymlの記述</h3>
-
+<h3 id="werckerymlの記述">wercker.ymlの記述</h3>
 <p>公式ドキュメントによる解説にも書いてありますが、Werckerによる自動ビルド/デプロイを利用するには、対象のGitHubリポジトリ内にwercker.ymlというファイルを作成し、そこに設定やビルド時の処理を記述する必要があります。
 既にHugoビルド用の設定を作ってくれている人がいるので、それを利用すれば簡単にビルドができます。</p>
-
-<pre><code class="language-yml">box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &quot;0.14&quot;
-</code></pre>
-
-<p>これだけでHugoのビルドが可能です。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">box</span>: debian 
+<span style="color:#66d9ef">build</span>:
+  <span style="color:#66d9ef">steps</span>:
+    - <span style="color:#66d9ef">arjen/hugo-build</span>:
+        <span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;0.14&#34;</span>
+</code></pre></div><p>これだけでHugoのビルドが可能です。
 ビルドが完了しただけではまだ目的のサーバーにHugoサイトがアップロードされていませんので、続いてデプロイの設定を行います。</p>
-
 <h2 id="werckerとdeploybotを使って自動デプロイする">WerckerとDeployBotを使って自動デプロイする</h2>
-
 <p>前述のように、今回使用している環境ではWebサーバーにFTPでアップロードすることが目的のため、デプロイはwerckerからlftpを使用して行おうとしましたが、うまくいきませんでした。</p>
-
-<pre><code class="language-yml">box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &quot;0.14&quot;
-deploy:
-  steps:
-    - install-packages:
-        packages: lftp
-    - script:
-        name: mirror over lftp
-        code: |
-            lftp -u $DEPLOY_FTP_USER,$DEPLOY_FTP_PASS -e &quot;set ftp:passive-mode off;set ftp:ssl-allow off;set net:timeout 5;set net:max-retries 3;set net:reconnect-interval-max 60;mirror -enR public /blog;quit&quot; $DEPLOY_FTP_SERVER
-</code></pre>
-
-<p>lftpでの接続に失敗し、アップロードを行うことができませんでした。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">box</span>: debian 
+<span style="color:#66d9ef">build</span>:
+  <span style="color:#66d9ef">steps</span>:
+    - <span style="color:#66d9ef">arjen/hugo-build</span>:
+        <span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;0.14&#34;</span>
+<span style="color:#66d9ef">deploy</span>:
+  <span style="color:#66d9ef">steps</span>:
+    - <span style="color:#66d9ef">install-packages</span>:
+        <span style="color:#66d9ef">packages</span>: lftp
+    - <span style="color:#66d9ef">script</span>:
+        <span style="color:#66d9ef">name</span>: mirror over lftp
+        <span style="color:#66d9ef">code</span>: <span style="color:#e6db74">|
+</span><span style="color:#e6db74">            lftp -u $DEPLOY_FTP_USER,$DEPLOY_FTP_PASS -e &#34;set ftp:passive-mode off;set ftp:ssl-allow off;set net:timeout 5;set net:max-retries 3;set net:reconnect-interval-max 60;mirror -enR public /blog;quit&#34; $DEPLOY_FTP_SERVER</span>
+</code></pre></div><p>lftpでの接続に失敗し、アップロードを行うことができませんでした。
 PASVモードのon/off、sslを使用しないようにするなどのオプションを試みましたが、コネクションがうまく確立できず失敗しました。</p>
-
 <p>後日また調べてみたいと思っていますが、ひとまずFTPでのアップロードを行うため、別のサービスを利用することにしました。
 <a href="http://deploybot.com/">DeployBot</a>は1プロジェクトまで無料で利用できるサービスで、FTPによるアップロードにも対応しているため、これを利用しました。
 DeployBotによるデプロイは、<a href="http://creative-tweet.net/blog/2015/10/usage-hugo-2.html">Hugoをセットアップしてデプロイするまで［後編］CIサービスでビルドからデプロイを自動化するまで | creative tweet.</a>で解説されているので、ここを参考にして行いました。</p>
-
 <p>全体としては、</p>
-
 <ol>
 <li>記事を書いてGitHub上にpushする</li>
 <li>Werckerが更新を検知して自動的にビルドを行い、別のGitHubリポジトリを更新する</li>
 <li>そのリポジトリの更新を検知してDeployBotによって自動的にサーバーへアップロードする</li>
 </ol>
-
 <p>というような流れでのデプロイを行いました。</p>
-
 <p>Werckerから別のGitHubリポジトリへのpushを行うようにするため、公式ドキュメントに書かれている通りにwercker.ymlを書き換えます。</p>
-
-<pre><code class="language-yml">box: debian 
-build:
-  steps:
-    - arjen/hugo-build:
-        version: &quot;0.14&quot;
-deploy:
-  steps:
-    - install-packages:
-        packages: git ssh-client
-    - leipert/git-push:
-        gh-oauth: $GIT_TOKEN
-        basedir: public
-        repo: $GITHUB_REPO
-        clean_removed_files: true
-</code></pre>
-
-<p><code>$GIT_TOKEN</code>および<code>$GITHUB_REPO</code>は、werckerの設定画面でdeploy targetごとに変数を定義できるため、そこに記述します。$GIT_TOKENはprotectedにチェックを入れ、外部から取得できないようにしておきます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">box</span>: debian 
+<span style="color:#66d9ef">build</span>:
+  <span style="color:#66d9ef">steps</span>:
+    - <span style="color:#66d9ef">arjen/hugo-build</span>:
+        <span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;0.14&#34;</span>
+<span style="color:#66d9ef">deploy</span>:
+  <span style="color:#66d9ef">steps</span>:
+    - <span style="color:#66d9ef">install-packages</span>:
+        <span style="color:#66d9ef">packages</span>: git ssh-client
+    - <span style="color:#66d9ef">leipert/git-push</span>:
+        <span style="color:#66d9ef">gh-oauth</span>: $GIT_TOKEN
+        <span style="color:#66d9ef">basedir</span>: public
+        <span style="color:#66d9ef">repo</span>: $GITHUB_REPO
+        <span style="color:#66d9ef">clean_removed_files</span>: <span style="color:#66d9ef">true</span>
+</code></pre></div><p><code>$GIT_TOKEN</code>および<code>$GITHUB_REPO</code>は、werckerの設定画面でdeploy targetごとに変数を定義できるため、そこに記述します。$GIT_TOKENはprotectedにチェックを入れ、外部から取得できないようにしておきます。</p>
 <p>あとはwerckerのデプロイ先に指定したGitHubリポジトリをDeployBotに登録するだけです。
 DeployBotはリポジトリが更新されるとその内容をそのままサーバー上へアップロードしてくれ、設定も簡単でした。
 これで目的のサーバーへの自動デプロイが完了しました。</p>
-
 <h2 id="補足など">補足など</h2>
-
 <h3 id="githubリポジトリの分割">GitHubリポジトリの分割</h3>
-
 <p>Hugoのビルドをローカルでは行わないようにしたため、リポジトリ内に/publicを含める必要がありません。.gitignoreに次の行を記述します。</p>
-
-<pre><code class="language-nohighlight">public/
-</code></pre>
-
-<ul>
+<pre><code class="language-nohighlight" data-lang="nohighlight">public/
+</code></pre><ul>
 <li>リポジトリA:publicディレクトリを除くHugoディレクトリ</li>
 <li>リポジトリB:生成されたpublicディレクトリの内容</li>
 </ul>
-
 <p>というようなGitHubリポジトリ構成とし、リポジトリBはWerckerとDeployBotをリンクさせるために使用するため手動では触れません。</p>
-
 <h3 id="werckerの設定">Werckerの設定</h3>
-
 <h4 id="dockerの使用">Dockerの使用</h4>
-
 <p>Werckerにプロジェクトを登録する際、wercker.yml設定の項目で「Dockerを使用する」かどうかのチェックボックスが存在します。
 Werckerで使用するboxはDockerを使用しているものと使用していないものがあり、Hugo公式ドキュメントで使用しているbox:debianなどはDockerを使用しているため、Docker使用の設定をオンにしておかないと、<a href="http://thleap.net/blog/recovering-wercker/">boxが見つからないというエラー</a>が発生します。
 逆にwercker/defaultなどのDockerを使用しないboxを使用する場合、設定をオンにしておく必要はないでしょう。
 (なお私はWerckerのBoxについてはよくわかっていません。Hugoをデプロイする場合は公式ドキュメント通りにdebianを使用すればいいのではないでしょうか。wercker/defaultでは環境のセットアップに15秒ほどかかりますが、debianでは1秒で済みます。)</p>
-
 <h4 id="デプロイターゲット登録時のauto-deploy設定">デプロイターゲット登録時のAuto deploy設定</h4>
-
-<p>ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&rdquo;auto deploy successful builds to branch(es):&ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
+<p>ちょっとしたこと(というかちゃんと読めばわかること)ですが、werckerででプロイターゲットを登録する時、&ldquo;auto deploy successful builds to branch(es):&ldquo;という設定項目でブランチ名を指定する箇所がありますが、これはどのブランチが更新されたときに自動的にビルドが走るかを指定するものであり、デプロイ先のブランチ名を指定するものではありません。
 GitHubからGitHubへのデプロイを行うときは少し混乱するかもしれません。</p>
-
 <p>なお、デプロイ先のGitHubブランチ名は前述したwercker.yml内に指定する箇所があります。</p>
-
-<hr />
-
+<hr>
 <p>以上で、Hugoで生成したサイトを自動的にデプロイすることができました。
 とはいえWerckerから直接デプロイすることに失敗したためにやや回りくどい方法をとっており、いずれ改善したいと思っています。</p>
-
 <p>Werckerはビルドごとに環境を最初から設定するため、ライブラリのインストールなども毎回行われ、ビルド環境が整うまでに1分ほどかかります。
 手元でビルドができる環境ならばローカルでビルドしてアップロードしたほうが明らかに速いので、すぐに更新したいときなどはデプロイまでにかなり時間がかかる印象を受けます。
 Werckerを経由せず、手動でアップロードできる方法も用意しておいたほうがいいのかもしれません。</p>
-
 <p>また、稀にですがWerckerのビルドが最初のsetup environmentの段階で動かなくなり、Abortも効かない状態でビルドに失敗したことがありました。
 デプロイを自動で行っているとはいえ、結局デプロイがうまくいったかどうか確認しないといけないのは問題かもしれません。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>

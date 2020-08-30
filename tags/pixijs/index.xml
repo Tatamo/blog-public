@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pixijs on わたしろぐ</title>
+    <title>pixijs on わたしろぐ</title>
     <link>http://tatamo.81.la/blog/tags/pixijs/</link>
-    <description>Recent content in Pixijs on わたしろぐ</description>
+    <description>Recent content in pixijs on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Fri, 01 Dec 2017 17:35:00 +0900</lastBuildDate>
-    <atom:link href="/tags/pixijs/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://tatamo.81.la/blog/tags/pixijs/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>ゲーム「じゃぱりうぉっち」を作りました</title>
@@ -15,133 +17,10 @@
       <pubDate>Fri, 01 Dec 2017 17:35:00 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/2017/12/01/japari-watch/</guid>
-      <description>
-        &lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の1日の記事です。
+      <description>&lt;p&gt;この記事は&lt;a href=&#34;https://adventar.org/calendars/2491&#34;&gt;Kobe University Advent Calendar 2017&lt;/a&gt;の1日の記事です。
 なお私は当該大学の学部3年(2017年12月現在)です。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;ブラウザ上で動作するゲーム「&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;じゃぱりうぉっち&lt;/a&gt;」を作ったので、開発記を書きます。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;じゃぱりうぉっち&#34;&gt;じゃぱりうぉっち&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; で公開しており、PCとモバイル端末のどちらでも遊ぶことができます。&lt;/p&gt;
-
-&lt;h3 id=&#34;発端&#34;&gt;発端&lt;/h3&gt;
-
-&lt;p&gt;期末試験前に現実逃避のためにTLを眺めていたところ、以下のツイートが流れてきました。
-&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;フェネック「アライさんに似合いそうな帽子を見つけてきたよー」&lt;br&gt;アライグマ「ありがとうなのだ！」&lt;a href=&#34;https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#けものフレンズ&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ドット絵&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/pixelart?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#pixelart&lt;/a&gt; &lt;a href=&#34;https://t.co/1VueMavObQ&#34;&gt;pic.twitter.com/1VueMavObQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934412479597199361?ref_src=twsrc%5Etfw&#34;&gt;2017年11月25日&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;
-
-&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Version Upgrade Nanoda!! &lt;a href=&#34;https://t.co/IXSjV6A1PN&#34;&gt;pic.twitter.com/IXSjV6A1PN&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934695920414765056?ref_src=twsrc%5Etfw&#34;&gt;2017年11月26日&lt;/a&gt;&lt;/blockquote&gt;
-
-&lt;p&gt;作品としての完成度が高く、実際にゲームとして遊べそうに見えたので、これをゲーム化してみました。&lt;/p&gt;
-
-&lt;h3 id=&#34;素材&#34;&gt;素材&lt;/h3&gt;
-
-&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;原寸(128*128px)なのだ &lt;a href=&#34;https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#けものフレンズ&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ドット絵&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/pixelart?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#pixelart&lt;/a&gt; &lt;a href=&#34;https://t.co/BJ0Mc27vR5&#34;&gt;pic.twitter.com/BJ0Mc27vR5&lt;/a&gt;&lt;/p&gt;&amp;mdash; 鬼雷 昇炎 (@kirai_s) &lt;a href=&#34;https://twitter.com/kirai_s/status/934699058542678016?ref_src=twsrc%5Etfw&#34;&gt;2017年11月26日&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;元画像が上がっていたので使わせていただきました。&lt;/p&gt;
-
-&lt;p&gt;背景に相当する部分の画像がなかったので自分で加工したり、そのまま矩形状にスプライトを切り出すと被ってしまう部分があったのでいくつかのパーツに分けたりしました。&lt;/p&gt;
-
-&lt;h2 id=&#34;製作期間&#34;&gt;製作期間&lt;/h2&gt;
-
-&lt;p&gt;ゲーム本体の作成(アセットの用意・環境構築含む)： 一晩&lt;br /&gt;
-公開のためのWebページデザインやTwitterカード、faviconの用意：半日&lt;br /&gt;
-公開後の難易度調整+自動モード機能の追加：半日&lt;/p&gt;
-
-&lt;h2 id=&#34;フレームワーク選定&#34;&gt;フレームワーク選定&lt;/h2&gt;
-
-&lt;p&gt;ブラウザで動作するゲームを作ろうと思ったため、基本的にはNode環境で開発を進めていくことになります。
-高速に開発するためにTypeScriptで記述することとしたうえで、使用するツールを選定していきました。&lt;/p&gt;
-
-&lt;h3 id=&#34;pixi-js&#34;&gt;PIXI.js&lt;/h3&gt;
-
-&lt;p&gt;PC・モバイル両方のブラウザで動作するゲームという方針のため、HTML5 Canvas系のライブラリを使うことにしました。
-npm上で型定義が用意されているものを使いたかったので、今回は&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;を選択しました。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&#34;shell&#34;&gt;$ npm install --save-dev @types/pixi.js&lt;/code&gt;で型定義ファイルをインストールし、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;import * as PIXI from &amp;quot;pixi.js&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;でPIXI.jsの型情報を使用可能になります。&lt;/p&gt;
-
-&lt;h4 id=&#34;ビルドシステム&#34;&gt;ビルドシステム&lt;/h4&gt;
-
-&lt;p&gt;また、今回はブラウザを動作対象とするため、jsファイルのバンドルとBabel化のためにwebpackを使用しました。
-実際のところwebpackもBabelもこれまで使ったことがなかったのですが、なんとかts-loaderとbabel-loaderでTypeScriptのソースコードをBabel化してバンドルするところまでやりました。&lt;/p&gt;
-
-&lt;p&gt;期末試験直前であまり学習コストをかけられず、これ以上webpackであれこれするのは怖くなったので、jsファイル以外の静的ファイルのコピーなどはrimrafやcpxを使い、npm scriptsでビルドすることにしました。
-また開発中の自動コンパイルのために、chokidarとbrowser-syncを使いました。&lt;/p&gt;
-
-&lt;h2 id=&#34;設計&#34;&gt;設計&lt;/h2&gt;
-
-&lt;p&gt;一定時間ごとにゲームループをまわし、大元のゲームオブジェクトから各マネージャのupdateメソッドを呼び出して処理を行い、最後にレンダリングを行うという基本的な設計としています。&lt;/p&gt;
-
-&lt;p&gt;今回は、エンティティを管理するエンティティマネージャ、スコアを管理するスコアマネージャ、エンティティとスコア以外のゲーム内表示を管理するエフェクトマネージャ、ユーザーからの入力を受け取るインプットマネージャを用意しました。
-また、スコアマネージャはインスタンスを2つ生成してそれぞれ取得スコアとミス回数を管理するようにしています。&lt;/p&gt;
-
-&lt;p&gt;ステートマシンを用いてゲーム状態の遷移を管理する方法もありますが、今回はタイトルとゲーム中とゲームオーバーの三状態しかなく、また各エンティティも決まった動きしかしないため不要と判断しました。&lt;/p&gt;
-
-&lt;p&gt;エンティティごとにスプライトのテクスチャを用意しておく必要があり、これはstaticメンバとして各エンティティのクラスに紐付けることにしました。
-このテクスチャの生成はアセットのローディングが終わった後に行う必要があるため、エンティティマネージャの初期化時に各staticメソッドを呼び出すことで初期化するようにしました。&lt;/p&gt;
-
-&lt;h3 id=&#34;eventemitterによるメッセージング&#34;&gt;EventEmitterによるメッセージング&lt;/h3&gt;
-
-&lt;p&gt;PIXI.jsで用意されているクラスは&lt;a href=&#34;https://github.com/primus/eventemitter3&#34;&gt;EventEmitter&lt;/a&gt;を継承しており、イベント駆動でのオブジェクト間のメッセージングが可能です。
-たとえば&lt;code&gt;アライさん&lt;/code&gt;オブジェクトは&lt;code&gt;Hat&lt;/code&gt;コレクションに対する参照を持ちませんが、イベントの発火にフックしてエンティティマネージャがメソッド引数にコレクションの参照を流し込むことで、&lt;code&gt;アライさん&lt;/code&gt;オブジェクトは外部の参照を持つことなく&lt;code&gt;Hat&lt;/code&gt;コレクションにアクセスし、当たり判定の処理を行うことができます。
-これにより、ゲーム内エンティティを表すオブジェクト同士を疎結合に保つことができます。
-&lt;code&gt;Hat&lt;/code&gt;のように複数のインスタンスが生成される場合、そのたびにイベントの登録を行う必要があるので、このようなクラスはファクトリを通して実体化するようにします。&lt;/p&gt;
-
-&lt;p&gt;その他にも、インプットマネージャがキーボード入力を受け取ったり、ゲーム画面上に配置されている透明のスプライトに対するクリック・タッチ入力を受け取った場合に、入力された動作に応じたイベントを発火することで、入力の種類を隠蔽したうえでそれにフックする処理を定義可能になります。&lt;/p&gt;
-
-&lt;h2 id=&#34;はまりどころ&#34;&gt;はまりどころ&lt;/h2&gt;
-
-&lt;p&gt;ちょっとしたミスなどですが、詰まった点について。&lt;/p&gt;
-
-&lt;h3 id=&#34;エンティティの消去&#34;&gt;エンティティの消去&lt;/h3&gt;
-
-&lt;p&gt;ループ中にループ対象の配列を変更するな、というのは基本ですが、ゲームの場合当たり判定がヒットしたエンティティを消去したいという場面は多いです。
-&lt;code&gt;Hat&lt;/code&gt;コレクションに対してループを回して&lt;code&gt;update()&lt;/code&gt;を呼び出し、その処理の中で&lt;code&gt;Hat&lt;/code&gt;オブジェクトを消去してしまい、それ以降のオブジェクトの処理がおかしくなるというバグが発生しました。&lt;/p&gt;
-
-&lt;p&gt;対処として、まずエンティティに&lt;code&gt;alive&lt;/code&gt;フラグを持たせておき、エンティティを消去したいときには以下のような処理を呼び出すだけにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-TypeScript&#34;&gt;die() {
-    this.alive = false;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次に、全エンティティのupdate処理終了後に再度ループを回し、ここでaliveフラグがfalseとなっているエンティティをコレクションから取り除きます。
-ただし、死んだはずのオブジェクトの当たり判定が残ったりすることを防ぐため、一度aliveフラグがfalseになったエンティティは処理から除外するようにしておく必要があります。
-また、結局ループ中の配列を弄ることになるので、このループの中でおかしなことが起きるかもしれないので注意が必要です(とはいえ削除処理を別のループに分けていることで、最悪でもエンティティの削除が次回以降のフレームに引き延ばされてしまう程度の影響しか起きません)。&lt;/p&gt;
-
-&lt;p&gt;ループ中に配列から安全に要素を取り除く方法としては、要素の削除時にイテレータをうまく調整したり、ループインデックスをずらして対処するなどといった方法がありますが、イテレータの仕様を正しく理解している必要があったり、削除処理のタイミングで自分の外側のループのことを考えないといけなかったりするため、処理がやや煩雑になりがちです。
-そこで技巧的な方法として、ループのインデックスを配列の末尾から順に0に向けてデクリメントしていけば、途中で要素が取り除かれてもループに影響が出ない、といったものがあります。
-ただし処理順は逆になってしまうので、それが気になるなら先述したエンティティ削除用のループでのみ行うなどする必要があります(エンティティの削除処理程度なら順序が変わっても影響が出ないため)。
-最も単純なのはループ前にコレクションをコピーしてループを回すことですが、ゲームプログラムで毎フレームごとに配列のコピーを生成するのはパフォーマンス的に避けたいところでもあります。
-なお今回は、&lt;code&gt;Hat&lt;/code&gt;オブジェクトは同時に10個も存在することはないため、毎回配列をコピーして削除用のループを回すことにしました。&lt;/p&gt;
-
-&lt;h3 id=&#34;faviconの配信&#34;&gt;faviconの配信&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;favicon.ico&lt;/code&gt;を配信しようと思ったのですが、&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; というURLのルートパスは&lt;a href=&#34;https://tatamo.github.io/&#34;&gt;https://tatamo.github.io/&lt;/a&gt; であるため、&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;https://tatamo.github.io/japari-watch/&lt;/a&gt; 直下にfaviconを配置しても正しく読み込ませることができません。
-そのため、&lt;code&gt;&amp;lt;link rel=&amp;quot;shortcut icon href=&amp;quot;favicon.ico&amp;quot; type=&amp;quot;image/x-icon&amp;quot;&amp;quot;&amp;gt;&lt;/code&gt;などとして明示的にfavicon.icoの位置を示す必要がありました。&lt;/p&gt;
-
-&lt;p&gt;また、&lt;code&gt;manifest.json&lt;/code&gt;を&lt;a href=&#34;https://tatamo.github.io/japari-watch/favicons/manifest.json&#34;&gt;https://tatamo.github.io/japari-watch/favicons/manifest.json&lt;/a&gt; に、同様にandroid用のアイコン画像を&lt;code&gt;favicons/&lt;/code&gt;ディレクトリに配置していました。
-&lt;code&gt;manifest.json&lt;/code&gt;中の相対パスは基準となるディレクトリが&lt;code&gt;manifest.json&lt;/code&gt;自身となることを知らなかったので、srcパスを&lt;code&gt;&amp;quot;favicons\/android-icon-***.png&amp;quot;&lt;/code&gt;としたところ、&lt;code&gt;favicons/favicons/&lt;/code&gt;が読まれてしまって正しくアイコンを配信できなかったりしました。&lt;/p&gt;
-
-&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.pixijs.com/&#34;&gt;PIXI.js&lt;/a&gt;はチュートリアルだけは読んだことがあるという状態で、一度実際に使ってみたいと思っていたので使用することができて良かったです。
-ドキュメントをろくに読み込まずに使いたい機能だけ調べて使うといった感じでしたが、かなり高速にゲーム開発ができたので非常に便利でした。
-またwebpackやBabel、npm scriptsをメインに用いたビルドなどもはじめてだったのですがいい感じにできました。&lt;/p&gt;
-
-&lt;p&gt;使用した画像については作者である&lt;a href=&#34;https://twitter.com/kirai_s&#34;&gt;@kirai_s&lt;/a&gt;さんに確認を得ないまま加工して作り始めてしまったのですが、使用を快く承諾していただけました。
-この場を借りてお礼申し上げます。&lt;/p&gt;
-      </description>
+&lt;hr&gt;
+&lt;p&gt;ブラウザ上で動作するゲーム「&lt;a href=&#34;https://tatamo.github.io/japari-watch/&#34;&gt;じゃぱりうぉっち&lt;/a&gt;」を作ったので、開発記を書きます。&lt;/p&gt;</description>
     </item>
     
   </channel>

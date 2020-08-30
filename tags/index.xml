@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on わたしろぐ</title>
@@ -6,172 +6,333 @@
     <description>Recent content in Tags on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Tue, 11 Jul 2017 15:03:07 +0900</lastBuildDate>
-    <atom:link href="/tags/" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Dec 2019 23:59:59 +0900</lastBuildDate>
+    
+	<atom:link href="http://tatamo.81.la/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
-      <title>Arago</title>
-      <link>http://tatamo.81.la/blog/tags/arago/</link>
-      <pubDate>Tue, 11 Jul 2017 15:03:07 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/tags/arago/</guid>
-      <description>
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Atcoder</title>
-      <link>http://tatamo.81.la/blog/tags/atcoder/</link>
-      <pubDate>Fri, 07 Dec 2018 23:22:00 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/tags/atcoder/</guid>
-      <description>
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Atcoder Cli</title>
-      <link>http://tatamo.81.la/blog/tags/atcoder-cli/</link>
-      <pubDate>Fri, 07 Dec 2018 23:22:00 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/tags/atcoder-cli/</guid>
-      <description>
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Austin</title>
-      <link>http://tatamo.81.la/blog/tags/austin/</link>
-      <pubDate>Sun, 17 Sep 2017 01:54:04 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/tags/austin/</guid>
-      <description>
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Automation</title>
+      <title>automation</title>
       <link>http://tatamo.81.la/blog/tags/automation/</link>
       <pubDate>Tue, 10 Dec 2019 23:59:59 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/tags/automation/</guid>
-      <description>
-        
-      </description>
+      <description></description>
     </item>
     
     <item>
-      <title>Blog</title>
-      <link>http://tatamo.81.la/blog/tags/blog/</link>
-      <pubDate>Wed, 08 Nov 2017 18:00:00 +0900</pubDate>
+      <title>symphonic-rain</title>
+      <link>http://tatamo.81.la/blog/tags/symphonic-rain/</link>
+      <pubDate>Wed, 04 Sep 2019 21:43:24 +0900</pubDate>
       
-      <guid>http://tatamo.81.la/blog/tags/blog/</guid>
-      <description>
-        
-      </description>
+      <guid>http://tatamo.81.la/blog/tags/symphonic-rain/</guid>
+      <description></description>
     </item>
     
     <item>
-      <title>Competitive Programming</title>
+      <title>atcoder</title>
+      <link>http://tatamo.81.la/blog/tags/atcoder/</link>
+      <pubDate>Fri, 07 Dec 2018 23:22:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/atcoder/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>atcoder-cli</title>
+      <link>http://tatamo.81.la/blog/tags/atcoder-cli/</link>
+      <pubDate>Fri, 07 Dec 2018 23:22:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/atcoder-cli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>competitive-programming</title>
       <link>http://tatamo.81.la/blog/tags/competitive-programming/</link>
       <pubDate>Fri, 07 Dec 2018 23:22:00 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/tags/competitive-programming/</guid>
-      <description>
-        
-      </description>
+      <description></description>
     </item>
     
     <item>
-      <title>Contest</title>
-      <link>http://tatamo.81.la/blog/tags/contest/</link>
-      <pubDate>Mon, 18 Dec 2017 01:30:00 +0900</pubDate>
+      <title>isucon</title>
+      <link>http://tatamo.81.la/blog/tags/isucon/</link>
+      <pubDate>Sun, 16 Sep 2018 18:00:01 +0900</pubDate>
       
-      <guid>http://tatamo.81.la/blog/tags/contest/</guid>
-      <description>
-        
-      </description>
+      <guid>http://tatamo.81.la/blog/tags/isucon/</guid>
+      <description></description>
     </item>
     
     <item>
-      <title>Css</title>
-      <link>http://tatamo.81.la/blog/tags/css/</link>
-      <pubDate>Wed, 06 Dec 2017 18:30:00 +0900</pubDate>
+      <title>javascript</title>
+      <link>http://tatamo.81.la/blog/tags/javascript/</link>
+      <pubDate>Fri, 09 Feb 2018 19:30:00 +0900</pubDate>
       
-      <guid>http://tatamo.81.la/blog/tags/css/</guid>
-      <description>
-        
-      </description>
+      <guid>http://tatamo.81.la/blog/tags/javascript/</guid>
+      <description></description>
     </item>
     
     <item>
-      <title>Deploybot</title>
-      <link>http://tatamo.81.la/blog/tags/deploybot/</link>
-      <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/tags/deploybot/</guid>
-      <description>
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Dtp</title>
-      <link>http://tatamo.81.la/blog/tags/dtp/</link>
-      <pubDate>Wed, 06 Dec 2017 18:30:00 +0900</pubDate>
-      
-      <guid>http://tatamo.81.la/blog/tags/dtp/</guid>
-      <description>
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Freeciv</title>
+      <title>freeciv</title>
       <link>http://tatamo.81.la/blog/tags/freeciv/</link>
       <pubDate>Thu, 08 Feb 2018 00:30:00 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/tags/freeciv/</guid>
-      <description>
-        
-      </description>
+      <description></description>
     </item>
     
     <item>
-      <title>Freecivcalc</title>
-      <link>http://tatamo.81.la/blog/tags/freecivcalc/</link>
-      <pubDate>Thu, 26 May 2016 15:47:37 +0900</pubDate>
+      <title>pc</title>
+      <link>http://tatamo.81.la/blog/tags/pc/</link>
+      <pubDate>Mon, 18 Dec 2017 21:00:00 +0900</pubDate>
       
-      <guid>http://tatamo.81.la/blog/tags/freecivcalc/</guid>
-      <description>
-        
-      </description>
+      <guid>http://tatamo.81.la/blog/tags/pc/</guid>
+      <description></description>
     </item>
     
     <item>
-      <title>Generics</title>
+      <title>contest</title>
+      <link>http://tatamo.81.la/blog/tags/contest/</link>
+      <pubDate>Mon, 18 Dec 2017 01:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/contest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>icpc</title>
+      <link>http://tatamo.81.la/blog/tags/icpc/</link>
+      <pubDate>Mon, 18 Dec 2017 01:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/icpc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>css</title>
+      <link>http://tatamo.81.la/blog/tags/css/</link>
+      <pubDate>Wed, 06 Dec 2017 18:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/css/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dtp</title>
+      <link>http://tatamo.81.la/blog/tags/dtp/</link>
+      <pubDate>Wed, 06 Dec 2017 18:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/dtp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>html</title>
+      <link>http://tatamo.81.la/blog/tags/html/</link>
+      <pubDate>Wed, 06 Dec 2017 18:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vivliostyle</title>
+      <link>http://tatamo.81.la/blog/tags/vivliostyle/</link>
+      <pubDate>Wed, 06 Dec 2017 18:30:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/vivliostyle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>japari-watch</title>
+      <link>http://tatamo.81.la/blog/tags/japari-watch/</link>
+      <pubDate>Fri, 01 Dec 2017 17:35:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/japari-watch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pixijs</title>
+      <link>http://tatamo.81.la/blog/tags/pixijs/</link>
+      <pubDate>Fri, 01 Dec 2017 17:35:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/pixijs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>blog</title>
+      <link>http://tatamo.81.la/blog/tags/blog/</link>
+      <pubDate>Wed, 08 Nov 2017 18:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>highlightjs</title>
+      <link>http://tatamo.81.la/blog/tags/highlightjs/</link>
+      <pubDate>Wed, 08 Nov 2017 18:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/highlightjs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>austin</title>
+      <link>http://tatamo.81.la/blog/tags/austin/</link>
+      <pubDate>Sun, 17 Sep 2017 01:54:04 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/austin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>seccamp</title>
+      <link>http://tatamo.81.la/blog/tags/seccamp/</link>
+      <pubDate>Sun, 27 Aug 2017 23:54:42 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/seccamp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>arago</title>
+      <link>http://tatamo.81.la/blog/tags/arago/</link>
+      <pubDate>Tue, 11 Jul 2017 15:03:07 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/arago/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lexer</title>
+      <link>http://tatamo.81.la/blog/tags/lexer/</link>
+      <pubDate>Tue, 04 Apr 2017 23:41:09 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/lexer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>parser</title>
+      <link>http://tatamo.81.la/blog/tags/parser/</link>
+      <pubDate>Tue, 04 Apr 2017 23:41:09 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/parser/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>parser generator</title>
+      <link>http://tatamo.81.la/blog/tags/parser-generator/</link>
+      <pubDate>Tue, 04 Apr 2017 23:41:09 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/parser-generator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>parsing</title>
+      <link>http://tatamo.81.la/blog/tags/parsing/</link>
+      <pubDate>Tue, 04 Apr 2017 23:41:09 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/parsing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>generics</title>
       <link>http://tatamo.81.la/blog/tags/generics/</link>
       <pubDate>Thu, 15 Dec 2016 01:11:23 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/tags/generics/</guid>
-      <description>
-        
-      </description>
+      <description></description>
     </item>
     
     <item>
-      <title>Github</title>
+      <title>java</title>
+      <link>http://tatamo.81.la/blog/tags/java/</link>
+      <pubDate>Thu, 15 Dec 2016 01:11:23 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reflection</title>
+      <link>http://tatamo.81.la/blog/tags/reflection/</link>
+      <pubDate>Thu, 15 Dec 2016 01:11:23 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/reflection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>homebuilt_pc</title>
+      <link>http://tatamo.81.la/blog/tags/homebuilt_pc/</link>
+      <pubDate>Wed, 07 Dec 2016 13:53:12 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/homebuilt_pc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>freecivcalc</title>
+      <link>http://tatamo.81.la/blog/tags/freecivcalc/</link>
+      <pubDate>Thu, 26 May 2016 15:47:37 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/freecivcalc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DeployBot</title>
+      <link>http://tatamo.81.la/blog/tags/deploybot/</link>
+      <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/deploybot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GitHub</title>
       <link>http://tatamo.81.la/blog/tags/github/</link>
       <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/tags/github/</guid>
-      <description>
-        
-      </description>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hugo</title>
+      <link>http://tatamo.81.la/blog/tags/hugo/</link>
+      <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wercker</title>
+      <link>http://tatamo.81.la/blog/tags/wercker/</link>
+      <pubDate>Tue, 05 Jan 2016 20:50:32 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/wercker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>info</title>
+      <link>http://tatamo.81.la/blog/tags/info/</link>
+      <pubDate>Fri, 11 Dec 2015 00:00:00 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/info/</guid>
+      <description></description>
     </item>
     
   </channel>

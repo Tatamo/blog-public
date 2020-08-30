@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Freecivcalc on わたしろぐ</title>
+    <title>freecivcalc on わたしろぐ</title>
     <link>http://tatamo.81.la/blog/tags/freecivcalc/</link>
-    <description>Recent content in Freecivcalc on わたしろぐ</description>
+    <description>Recent content in freecivcalc on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Thu, 26 May 2016 15:47:37 +0900</lastBuildDate>
-    <atom:link href="/tags/freecivcalc/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://tatamo.81.la/blog/tags/freecivcalc/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>FreecivCalc2を公開しました</title>
@@ -15,49 +17,8 @@
       <pubDate>Thu, 26 May 2016 15:47:37 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/2016/05/26/freecivcalc2-released/</guid>
-      <description>
-        &lt;p&gt;Freecivのユニット同士の戦闘勝率を手軽に行えるソフトであるFreecivCalcの新バージョン、FreecivCalc2を公開しました。&lt;/p&gt;
-
-&lt;p&gt;FreecivCalc2: &lt;a href=&#34;http://tatamo.81.la/freecivcalc2/&#34;&gt;http://tatamo.81.la/freecivcalc2/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;以前から公開していた&lt;a href=&#34;http://m06t625.81.la/files/FreecivCalc.html&#34;&gt;FreecivCalc&lt;/a&gt;はSilverlight上で動作するソフトのため、現状では動作するブラウザがほとんどなくなってきています。&lt;/p&gt;
-
-&lt;p&gt;そこでHTML5+JavaScript/TypeScriptに移植し、機能やインターフェースを大幅に見直したFreecivCalc2を開発しました。&lt;/p&gt;
-
-&lt;p&gt;Chrome, Opera, Firefox, Edgeでの動作を確認しています。&lt;/p&gt;
-
-&lt;h2 id=&#34;freecivcalc2の新機能&#34;&gt;FreecivCalc2の新機能&lt;/h2&gt;
-
-&lt;p&gt;FreecivCalc2の画面からユニットを選択し、各種補正情報を入力することで戦闘勝率を表示できます。また詳細結果タブを開くことで、戦闘後のユニットHPの期待値を表示できるほか、タブを保持しておくことで復数の戦闘の予測結果を見比べることなどができます。&lt;/p&gt;
-
-&lt;p&gt;従来バージョンでは、地形による防御ボーナスの適用の可否や特定のユニット同士の戦闘にかかる特殊補正などの補正の情報を手動で入力する必要がありました。
-FreecivCalc2ではこれらの特殊補正は自動で適用されるため、Freecivの複雑な戦闘補正を十分に把握していない場合でも正確に戦闘勝率の予測が可能です。
-ユニットにかけられている補正の一覧は、詳細結果タブ内で確認することができます。&lt;/p&gt;
-
-&lt;h2 id=&#34;複数の言語-多様なルールセットに対応可能な拡張性&#34;&gt;複数の言語、多様なルールセットに対応可能な拡張性&lt;/h2&gt;
-
-&lt;p&gt;戦闘補正の自動適用を実現するために、ユニットの情報や補正の条件など、ルールセットに関連するすべての情報を外部データ化しました。
-これによってclassicルールセットだけでなく、多様なルールセットに対応することが可能です。
-同時に、FreecivCalc2のインターフェース部分もテンプレートを用いて外部ファイルからコンテンツ内容を流し込んでいるため、容易に多言語化が可能になっています。&lt;/p&gt;
-
-&lt;p&gt;現状では、classicルールセットを日本語および英語の2か国語で対応しています。&lt;/p&gt;
-
-&lt;h2 id=&#34;開発について&#34;&gt;開発について&lt;/h2&gt;
-
-&lt;p&gt;FreecivCalc2は三条項BSDライセンス下で公開されています。&lt;/p&gt;
-
-&lt;p&gt;ローカル環境でのビルド、他のルールセットや言語に対応させるためのデータセットの文法などについては&lt;a href=&#34;https://github.com/Tatamo/freecivcalc2&#34;&gt;GitHubリポジトリ&lt;/a&gt;上で記述しているため、そちらを参照してください。&lt;/p&gt;
-
-&lt;p&gt;FreecivCalc2は大半をTypeScriptで、jQuery UIのウィジェット定義など一部を生のJavaScriptで書いています。&lt;/p&gt;
-
-&lt;p&gt;また使用したライブラリはjQuery, jQuery UI, amChartsです。
-当初jQueryを使う予定はなかったのですが、ユニット選択用のUIとしてコンボボックスを実現するためのライブラリを探していたところjQuery UIが最も用途に適っていたため採用し、その流れでjQueryも使用することになりました。
-amChartsは簡単にグラフを表示できるライブラリとして使いやすそうだったため使用しました。&lt;/p&gt;
-
-&lt;p&gt;その他、外部JSONファイルからテンプレートを通してHTMLファイルを生成するためのテンプレートエンジンとしてEJSを使用しました。&lt;/p&gt;
-      </description>
+      <description>&lt;p&gt;Freecivのユニット同士の戦闘勝率を手軽に行えるソフトであるFreecivCalcの新バージョン、FreecivCalc2を公開しました。&lt;/p&gt;
+&lt;p&gt;FreecivCalc2: &lt;a href=&#34;http://tatamo.81.la/freecivcalc2/&#34;&gt;http://tatamo.81.la/freecivcalc2/&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

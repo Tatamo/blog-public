@@ -77,284 +77,227 @@
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
         <p><a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/">前回</a>ではLR(1)法による構文解析表の実装を済ませました。
 今回はいよいよ、構文解析表をもとに実際に構文解析を行うことのできる構文解析器を実装し、実際に構文解析を行ってみます。</p>
-
-<p></p>
-
 <p>概略は<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">第4回</a>で示した通りであり、ステートマシンの仕様に沿って構文解析表を解析できるようにします。
 第4回でアルゴリズム面まで踏み込んで解説してしまったため、あまり書くことがなくてやや後悔しています。</p>
-
 <h2 id="astの定義">ASTの定義</h2>
-
-<p>パーサを実装する前に、パーサの出力結果となる抽象構文木の定義を行います。<br />
+<p>パーサを実装する前に、パーサの出力結果となる抽象構文木の定義を行います。 <br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parser/ast.ts</a></p>
-
-<pre><code class="language-ts">/// ast.ts
-export interface ASTNode{
-	type: Token;
-	value: string|null;
-	children: Array&lt;ASTNode&gt;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// ast.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ASTNode</span>{
+	<span style="color:#a6e22e">type</span>: <span style="color:#66d9ef">Token</span>;
+	<span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">string</span><span style="color:#f92672">|</span><span style="color:#66d9ef">null</span>;
+	<span style="color:#a6e22e">children</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">ASTNode</span>&gt;;
 }
-</code></pre>
-
-<p>構文木は再帰的な木構造によって表されます。
+</code></pre></div><p>構文木は再帰的な木構造によって表されます。
 それぞれのノードにはそれが何の記号かを示すトークン、およびそのトークンに紐つけられている実際の入力文字列(そのトークンが非終端記号である場合はnull)、自身の子となるノードの配列を持ちます。</p>
-
 <p>たとえば、<a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">第3回</a>で定義した構文規則によって<code>1+1</code>を解析した場合、結果として得られる抽象構文木は以下のようになるでしょう。</p>
-
-<pre><code class="language-json">{&quot;type&quot;:&quot;EXP&quot;, &quot;value&quot;:null, &quot;children&quot;:[
-    {&quot;type&quot;:&quot;EXP&quot;, &quot;value&quot;:null, &quot;children&quot;:[
-        {&quot;type&quot;:&quot;TERM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
-            {&quot;type&quot;:&quot;ATOM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
-                {&quot;type&quot;:&quot;DIGITS&quot;, &quot;value&quot;:&quot;1&quot;, &quot;children&quot;:[]}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;EXP&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>, <span style="color:#f92672">&#34;children&#34;</span>:[
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;EXP&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>, <span style="color:#f92672">&#34;children&#34;</span>:[
+        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>, <span style="color:#f92672">&#34;children&#34;</span>:[
+            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>, <span style="color:#f92672">&#34;children&#34;</span>:[
+                {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;DIGITS&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;1&#34;</span>, <span style="color:#f92672">&#34;children&#34;</span>:[]}
             ]}
         ]}
     ]}, 
-    {&quot;type&quot;:&quot;PLUS&quot;, &quot;value&quot;:&quot;+&quot;, &quot;children&quot;:[]}, 
-    {&quot;type&quot;:&quot;TERM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
-        {&quot;type&quot;:&quot;ATOM&quot;, &quot;value&quot;:null, &quot;children&quot;:[
-            {&quot;type&quot;:&quot;DIGITS&quot;, &quot;value&quot;:&quot;1&quot;, &quot;children&quot;:[]}
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;PLUS&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;+&#34;</span>, <span style="color:#f92672">&#34;children&#34;</span>:[]}, 
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>, <span style="color:#f92672">&#34;children&#34;</span>:[
+        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>, <span style="color:#f92672">&#34;children&#34;</span>:[
+            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;DIGITS&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;1&#34;</span>, <span style="color:#f92672">&#34;children&#34;</span>:[]}
         ]}
     ]}
 ]}
 
-</code></pre>
-
-<p>簡単ですね。</p>
-
+</code></pre></div><p>簡単ですね。</p>
 <h2 id="パーサの実装">パーサの実装</h2>
-
-<p>ではParserクラスを作っていきます。<br />
+<p>ではParserクラスを作っていきます。 <br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts</a></p>
-
-<pre><code class="language-ts">/// parser.ts
-export interface TerminalCallbackArg {
-        token: string;
-        value: string;
-        terminal: true;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// parser.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TerminalCallbackArg</span> {
+        <span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">string</span>;
+        <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">string</span>;
+        <span style="color:#a6e22e">terminal</span>: <span style="color:#66d9ef">true</span>;
 }
-export interface NonterminalCallbackArg {
-        token: string;
-        children: Array&lt;any&gt;;
-        pattern: Array&lt;string&gt;;
-        terminal: false;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">NonterminalCallbackArg</span> {
+        <span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">string</span>;
+        <span style="color:#a6e22e">children</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">any</span>&gt;;
+        <span style="color:#a6e22e">pattern</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">string</span>&gt;;
+        <span style="color:#a6e22e">terminal</span>: <span style="color:#66d9ef">false</span>;
 }
-export declare type ParserCallbackArg = TerminalCallbackArg | NonterminalCallbackArg;
-export declare type ParserCallback = (arg: ParserCallbackArg) =&gt; any;
-export declare class Parser {
-        private lexer;
-        private syntax;
-        private parsingtable;
-        private default_callback;
-        constructor(lexer: ILexer, syntax: SyntaxDefinitions, parsingtable: ParsingTable, default_callback?: ParserCallback | null);
-        setDefaultCallback(default_callback?: ParserCallback | null): void;
-        parse(input: string, cb?: ParserCallback): any;
-        private _parse(inputs, cb?);
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ParserCallbackArg</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">TerminalCallbackArg</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">NonterminalCallbackArg</span>;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ParserCallback</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">arg</span>: <span style="color:#66d9ef">ParserCallbackArg</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">any</span>;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Parser</span> {
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">lexer</span>;
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">parsingtable</span>;
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">default_callback</span>;
+        <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">lexer</span>: <span style="color:#66d9ef">ILexer</span>, <span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDefinitions</span>, <span style="color:#a6e22e">parsingtable</span>: <span style="color:#66d9ef">ParsingTable</span>, <span style="color:#a6e22e">default_callback?</span>: <span style="color:#66d9ef">ParserCallback</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>);
+        <span style="color:#a6e22e">setDefaultCallback</span>(<span style="color:#a6e22e">default_callback?</span>: <span style="color:#66d9ef">ParserCallback</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span>;
+        <span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">input</span>: <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">cb?</span>: <span style="color:#66d9ef">ParserCallback</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">any</span>;
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">_parse</span>(<span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">cb</span><span style="color:#f92672">?</span>);
 }
-</code></pre>
-
-<p>できました。</p>
-
+</code></pre></div><p>できました。</p>
 <p>構文解析処理を行う処理は、110行程度に及ぶ<a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/parser.ts#L40">Parser#_parse()メソッド</a>の内部で完結しています。
 これは、<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">第4回</a>に示したオートマトンの動作を仕様通りに実装しています。
 入力を前から順に読み込み、現在スタックに積まれている状態番号を取得し、構文解析表の該当する位置に書かれている命令を実行していくだけです。</p>
-
 <p>ここでは、構文解析の実行中に衝突した命令が存在した場合、その時点で解析失敗としてエラーを返すようにしています。
 コンフリクトが発生した際の対処についても<a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">第4回</a>で触れていますが、一般に使用されているパーサジェネレータでは、構文規則を定義するファイルの中に演算子の優先度や右結合/左結合の指定を行うことができたり、指定のない場合はshift/reduceのいずれかを優先するようになっていたりします。</p>
-
 <p>このあたりのコンフリクト回避処理や、エラーが発生した際の詳細なエラー情報の検知・回避などの機能面には大きく改善の余地があります。</p>
-
 <p>あとは、このParserをParserGeneratorから利用できるようにするため、適当にファクトリクラスを作ります。
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parser/factory.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parser/factory.ts</a></p>
-
-<pre><code class="language-ts">/// factory.ts
-export class ParserFactory{
-	public static create(grammar: GrammarDefinition, parsing_table: ParsingTable, default_fallback?: ParserCallback):Parser{
-		let lexer = new Lexer(grammar.lex);
-		return new Parser(lexer, grammar.syntax, parsing_table, default_fallback);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// factory.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ParserFactory</span>{
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">create</span>(<span style="color:#a6e22e">grammar</span>: <span style="color:#66d9ef">GrammarDefinition</span>, <span style="color:#a6e22e">parsing_table</span>: <span style="color:#66d9ef">ParsingTable</span>, <span style="color:#a6e22e">default_fallback?</span>: <span style="color:#66d9ef">ParserCallback</span>)<span style="color:#f92672">:</span><span style="color:#a6e22e">Parser</span>{
+		<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">lexer</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Lexer</span>(<span style="color:#a6e22e">grammar</span>.<span style="color:#a6e22e">lex</span>);
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Parser</span>(<span style="color:#a6e22e">lexer</span>, <span style="color:#a6e22e">grammar</span>.<span style="color:#a6e22e">syntax</span>, <span style="color:#a6e22e">parsing_table</span>, <span style="color:#a6e22e">default_fallback</span>);
 	}
 }
-</code></pre>
-
-<p><a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts#L32">ParserGenerator#getParser()メソッド</a>には、以下のような記述を行います。</p>
-
-<pre><code class="language-ts">/// parsergenerator.ts
-public getParser(default_callback?: ParserCallback):Parser{
-	return ParserFactory.create(this.grammar, this.parsing_table, default_callback);
+</code></pre></div><p><a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/parsergenerator.ts#L32">ParserGenerator#getParser()メソッド</a>には、以下のような記述を行います。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// parsergenerator.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">getParser</span>(<span style="color:#a6e22e">default_callback?</span>: <span style="color:#66d9ef">ParserCallback</span>)<span style="color:#f92672">:</span><span style="color:#a6e22e">Parser</span>{
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ParserFactory</span>.<span style="color:#a6e22e">create</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">grammar</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">parsing_table</span>, <span style="color:#a6e22e">default_callback</span>);
 }
-</code></pre>
-
-<p>これで完成です。</p>
-
+</code></pre></div><p>これで完成です。</p>
 <h2 id="構文解析を実行する">構文解析を実行する</h2>
-
 <h3 id="構文木を生成する">構文木を生成する</h3>
-
 <p>では、実際に構文解析を実行してみましょう。
 与える構文は、以下のようになります。</p>
-
-<pre><code class="language-ts">const syntax:SyntaxDefinitions = [
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">syntax</span>:<span style="color:#66d9ef">SyntaxDefinitions</span> <span style="color:#f92672">=</span> [
 	{
-		ltoken: &quot;EXP&quot;,
-		pattern: [&quot;EXP&quot;, &quot;PLUS&quot;, &quot;TERM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;EXP&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;EXP&#34;</span>, <span style="color:#e6db74">&#34;PLUS&#34;</span>, <span style="color:#e6db74">&#34;TERM&#34;</span>]
 	},
 	{
-		ltoken: &quot;EXP&quot;,
-		pattern: [&quot;TERM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;EXP&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;TERM&#34;</span>]
 	},
 	{
-		ltoken: &quot;TERM&quot;,
-		pattern: [&quot;TERM&quot;, &quot;ASTERISK&quot;, &quot;ATOM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;TERM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;TERM&#34;</span>, <span style="color:#e6db74">&#34;ASTERISK&#34;</span>, <span style="color:#e6db74">&#34;ATOM&#34;</span>]
 	},
 	{
-		ltoken: &quot;TERM&quot;,
-		pattern: [&quot;ATOM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;TERM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;ATOM&#34;</span>]
 	},
 	{
-		ltoken: &quot;ATOM&quot;,
-		pattern:[&quot;DIGITS&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ATOM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span>[<span style="color:#e6db74">&#34;DIGITS&#34;</span>]
 	},
 	{
-		ltoken: &quot;ATOM&quot;,
-		pattern:[&quot;LPAREN&quot;, &quot;EXP&quot;, &quot;RPAREN&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ATOM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span>[<span style="color:#e6db74">&#34;LPAREN&#34;</span>, <span style="color:#e6db74">&#34;EXP&#34;</span>, <span style="color:#e6db74">&#34;RPAREN&#34;</span>]
 	}
 ];
-const lex:LexDefinitions = [
-	{token:&quot;DIGITS&quot;, pattern:/[1-9][0-9]*/},
-	{token:&quot;PLUS&quot;, pattern:&quot;+&quot;},
-	{token:&quot;ASTERISK&quot;, pattern:&quot;*&quot;},
-	{token:&quot;LPAREN&quot;, pattern:&quot;(&quot;},
-	{token:&quot;RPAREN&quot;, pattern:&quot;)&quot;},
-	{token:null, pattern:/(\r\n|\r|\n)+/},
-	{token:null, pattern:/[ \f\t\v\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000\ufeff]+/},
-	{token:&quot;INVALID&quot;, pattern:/./},
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lex</span>:<span style="color:#66d9ef">LexDefinitions</span> <span style="color:#f92672">=</span> [
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;DIGITS&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/[1-9][0-9]*/</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;PLUS&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;+&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;ASTERISK&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;*&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;LPAREN&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;(&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;RPAREN&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;)&#34;</span>},
+	{<span style="color:#a6e22e">token</span>:<span style="color:#66d9ef">null</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/(\r\n|\r|\n)+/</span>},
+	{<span style="color:#a6e22e">token</span>:<span style="color:#66d9ef">null</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/[ \f\t\v\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000\ufeff]+/</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;INVALID&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/./</span>},
 ];
 
-const grammar:GrammarDefinition = {
-	lex: lex,
-	syntax: syntax,
-	start_symbol: &quot;EXP&quot;
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">grammar</span>:<span style="color:#66d9ef">GrammarDefinition</span> <span style="color:#f92672">=</span> {
+	<span style="color:#a6e22e">lex</span>: <span style="color:#66d9ef">lex</span>,
+	<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">syntax</span>,
+	<span style="color:#a6e22e">start_symbol</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;EXP&#34;</span>
 };
-</code></pre>
-
-<p><code>9 + 11 * (2 + 1)</code>という式を解析するためには、以下のように実行します。</p>
-
-<pre><code class="language-ts">new ParserGenerator(grammar).getParser().parse(&quot;9 + 11 * (2 + 1)&quot;);
-</code></pre>
-
-<p>すると、結果として以下のようなオブジェクトが得られます。</p>
-
-<pre><code class="language-json">{&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-    {&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-    {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-        {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;9&quot;,&quot;children&quot;:[]}
+</code></pre></div><p><code>9 + 11 * (2 + 1)</code>という式を解析するためには、以下のように実行します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ParserGenerator</span>(<span style="color:#a6e22e">grammar</span>).<span style="color:#a6e22e">getParser</span>().<span style="color:#a6e22e">parse</span>(<span style="color:#e6db74">&#34;9 + 11 * (2 + 1)&#34;</span>);
+</code></pre></div><p>すると、結果として以下のようなオブジェクトが得られます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;EXP&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;EXP&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;DIGITS&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;9&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]}
             ]}
         ]}
     ]},
-    {&quot;type&quot;:&quot;PLUS&quot;,&quot;value&quot;:&quot;+&quot;,&quot;children&quot;:[]},
-    {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-        {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-            {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;11&quot;,&quot;children&quot;:[]}
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;PLUS&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;+&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]},
+    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;DIGITS&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;11&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]}
             ]}
         ]},
-        {&quot;type&quot;:&quot;ASTERISK&quot;,&quot;value&quot;:&quot;*&quot;,&quot;children&quot;:[]},
-        {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-            {&quot;type&quot;:&quot;LPAREN&quot;,&quot;value&quot;:&quot;(&quot;,&quot;children&quot;:[]},
-            {&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                {&quot;type&quot;:&quot;EXP&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                    {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                        {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                            {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;2&quot;,&quot;children&quot;:[]}
+        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ASTERISK&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;*&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]},
+        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;LPAREN&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;(&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]},
+            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;EXP&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;EXP&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;DIGITS&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;2&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]}
                         ]}
                     ]}
                 ]},
-                {&quot;type&quot;:&quot;PLUS&quot;,&quot;value&quot;:&quot;+&quot;,&quot;children&quot;:[]},
-                {&quot;type&quot;:&quot;TERM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                    {&quot;type&quot;:&quot;ATOM&quot;,&quot;value&quot;:null,&quot;children&quot;:[
-                        {&quot;type&quot;:&quot;DIGITS&quot;,&quot;value&quot;:&quot;1&quot;,&quot;children&quot;:[]}
+                {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;PLUS&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;+&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]},
+                {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;TERM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                    {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;ATOM&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#66d9ef">null</span>,<span style="color:#f92672">&#34;children&#34;</span>:[
+                        {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;DIGITS&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;1&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]}
                     ]}
                 ]}
             ]},
-            {&quot;type&quot;:&quot;RPAREN&quot;,&quot;value&quot;:&quot;)&quot;,&quot;children&quot;:[]}
+            {<span style="color:#f92672">&#34;type&#34;</span>:<span style="color:#e6db74">&#34;RPAREN&#34;</span>,<span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;)&#34;</span>,<span style="color:#f92672">&#34;children&#34;</span>:[]}
         ]}
     ]}
 ]}
-</code></pre>
-
-<p>どこからどう見ても成功ですね。
+</code></pre></div><p>どこからどう見ても成功ですね。
 おめでとうございます。</p>
-
 <h3 id="コールバックを利用して構文木のさらなる解析を行う">コールバックを利用して構文木のさらなる解析を行う</h3>
-
 <p>ついに、本記事の目標である構文木の取得を達成しました。
 あとはこれに適当な再帰的処理を挟めば、良い感じに数式処理ができるでしょう。</p>
-
 <p>確かに一度構文木を生成してからそれを解析してもよいのですが、パーサに適当なコールバックを渡し、構文木を生成する代わりに数式処理を行ってしまうという手もあります。</p>
-
 <p>先ほどのparsergenerator.tsに、以下のような定義が含まれていました。</p>
-
-<pre><code class="language-ts">export interface TerminalCallbackArg {
-        token: string;
-        value: string;
-        terminal: true;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TerminalCallbackArg</span> {
+        <span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">string</span>;
+        <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">string</span>;
+        <span style="color:#a6e22e">terminal</span>: <span style="color:#66d9ef">true</span>;
 }
-export interface NonterminalCallbackArg {
-        token: string;
-        children: Array&lt;any&gt;;
-        pattern: Array&lt;string&gt;;
-        terminal: false;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">NonterminalCallbackArg</span> {
+        <span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">string</span>;
+        <span style="color:#a6e22e">children</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">any</span>&gt;;
+        <span style="color:#a6e22e">pattern</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">string</span>&gt;;
+        <span style="color:#a6e22e">terminal</span>: <span style="color:#66d9ef">false</span>;
 }
-export declare type ParserCallbackArg = TerminalCallbackArg | NonterminalCallbackArg;
-export declare type ParserCallback = (arg: ParserCallbackArg) =&gt; any;
-</code></pre>
-
-<p>Parserのコンストラクタ引数、ParserGeneratorのgetParserメソッドの引数、またはParserのparseメソッドの引数としてコールバックを与えると、reduce処理が行われた際にそれを呼び出すことができます。
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ParserCallbackArg</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">TerminalCallbackArg</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">NonterminalCallbackArg</span>;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">ParserCallback</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">arg</span>: <span style="color:#66d9ef">ParserCallbackArg</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">any</span>;
+</code></pre></div><p>Parserのコンストラクタ引数、ParserGeneratorのgetParserメソッドの引数、またはParserのparseメソッドの引数としてコールバックを与えると、reduce処理が行われた際にそれを呼び出すことができます。
 処理するべきトークンが終端器号であった場合はそのトークンの種類と実際の入力が、非終端記号であった場合は対応する規則の情報、およびその子ノードの情報が引数として与えられます。</p>
-
 <p>実際に、数式の処理を行うための関数を書いてみましょう。</p>
-
-<pre><code class="language-ts">let solve_terminal = (arg:TerminalCallbackArg)=&gt;{
-	switch(arg.token){
-		case &quot;DIGITS&quot;:
-			return +arg.value;
-		default:
-			return null;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">solve_terminal</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">arg</span>:<span style="color:#66d9ef">TerminalCallbackArg</span>)<span style="color:#f92672">=&gt;</span>{
+	<span style="color:#66d9ef">switch</span>(<span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">token</span>){
+		<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;DIGITS&#34;</span><span style="color:#f92672">:</span>
+			<span style="color:#66d9ef">return</span> <span style="color:#f92672">+</span><span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">value</span>;
+		<span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
 	}
 }
-let solve_nonterminal = (arg:NonterminalCallbackArg)=&gt;{
-	switch(arg.token){
-		case &quot;EXP&quot;:
-			if(arg.children.length == 1) return arg.children[0];
-			else return arg.children[0] + arg.children[2];
-		case &quot;TERM&quot;:
-			if(arg.children.length == 1) return arg.children[0];
-			else return arg.children[0] * arg.children[2];
-		case &quot;ATOM&quot;:
-			if(arg.children.length == 1) return arg.children[0];
-			else return arg.children[1];
+<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">solve_nonterminal</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">arg</span>:<span style="color:#66d9ef">NonterminalCallbackArg</span>)<span style="color:#f92672">=&gt;</span>{
+	<span style="color:#66d9ef">switch</span>(<span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">token</span>){
+		<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;EXP&#34;</span><span style="color:#f92672">:</span>
+			<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">0</span>];
+			<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">2</span>];
+		<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;TERM&#34;</span><span style="color:#f92672">:</span>
+			<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">0</span>];
+			<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">2</span>];
+		<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;ATOM&#34;</span><span style="color:#f92672">:</span>
+			<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">0</span>];
+			<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">children</span>[<span style="color:#ae81ff">1</span>];
 	}
 }
-let solve = (arg:ParserCallbackArg)=&gt;{
-	if(arg.terminal) return solve_terminal(arg);
-	else return solve_nonterminal(arg);
+<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">solve</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">arg</span>:<span style="color:#66d9ef">ParserCallbackArg</span>)<span style="color:#f92672">=&gt;</span>{
+	<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">arg</span>.<span style="color:#a6e22e">terminal</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">solve_terminal</span>(<span style="color:#a6e22e">arg</span>);
+	<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">solve_nonterminal</span>(<span style="color:#a6e22e">arg</span>);
 }
-</code></pre>
-
-<p>これをもとに、以下のように実行します。</p>
-
-<pre><code class="language-ts">new ParserGenerator(grammar).getParser(solve).parse(&quot;9 + 11 * (2 + 1)&quot;);
-</code></pre>
-
-<p>実行結果は、以下のようになります。</p>
-
-<pre><code class="language-shell">42
-</code></pre>
-
-<p>これにて、パーサジェネレータの実装および構文解析が完了しました。
+</code></pre></div><p>これをもとに、以下のように実行します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ParserGenerator</span>(<span style="color:#a6e22e">grammar</span>).<span style="color:#a6e22e">getParser</span>(<span style="color:#a6e22e">solve</span>).<span style="color:#a6e22e">parse</span>(<span style="color:#e6db74">&#34;9 + 11 * (2 + 1)&#34;</span>);
+</code></pre></div><p>実行結果は、以下のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ae81ff">42</span>
+</code></pre></div><p>これにて、パーサジェネレータの実装および構文解析が完了しました。
 ここまでお付き合いいただき、ありがとうございました。</p>
-
-<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
+<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br>
 <a href="http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-05/">前回:LR(1)パーサジェネレータの実装</a></p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

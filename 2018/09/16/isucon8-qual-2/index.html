@@ -73,48 +73,30 @@
         <p class="article-tags">Tag:
         <a href="http://tatamo.81.la/blog/tags/isucon/">isucon</a></p>
         <p><a href="http://tatamo.81.la/blog/2018/09/16/isucon8-qual/">一つ前</a>の記事は予選の流れや感想を書きましたが、こちらは<a href="http://isucon.net/archives/52193980.html">ISUCON8</a>の予選の序盤にやったことのメモです。</p>
-
 <p>予備知識ほぼゼロで予選に突っ込んだ初心者のメモなので初歩的な内容だと思います。</p>
-
-<p></p>
-
 <p>今回の予選で使用したリポジトリは <a href="https://github.com/Tatamo/isucon8-q">https://github.com/Tatamo/isucon8-q</a> です。</p>
-
 <h2 id="解析ツール">解析ツール</h2>
-
 <p>初心者なので、ISUCONをやる人がだいたい入れてるらしいツールを入れました。
 入れるツールは予選前日の夜に適当にググって決めました。</p>
-
-<h3 id="netdata-https-github-com-firehol-netdata"><a href="https://github.com/firehol/netdata">netdata</a></h3>
-
+<h3 id="netdatahttpsgithubcomfireholnetdata"><a href="https://github.com/firehol/netdata">netdata</a></h3>
 <p>自動インストーラが用意されており、コマンド一発でモニタリングができるところまでいくのでとても便利です。
 (私は担当ではなかったのでよくわかりませんが、メンバーは一応これを入れるのに手間取っていました… ファイアウォールの設定はちゃんと見るべきらしいです)
 とりあえずベンチマークを走らせると負荷の状況が一目でわかりますし、負荷が上がることでベンチマークが実行されていることがわかって安心できたりします。</p>
-
-<h3 id="alp-https-github-com-tkuchiki-alp"><a href="https://github.com/tkuchiki/alp">alp</a></h3>
-
+<h3 id="alphttpsgithubcomtkuchikialp"><a href="https://github.com/tkuchiki/alp">alp</a></h3>
 <p>zipを落としてくるだけなのでこちらも導入が簡単です。
 ただしnginxやh2oのログの形式をalpに対応したフォーマットに変えないといけないので注意が必要です。
 実際これを使って表を眺めるだけでも重そうな処理がだいたいわかってくるような気がするので、入れておくべきだと思います。</p>
-
-<h3 id="pt-query-digest-https-www-percona-com-doc-percona-toolkit-latest-pt-query-digest-html"><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html">pt-query-digest</a></h3>
-
+<h3 id="pt-query-digesthttpswwwperconacomdocpercona-toolkitlatestpt-query-digesthtml"><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html">pt-query-digest</a></h3>
 <p>入れましたが使いませんでした。
 他の人が使ったのかどうかは知りません。
 そもそもめちゃくちゃ重いクエリはalpのログやソースコードを見れば見当がつきますし、それで発見できない中程度の遅さのクエリの修正にまで取り掛かるだけの時間がありませんでした。</p>
-
 <p>今回は使用しませんでしたが、docker経由でphpMyAdminを使えばDBの見通しが良くなるので、導入してもよかったかと思います。</p>
-
 <h2 id="デプロイ環境構築">デプロイ環境構築</h2>
-
 <p>アプリケーションをgit管理するにしても、サーバー上で直接編集すると確実にコンフリクトします。
 また、サーバーが3台あったので更新をいちいち手動で反映していると死にます。</p>
-
 <h3 id="ssh">SSH</h3>
-
 <p>自動デプロイの円滑化に絡んでくるため、SSHの設定は重要です。
 まずローカルでは、メンバー全員で<code>~/.ssh/config</code>の接続ホストを共有します。</p>
-
 <pre><code>Host isuA
 	HostName 222.222.222.221
 	User isucon
@@ -126,61 +108,40 @@ Host isuB
 Host isuC
 	HostName 222.222.222.223
 	User isucon
-</code></pre>
-
-<p>のようにして、メンバー全員が同じ解決名でサーバーに入れるようにすることが必要です。
+</code></pre><p>のようにして、メンバー全員が同じ解決名でサーバーに入れるようにすることが必要です。
 また、全メンバーは競技開始直後に<code>ssh-copy-id</code>で自らの公開鍵を3台のサーバーすべてに送信しておきます。
 <code>ssh-add</code>で自分の秘密鍵をssh-agentに登録しておけば、SSH鍵のパスフレーズを入力せずサーバーに入れるようになります。</p>
-
 <p>次に、3台ある競技用マシンすべてで新しく鍵を作成し、これらをすべてGitHubに登録しておきます。</p>
-
 <h3 id="github-private-repository">GitHub private repository</h3>
-
 <p>メンバーがローカルで編集したファイルをGitHubにpushし、競技用サーバーではそれをpullするという構成にしました。
 publicなリポジトリでこれをやってしまうとレギュレーション違反で失格なので注意が必要です。
 とはいえ不具合が出た時などは直接サーバーに入ったほうが楽なこともあるので、基本は編集衝突を避けてローカルで編集しつつ臨機応変に、という感じです。</p>
-
 <p>私たちのチームでは、専用のGitHubアカウントを作ってそこに公開鍵を登録するようにしました。
 (※GitHubの利用規約に抵触しないようにするため、 「**-bot」のような名前にして予選終了後は消すことで、<a href="https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users">Machine user</a>と言い張ることにします。実際自動化のために用いるので…)</p>
-
 <p>そして、前述したSSH公開鍵のGitHubへの登録ができたら、競技用サーバーに用意されているディレクトリをgit管理下に置きます。
 このとき、<code>~/.gitconfig</code> に以下のように書いておきます。</p>
-
 <pre><code>[url &quot;git@github.com:&quot;]
 	Insteadof = https://github.com/
-</code></pre>
-
-<p>これでgithubへのアクセスがsshを経由して行われるようになります。
+</code></pre><p>これでgithubへのアクセスがsshを経由して行われるようになります。
 サーバーのファイルを直接編集してもコミットできるように、author情報も同時に書いておくといいかもしれません。</p>
-
 <p>必要ならssh-agentを起動するなどして、少なくとも認証なしでgit pullできるようになると良いです。</p>
-
 <p>git管理下に置く方法としては、3台あるうち適当な1台でgit管理したい全ファイルをGitHubにpushして、他のサーバーでは既に存在するファイル群を消してから同じ場所にgit cloneするのが早いと思います。</p>
-
 <h3 id="デプロイ用スクリプトを用意する">デプロイ用スクリプトを用意する</h3>
-
-<p><a href="https://blog.bitjourney.com/entry/2017/11/09/101740">https://blog.bitjourney.com/entry/2017/11/09/101740</a><br />
+<p><a href="https://blog.bitjourney.com/entry/2017/11/09/101740">https://blog.bitjourney.com/entry/2017/11/09/101740</a><br>
 ここに「デプロイスクリプトは超大事」って書いてありました。
 ここで紹介されている <a href="https://github.com/gfx/isucon7-qualify">https://github.com/gfx/isucon7-qualify</a> のrestart.shとrestart-all-from-local.shを真似します。</p>
-
-<p><a href="https://github.com/Tatamo/isucon8-q/blob/master/restart.sh">https://github.com/Tatamo/isucon8-q/blob/master/restart.sh</a><br />
+<p><a href="https://github.com/Tatamo/isucon8-q/blob/master/restart.sh">https://github.com/Tatamo/isucon8-q/blob/master/restart.sh</a><br>
 <a href="https://github.com/Tatamo/isucon8-q/blob/master/restart-all-from-local.sh">https://github.com/Tatamo/isucon8-q/blob/master/restart-all-from-local.sh</a></p>
-
 <p>こんな感じになりました。
 おそらく重要だと思うのは、<code>ssh isuA ...</code> のようにメンバー全員でhost名が共有されていること、ローカルでのsshおよびサーバーの<code>restart.sh</code>のgitコマンドが認証なしで通るようになっていることだと思います。
 SSHまわりの設定をしておけば、一切の認証が発生しないため<code>./restart-all-from-local.sh</code>の一発で全サーバーにGitHib上の最新のコミットを反映させることができます。</p>
-
 <p>実際のところ、おそらく競技サーバー側の鍵生成は必要なくて、ssh-agentで鍵を使い回せばローカルのgithub用公開鍵をそのまま使ってサーバーのgitを触れる気がしますが、あまりよく調べていません。</p>
-
 <h3 id="リポジトリで管理する範囲について">リポジトリで管理する範囲について</h3>
-
 <p>ホームディレクトリ以下にサービス名のついたフォルダがあったので、そこをgit管理すればいいかなと思いました。
 nginxなどの設定ファイルの類は、リポジトリの下に<code>etc/</code>みたいなフォルダを作ってそこで管理しました。
 サーバーごとに分ける必要が出てきたらその都度増やします。
 これも自動で反映できるよう、もともとの設定ファイルをシンボリックリンクに置き換えておきます。</p>
-
-<hr />
-
+<hr>
 <p>準備のための時間があるなら、これらの構築作業はchefやansibleやシェルスクリプトで自動化しておくと効果は高いと思います。
 競技開始時にやるべきことは予め決めておけるので、そういった作業を簡単なコマンドで行えるようにしておけば確実に時間を節約できます。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>

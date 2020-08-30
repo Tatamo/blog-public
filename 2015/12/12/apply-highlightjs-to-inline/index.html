@@ -75,62 +75,45 @@
         <a href="http://tatamo.81.la/blog/tags/javascript/">javascript</a>
         <a href="http://tatamo.81.la/blog/tags/blog/">blog</a></p>
         <p>このブログのシンタックスハイライトには<a href="https://highlightjs.org/">highlight.js</a>を使用しています。</p>
-
 <p>デフォルトでは適用できないインラインのコードのハイライトも行えるようにしましたので、適用の流れなど。</p>
-
-<p></p>
-
-<h2 id="highlight-jsって何">highlight.jsって何</h2>
-
+<h2 id="highlightjsって何">highlight.jsって何</h2>
 <p>JavaScriptによって、Webページ内のソースコードを色付けしてくれるものです。
 たとえば:</p>
-
-<pre><code class="language-python">for i in range(1,101) :
-	print (&quot;Fizz&quot; if not i%3 else &quot;&quot;) + (&quot;Buzz&quot; if not i%5 else &quot;&quot;) or i
-</code></pre>
-
-<p><a href="https://highlightjs.org/static/demo/">highlight.js demo</a>を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">101</span>) :
+	<span style="color:#66d9ef">print</span> (<span style="color:#e6db74">&#34;Fizz&#34;</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> i<span style="color:#f92672">%</span><span style="color:#ae81ff">3</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">+</span> (<span style="color:#e6db74">&#34;Buzz&#34;</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> i<span style="color:#f92672">%</span><span style="color:#ae81ff">5</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">or</span> i
+</code></pre></div><p><a href="https://highlightjs.org/static/demo/">highlight.js demo</a>を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
 (しかし思うのですが、自分のサイトに導入を検討する際に、この濃い赤色の背景色だと白色の背景と感覚が違ってくるのでやや選びにくいのではないでしょうか……。
-コンソールから<code class="js">document.body.style.backgroundColor=&ldquo;#FFFFFF&rdquo;;</code>とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)</p>
-
+コンソールから<!-- raw HTML omitted -->document.body.style.backgroundColor=&rdquo;#FFFFFF&rdquo;;<!-- raw HTML omitted -->とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)</p>
 <h2 id="インライン要素でもハイライトできるようにしてみた">インライン要素でもハイライトできるようにしてみた</h2>
-
-<p>通常では、highlight.jsによるハイライトは<code class="html">&lt;pre&gt;&lt;code&gt;</code>から<code class="html">&lt;/code&gt;&lt;/pre&gt;</code>で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。</p>
-
-<p>Markdownの展開方法に適用できるように、<code class="html">&lt;code&gt;&lt;/code&gt;</code>で囲まれた要素をハイライトすることにします。
+<p>通常では、highlight.jsによるハイライトは<!-- raw HTML omitted -->&lt;pre&gt;&lt;code&gt;<!-- raw HTML omitted -->から<!-- raw HTML omitted -->&lt;/code&gt;&lt;/pre&gt;<!-- raw HTML omitted -->で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。</p>
+<p>Markdownの展開方法に適用できるように、<!-- raw HTML omitted -->&lt;code&gt;&lt;/code&gt;<!-- raw HTML omitted -->で囲まれた要素をハイライトすることにします。
 既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。</p>
-
 <ul>
 <li><a href="http://kenzauros.com/blog/apply-highlight-js-to-inline-source-code/">highlight.jsでインラインのソースコードもハイライトする | blog@kenzauros.com</a></li>
-<li><a href="http://swiftrithm.com/blog/highlightjs-install/">軽いとうわさのhighlight.jsをTwenty Fifteenに導入、ソースコードを綺麗に表示 &#8211; SWIFTRITHM</a></li>
+<li><a href="http://swiftrithm.com/blog/highlightjs-install/">軽いとうわさのhighlight.jsをTwenty Fifteenに導入、ソースコードを綺麗に表示 – SWIFTRITHM</a></li>
 </ul>
-
 <p>上記のサイトでは共にJQueryを用いていますが、このサイトでは特にJQueryを導入する気もなかったため、生のJavaScript+DOMで適当に書き直しました。</p>
-
-<pre><code class="language-html">&lt;script&gt;
-// hljs.initHighlightingOnLoad();
-window.addEventListener(&quot;DOMContentLoaded&quot;, function(){
-	var elements = document.getElementsByTagName(&quot;code&quot;);
-	var l=elements.length;
-	for(var i=0; i&lt;l;i++){
-		var el = elements[i];
-		hljs.highlightBlock(el);
-		if(el.parentNode.tagName.toLowerCase() != &quot;pre&quot;) {
-			el.style.display = &quot;inline&quot;;
-			el.style.margin = &quot;0 2px&quot;;
-			el.style.padding = &quot;1px 3px&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span>&gt;
+<span style="color:#75715e">// hljs.initHighlightingOnLoad();
+</span><span style="color:#75715e"></span>window.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;DOMContentLoaded&#34;</span>, <span style="color:#66d9ef">function</span>(){
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">elements</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementsByTagName</span>(<span style="color:#e6db74">&#34;code&#34;</span>);
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">l</span><span style="color:#f92672">=</span><span style="color:#a6e22e">elements</span>.<span style="color:#a6e22e">length</span>;
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">l</span>;<span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>){
+		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">el</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">i</span>];
+		<span style="color:#a6e22e">hljs</span>.<span style="color:#a6e22e">highlightBlock</span>(<span style="color:#a6e22e">el</span>);
+		<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">parentNode</span>.<span style="color:#a6e22e">tagName</span>.<span style="color:#a6e22e">toLowerCase</span>() <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;pre&#34;</span>) {
+			<span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;inline&#34;</span>;
+			<span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">margin</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0 2px&#34;</span>;
+			<span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">padding</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1px 3px&#34;</span>;
 		}
 	}
-}, false);
-&lt;/script&gt;
-</code></pre>
-
-<p>通常<code>hljs.initHighlightingOnLoad();</code>を呼ぶところを、上記のコードで置き換えるだけで完了です。
-親要素が<code class="html">&lt;pre&gt;</code>ではない場合にインライン化するようにしています。
+}, <span style="color:#66d9ef">false</span>);
+&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>通常<code>hljs.initHighlightingOnLoad();</code>を呼ぶところを、上記のコードで置き換えるだけで完了です。
+親要素が<!-- raw HTML omitted -->&lt;pre&gt;<!-- raw HTML omitted -->ではない場合にインライン化するようにしています。
 またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。</p>
-
 <p>既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
-たとえば、このように:<code class="py">print &ldquo;\n&rdquo;.join([&ldquo;Fizz&rdquo;<em>(not i%3)+&ldquo;Buzz&rdquo;</em>(not i%5) or str(i) for i in range(1,101)])</code>1行のコードでもうまくハイライトされているのがわかります。
+たとえば、このように:<!-- raw HTML omitted -->print &ldquo;\n&rdquo;.join([&ldquo;Fizz&rdquo;<em>(not i%3)+&quot;Buzz&rdquo;</em>(not i%5) or str(i) for i in range(1,101)])<!-- raw HTML omitted -->1行のコードでもうまくハイライトされているのがわかります。
 やったね。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

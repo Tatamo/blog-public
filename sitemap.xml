@@ -1,9 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/automation/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/categories/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/categories/game/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/post/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/</loc>
+    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
   
   <url>
     <loc>http://tatamo.81.la/blog/2019/12/10/automation-games/</loc>
     <lastmod>2019-12-10T23:59:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/symphonic-rain/</loc>
+    <lastmod>2019-09-04T21:43:24+09:00</lastmod>
   </url>
   
   <url>
@@ -12,7 +48,27 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/atcoder/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/atcoder-cli/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-tutorial/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/competitive-programming/</loc>
+    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/categories/dev/</loc>
     <lastmod>2018-12-07T23:22:00+09:00</lastmod>
   </url>
   
@@ -27,6 +83,16 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/categories/diary/</loc>
+    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/isucon/</loc>
+    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/</loc>
     <lastmod>2018-09-16T18:00:01+09:00</lastmod>
   </url>
@@ -34,6 +100,11 @@
   <url>
     <loc>http://tatamo.81.la/blog/2018/09/16/isucon8-qual/</loc>
     <lastmod>2018-09-16T18:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/javascript/</loc>
+    <lastmod>2018-02-09T19:30:00+09:00</lastmod>
   </url>
   
   <url>
@@ -47,8 +118,23 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/freeciv/</loc>
+    <lastmod>2018-02-08T00:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2018/02/08/freeciv-right-drag/</loc>
     <lastmod>2018-02-08T00:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/pc/</loc>
+    <lastmod>2017-12-18T21:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/categories/pc/</loc>
+    <lastmod>2017-12-18T21:00:00+09:00</lastmod>
   </url>
   
   <url>
@@ -62,8 +148,48 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/contest/</loc>
+    <lastmod>2017-12-18T01:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/icpc/</loc>
+    <lastmod>2017-12-18T01:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/css/</loc>
+    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/dtp/</loc>
+    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/html/</loc>
+    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/vivliostyle/</loc>
+    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2017/12/06/web-dtp/</loc>
     <lastmod>2017-12-06T18:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/japari-watch/</loc>
+    <lastmod>2017-12-01T17:35:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/pixijs/</loc>
+    <lastmod>2017-12-01T17:35:00+09:00</lastmod>
   </url>
   
   <url>
@@ -72,8 +198,23 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/blog/</loc>
+    <lastmod>2017-11-08T18:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/highlightjs/</loc>
+    <lastmod>2017-11-08T18:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2017/11/08/syntax-highlight-improvement/</loc>
     <lastmod>2017-11-08T18:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/austin/</loc>
+    <lastmod>2017-09-17T01:54:04+09:00</lastmod>
   </url>
   
   <url>
@@ -82,8 +223,18 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/seccamp/</loc>
+    <lastmod>2017-08-27T23:54:42+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2017/08/27/seccamp-2017/</loc>
     <lastmod>2017-08-27T23:54:42+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/arago/</loc>
+    <lastmod>2017-07-11T15:03:07+09:00</lastmod>
   </url>
   
   <url>
@@ -97,7 +248,27 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/lexer/</loc>
+    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2017/04/04/lr-parser-generator-implementation-06/</loc>
+    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/parser/</loc>
+    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/parser-generator/</loc>
+    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/parsing/</loc>
     <lastmod>2017-04-04T23:41:09+09:00</lastmod>
   </url>
   
@@ -127,8 +298,28 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/generics/</loc>
+    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/java/</loc>
+    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2016/12/15/java-generics-and-reflection/</loc>
     <lastmod>2016-12-15T01:11:23+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/reflection/</loc>
+    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/homebuilt_pc/</loc>
+    <lastmod>2016-12-07T13:53:12+09:00</lastmod>
   </url>
   
   <url>
@@ -139,6 +330,11 @@
   <url>
     <loc>http://tatamo.81.la/blog/2016/09/29/freeciv-arago-challenge-01/</loc>
     <lastmod>2016-09-29T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/freecivcalc/</loc>
+    <lastmod>2016-05-26T15:47:37+09:00</lastmod>
   </url>
   
   <url>
@@ -157,7 +353,27 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/deploybot/</loc>
+    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/github/</loc>
+    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/hugo/</loc>
+    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2016/01/05/hugo-deployment/</loc>
+    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/wercker/</loc>
     <lastmod>2016-01-05T20:50:32+09:00</lastmod>
   </url>
   
@@ -172,6 +388,16 @@
   </url>
   
   <url>
+    <loc>http://tatamo.81.la/blog/tags/info/</loc>
+    <lastmod>2015-12-11T00:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/categories/info/</loc>
+    <lastmod>2015-12-11T00:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/2015/12/11/hello-world/</loc>
     <lastmod>2015-12-11T00:00:00+09:00</lastmod>
   </url>
@@ -179,275 +405,6 @@
   <url>
     <loc>http://tatamo.81.la/blog/about/</loc>
     <lastmod>2015-10-28T21:21:25+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/arago/</loc>
-    <lastmod>2017-07-11T15:03:07+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/atcoder/</loc>
-    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/atcoder-cli/</loc>
-    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/austin/</loc>
-    <lastmod>2017-09-17T01:54:04+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/automation/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/blog/</loc>
-    <lastmod>2017-11-08T18:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/competitive-programming/</loc>
-    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/contest/</loc>
-    <lastmod>2017-12-18T01:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/css/</loc>
-    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/deploybot/</loc>
-    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/dev/</loc>
-    <lastmod>2018-12-07T23:22:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/diary/</loc>
-    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/dtp/</loc>
-    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/freeciv/</loc>
-    <lastmod>2018-02-08T00:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/freecivcalc/</loc>
-    <lastmod>2016-05-26T15:47:37+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/game/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/generics/</loc>
-    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/github/</loc>
-    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/highlightjs/</loc>
-    <lastmod>2017-11-08T18:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/homebuilt_pc/</loc>
-    <lastmod>2016-12-07T13:53:12+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/html/</loc>
-    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/hugo/</loc>
-    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/icpc/</loc>
-    <lastmod>2017-12-18T01:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/info/</loc>
-    <lastmod>2015-12-11T00:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/info/</loc>
-    <lastmod>2015-12-11T00:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/isucon/</loc>
-    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/japari-watch/</loc>
-    <lastmod>2017-12-01T17:35:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/java/</loc>
-    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/javascript/</loc>
-    <lastmod>2018-02-09T19:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/lexer/</loc>
-    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/parser/</loc>
-    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/parser-generator/</loc>
-    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/parsing/</loc>
-    <lastmod>2017-04-04T23:41:09+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/pc/</loc>
-    <lastmod>2017-12-18T21:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/pc/</loc>
-    <lastmod>2017-12-18T21:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/pixijs/</loc>
-    <lastmod>2017-12-01T17:35:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/post/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/reflection/</loc>
-    <lastmod>2016-12-15T01:11:23+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/seccamp/</loc>
-    <lastmod>2017-08-27T23:54:42+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/symphonic-rain/</loc>
-    <lastmod>2019-09-04T21:43:24+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/</loc>
-    <lastmod>2017-07-11T15:03:07+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/vivliostyle/</loc>
-    <lastmod>2017-12-06T18:30:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/wercker/</loc>
-    <lastmod>2016-01-05T20:50:32+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>

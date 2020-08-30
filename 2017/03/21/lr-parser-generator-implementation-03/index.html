@@ -77,319 +77,258 @@
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
         <p><a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">前回</a>は字句解析器の作成を行ったので、次にLR(1)法による構文解析のためのパーサジェネレータの作成に入っていきます。
 今回は、LR(1)構文解析器の構築のために必要な、終端記号と非終端記号の区別、Nulls集合、First集合の導出等を行えるようにしていきます。</p>
-
-<p></p>
-
 <p>いよいよ構文解析部分の実装にとりかかるため、今後はLR(1)法に焦点を絞って解説していきます。</p>
-
 <p>今回はその準備段階として必要になる部分を作っていくため、どんどん実装を進めていきます。</p>
-
 <h2 id="構文規則を定義する">構文規則を定義する</h2>
-
 <p>まずは、前回字句規則を定義したように、構文規則を定義していく必要があります。</p>
-
-<pre><code class="language-ts">export interface LexDefinitionSection{
-	token: Token|null;
-	pattern: string|RegExp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">LexDefinitionSection</span>{
+	<span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">Token</span><span style="color:#f92672">|</span><span style="color:#66d9ef">null</span>;
+	<span style="color:#a6e22e">pattern</span>: <span style="color:#66d9ef">string</span><span style="color:#f92672">|</span>RegExp;
 }
-export type LexDefinitions = Array&lt;LexDefinitionSection&gt;;
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">LexDefinitions</span> <span style="color:#f92672">=</span> Array&lt;<span style="color:#f92672">LexDefinitionSection</span>&gt;;
 
-export interface SyntaxDefinitionSection{
-	ltoken: Token;
-	pattern: Array&lt;Token&gt;;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SyntaxDefinitionSection</span>{
+	<span style="color:#a6e22e">ltoken</span>: <span style="color:#66d9ef">Token</span>;
+	<span style="color:#a6e22e">pattern</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">Token</span>&gt;;
 }
-export type SyntaxDefinitions = Array&lt;SyntaxDefinitionSection&gt;;
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">SyntaxDefinitions</span> <span style="color:#f92672">=</span> Array&lt;<span style="color:#f92672">SyntaxDefinitionSection</span>&gt;;
 
-export interface GrammarDefinition{
-	lex: LexDefinitions;
-	syntax: SyntaxDefinitions;
-	start_symbol: Token;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GrammarDefinition</span>{
+	<span style="color:#a6e22e">lex</span>: <span style="color:#66d9ef">LexDefinitions</span>;
+	<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDefinitions</span>;
+	<span style="color:#a6e22e">start_symbol</span>: <span style="color:#66d9ef">Token</span>;
 }
-</code></pre>
-
-<p>字句規則と構文規則を合わせて、上記のように定義しておきましょう。</p>
-
+</code></pre></div><p>字句規則と構文規則を合わせて、上記のように定義しておきましょう。</p>
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回</a>で定義した構文規則をこのデータ形式に直すと、以下のようになります。</p>
-
-<pre><code class="language-ts">const syntax:SyntaxDefinitions = [
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">syntax</span>:<span style="color:#66d9ef">SyntaxDefinitions</span> <span style="color:#f92672">=</span> [
 	{
-		ltoken: &quot;EXP&quot;,
-		pattern: [&quot;EXP&quot;, &quot;PLUS&quot;, &quot;TERM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;EXP&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;EXP&#34;</span>, <span style="color:#e6db74">&#34;PLUS&#34;</span>, <span style="color:#e6db74">&#34;TERM&#34;</span>]
 	},
 	{
-		ltoken: &quot;EXP&quot;,
-		pattern: [&quot;TERM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;EXP&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;TERM&#34;</span>]
 	},
 	{
-		ltoken: &quot;TERM&quot;,
-		pattern: [&quot;TERM&quot;, &quot;ASTERISK&quot;, &quot;ATOM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;TERM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;TERM&#34;</span>, <span style="color:#e6db74">&#34;ASTERISK&#34;</span>, <span style="color:#e6db74">&#34;ATOM&#34;</span>]
 	},
 	{
-		ltoken: &quot;TERM&quot;,
-		pattern: [&quot;ATOM&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;TERM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;ATOM&#34;</span>]
 	},
 	{
-		ltoken: &quot;ATOM&quot;,
-		pattern:[&quot;DIGITS&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ATOM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span>[<span style="color:#e6db74">&#34;DIGITS&#34;</span>]
 	},
 	{
-		ltoken: &quot;ATOM&quot;,
-		pattern:[&quot;LPAREN&quot;, &quot;EXP&quot;, &quot;RPAREN&quot;]
+		<span style="color:#a6e22e">ltoken</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ATOM&#34;</span>,
+		<span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span>[<span style="color:#e6db74">&#34;LPAREN&#34;</span>, <span style="color:#e6db74">&#34;EXP&#34;</span>, <span style="color:#e6db74">&#34;RPAREN&#34;</span>]
 	}
 ];
-const lex:LexDefinitions = [
-	{token:&quot;DIGITS&quot;, pattern:/[1-9][0-9]*/},
-	{token:&quot;PLUS&quot;, pattern:&quot;+&quot;},
-	{token:&quot;ASTERISK&quot;, pattern:&quot;*&quot;},
-	{token:&quot;LPAREN&quot;, pattern:&quot;(&quot;},
-	{token:&quot;RPAREN&quot;, pattern:&quot;)&quot;},
-	{token:null, pattern:/\s/},
-	{token:&quot;INVALID&quot;, pattern:/./},
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lex</span>:<span style="color:#66d9ef">LexDefinitions</span> <span style="color:#f92672">=</span> [
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;DIGITS&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/[1-9][0-9]*/</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;PLUS&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;+&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;ASTERISK&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;*&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;LPAREN&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;(&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;RPAREN&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;)&#34;</span>},
+	{<span style="color:#a6e22e">token</span>:<span style="color:#66d9ef">null</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/\s/</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;INVALID&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/./</span>},
 ];
-const grammar:GrammarDefinition = {
-	lex: lex,
-	syntax: syntax,
-	start_symbol: &quot;EXP&quot;
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">grammar</span>:<span style="color:#66d9ef">GrammarDefinition</span> <span style="color:#f92672">=</span> {
+	<span style="color:#a6e22e">lex</span>: <span style="color:#66d9ef">lex</span>,
+	<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">syntax</span>,
+	<span style="color:#a6e22e">start_symbol</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;EXP&#34;</span>
 };
-</code></pre>
-
-<p>ルール一行ごとに一つのオブジェクトを割り当てています。
+</code></pre></div><p>ルール一行ごとに一つのオブジェクトを割り当てています。
 また、<code>start_symbol</code>の定義を加えていることに注意してください。
 これは文字通り開始記号のことであり、最初にどの記号から構文解析を開始するか表すために必要です。
 最終的に構文解析を行った結果として構文木を得た場合、この開始記号が構文木の根となります。</p>
-
 <h2 id="終端記号と非終端記号を区別する">終端記号と非終端記号を区別する</h2>
-
 <p>構文解析器を作るためには、与えられた構文から終端記号と非終端記号を区別できるようにする必要があります。
 定義を再確認しておくと、規則の左辺に現れることのない記号が終端記号、現れる記号が非終端記号です。</p>
-
 <p>実装上難しい点は特にないので、簡単に済ませてしまいましょう。</p>
-
 <p>ひとまず、SymbolDiscriminatorというクラスを作って終端記号と非終端記号の問い合わせをできるようにします。</p>
-
-<pre><code class="language-ts">/// symboldiscriminator.d.ts
-export declare class SymbolDiscriminator {
-    private terminal_symbols;
-    private nonterminal_symbols;
-    constructor(syntaxdef: SyntaxDefinitions);
-    getTerminalSymbols(): Set&lt;Token&gt;;
-    getNonterminalSymbols(): Set&lt;Token&gt;;
-    isTerminalSymbol(symbol: Token): boolean;
-    isNonterminalSymbol(symbol: Token): boolean;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// symboldiscriminator.d.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SymbolDiscriminator</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">terminal_symbols</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">nonterminal_symbols</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">syntaxdef</span>: <span style="color:#66d9ef">SyntaxDefinitions</span>);
+    <span style="color:#a6e22e">getTerminalSymbols</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;;
+    <span style="color:#a6e22e">getNonterminalSymbols</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;;
+    <span style="color:#a6e22e">isTerminalSymbol</span>(<span style="color:#a6e22e">symbol</span>: <span style="color:#66d9ef">Token</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
+    <span style="color:#a6e22e">isNonterminalSymbol</span>(<span style="color:#a6e22e">symbol</span>: <span style="color:#66d9ef">Token</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span>;
 }
-</code></pre>
-
-<p>実際のコードは以下を参照してください。<br />
+</code></pre></div><p>実際のコードは以下を参照してください。<br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/symboldiscriminator.ts</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// コンストラクタの実装のみ抜粋
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">syntaxdef</span>:<span style="color:#66d9ef">SyntaxDefinitions</span>){
+	<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">terminal_symbols</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;();
+	<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nonterminal_symbols</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;();
 
-<pre><code class="language-ts">/// コンストラクタの実装のみ抜粋
-constructor(syntaxdef:SyntaxDefinitions){
-	this.terminal_symbols = new Set&lt;Token&gt;();
-	this.nonterminal_symbols = new Set&lt;Token&gt;();
-
-	// 左辺値の登録
-	for(let sect of syntaxdef){
-		let symbol = sect.ltoken;
-		// 構文規則の左辺に現れる記号は非終端記号
-		this.nonterminal_symbols.add(symbol);
+	<span style="color:#75715e">// 左辺値の登録
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">sect</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">syntaxdef</span>){
+		<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">symbol</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">sect</span>.<span style="color:#a6e22e">ltoken</span>;
+		<span style="color:#75715e">// 構文規則の左辺に現れる記号は非終端記号
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nonterminal_symbols</span>.<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">symbol</span>);
 	}
-	// 右辺値の登録
-	for(let sect of syntaxdef){
-		for(let symbol of sect.pattern){
-			if(!this.nonterminal_symbols.has(symbol)){
-				// 非終端記号でない(=左辺値に現れない)場合、終端記号である
-				this.terminal_symbols.add(symbol);
+	<span style="color:#75715e">// 右辺値の登録
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">sect</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">syntaxdef</span>){
+		<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">symbol</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">sect</span>.<span style="color:#a6e22e">pattern</span>){
+			<span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nonterminal_symbols</span>.<span style="color:#a6e22e">has</span>(<span style="color:#a6e22e">symbol</span>)){
+				<span style="color:#75715e">// 非終端記号でない(=左辺値に現れない)場合、終端記号である
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">terminal_symbols</span>.<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">symbol</span>);
 			}
 		}
 	}
 }
-</code></pre>
-
-<p>2つのSetを用意し、コンストラクタの呼び出し時に左辺に現れる記号とそうでない記号で分けています。
+</code></pre></div><p>2つのSetを用意し、コンストラクタの呼び出し時に左辺に現れる記号とそうでない記号で分けています。
 これで、トークンを与えるとそれが終端記号かどうか、非終端記号かどうかを判別できるようになりました。</p>
-
 <p>なおこの記事において、「トークン」と「記号」は概念上は同様の意味を持ちますが、前者はプログラム内で記号を表すための構造として扱い、理論的な概念について触れる際は後者を使うものとします。</p>
-
 <h2 id="nulls集合とfirst集合">Nulls集合とFirst集合</h2>
-
 <p>構文解析器の作成のためには、First集合というものを求める必要があります。
 そしてFisrt集合を求めるためには、Nulls集合が必要です。</p>
-
 <p>First集合はFirst関数などとも呼ばれます。
 まあ名前なんてどうでもいいのですが、とにかくFirstとNullsを導出しなければなりません。
 順を追って見て行きましょう。
 例に漏れず、<a href="https://twitter.com/ki6o4">うさぎさん(@ki6o4)</a>の</p>
-
 <ul>
-<li><a href="https://kimiyuki.net/blog/2016/08/03/context-free-grammar/">文脈自由文法とその構文解析法 &middot; うさぎ小屋</a></li>
+<li><a href="https://kimiyuki.net/blog/2016/08/03/context-free-grammar/">文脈自由文法とその構文解析法 · うさぎ小屋</a></li>
 </ul>
-
 <p>が詳しいので厳密な定義等はそちらを参照してください(First,NullableはLL(1)の項で紹介されています)。</p>
-
 <h3 id="nulls集合を求める">Nulls集合を求める</h3>
-
 <h4 id="nulls集合とは">Nulls集合とは</h4>
-
 <p>ある終端記号または非終端記号について、それが「Nullableである」かどうかを判別する必要があります。
 「Nullableな記号」を集めた集合をNulls集合ということにします。
 記号がNullableであるとは、その記号から空列が導かれうることを意味します。</p>
-
 <p>今回題材としている数式の構文規則には、「右辺が存在しない」ルールはありません。
 しかし、解析したい構文によっては、右辺が存在しない、つまり左辺から空列が導かれるルールが存在することがあります。
 空列とはスペース(空白)等を意味するのではなく、長さ0の入力を意味します。
 具体的には、次のようなルールを見てみましょう。</p>
-
-<pre><code class="language-nohighlight">X -&gt; Y &quot;0&quot;
+<pre><code class="language-nohighlight" data-lang="nohighlight">X -&gt; Y &quot;0&quot;
 Y -&gt; &quot;1&quot;
 Y -&gt;
-</code></pre>
-
-<p>構文規則の三行目の右辺には何も書かれていません。
+</code></pre><p>構文規則の三行目の右辺には何も書かれていません。
 このような場合、<code>Y</code>は<code>1</code>もしくは空列となり得ます。
 よって<code>X</code>は、<code>10</code>と<code>0</code>の2通りが許容されるのです。
 ここで、<code>Y</code>は空列となり得るため、Nulls集合に含まれます。
 さらに、次のような例を見てください。</p>
-
-<pre><code class="language-nohighlight">Z -&gt; Y
+<pre><code class="language-nohighlight" data-lang="nohighlight">Z -&gt; Y
 Y -&gt; &quot;1&quot;
 Y -&gt;
-</code></pre>
-
-<p>この場合、<code>Z</code>は<code>1</code>と空列の2通りとなる可能性があります。
+</code></pre><p>この場合、<code>Z</code>は<code>1</code>と空列の2通りとなる可能性があります。
 よって、<code>Z</code>もNullableであるといえます。
 このように、その記号自体が空列となるルールを指定していなくても、右辺の記号次第では空列となることがあります。
 ひとつでも空列となるパターンが存在する場合、Nulls集合に含まなければなりません。
 また当然ですが、左辺に現れることのない終端記号はNullableではありません。</p>
-
 <h4 id="nulls集合を実装する">Nulls集合を実装する</h4>
-
 <p>なにやら面倒そうですが、実装はそう複雑ではありません。
-NullableSetクラスを作ってみましょう。<br />
+NullableSetクラスを作ってみましょう。<br>
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/nullableset.ts</a></p>
-
-<pre><code class="language-ts">/// nullableset.ts
-export class NullableSet{
-	private nulls:Set&lt;Token&gt;;
-	constructor(private syntax: SyntaxDefinitions){
-		this.generateNulls();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// nullableset.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NullableSet</span>{
+	<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">nulls</span>:<span style="color:#66d9ef">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;;
+	<span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDefinitions</span>){
+		<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">generateNulls</span>();
 	}
-	// nulls初期化
-	private generateNulls(){
-		// 制約条件を導出するために、
-		// 空列になりうる記号の集合nullsを導出
-		this.nulls = new Set&lt;Token&gt;();
-		for(let rule of this.syntax){
-			// 右辺の記号の数が0の規則を持つ記号は空列になりうる
-			if(rule.pattern.length == 0){
-				this.nulls.add(rule.ltoken);
+	<span style="color:#75715e">// nulls初期化
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateNulls</span>(){
+		<span style="color:#75715e">// 制約条件を導出するために、
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// 空列になりうる記号の集合nullsを導出
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nulls</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;();
+		<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">rule</span> <span style="color:#a6e22e">of</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>){
+			<span style="color:#75715e">// 右辺の記号の数が0の規則を持つ記号は空列になりうる
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">rule</span>.<span style="color:#a6e22e">pattern</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>){
+				<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nulls</span>.<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">rule</span>.<span style="color:#a6e22e">ltoken</span>);
 			}
 		}
 
-		// 変更が起きなくなるまでループする
-		let flg_changed:boolean = true;
-		while(flg_changed){
-			flg_changed = false;
-			for(let rule of this.syntax){
-				// 既にnullsに含まれていればスキップ
-				if(this.isNullable(rule.ltoken)) continue;
+		<span style="color:#75715e">// 変更が起きなくなるまでループする
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">flg_changed</span>:<span style="color:#66d9ef">boolean</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+		<span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">flg_changed</span>){
+			<span style="color:#a6e22e">flg_changed</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+			<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">rule</span> <span style="color:#a6e22e">of</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">syntax</span>){
+				<span style="color:#75715e">// 既にnullsに含まれていればスキップ
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">isNullable</span>(<span style="color:#a6e22e">rule</span>.<span style="color:#a6e22e">ltoken</span>)) <span style="color:#66d9ef">continue</span>;
 
-				let flg_nulls = true;
-				// 右辺に含まれる記号がすべてnullableの場合はその左辺はnullable
-				for(let token of rule.pattern){
-					if(!this.isNullable(token)){
-						// 一つでもnullableでない記号があるならnon-nullable
-						flg_nulls = false;
-						break;
+				<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">flg_nulls</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+				<span style="color:#75715e">// 右辺に含まれる記号がすべてnullableの場合はその左辺はnullable
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">token</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">rule</span>.<span style="color:#a6e22e">pattern</span>){
+					<span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">isNullable</span>(<span style="color:#a6e22e">token</span>)){
+						<span style="color:#75715e">// 一つでもnullableでない記号があるならnon-nullable
+</span><span style="color:#75715e"></span>						<span style="color:#a6e22e">flg_nulls</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+						<span style="color:#66d9ef">break</span>;
 					}
 				}
-				if(flg_nulls){
-					flg_changed = true;
-					this.nulls.add(rule.ltoken);
+				<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">flg_nulls</span>){
+					<span style="color:#a6e22e">flg_changed</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+					<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nulls</span>.<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">rule</span>.<span style="color:#a6e22e">ltoken</span>);
 				}
 			}
 		}
 	}
-	public isNullable(x:Token){
-		return this.nulls.has(x);
+	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">isNullable</span>(<span style="color:#a6e22e">x</span>:<span style="color:#66d9ef">Token</span>){
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">nulls</span>.<span style="color:#a6e22e">has</span>(<span style="color:#a6e22e">x</span>);
 	}
 }
-</code></pre>
-
-<p>アルゴリズムは以下の通りです。<br />
+</code></pre></div><p>アルゴリズムは以下の通りです。<br>
 まず、右辺の記号の数が0になるような規則を持っている記号は明らかにNullableです。
-そのため、初期化段階として、そのような規則を探してNulls集合に追加します。<br />
+そのため、初期化段階として、そのような規則を探してNulls集合に追加します。<br>
 次に、それ以外の記号がNullableであるためには、規則の右辺がすべてNullableな記号である必要があります。
-そこで、すべての規則を調べ、その右辺の記号がすべて既存のNull集合に含まれているならば、その記号もNulls集合に追加します。<br />
+そこで、すべての規則を調べ、その右辺の記号がすべて既存のNull集合に含まれているならば、その記号もNulls集合に追加します。<br>
 この処理を、一巡しても新しいNullableな規則が追加されなくなるまで繰り返せば終了です。</p>
-
 <h3 id="first集合を求める">First集合を求める</h3>
-
 <h4 id="first集合とは">First集合とは</h4>
-
 <p>たとえば先ほど挙げた<code>X</code>が<code>10</code>や<code>0</code>となるように、非終端記号は規則をたどっていくと終端記号のみの列に変換することができます。
 構文解析を行うためには、ある非終端記号から得られるそのような終端記号の列のうち、最も左側にどのような終端記号が来るのかを知る必要があります。
 今解析している記号の次に非終端記号が来るときに、実際にどのような終端記号が来るのかを調べることによって、(1)先読み(<a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回</a>参照)が可能となるわけです。</p>
-
 <p>このように、ある非終端記号と、そこから得られる可能性のある終端記号の列の先頭に来る記号の集合を対応付けたものを、First集合またはFirst関数と呼びます。
 たとえば、先ほどの<code>X</code>を例にすると、<code>First(X)</code>は、<code>10</code>と<code>0</code>のそれぞれ左端の記号をとって<code>{1, 0}</code>となります。</p>
-
 <p>Aが終端記号であるなら、<code>First(A)</code>は<code>{A}</code>(A自身のみを要素とする集合)です。
 また、Firstに与える引数は記号だけでなく記号列である可能性もあります。
 <code>First(YA)</code>なら、<code>Y</code>がNullableであるため、<code>YA</code>から得られうる文字列の左端になりうるのは<code>1</code>と<code>A</code>なので、<code>{1, A}</code>のようになるでしょう。</p>
-
 <h4 id="first集合の実装">First集合の実装</h4>
-
 <p>話がごちゃごちゃしてきましたが、実装に移りましょう。
 基本的なアルゴリズムは、以下のようになります。</p>
-
 <ul>
 <li>ある記号<code>A</code>が終端記号なら、<code>First(A)</code>は<code>{A}</code>である。全ての終端記号についてそのように初期化する。</li>
 <li>非終端記号に対応するFirst集合は、まず空集合で初期化する。</li>
 <li>ルール <code>X -&gt; Y1 Y2 ... Yi</code> について、以下の制約を生成する。
-
 <ul>
 <li><code>First(X) ⊇ First(Y1)</code></li>
 <li><code>Y1</code>がNullableなら <code>First(X) ⊇ First(Y2)</code></li>
 <li><code>Y1</code>および<code>Y2</code>がともにNullableなら <code>First(X) ⊇ First(Y3)</code></li>
 <li><code>Y1</code>および<code>Y2</code>および<code>Y3</code>がともにNullableなら <code>First(X) ⊇ First(Y4)</code></li>
 <li>以下繰り返し</li>
-</ul></li>
+</ul>
+</li>
 <li>生成した制約に従い、スーパーセット側にサブセット側の集合の持つ記号を追加していく(制約の解消)。</li>
 <li>制約の解消を全ての集合に変化がなくなるまで繰り返す。</li>
 </ul>
-
 <p>わかりにくいですね。
 ちなみにこのアルゴリズムは、言葉で定義するよりもプログラムを書いたほうがわかりやすい類のものです。</p>
-
 <p>とはいえちょっとコードが長いので、URLから参照をお願いします。
 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/parsergenerator/firstset.ts</a></p>
-
-<pre><code class="language-ts">/// firstset.d.ts
-export declare class FirstSet {
-    private syntax;
-    private symbols;
-    private first_map;
-    private nulls;
-    constructor(syntax: SyntaxDefinitions, symbols: SymbolDiscriminator);
-    private generateFirst();
-    get(arg: Token): Set&lt;Token&gt;;
-    get(arg: Array&lt;Token&gt;): Set&lt;Token&gt;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// firstset.d.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">declare</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FirstSet</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">syntax</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">symbols</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">first_map</span>;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">nulls</span>;
+    <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">syntax</span>: <span style="color:#66d9ef">SyntaxDefinitions</span>, <span style="color:#a6e22e">symbols</span>: <span style="color:#66d9ef">SymbolDiscriminator</span>);
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateFirst</span>();
+    <span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">arg</span>: <span style="color:#66d9ef">Token</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;;
+    <span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">arg</span>: <span style="color:#66d9ef">Array</span>&lt;<span style="color:#f92672">Token</span>&gt;)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Set</span>&lt;<span style="color:#f92672">Token</span>&gt;;
 }
-</code></pre>
-
-<p>実のところNulls集合はFirst集合を求める時にしか使わないので、First関数のprivateメンバとしてNullableSetインスタンスを生成して使用します。
+</code></pre></div><p>実のところNulls集合はFirst集合を求める時にしか使わないので、First関数のprivateメンバとしてNullableSetインスタンスを生成して使用します。
 SymbolDiscriminatorは他でも使いまわす必要があるので、コンストラクタ引数による依存性の注入を行います。</p>
-
 <p>また、First関数の引数には単一の記号だけでなく、記号列も与えられるようにする必要があります。
 getメソッドではトークンを引数にとるだけでなく、トークンの配列も引数として与えることができるようにします。
 トークンの配列が与えられた場合は、左から順に個別のトークンのFirst関数を呼び、そのトークンがNullableである限り、その右隣のFirst関数も呼び出し、その結果として得られた記号全てを要素とする集合を返すものとします。</p>
-
 <p>説明が適当かつわかりにくくて申し訳ありませんが、どうせ準備段階なので軽く飛ばして先に進めていきましょう(<a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回</a>に参考資料をまとめてあるため、詳細かつ厳密に知りたい方はそちらを参照してください)。</p>
-
 <p>これでひとまずFirst集合の導出まで終わったので、次回からは構文解析表の作成にとりかかります。</p>
-
-<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br />
-<a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">前回:字句解析器の実装</a><br />
+<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">第1回:かんたん構文解析入門</a><br>
+<a href="http://tatamo.81.la/blog/2017/02/11/lr-parser-generator-implementation-02/">前回:字句解析器の実装</a><br>
 <a href="http://tatamo.81.la/blog/2017/03/22/lr-parser-generator-implementation-04/">次回:かんたんLR(1)法入門</a></p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

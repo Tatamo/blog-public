@@ -76,347 +76,262 @@
         <a href="http://tatamo.81.la/blog/tags/reflection/">reflection</a></p>
         <p>この記事は<a href="http://www.adventar.org/calendars/1881">Kobe University Advent Calendar 2016</a>の14日の記事です。遅刻です。
 なお私は当該大学の学部2年(2016年12月現在)です。</p>
-
-<hr />
-
+<hr>
 <p>最近、大学の授業などで少しだけJavaに触れる機会があったので、ちょっとした黒魔術っぽいことでもやってみようと思います。</p>
-
-<p></p>
-
-<p>と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。<br />
-* <a href="http://d.hatena.ne.jp/Nagise/20131121/1385046248">new T()したいケースへの対処法 - プログラマーの脳みそ</a></p>
-
+<p>と思ったのですが、記事を書こうとして調べていたら普通に書きたかったことをわかりやすく書いている記事がありました。</p>
+<ul>
+<li><a href="http://d.hatena.ne.jp/Nagise/20131121/1385046248">new T()したいケースへの対処法 - プログラマーの脳みそ</a></li>
+</ul>
 <p>もう帰っていいですかね。</p>
-
-<h2 id="総称型tに対してt-classやnew-t-したい">総称型Tに対してT.classやnew T()したい</h2>
-
+<h2 id="総称型tに対してtclassやnew-tしたい">総称型Tに対してT.classやnew T()したい</h2>
 <h3 id="ジェネリクスとは">ジェネリクスとは</h3>
-
 <p>わざわざ書くまでもないとは思いますが、ジェネリクスについておさらいをしておきます。</p>
-
-<pre><code class="language-java">ArrayList&lt;String&gt; strlist = new ArrayList&lt;String&gt;();
-ArrayList&lt;Integer&gt; intlist = new ArrayList&lt;Integer&gt;();
-</code></pre>
-
-<p>ArrayList<T>に対し、ジェネリクスとしてStringやIntegerなど、リストの要素として入れたい型をTの部分に具体的に書くことで、一つのクラスであるArrayListに利用者側が好きな要素を入れることができるようになります。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> strlist <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;();</span>
+ArrayList<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> intlist <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;();</span>
+</code></pre></div><p>ArrayList<!-- raw HTML omitted -->に対し、ジェネリクスとしてStringやIntegerなど、リストの要素として入れたい型をTの部分に具体的に書くことで、一つのクラスであるArrayListに利用者側が好きな要素を入れることができるようになります。</p>
 <p>ジェネリクスを用いて自分でメソッドを定義する場合は、以下のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>T arg<span style="color:#f92672">){</span>
+	<span style="color:#75715e">// doSomething
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public &lt;T&gt; void doSomething(T arg){
-	// doSomething
-}
-
-// TをSomeClassのサブクラスに限定する
-public &lt;T extends SomeClass&gt; void notDoAnything(T arg){
-	return;
-}
-</code></pre>
-
-<p>これらのメソッドを呼び出すときは、<code>hoge.&lt;SomeClass&gt;doSomething();</code>のようになります。<br />
+<span style="color:#75715e">// TをSomeClassのサブクラスに限定する
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">extends</span> SomeClass<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">notDoAnything</span><span style="color:#f92672">(</span>T arg<span style="color:#f92672">){</span>
+	<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>これらのメソッドを呼び出すときは、<code>hoge.&lt;SomeClass&gt;doSomething();</code>のようになります。<br>
 どうして<code>hoge.doSomething&lt;SomeClass&gt;();</code>じゃないんだろう。</p>
-
-<h3 id="ジェネリクスはt-classやnew-t-をさせてくれない">ジェネリクスはT.classやnew T()をさせてくれない</h3>
-
+<h3 id="ジェネリクスはtclassやnew-tをさせてくれない">ジェネリクスはT.classやnew T()をさせてくれない</h3>
 <p>Javaのジェネリクスでは、以下のコードはコンパイルエラーとなります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">extends</span> SomeClass<span style="color:#f92672">&gt;</span> List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSubClassList</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>SomeClass<span style="color:#f92672">&gt;</span> list<span style="color:#f92672">){</span>
+	<span style="color:#66d9ef">return</span> list
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>value <span style="color:#f92672">-&gt;</span> value <span style="color:#66d9ef">instanceof</span> T<span style="color:#f92672">)</span> <span style="color:#75715e">// ここでlistの要素valueがTのインスタンスかどうか判別したい -&gt; error
+</span><span style="color:#75715e"></span>		<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list){
-	return list
-		.stream()
-		.filter(value -&gt; value instanceof T) // ここでlistの要素valueがTのインスタンスかどうか判別したい -&gt; error
-		.collect(Collectors.toList());
-}
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">extends</span> SomeClass<span style="color:#f92672">&gt;</span> List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSubClassList2</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>SomeClass<span style="color:#f92672">&gt;</span> list<span style="color:#f92672">){</span>
+	<span style="color:#66d9ef">return</span> list
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>value <span style="color:#f92672">-&gt;</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> T<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span> <span style="color:#75715e">// instanceofがだめならclassを取得して判別したい -&gt; error
+</span><span style="color:#75715e"></span>		<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
 
-public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList2(List&lt;SomeClass&gt; list){
-	return list
-		.stream()
-		.filter(value -&gt; value.getClass() == T.class) // instanceofがだめならclassを取得して判別したい -&gt; error
-		.collect(Collectors.toList());
-}
-
-public &lt;T&gt; void doSomething(String arg){
-	T foo = new T(arg); // T型の新しいインスタンスfooを作りたい -&gt; error
-}
-</code></pre>
-
-<p>ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>String arg<span style="color:#f92672">){</span>
+	T foo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> T<span style="color:#f92672">(</span>arg<span style="color:#f92672">);</span> <span style="color:#75715e">// T型の新しいインスタンスfooを作りたい -&gt; error
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>ジェネリクス型に対して、hoge instanceof T、T.class、new T()といった操作を行うことはできません。
 残念でしたね。</p>
-
 <h2 id="なぜしたいのか">なぜしたいのか</h2>
-
 <h3 id="もしかして-設計が間違っている">もしかして： 設計が間違っている</h3>
-
 <p>先ほどのgetSubClassListメソッドを見てみましょう。
-正しく動くかどうかはさておき、やりたいことは以下の通りです：<br />
-* SomeClassとそのサブクラスを含んだリストlistの要素のうち、SomeClassのサブクラスTのインスタンスだけを要素とする新しいリストを取得したい。</p>
-
+正しく動くかどうかはさておき、やりたいことは以下の通りです：</p>
+<ul>
+<li>SomeClassとそのサブクラスを含んだリストlistの要素のうち、SomeClassのサブクラスTのインスタンスだけを要素とする新しいリストを取得したい。</li>
+</ul>
 <p>そもそも、抽象化された集合から具体的なクラスのインスタンスを取り出そうとすること自体がオブジェクト指向やポリモーフィズムの考え方に対する反逆である可能性があります。</p>
-
 <p>SomeClassのリストであるlistをイテレートして、それぞれの要素のdoSomething()メソッドを呼べば、あとはそれがSomeClassのインスタンスであろうと、もしくはSomeClassを継承した別のクラスのインスタンスであろうと、外部からはただdoSomething()メソッドを呼ぶだけで操作が完結していなければなりません。
 それがサブクラス固有のふるまいをするとしても、その実装はそのクラス自身に隠蔽されるべきなのです。</p>
-
 <p>よって、サブクラスだけを取り出そうとする試み自体がナンセンスなものである可能性が非常に高く、まずそのような試みが必要になる設計そのものを見直す必要があります。</p>
-
 <p>終わり。</p>
-
 <h3 id="そうも言っていられない">そうも言っていられない</h3>
-
 <p>実際その通りなのですが、それではこの記事が続きません。</p>
-
-<p>ここからは、少し具体的なプログラムの設計を例にとって考えてみたいと思います。<br />
+<p>ここからは、少し具体的なプログラムの設計を例にとって考えてみたいと思います。<br>
 あなたはちょっとしたゲームを作るためのフレームワークを作っています。
 その一部分が以下のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 抽象的なゲーム内エンティティクラス
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Entity</span> <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> x<span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Entity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setX</span><span style="color:#f92672">(</span>x<span style="color:#f92672">);</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setY</span><span style="color:#f92672">(</span>y<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getX</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> x<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setX</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> x<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getY</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> y<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setY</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> y<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
 
-<pre><code class="language-java">// 抽象的なゲーム内エンティティクラス
-public abstract class Entity {
-	private int x;
-	private int y;
-	public Entity(int x, int y){
-		this.setX(x);
-		this.setY(y);
-	}
-	public int getX() { return x; }
-	public void setX(int x) { this.x = x; }
-	public int getY() { return y; }
-	public void setY(int y) { this.y = y; }
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>EntityManager manager<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-	public abstract void update(EntityManager manager);
-}
-
-// なんでもかんでも××Managerという名前を付けるのはやめましょう
-public class EntityManager {
-	private ArrayList&lt;Entity&gt; all_entities;
-	public EntityManager(){
-		this.all_entities = new ArrayList&lt;Entity&gt;();
-	}
-	public void add(Entity e){
-		this.all_entities.add(e);
-	}
-	public ArrayList&lt;Entity&gt; getAll() {
-		return new ArrayList&lt;Entity&gt;(this.all_entities);
-	}
-	public void updateAll(){
-		this.all_entities.forEach(e-&gt;e.update(this));
-	}
-}
-</code></pre>
-
-<p>なんのことはありませんね。
+<span style="color:#75715e">// なんでもかんでも××Managerという名前を付けるのはやめましょう
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EntityManager</span> <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">private</span> ArrayList<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;</span> all_entities<span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">EntityManager</span><span style="color:#f92672">(){</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">all_entities</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;();</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Entity e<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">all_entities</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> ArrayList<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAll</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">all_entities</span><span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateAll</span><span style="color:#f92672">(){</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">all_entities</span><span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>e<span style="color:#f92672">-&gt;</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">));</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>なんのことはありませんね。
 ゲーム内に登場するエンティティを表す抽象クラスEntityを作り、それをEntityManagerで管理します(なんでもかんでも××Managerという名前を付けるのはManagerクラスの肥大化を招きかねないため避けるべきであるなどという話もありますが、今回は置いておきます)。
 たとえば毎フレームごとにメインループ内で<code>EntityManager#updateAll()</code>を呼び出すことで、全てのエンティティの更新を行ったりすることが想定されます。
-オーソドックスなループ駆動型のゲームプログラム設計です。<br />
+オーソドックスなループ駆動型のゲームプログラム設計です。<br>
 Entityインスタンスを作成するためのFactory Methodパターンを使うべきとか、そういう話もあっちでやってください。</p>
-
 <p>あとは、このフレームワークの利用者にはEntityクラスを継承したクラスを作らせ、それをもとにゲームを作ってもらえればいいだけです。
 以下のクラスを追加してみましょう。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// あなたです
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Player</span> <span style="color:#66d9ef">extends</span> Entity<span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> hp<span style="color:#f92672">;</span> <span style="color:#75715e">// プレイヤーはヒットポイントを持ちます
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Player</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> hp<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> y<span style="color:#f92672">);</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setHp</span><span style="color:#f92672">(</span>hp<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getHp</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> hp<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setHp</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> hp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hp</span> <span style="color:#f92672">=</span> hp<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#a6e22e">@Override</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>EntityManager manager<span style="color:#f92672">){</span>
+		<span style="color:#75715e">// プレイヤーが動きます
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-<pre><code class="language-java">// あなたです
-public class Player extends Entity{
-	private int hp; // プレイヤーはヒットポイントを持ちます
-	public Player(int x, int y, int hp){
-		super(x, y);
-		this.setHp(hp);
-	}
-	public int getHp() { return hp; }
-	public void setHp(int hp) { this.hp = hp; }
-	@Override
-	public void update(EntityManager manager){
-		// プレイヤーが動きます
-	}
-}
-
-// 敵です
-public class Enemy extends Entity {
-	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
-	public Enemy(int x, int y, int damage){
-		super(x, y);
-		this.setDamage(damage);
-	}
-	public int getDamage() { return damage; }
-	public void setDamage(int damage) { this.damage = damage; }
-	@Override
-	public void update() {
-		// 敵が動きます
-	}
-}
-</code></pre>
-
-<p>プレイヤーと敵を登場させました。
+<span style="color:#75715e">// 敵です
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Enemy</span> <span style="color:#66d9ef">extends</span> Entity <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> damage<span style="color:#f92672">;</span> <span style="color:#75715e">// 敵がプレイヤーに与えることのできるダメージ値です
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Enemy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> damage<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> y<span style="color:#f92672">);</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setDamage</span><span style="color:#f92672">(</span>damage<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDamage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> damage<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDamage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> damage<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">damage</span> <span style="color:#f92672">=</span> damage<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#a6e22e">@Override</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+		<span style="color:#75715e">// 敵が動きます
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>プレイヤーと敵を登場させました。
 常命の者であるプレイヤーにはヒットポイントが定められており、敵はこれを脅かすダメージ値を持っています。</p>
-
 <p>注意しておく必要があるのは、これらのクラスはあくまでフレームワークの利用者が作るものだということです。
-よって、EntityクラスやEntityManagerクラスからはこのようなEntityサブクラスの存在を知ることはできません。<br />
+よって、EntityクラスやEntityManagerクラスからはこのようなEntityサブクラスの存在を知ることはできません。<br>
 知る必要もないというのがオブジェクト指向の考え方だったはずです。
 そうですよね？</p>
-
 <p>ここで、「敵のダメージ値を参照して、プレイヤーのヒットポイントを減らす」処理をしたいという需要が当然生まれます。
 実装の方法はいろいろあると思いますが、ひとまずこの処理を、Enemyのメソッドとして書いてみます。</p>
-
-<pre><code class="language-java">// 敵です
-public class Enemy extends Entity {
-	private int damage; // 敵がプレイヤーに与えることのできるダメージ値です
-	public Enemy(int x, int y, int damage){
-		super(x, y);
-		this.setDamage(damage);
-	}
-	public int getDamage() { return damage; }
-	public void setDamage(int damage) { this.damage = damage; }
-	@Override
-	public void update(EntityManager manager) {
-		// 敵が動きます
-		// プレイヤーがいたらダメージを与えます
-		manager.getAll().forEach((entity)-&gt;{ // 全てのエンティティを調べる
-			if(entity instanceof Player){ //  エンティティがプレイヤーなら
-				if(this.getX() == entity.getX() &amp;&amp; this.getY() == entity.getY()){ // プレイヤーと敵の座標が同じなら
-					this.doDamage((Player) entity); // ダメージを与える
-				}
-			}
-		});
-	}
-	public void doDamage(Player p){
-		p.setHp(p.getHp() - this.getDamage()); // プレイヤーのヒットポイントをダメージ値分だけ減らします
-	}
-}
-</code></pre>
-
-<p>ここであなたは気を利かせます。</p>
-
-<pre><code class="language-java">manager.getAll().forEach((entity)-&gt;{
-	if(entity instanceof Player){
-		if(...){
-			...
-		}
-	}
-}
-</code></pre>
-
-<p>この部分です、どう見ても冗長ですし、いちいち全エンティティのリストをforEachで回しているので高速化も望めませんし、同様のコードクローンが至る所に発生するのは目に見えています。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 敵です
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Enemy</span> <span style="color:#66d9ef">extends</span> Entity <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> damage<span style="color:#f92672">;</span> <span style="color:#75715e">// 敵がプレイヤーに与えることのできるダメージ値です
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Enemy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> damage<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> y<span style="color:#f92672">);</span>
+		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setDamage</span><span style="color:#f92672">(</span>damage<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDamage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> damage<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDamage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> damage<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">damage</span> <span style="color:#f92672">=</span> damage<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+	<span style="color:#a6e22e">@Override</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>EntityManager manager<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		<span style="color:#75715e">// 敵が動きます
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// プレイヤーがいたらダメージを与えます
+</span><span style="color:#75715e"></span>		manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getAll</span><span style="color:#f92672">().</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">((</span>entity<span style="color:#f92672">)-&gt;{</span> <span style="color:#75715e">// 全てのエンティティを調べる
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>entity <span style="color:#66d9ef">instanceof</span> Player<span style="color:#f92672">){</span> <span style="color:#75715e">//  エンティティがプレイヤーなら
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getX</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getX</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getY</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getY</span><span style="color:#f92672">()){</span> <span style="color:#75715e">// プレイヤーと敵の座標が同じなら
+</span><span style="color:#75715e"></span>					<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">doDamage</span><span style="color:#f92672">((</span>Player<span style="color:#f92672">)</span> entity<span style="color:#f92672">);</span> <span style="color:#75715e">// ダメージを与える
+</span><span style="color:#75715e"></span>				<span style="color:#f92672">}</span>
+			<span style="color:#f92672">}</span>
+		<span style="color:#f92672">});</span>
+	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doDamage</span><span style="color:#f92672">(</span>Player p<span style="color:#f92672">){</span>
+		p<span style="color:#f92672">.</span><span style="color:#a6e22e">setHp</span><span style="color:#f92672">(</span>p<span style="color:#f92672">.</span><span style="color:#a6e22e">getHp</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getDamage</span><span style="color:#f92672">());</span> <span style="color:#75715e">// プレイヤーのヒットポイントをダメージ値分だけ減らします
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>ここであなたは気を利かせます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getAll</span><span style="color:#f92672">().</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">((</span>entity<span style="color:#f92672">)-&gt;{</span>
+	<span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>entity <span style="color:#66d9ef">instanceof</span> Player<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">if</span><span style="color:#f92672">(...){</span>
+			<span style="color:#f92672">...</span>
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>この部分です、どう見ても冗長ですし、いちいち全エンティティのリストをforEachで回しているので高速化も望めませんし、同様のコードクローンが至る所に発生するのは目に見えています。</p>
 <p>できるならたとえばこう書きたい。</p>
-
-<pre><code class="language-java">manager.&lt;Player&gt;getAllOfSubClass().forEach((player)-&gt;{
-	if(...){
-		...
-	}
-}
-</code></pre>
-
-<p>これでPlayerクラスだけが得られるなら、呼び出し側のコード量は減りますし、もしあなたがO(n^2)の処理をO(nlogn)に落とすような作業に慣れているなら、Managerクラスの内側でより高速になるような最適化を行い、その実装も内部に隠蔽することができます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">manager<span style="color:#f92672">.&lt;</span>Player<span style="color:#f92672">&gt;</span>getAllOfSubClass<span style="color:#f92672">().</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">((</span>player<span style="color:#f92672">)-&gt;{</span>
+	<span style="color:#66d9ef">if</span><span style="color:#f92672">(...){</span>
+		<span style="color:#f92672">...</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>これでPlayerクラスだけが得られるなら、呼び出し側のコード量は減りますし、もしあなたがO(n^2)の処理をO(nlogn)に落とすような作業に慣れているなら、Managerクラスの内側でより高速になるような最適化を行い、その実装も内部に隠蔽することができます。</p>
 <p>また、ゲームのセーブとロードをするときのことも考えてみます。
-たとえばデータのセーブを行うときはとりあえずオブジェクトを文字列化するとして、<br />
+たとえばデータのセーブを行うときはとりあえずオブジェクトを文字列化するとして、<br>
 <code>public String Entity#serialize()</code>などといったメソッドを作ってセーブし、ロード時には文字列配列を引数として受け取るようオーバーロードされたコンストラクタを使用してオブジェクトを再生成するといったことが考えられます。
 そういうことはFactory Methodあたりに委譲するべきな気もしますし、うまくやらないとフレームワークの利用者側の負担が増える気もしますが、今は置いておきます。</p>
-
 <p>結局、セーブデータのロード時にこのようなコードを書くことになるでしょう。</p>
-
-<pre><code class="language-java">	public &lt;E extends Entity&gt; E createEntity(List&lt;String&gt; args){ // 可変長引数としてもよい
-		return new E(args); // ジェネリクス型はnewできない -&gt; error
-	}
-	public loadSaveData(SaveData savedata){
-		// セーブデータから1行ずつ読み込んでオブジェクトを再生成する
-		... {
-			entityManager.add(this.createEntity(agrs));
-		}
-	}
-</code></pre>
-
-<p>しかしジェネリクス型はnewできないため、コンパイルエラーとなります。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>E <span style="color:#66d9ef">extends</span> Entity<span style="color:#f92672">&gt;</span> E <span style="color:#a6e22e">createEntity</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> args<span style="color:#f92672">){</span> <span style="color:#75715e">// 可変長引数としてもよい
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> E<span style="color:#f92672">(</span>args<span style="color:#f92672">);</span> <span style="color:#75715e">// ジェネリクス型はnewできない -&gt; error
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">loadSaveData</span><span style="color:#f92672">(</span>SaveData savedata<span style="color:#f92672">){</span>
+		<span style="color:#75715e">// セーブデータから1行ずつ読み込んでオブジェクトを再生成する
+</span><span style="color:#75715e"></span>		<span style="color:#f92672">...</span> <span style="color:#f92672">{</span>
+			entityManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">createEntity</span><span style="color:#f92672">(</span>agrs<span style="color:#f92672">));</span>
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
+</code></pre></div><p>しかしジェネリクス型はnewできないため、コンパイルエラーとなります。</p>
 <h2 id="解決策">解決策</h2>
-
 <p>さて、だいぶん勿体つけたが、解決編に入ろう。</p>
-
 <p>……というか、例として取り上げた題材が無理やりすぎた気がしてやる気が尽きかけてきました。</p>
-
 <h3 id="リフレクションを使用する">リフレクションを使用する</h3>
-
 <p>Javaにはリフレクションという機能があり、プログラムの実行中にクラス名やメソッド名を動的に取り扱うことができます。
-これのClass<T>型を、ジェネリクスと併用しましょう。
+これのClass<!-- raw HTML omitted -->型を、ジェネリクスと併用しましょう。
 <code>EntityManager#getAllOfSubClass</code>メソッドを考えてみます。
 実装は以下のようになります。</p>
-
-<pre><code class="language-java">	@SuppressWarnings(&quot;unchecked&quot;)
-	public &lt;E extends Entity&gt; List&lt;E&gt; getAllOfSubClass(Class&lt;E&gt; cls){
-		return (List&lt;E&gt;) all_entities.stream()
-			.filter(entity -&gt; entity.getClass() == cls)
-			.collect(Collectors.toList());
-	}
-</code></pre>
-
-<p>これを呼び出す際は、</p>
-
-<pre><code class="language-java">entityManager.getAllOfSubClass(Player.class);
-</code></pre>
-
-<p>のようにして、Class型の<code>クラス名.class</code>を引数として与えます。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>E <span style="color:#66d9ef">extends</span> Entity<span style="color:#f92672">&gt;</span> List<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAllOfSubClass</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> cls<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;)</span> all_entities<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+			<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>entity <span style="color:#f92672">-&gt;</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> cls<span style="color:#f92672">)</span>
+			<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+	<span style="color:#f92672">}</span>
+</code></pre></div><p>これを呼び出す際は、</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">entityManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getAllOfSubClass</span><span style="color:#f92672">(</span>Player<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</code></pre></div><p>のようにして、Class型の<code>クラス名.class</code>を引数として与えます。
 ここで型推論が働くので、</p>
-
-<pre><code class="language-java">entityManager.&lt;Player&gt;getAllOfSubClass(Player.class);
-</code></pre>
-
-<p>のようにPlayerクラス名を2度も書く必要はありません。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">entityManager<span style="color:#f92672">.&lt;</span>Player<span style="color:#f92672">&gt;</span>getAllOfSubClass<span style="color:#f92672">(</span>Player<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</code></pre></div><p>のようにPlayerクラス名を2度も書く必要はありません。</p>
 <p>また、Playerクラスだけでなく、Playerクラスを継承したクラスも含めて判別したいときは、以下のようにします。</p>
-
-<pre><code class="language-java">	@SuppressWarnings(&quot;unchecked&quot;)
-	public &lt;E extends Entity&gt; List&lt;E&gt; getAllOfSubClass(Class&lt;E&gt; cls){
-		return (List&lt;E&gt;) all_entities.stream()
-			.filter(entity -&gt; cls.isAssignableFrom(entity.getClass()))
-			.collect(Collectors.toList());
-	}
-</code></pre>
-
-<p><code>createEntity</code>メソッドも、以下のようにすれば書くことができます。</p>
-
-<pre><code class="language-java">	public &lt;E extends Entity&gt; E createEntity(Class&lt;E&gt; cls, List&lt;String&gt; args){
-		// cls型のString[]を引数にとるコンストラクタを呼び出す
-		return cls.getConstructor(new Class&lt;?&gt;[] { String[].class }).newInstance(args);
-	}
-</code></pre>
-
-<p>やや黒魔術じみてきました。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>E <span style="color:#66d9ef">extends</span> Entity<span style="color:#f92672">&gt;</span> List<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAllOfSubClass</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> cls<span style="color:#f92672">){</span>
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;)</span> all_entities<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+			<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>entity <span style="color:#f92672">-&gt;</span> cls<span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">()))</span>
+			<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+	<span style="color:#f92672">}</span>
+</code></pre></div><p><code>createEntity</code>メソッドも、以下のようにすれば書くことができます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>E <span style="color:#66d9ef">extends</span> Entity<span style="color:#f92672">&gt;</span> E <span style="color:#a6e22e">createEntity</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> cls<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> args<span style="color:#f92672">){</span>
+		<span style="color:#75715e">// cls型のString[]を引数にとるコンストラクタを呼び出す
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> cls<span style="color:#f92672">.</span><span style="color:#a6e22e">getConstructor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Class<span style="color:#f92672">&lt;?&gt;[]</span> <span style="color:#f92672">{</span> String<span style="color:#f92672">[].</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">}).</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span>args<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+</code></pre></div><p>やや黒魔術じみてきました。
 実際にはE型がString[]を引数にとるコンストラクタを持つということが担保されていないためこれだけでは動かず、例外回避のためにいろいろやる必要があります。</p>
-
 <p>最初の例に戻ってみましょう。<code>getSubClassList</code>は、以下のように書けます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">extends</span> SomeClass<span style="color:#f92672">&gt;</span> List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSubClassList</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>SomeClass<span style="color:#f92672">&gt;</span> list<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> cls<span style="color:#f92672">){</span>
+	<span style="color:#66d9ef">return</span> list
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>value <span style="color:#f92672">-&gt;</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> cls<span style="color:#f92672">)</span>
+		<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public &lt;T extends SomeClass&gt; List&lt;T&gt; getSubClassList(List&lt;SomeClass&gt; list, Class&lt;T&gt; cls){
-	return list
-		.stream()
-		.filter(value -&gt; value.getClass() == cls)
-		.collect(Collectors.toList());
-}
-
-// 呼び出し側
-getSubClassList(list, SubClassOfSomeClass.class);
-</code></pre>
-
-<p>めでたしめでたし。</p>
-
+<span style="color:#75715e">// 呼び出し側
+</span><span style="color:#75715e"></span>getSubClassList<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> SubClassOfSomeClass<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</code></pre></div><p>めでたしめでたし。</p>
 <h3 id="おまけ">おまけ</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStaticValue</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> cls<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span> <span style="color:#75715e">// なにがthrows Exceptionだやる気あんのか
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> cls<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getStaticValue&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public &lt;T&gt; int getStaticValue(Class&lt;T&gt; cls) throws Exception{ // なにがthrows Exceptionだやる気あんのか
-	return (int) cls.getMethod(&quot;getStaticValue&quot;).invoke(null);
-}
-
-// 呼び出し
-getStaticValue(SomeClass.class); // SomeClass.getStaticValue() を呼んでいるのと同じになる
-</code></pre>
-
-<p>staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。</p>
-
+<span style="color:#75715e">// 呼び出し
+</span><span style="color:#75715e"></span>getStaticValue<span style="color:#f92672">(</span>SomeClass<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span> <span style="color:#75715e">// SomeClass.getStaticValue() を呼んでいるのと同じになる
+</span></code></pre></div><p>staticメソッドも呼び出し可能なうえ、「そのクラスに与えられた名前のstaticメソッドが存在しない場合、その親クラスの同名のstaticメソッドを呼び出す」というようなふるまいを疑似的に再現することも可能です。</p>
 <h2 id="おわり">おわり</h2>
-
-<p><code>Class&lt;T&gt; cls</code>を引数にとり、<code>value.getClass() == cls</code>で比較を行うのは、実質的にはinstanceofの迂回といえます。<br />
+<p><code>Class&lt;T&gt; cls</code>を引数にとり、<code>value.getClass() == cls</code>で比較を行うのは、実質的にはinstanceofの迂回といえます。<br>
 この程度なら型安全性は一応担保されますが、コンストラクタやメソッドの取得と呼び出しまで始めた場合、throw宣言やcatch節が山のように膨らんだり、メソッドの存在確認や型の確認などに多大なコストを支払う必要がありそうです。
 実際に使用するには相当の覚悟を必要とするでしょう。<strong>やめましょう。</strong></p>
-
-<p>自分でプログラムを組んでいる際にこのような需要が発生することが時々あったので、Javaではリフレクションを使うことで強引に解決できると知って記事を書いてみましたが、自分の中ではむしろ「設計が悪い」の一言に実感が沸くという結果となった気がします。<br />
+<p>自分でプログラムを組んでいる際にこのような需要が発生することが時々あったので、Javaではリフレクションを使うことで強引に解決できると知って記事を書いてみましたが、自分の中ではむしろ「設計が悪い」の一言に実感が沸くという結果となった気がします。<br>
 今回例に挙げたゲームプログラムの設計はまさしく昔私が作ったものそのものなのですが、記事を書く上で「リフレクションを使いたい理由付け」を明確にしようとすればするほど、その理由が無理やりなものにしかならないのではないかという気持ちに陥りました。
-途中まで書いた記事がグダグダになりそうな予感がしてくると結構精神的につらい。<br />
+途中まで書いた記事がグダグダになりそうな予感がしてくると結構精神的につらい。<br>
 ……うーん。Abstract Factoryパターンとか、もととなるクラスが増えるとそれに合わせてFactoryクラスも増やさないといけないのがあまり好きじゃないので、そのあたりも動的になんとかできないかなどと思っていたのですが、なかなか難しいようです。</p>
-
 <p>私感としては、instanceof Tの代用としてClass型を使用する程度は許容できますが、普通のプログラムを書くならそれ以上は安易に手を出すべきではないという印象です。</p>
-
 <p>プログラミングをするときはまともな設計をするようにしましょう。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

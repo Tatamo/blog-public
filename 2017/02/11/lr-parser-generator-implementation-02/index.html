@@ -77,38 +77,24 @@
         <a href="http://tatamo.81.la/blog/tags/lexer/">lexer</a></p>
         <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回</a>は構文解析の概略を紹介したので、今回から実装に移っていきたいと思います。
 まずは字句解析器を用意する必要があるため、今回は字句解析器の作成について紹介します。</p>
-
 <p>なお今回から実際のプログラムを記述していきますが、使用言語はTypeScriptとします。</p>
-
-<p></p>
-
 <p>パーサジェネレータを作るのに比べれば字句解析器を作るのは非常に単純です。
 早速はじめていきましょう。</p>
-
 <h2 id="字句解析器の仕様を確認する">字句解析器の仕様を確認する</h2>
-
 <p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回</a>の記事でも紹介しましたが、字句解析器の行う処理は以下のような流れになります。</p>
-
 <p>まず、解析するべき入力を文字列として受け取ります。</p>
-
-<pre><code class="language-nohighlight">9 + 11 * (2 + 1)
-</code></pre>
-
-<p>これに加えて、字句規則を用意します。</p>
-
-<pre><code class="language-nohighlight">数字: /[1-9][0-9]*/
+<pre><code class="language-nohighlight" data-lang="nohighlight">9 + 11 * (2 + 1)
+</code></pre><p>これに加えて、字句規則を用意します。</p>
+<pre><code class="language-nohighlight" data-lang="nohighlight">数字: /[1-9][0-9]*/
 プラス: &quot;+&quot;
 アステリスク: &quot;*&quot;
 左括弧: &quot;(&quot;
 右括弧: &quot;)&quot;
 (読み捨て): /\s/
 (不正): /./
-</code></pre>
-
-<p>字句解析器は受け取った入力を先頭から順に字句規則にあてはめ、マッチするものがあればそのトークンを割り当てます。
+</code></pre><p>字句解析器は受け取った入力を先頭から順に字句規則にあてはめ、マッチするものがあればそのトークンを割り当てます。
 結果として得られる出力は、以下のようなリストになります。</p>
-
-<pre><code class="language-nohighlight">数字: 9
+<pre><code class="language-nohighlight" data-lang="nohighlight">数字: 9
 プラス: +
 数字: 11
 アステリスク: *
@@ -117,196 +103,163 @@
 プラス: +
 数字: 1
 右括弧: )
-</code></pre>
-
-<p>得られたトークンのリストを構文解析器の入力として渡すことで、構文解析器は文法の解析のみに注力することができます。</p>
-
+</code></pre><p>得られたトークンのリストを構文解析器の入力として渡すことで、構文解析器は文法の解析のみに注力することができます。</p>
 <h2 id="字句規則を定義する">字句規則を定義する</h2>
-
 <p>実際に解析を行うタイミングでは文字列のみを入力として受け取りますが、字句解析器の生成時には字句規則が必要です。
 そのため、予め字句規則を別の設定ファイルなどに書いておくなどして用意しておかなければなりません。
 ただし、<strong>字句規則の解析には構文解析器が必要</strong>となるため、現時点ではプログラム内にハードコーディングしておくなどする必要があります。
 今回は、字句規則を内部的に以下のようなデータ構造で扱うこととして、しばらくは字句規則をその内部データの形式で直接書くことにします。</p>
-
-<pre><code class="language-ts">// 定義
-export type Token = string|symbol;
-export interface LexDefinitionSection{
-	token: Token|null;
-	pattern: string|RegExp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">// 定義
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">Token</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">string</span><span style="color:#f92672">|</span><span style="color:#a6e22e">symbol</span>;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">LexDefinitionSection</span>{
+	<span style="color:#a6e22e">token</span>: <span style="color:#66d9ef">Token</span><span style="color:#f92672">|</span><span style="color:#66d9ef">null</span>;
+	<span style="color:#a6e22e">pattern</span>: <span style="color:#66d9ef">string</span><span style="color:#f92672">|</span>RegExp;
 }
-export type LexDefinitions = Array&lt;LexDefinitionSection&gt;;
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">LexDefinitions</span> <span style="color:#f92672">=</span> Array&lt;<span style="color:#f92672">LexDefinitionSection</span>&gt;;
 
-// 実際の字句規則
-const lex: LexDefinitions = [
-	{token:&quot;DIGITS&quot;, pattern:/[1-9][0-9]*/},
-	{token:&quot;PLUS&quot;, pattern:&quot;+&quot;},
-	{token:&quot;ASTERISK&quot;, pattern:&quot;*&quot;},
-	{token:&quot;LPAREN&quot;, pattern:&quot;(&quot;},
-	{token:&quot;RPAREN&quot;, pattern:&quot;)&quot;},
-	{token:null, pattern:/\s/},
-	{token:&quot;INVALID&quot;, pattern:/./},
+<span style="color:#75715e">// 実際の字句規則
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lex</span>: <span style="color:#66d9ef">LexDefinitions</span> <span style="color:#f92672">=</span> [
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;DIGITS&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/[1-9][0-9]*/</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;PLUS&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;+&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;ASTERISK&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;*&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;LPAREN&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;(&#34;</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;RPAREN&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;)&#34;</span>},
+	{<span style="color:#a6e22e">token</span>:<span style="color:#66d9ef">null</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/\s/</span>},
+	{<span style="color:#a6e22e">token</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;INVALID&#34;</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/./</span>},
 ];
-</code></pre>
-
-<p>この字句規則の定義について、実用上の理由で追加したいくつかの仕様に注意する必要があります。</p>
-
+</code></pre></div><p>この字句規則の定義について、実用上の理由で追加したいくつかの仕様に注意する必要があります。</p>
 <p>Tokenの型定義にsymbolを含めている点についてはここで説明せずに後述することとします。</p>
-
 <h3 id="入力の読み捨て">入力の読み捨て</h3>
-
-<pre><code class="language-ts">{token:null, pattern:/\s/}
-// (読み捨て): /\s/
-</code></pre>
-
-<p>この部分は、何らかの空白文字が入力に存在していればマッチングされます。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts">{<span style="color:#a6e22e">token</span>:<span style="color:#66d9ef">null</span>, <span style="color:#a6e22e">pattern</span><span style="color:#f92672">:</span><span style="color:#e6db74">/\s/</span>}
+<span style="color:#75715e">// (読み捨て): /\s/
+</span></code></pre></div><p>この部分は、何らかの空白文字が入力に存在していればマッチングされます。
 <code>9 + 11 * (2 + 1)</code> を解析する際、ここに含まれている空白は文法上何の意味も持たず、<code>9+11*(2+1)</code> のように入力が与えられたとしても解析結果は変化しません。
 このような場合、構文解析器に空白の情報を与えることすらせずに、字句解析器上で空白を検知した段階でその情報を捨ててしまったほうが、構文解析器に余計な処理をさせずに済みます。</p>
-
 <p>今回は、トークンのラベル部分にnullを指定することで、読み取った結果をトークンとして保持することなく読み捨てることを表すようにしています。</p>
-
 <h3 id="正規表現パターンと文字列パターンの使い分け">正規表現パターンと文字列パターンの使い分け</h3>
-
 <p>(ごちゃごちゃ書いている割に小手先のテクニックという感じが強いため、よくわからなければ読み飛ばしてください)</p>
-
 <p><code>{token:&quot;PLUS&quot;, pattern:&quot;+&quot;}</code> のように、パターン部分に正規表現ではなく文字列を用いて記述している箇所があります。
 すべて正規表現を使って記述するのではなく文字列も許容している理由として、まず<code>/\+/</code>のように特殊記号をエスケープせずに済む点が挙げられます。
 そして、「文字列でパターンを記述した場合は、アルファベットの途中でトークンを区切らないようにする」というルールを用いることで、一部のパターンを簡潔に書くことが可能になります。</p>
-
 <p><code>vwxyz</code> という入力を考えてみましょう。
 ここでもし、<code>&quot;vwx&quot;</code> にマッチする規則と、<code>&quot;vwxyz&quot;</code> にマッチする規則の2つが存在した場合、<code>&quot;vwxyz&quot;</code> の規則を先に書かない限り、入力<code>vwxyz</code> は<code>&quot;vwx&quot; + yz</code> とみなされ、<code>&quot;yz&quot;</code> に対応する規則が存在しなければエラーとなります。
 これを回避するためには、よりマッチするパターンが長い規則を常に短い規則よりも先に書くようにする必要がありますが、面倒です。
 そこで、正規表現ではなく文字列で<code>&quot;vwx&quot;</code> などのパターンが定義され、かつその末尾の文字が<code>\w</code> にマッチする場合、マッチした部分の一文字先の文字が<code>\w</code> 以外でなければマッチしないようにします。
 これは、正規表現で<code>/vwx(?!\w)/</code> 、<code>/vwxyz(?!\w)/</code> というような否定的前方先読みをパターンの最後に追加することに相当します。
 このルールを追加することで、正規表現を用いる場合よりも簡潔に記述可能となります。</p>
-
 <h2 id="字句解析器を実装する">字句解析器を実装する</h2>
-
 <p>ではLexerクラスを作っていきましょう。
 とはいえ字句規則さえ定義してしまえば、やることはほとんどありません。
 コンストラクタ引数として字句規則データを受け取って保持しておくようにして、解析実行時に上から順に字句規則のマッチングを試みるだけです。</p>
-
 <p>今回はコード量が少ないので、 <a href="https://github.com/Tatamo/parsergenerator/blob/master/src/lexer.ts">https://github.com/Tatamo/parsergenerator/blob/master/src/lexer.ts</a> 全体をそのまま貼り付けます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// token.ts
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">Token</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">string</span><span style="color:#f92672">|</span><span style="color:#a6e22e">symbol</span>;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">SYMBOL_EOF</span>:<span style="color:#66d9ef">Token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Symbol</span>(<span style="color:#e6db74">&#34;EOF&#34;</span>);
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">SYMBOL_SYNTAX</span>:<span style="color:#66d9ef">Token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Symbol</span>(<span style="color:#e6db74">&#34;S&#39;&#34;</span>);
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">SYMBOL_DOT</span>:<span style="color:#66d9ef">Token</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Symbol</span>(<span style="color:#e6db74">&#34;.&#34;</span>);
 
-<pre><code class="language-ts">/// token.ts
-export type Token = string|symbol;
-export const SYMBOL_EOF:Token = Symbol(&quot;EOF&quot;);
-export const SYMBOL_SYNTAX:Token = Symbol(&quot;S'&quot;);
-export const SYMBOL_DOT:Token = Symbol(&quot;.&quot;);
+<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">type</span> <span style="color:#a6e22e">TokenList</span> <span style="color:#f92672">=</span> Array<span style="color:#f92672">&lt;</span>{<span style="color:#a6e22e">token</span>:<span style="color:#66d9ef">Token</span>, <span style="color:#a6e22e">value</span>:<span style="color:#66d9ef">string</span>}<span style="color:#f92672">&gt;</span>;
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ts" data-lang="ts"><span style="color:#75715e">/// lexer.ts
+</span><span style="color:#75715e">/// LexDefinitionsの定義は先述のものと同一
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">Token</span>, <span style="color:#a6e22e">SYMBOL_EOF</span>, <span style="color:#a6e22e">TokenList</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;./token&#34;</span>;
+<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">LexDefinitions</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;./grammar&#34;</span>;
 
-export type TokenList = Array&lt;{token:Token, value:string}&gt;;
-</code></pre>
-
-<pre><code class="language-ts">/// lexer.ts
-/// LexDefinitionsの定義は先述のものと同一
-import {Token, SYMBOL_EOF, TokenList} from &quot;./token&quot;;
-import {LexDefinitions} from &quot;./grammar&quot;;
-
-export interface ILexer{
-	exec(str: string):TokenList;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ILexer</span>{
+	<span style="color:#a6e22e">exec</span>(<span style="color:#a6e22e">str</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span><span style="color:#a6e22e">TokenList</span>;
 }
 
-export class Lexer implements ILexer{
-	constructor(public def: LexDefinitions){
-		// 正しいトークン定義が与えられているかチェック
-		for(var i=0; i&lt;this.def.length; i++){
-			var token_pattern = this.def[i].pattern;
-			if(typeof token_pattern == &quot;string&quot;){
-				continue;
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Lexer</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">ILexer</span>{
+	<span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">def</span>: <span style="color:#66d9ef">LexDefinitions</span>){
+		<span style="color:#75715e">// 正しいトークン定義が与えられているかチェック
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span>&lt;<span style="color:#f92672">this.def.length</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">++)</span>{
+			<span style="color:#a6e22e">var</span> <span style="color:#a6e22e">token_pattern </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">this.def</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.pattern</span><span style="color:#960050;background-color:#1e0010">;</span>
+			<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">typeof</span> <span style="color:#a6e22e">token_pattern </span><span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">string</span><span style="color:#960050;background-color:#1e0010">&#34;)</span>{
+				<span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span>
 			}
-			else if(token_pattern instanceof RegExp){
-				// フラグを整形する
-				let flags:string = &quot;&quot;;
-				// gフラグは邪魔なので取り除く
-				// i,m,uフラグがあれば維持する
-				if(token_pattern.ignoreCase){
-					flags += &quot;i&quot;;
+			<span style="color:#a6e22e">else</span> <span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token_pattern</span> <span style="color:#a6e22e">instanceof</span> <span style="color:#a6e22e">RegExp</span><span style="color:#960050;background-color:#1e0010">)</span>{
+				<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">フラグを整形する</span>
+				<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">flags</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">string </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#960050;background-color:#1e0010">;</span>
+				<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">gフラグは邪魔なので取り除く</span>
+				<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">,</span><span style="color:#a6e22e">m</span><span style="color:#960050;background-color:#1e0010">,</span><span style="color:#a6e22e">uフラグがあれば維持する</span>
+				<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token_pattern.ignoreCase</span><span style="color:#960050;background-color:#1e0010">)</span>{
+					<span style="color:#a6e22e">flags</span> <span style="color:#960050;background-color:#1e0010">+=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">&#34;;</span>
 				}
-				if(token_pattern.multiline){
-					flags += &quot;m&quot;;
+				<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token_pattern.multiline</span><span style="color:#960050;background-color:#1e0010">)</span>{
+					<span style="color:#a6e22e">flags</span> <span style="color:#960050;background-color:#1e0010">+=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">m</span><span style="color:#960050;background-color:#1e0010">&#34;;</span>
 				}
-				if(token_pattern.unicode){
-					flags += &quot;u&quot;;
+				<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token_pattern.unicode</span><span style="color:#960050;background-color:#1e0010">)</span>{
+					<span style="color:#a6e22e">flags</span> <span style="color:#960050;background-color:#1e0010">+=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">u</span><span style="color:#960050;background-color:#1e0010">&#34;;</span>
 				}
-				// yフラグは必ずつける
-				flags += &quot;y&quot;;
-				// フラグをつけなおして新しい正規表現オブジェクトにする
-				this.def[i].pattern = new RegExp(token_pattern, flags);
-				continue;
+				<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">yフラグは必ずつける</span>
+				<span style="color:#a6e22e">flags</span> <span style="color:#960050;background-color:#1e0010">+=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">y</span><span style="color:#960050;background-color:#1e0010">&#34;;</span>
+				<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">フラグをつけなおして新しい正規表現オブジェクトにする</span>
+				<span style="color:#a6e22e">this.def</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.pattern</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#a6e22e">new</span> <span style="color:#a6e22e">RegExp</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token_pattern</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">flags</span><span style="color:#960050;background-color:#1e0010">);</span>
+				<span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span>
 			}
-			throw new Error(&quot;invalid token definition: neither string nor RegExp object&quot;);
+			<span style="color:#a6e22e">throw</span> <span style="color:#a6e22e">new</span> <span style="color:#a6e22e">Error</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">invalid</span> <span style="color:#a6e22e">token</span> <span style="color:#a6e22e">definition</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#a6e22e">neither</span> <span style="color:#a6e22e">string</span> <span style="color:#a6e22e">nor</span> <span style="color:#a6e22e">RegExp</span> <span style="color:#a6e22e">object</span><span style="color:#960050;background-color:#1e0010">&#34;);</span>
 		}
 	}
-	exec(str: string):TokenList{
-		var result:TokenList = [];
-		let lastindex = 0;
-		while(lastindex &lt; str.length){
-			for(var i=0; i&lt;this.def.length; i++){
-				var token:Token|null = this.def[i].token;
-				var token_pattern = this.def[i].pattern;
-				var match:string;
-				if(typeof token_pattern == &quot;string&quot;){
-					let last_tmp = lastindex+token_pattern.length;
-					if(str.substring(lastindex,last_tmp) != token_pattern) continue;
-					if(last_tmp &lt; str.length &amp;&amp; /\w/.test(token_pattern.slice(-1)) &amp;&amp; /\w/.test(str[last_tmp])) continue; // ヒットした文字の末尾が\wで、そのすぐ後ろが\wの場合はスキップ
-					match = token_pattern;
-					lastindex += token_pattern.length;
+	<span style="color:#a6e22e">exec</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">str</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#a6e22e">string</span><span style="color:#960050;background-color:#1e0010">):</span><span style="color:#a6e22e">TokenList</span>{
+		<span style="color:#a6e22e">var</span> <span style="color:#a6e22e">result</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">TokenList </span><span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">[];</span>
+		<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">lastindex </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">;</span>
+		<span style="color:#a6e22e">while</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">lastindex</span> <span style="color:#960050;background-color:#1e0010">&lt;</span> <span style="color:#a6e22e">str.length</span><span style="color:#960050;background-color:#1e0010">)</span>{
+			<span style="color:#a6e22e">for</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">var</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">=</span><span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#a6e22e">this.def.length</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">++)</span>{
+				<span style="color:#a6e22e">var</span> <span style="color:#a6e22e">token</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">Token</span><span style="color:#960050;background-color:#1e0010">|</span><span style="color:#a6e22e">null </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">this.def</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.token</span><span style="color:#960050;background-color:#1e0010">;</span>
+				<span style="color:#a6e22e">var</span> <span style="color:#a6e22e">token_pattern </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">this.def</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">]</span><span style="color:#a6e22e">.pattern</span><span style="color:#960050;background-color:#1e0010">;</span>
+				<span style="color:#a6e22e">var</span> <span style="color:#a6e22e">match</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">string</span><span style="color:#960050;background-color:#1e0010">;</span>
+				<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">typeof</span> <span style="color:#a6e22e">token_pattern </span><span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">string</span><span style="color:#960050;background-color:#1e0010">&#34;)</span>{
+					<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">last_tmp </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">lastindex</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#a6e22e">token_pattern.length</span><span style="color:#960050;background-color:#1e0010">;</span>
+					<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">str.substring</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">lastindex</span><span style="color:#960050;background-color:#1e0010">,</span><span style="color:#a6e22e">last_tmp</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#960050;background-color:#1e0010">!=</span> <span style="color:#a6e22e">token_pattern</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span>
+					<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">last_tmp</span> <span style="color:#960050;background-color:#1e0010">&lt;</span> <span style="color:#a6e22e">str.length</span> <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> <span style="color:#960050;background-color:#1e0010">/\</span><span style="color:#a6e22e">w</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">.test</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token_pattern.slice</span><span style="color:#960050;background-color:#1e0010">(-</span><span style="color:#a6e22e">1</span><span style="color:#960050;background-color:#1e0010">))</span> <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> <span style="color:#960050;background-color:#1e0010">/\</span><span style="color:#a6e22e">w</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">.test</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">str</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">last_tmp</span><span style="color:#960050;background-color:#1e0010">]))</span> <span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">ヒットした文字の末尾が</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">wで</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#a6e22e">そのすぐ後ろが</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">wの場合はスキップ</span>
+					<span style="color:#a6e22e">match </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">token_pattern</span><span style="color:#960050;background-color:#1e0010">;</span>
+					<span style="color:#a6e22e">lastindex</span> <span style="color:#960050;background-color:#1e0010">+=</span> <span style="color:#a6e22e">token_pattern.length</span><span style="color:#960050;background-color:#1e0010">;</span>
 				}
-				else{
-					// token_pattern: RegExp
-					token_pattern.lastIndex = lastindex;
-					let m = token_pattern.exec(str);
-					if(m === null) continue; // マッチ失敗
-					match = m[0];
-					lastindex = token_pattern.lastIndex; // lastindexを進める
+				<span style="color:#a6e22e">else</span>{
+					<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">token_pattern</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#a6e22e">RegExp</span>
+					<span style="color:#a6e22e">token_pattern.lastIndex</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#a6e22e">lastindex</span><span style="color:#960050;background-color:#1e0010">;</span>
+					<span style="color:#a6e22e">let</span> <span style="color:#a6e22e">m </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">token_pattern.exec</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">str</span><span style="color:#960050;background-color:#1e0010">);</span>
+					<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">m </span><span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">==</span> <span style="color:#a6e22e">null</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#a6e22e">continue</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">マッチ失敗</span>
+					<span style="color:#a6e22e">match </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">m</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">];</span>
+					<span style="color:#a6e22e">lastindex </span><span style="color:#f92672">=</span> <span style="color:#a6e22e">token_pattern.lastIndex</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">lastindexを進める</span>
 				}
-				// tokenがnullなら処理を飛ばします
-				if(token != null){
-					result.push({token:token, value:match});
+				<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">tokenがnullなら処理を飛ばします</span>
+				<span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">token</span> <span style="color:#960050;background-color:#1e0010">!=</span> <span style="color:#a6e22e">null</span><span style="color:#960050;background-color:#1e0010">)</span>{
+					<span style="color:#a6e22e">result.push</span><span style="color:#960050;background-color:#1e0010">(</span>{<span style="color:#a6e22e">token</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">token</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">value</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">match</span>}<span style="color:#960050;background-color:#1e0010">);</span>
 				}
-				break;
+				<span style="color:#a6e22e">break</span><span style="color:#960050;background-color:#1e0010">;</span>
 			}
 		}
-		// 最後にEOFトークンを付与
-		result.push({token:SYMBOL_EOF, value:&quot;&quot;});
-		return result;
+		<span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">最後にEOFトークンを付与</span>
+		<span style="color:#a6e22e">result.push</span><span style="color:#960050;background-color:#1e0010">(</span>{<span style="color:#a6e22e">token</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#a6e22e">SYMBOL_EOF</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">value</span><span style="color:#960050;background-color:#1e0010">:&#34;&#34;</span>}<span style="color:#960050;background-color:#1e0010">);</span>
+		<span style="color:#a6e22e">return</span> <span style="color:#a6e22e">result</span><span style="color:#960050;background-color:#1e0010">;</span>
 	}
 }
-</code></pre>
-
-<p>まずコンストラクタでは、与えられた字句規則に簡単な型チェックと正規表現の整形を行っています。
+</code></pre></div><p>まずコンストラクタでは、与えられた字句規則に簡単な型チェックと正規表現の整形を行っています。
 グローバルマッチは今回は邪魔なだけなので、与えられた正規表現にgフラグがついていれば取り除きます。
 ES2015でRegExpに追加されたstickyフラグ(<strong>ほぼ</strong>全ての主要モダンブラウザ上で実装済み)を使うと楽なので、ここでyフラグの追加も行います。</p>
-
 <p>execメソッドでは入力を読み終えるまでマッチングを繰り返し、<code>{token:Token, value:string}</code> というオブジェクトを結果の配列に追加していきます。
 先述のようにパターンが文字列であれば<code>\w</code>が連続した場所では区切らないようにして、マッチングが成功するたびにインデックス位置を先に進めていきます。</p>
-
 <p>また、すべての入力を読み終えた後、最後にSymbol(EOF)を名前としたトークンを結果に追加します。
 これは入力の末尾を意味するトークンで、構文解析の際に内部的に使用されます。</p>
-
 <p>(Symbolは、それ自身と比較しない限り<code>==</code>や<code>===</code>の評価結果が常にfalseになるプリミティブ型で、ES2015で追加されたものです。
 字句規則で定義されたトークンとの衝突が発生しないようにここでSymbolを使用していますが、Symbolそのものはオブジェクトのプロパティとして使用することで後方互換性を維持することを目的としてJavaScriptに追加された型であるため、この用途で用いるのに適しているのかどうかは議論の余地があります。
 とはいえプログラミング言語個別の問題はこの記事の主題とは関係がないため、詳しくは言及しません。)</p>
-
 <p>この字句解析器に先ほどの字句規則を与え、<code>9 + 11 * (2 + 1)</code> を入力すると、</p>
-
-<pre><code class="language-json">[
-	{token:&quot;DIGITS&quot;, value:&quot;9&quot;},
-	{token:&quot;PLUS&quot;, value:&quot;+&quot;},
-	{token:&quot;DIGITS&quot;, value:&quot;11&quot;},
-	{token:&quot;ASTERISK&quot;, value:&quot;*&quot;},
-	{token:&quot;LPAREN&quot;, value:&quot;(&quot;},
-	{token:&quot;DIGITS&quot;, value:&quot;2&quot;},
-	{token:&quot;PLUS&quot;, value:&quot;+&quot;},
-	{token:&quot;DIGITS&quot;, value:&quot;1&quot;},
-	{token:&quot;RPAREN&quot;, value:&quot;)&quot;},
-	{token:Symbol(EOF), value:&quot;&quot;}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;DIGITS&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;9&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;PLUS&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;+&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;DIGITS&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;11&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;ASTERISK&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;*&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;LPAREN&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;(&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;DIGITS&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;2&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;PLUS&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;+&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;DIGITS&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;1&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:</span><span style="color:#f92672">&#34;RPAREN&#34;</span>, <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;)&#34;</span>},
+	{<span style="color:#960050;background-color:#1e0010">token:Symbol(EOF),</span> <span style="color:#960050;background-color:#1e0010">value:</span><span style="color:#f92672">&#34;&#34;</span>}
 ]
-</code></pre>
-
-<p>という結果が得られます。
+</code></pre></div><p>という結果が得られます。
 これでトークンの並びを得ることに成功したので、次回以降はいよいよパーサジェネレータの作成に移っていくことになります。</p>
-
-<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回:かんたん構文解析入門</a><br />
+<p><a href="http://tatamo.81.la/blog/2016/12/22/lr-parser-generator-implementation/">前回:かんたん構文解析入門</a><br>
 <a href="http://tatamo.81.la/blog/2017/03/21/lr-parser-generator-implementation-03/">次回:儀式の下準備</a></p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

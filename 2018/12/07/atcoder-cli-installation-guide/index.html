@@ -75,150 +75,81 @@
         <a href="http://tatamo.81.la/blog/tags/atcoder/">atcoder</a>
         <a href="http://tatamo.81.la/blog/tags/atcoder-cli/">atcoder-cli</a></p>
         <p><a href="https://www.npmjs.com/package/atcoder-cli">atcoder-cli</a>のインストール方法を解説していきます。</p>
-
 <h2 id="わかる人向け">わかる人向け</h2>
-
-<pre><code class="language-shell">$ pip3 install online-judge-tools
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ pip3 install online-judge-tools
 $ npm install -g atcoder-cli
-</code></pre>
-
-<p>以上です。</p>
-
-<p></p>
-
+</code></pre></div><p>以上です。</p>
 <h2 id="インストールガイド">インストールガイド</h2>
-
 <p>atcoder-cliをインストールするためには、Node.js環境が必要です。
 また、Python3で動作する<a href="https://github.com/kmyk/online-judge-tools">online-judge-tools</a>を併用することを強く推奨しているため、こちらも同時にインストールします。</p>
-
 <p>※ 以後、コマンド例の行頭の「<code>$</code>」はターミナルのプロンプト記号を表しているため、実際に入力する必要はありません。
 <code>$</code>より後の部分を入力して実行してください。</p>
-
-<h3 id="事前準備-windowsでwslを使う場合">事前準備：WindowsでWSLを使う場合</h3>
-
-<p>Windowsの場合、直接言語環境をインストールする方法と、<abbr title="Windows Subsystem for Linux">WSL</abbr>を使う方法があります。
+<h3 id="事前準備windowsでwslを使う場合">事前準備：WindowsでWSLを使う場合</h3>
+<p>Windowsの場合、直接言語環境をインストールする方法と、<!-- raw HTML omitted -->WSL<!-- raw HTML omitted -->を使う方法があります。
 どちらを使用するかはお好みですが、Linuxの使い方がわかるという方はWSLを選択するとよいでしょう。
 WSLを使う場合は設定より有効化し、ストアからUbuntuなどのLinuxディストリビューションをインストールします。</p>
-
 <ul>
 <li>参考: <a href="https://qiita.com/yoshikingt/items/ab86411e6031459db805">https://qiita.com/yoshikingt/items/ab86411e6031459db805</a></li>
 </ul>
-
 <p>WSLのインストール後は、Linuxの場合のインストール方法を参照してください。</p>
-
-<h3 id="事前準備-macの場合">事前準備：Macの場合</h3>
-
+<h3 id="事前準備macの場合">事前準備：Macの場合</h3>
 <p><a href="https://brew.sh/index_ja">Homebrew</a>の使用を想定します。
 <code>brew</code>コマンドが存在しない場合、以下のコマンドをターミナルで実行することでインストールしてください。</p>
-
-<pre><code class="language-shell">$ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
-</code></pre>
-
-<p>実行が完了したら、</p>
-
-<pre><code class="language-shell">$ brew -v
-</code></pre>
-
-<p>コマンドをターミナルで実行して、エラーなどが起きずにHomebrewのバージョン名が表示されていることを確認してください。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ /usr/bin/ruby -e <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>実行が完了したら、</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew -v
+</code></pre></div><p>コマンドをターミナルで実行して、エラーなどが起きずにHomebrewのバージョン名が表示されていることを確認してください。</p>
 <h3 id="必要な環境のインストール">必要な環境のインストール</h3>
-
 <p>Python3とNode.jsの両方をインストールしてください。
 OSごとにインストール方法が違うため、お使いのOSの欄を参照してください。</p>
-
 <p>環境によってはもう少し良いやり方がある場合もありますが、この記事では少ない手順でインストールが完了することを目的として方法を選んでいます。</p>
-
 <h4 id="windows">Windows</h4>
-
 <h5 id="python3">Python3</h5>
-
 <p>公式インストーラーより<a href="https://www.python.org/downloads/windows/">Python</a>をインストールします。
-最新バージョンの&rdquo;Download Windows x86-64 web-based installer&rdquo;からインストーラーをダウンロードし、実行してください。
-インストール時に、&rdquo;Add Python 3.x to PATH&rdquo;のチェックを忘れずに入れるようにしましょう。</p>
-
+最新バージョンの&quot;Download Windows x86-64 web-based installer&quot;からインストーラーをダウンロードし、実行してください。
+インストール時に、&ldquo;Add Python 3.x to PATH&quot;のチェックを忘れずに入れるようにしましょう。</p>
 <ul>
 <li>参考: <a href="https://azriton.github.io/2017/07/25/Python-3.6-64bit%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB/">https://azriton.github.io/2017/07/25/Python-3.6-64bit%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB/</a></li>
 </ul>
-
-<h5 id="node-js">Node.js</h5>
-
+<h5 id="nodejs">Node.js</h5>
 <p>公式インストーラーより<a href="https://nodejs.org/ja/download/">Node.js</a>をインストールします。</p>
-
 <ul>
 <li>参考: <a href="https://qiita.com/taiponrock/items/9001ae194571feb63a5e">https://qiita.com/taiponrock/items/9001ae194571feb63a5e</a></li>
 </ul>
-
-<h4 id="mac-linux">Mac/Linux</h4>
-
+<h4 id="maclinux">Mac/Linux</h4>
 <p>端末コンソールを開いて作業をしてください。</p>
-
 <h5 id="python3-1">Python3</h5>
-
 <p>Linuxの場合は、<code>brew</code>のかわりにディストリビューションごとのパッケージマネージャを使用してください。</p>
-
-<pre><code class="language-shell">$ # Macの場合はこちらを実行してください
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># Macの場合はこちらを実行してください</span>
 $ brew install python3
-</code></pre>
-
-<pre><code class="language-shell">$ # UbuntuまたはDebianを使用している場合はこちらを実行してください
-$ # 他のLinuxディストリビューションを使っている人はこんな記事を読むまでもなくインストールを終わらせていると思われるため触れません
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># UbuntuまたはDebianを使用している場合はこちらを実行してください</span>
+$ <span style="color:#75715e"># 他のLinuxディストリビューションを使っている人はこんな記事を読むまでもなくインストールを終わらせていると思われるため触れません</span>
 $ sudo apt-get install python3
-</code></pre>
-
-<h5 id="node-js-1">Node.js</h5>
-
+</code></pre></div><h5 id="nodejs-1">Node.js</h5>
 <p>パッケージマネージャによって古いバージョンのNodeしか手に入らないことがあるので、<a href="https://github.com/creationix/nvm">nvm</a>を使ってインストールします。</p>
-
-<pre><code class="language-shell">$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-</code></pre>
-
-<p>このコマンドの実行が完了したら、一度ターミナルを閉じてください。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+</code></pre></div><p>このコマンドの実行が完了したら、一度ターミナルを閉じてください。
 新しいターミナルを開き、続きのコマンドを実行します。</p>
-
-<pre><code class="language-shell">$ nvm install node
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ nvm install node
 $ npm install -g npm
-</code></pre>
-
-<h3 id="atcoder-cli-online-judge-toolsのインストール">atcoder-cli, online-judge-toolsのインストール</h3>
-
+</code></pre></div><h3 id="atcoder-cli-online-judge-toolsのインストール">atcoder-cli, online-judge-toolsのインストール</h3>
 <p>言語環境のインストールが正しく行われていることを確認します。
 Windowsの場合はコマンドプロンプトを、Mac/Linuxの場合は端末コンソールを開いてください。</p>
-
 <pre><code>pip3 -V
-</code></pre>
-
-<p>と入力してエンターキーを押し、バージョン番号が表示されることを確認してください。</p>
-
+</code></pre><p>と入力してエンターキーを押し、バージョン番号が表示されることを確認してください。</p>
 <p>同様にして、</p>
-
 <pre><code>npm -v
-</code></pre>
-
-<p>を実行し、バージョン番号が表示されることを確認してください。</p>
-
+</code></pre><p>を実行し、バージョン番号が表示されることを確認してください。</p>
 <p>「コマンドが見つかりません」や「command not found」、それに似たメッセージが表示される場合はPython3およびNode.jsのインストールに失敗している可能性があります。
 その場合は再度手順を確認してインストールし直したり、「Python3 インストール (+OS名)」などで検索して調べてください。</p>
-
 <p>問題がなかった場合は、atcoder-cliおよびonline-judge-toolsのインストールを行います。</p>
-
 <pre><code>npm install -g atcoder-cli
-</code></pre>
-
-<pre><code>pip3 install online-judge-tools
-</code></pre>
-
-<p>とそれぞれ入力してエンターキーを押すことで、atcoder-cliとonline-judge-toolsがインストールされます。</p>
-
+</code></pre><pre><code>pip3 install online-judge-tools
+</code></pre><p>とそれぞれ入力してエンターキーを押すことで、atcoder-cliとonline-judge-toolsがインストールされます。</p>
 <pre><code>acc -h
-</code></pre>
-
-<pre><code>oj -h
-</code></pre>
-
-<p>とそれぞれ入力し、ヘルプが表示されることを確認してください。</p>
-
+</code></pre><pre><code>oj -h
+</code></pre><p>とそれぞれ入力し、ヘルプが表示されることを確認してください。</p>
 <p>ここまででインストール作業は完了です。</p>
-
 <p><a href="2018/12/07/atcoder-cli-tutorial/">atcoder-cli チュートリアル</a>に進み、atcoder-cliの基本的な使い方を確認しましょう。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
