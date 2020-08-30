@@ -6,10 +6,19 @@
     <description>Recent content in Tags on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Tue, 10 Dec 2019 23:59:59 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2020 00:40:10 +0900</lastBuildDate>
     
 	<atom:link href="http://tatamo.81.la/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>shukatu</title>
+      <link>http://tatamo.81.la/blog/tags/shukatu/</link>
+      <pubDate>Mon, 31 Aug 2020 00:40:10 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/tags/shukatu/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>automation</title>

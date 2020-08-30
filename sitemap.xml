@@ -3,32 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://tatamo.81.la/blog/categories/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/categories/diary/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/post/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/shukatu/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/tags/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tatamo.81.la/blog/2020/08/31/shinsotu-2021/</loc>
+    <lastmod>2020-08-31T00:40:10+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tatamo.81.la/blog/tags/automation/</loc>
     <lastmod>2019-12-10T23:59:59+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://tatamo.81.la/blog/categories/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://tatamo.81.la/blog/categories/game/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/post/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/tags/</loc>
-    <lastmod>2019-12-10T23:59:59+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/</loc>
     <lastmod>2019-12-10T23:59:59+09:00</lastmod>
   </url>
   
@@ -80,11 +95,6 @@
   <url>
     <loc>http://tatamo.81.la/blog/2018/12/07/atcoder-cli/</loc>
     <lastmod>2018-12-07T23:20:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tatamo.81.la/blog/categories/diary/</loc>
-    <lastmod>2018-09-16T18:00:01+09:00</lastmod>
   </url>
   
   <url>

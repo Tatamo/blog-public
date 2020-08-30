@@ -6,10 +6,19 @@
     <description>Recent content in diary on わたしろぐ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sun, 16 Sep 2018 18:00:01 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2020 00:40:10 +0900</lastBuildDate>
     
 	<atom:link href="http://tatamo.81.la/blog/categories/diary/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>就活の記録</title>
+      <link>http://tatamo.81.la/blog/2020/08/31/shinsotu-2021/</link>
+      <pubDate>Mon, 31 Aug 2020 00:40:10 +0900</pubDate>
+      
+      <guid>http://tatamo.81.la/blog/2020/08/31/shinsotu-2021/</guid>
+      <description>&lt;p&gt;21新卒として就職先が決まりましたので、就職活動の流れを記録しておこうと思います。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>ISUCON8予選 序盤環境構築覚え書き</title>
