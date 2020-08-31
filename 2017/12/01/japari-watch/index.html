@@ -82,11 +82,12 @@
 <p><a href="https://tatamo.github.io/japari-watch/">https://tatamo.github.io/japari-watch/</a> で公開しており、PCとモバイル端末のどちらでも遊ぶことができます。</p>
 <h3 id="発端">発端</h3>
 <p>期末試験前に現実逃避のためにTLを眺めていたところ、以下のツイートが流れてきました。</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">フェネック「アライさんに似合いそうな帽子を見つけてきたよー」<br>アライグマ「ありがとうなのだ！」<a href="https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;ref_src=twsrc%5Etfw">#けものフレンズ</a> <a href="https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;ref_src=twsrc%5Etfw">#ドット絵</a> <a href="https://twitter.com/hashtag/pixelart?src=hash&amp;ref_src=twsrc%5Etfw">#pixelart</a> <a href="https://t.co/1VueMavObQ">pic.twitter.com/1VueMavObQ</a></p>&mdash; 鬼雷 昇炎 (@kirai_s) <a href="https://twitter.com/kirai_s/status/934412479597199361?ref_src=twsrc%5Etfw">2017年11月25日</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="en" dir="ltr">Version Upgrade Nanoda!! <a href="https://t.co/IXSjV6A1PN">pic.twitter.com/IXSjV6A1PN</a></p>&mdash; 鬼雷 昇炎 (@kirai_s) <a href="https://twitter.com/kirai_s/status/934695920414765056?ref_src=twsrc%5Etfw">2017年11月26日</a></blockquote>
 <p>作品としての完成度が高く、実際にゲームとして遊べそうに見えたので、これをゲーム化してみました。</p>
 <h3 id="素材">素材</h3>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">原寸(128*128px)なのだ <a href="https://twitter.com/hashtag/%E3%81%91%E3%82%82%E3%81%AE%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA?src=hash&amp;ref_src=twsrc%5Etfw">#けものフレンズ</a> <a href="https://twitter.com/hashtag/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5?src=hash&amp;ref_src=twsrc%5Etfw">#ドット絵</a> <a href="https://twitter.com/hashtag/pixelart?src=hash&amp;ref_src=twsrc%5Etfw">#pixelart</a> <a href="https://t.co/BJ0Mc27vR5">pic.twitter.com/BJ0Mc27vR5</a></p>&mdash; 鬼雷 昇炎 (@kirai_s) <a href="https://twitter.com/kirai_s/status/934699058542678016?ref_src=twsrc%5Etfw">2017年11月26日</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>元画像が上がっていたので使わせていただきました。</p>
 <p>背景に相当する部分の画像がなかったので自分で加工したり、そのまま矩形状にスプライトを切り出すと被ってしまう部分があったのでいくつかのパーツに分けたりしました。</p>
 <h2 id="製作期間">製作期間</h2>
@@ -99,7 +100,7 @@
 <h3 id="pixijs">PIXI.js</h3>
 <p>PC・モバイル両方のブラウザで動作するゲームという方針のため、HTML5 Canvas系のライブラリを使うことにしました。
 npm上で型定義が用意されているものを使いたかったので、今回は<a href="http://www.pixijs.com/">PIXI.js</a>を選択しました。</p>
-<p><!-- raw HTML omitted -->$ npm install --save-dev @types/pixi.js<!-- raw HTML omitted -->で型定義ファイルをインストールし、</p>
+<p><code class="shell">$ npm install --save-dev @types/pixi.js</code>で型定義ファイルをインストールし、</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-TypeScript" data-lang="TypeScript"><span style="color:#66d9ef">import</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">PIXI</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;pixi.js&#34;</span>;
 </code></pre></div><p>でPIXI.jsの型情報を使用可能になります。</p>
 <h4 id="ビルドシステム">ビルドシステム</h4>

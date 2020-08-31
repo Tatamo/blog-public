@@ -84,7 +84,9 @@
 <p>個人的にはWordもTeXもあまり得意ではない、というか、HTML+CSSで似たようなことができそうなのにわざわざWordやTeXを使うのが大変だと感じています(InDesignはよく知りません)。
 文書構造の明確化という観点においては、構造と見た目が明確に分離しているHTML+CSSに勝るものはありません(筆者個人の主観です)。</p>
 <p>そこでWeb技術を用いてレポートや論文を書きたいなあと思っていたのですが、ちょうど<a href="http://tatamo.81.la/blog/2017/08/27/seccamp-2017/">セキュキャンの事前準備で行けなかった</a>ときのコミケで、pentapodさんより「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」が頒布されていたので、友人に頼んで確保しておいてもらいました。</p>
-<!-- raw HTML omitted -->
+<blockquote>内容については同人誌制作だけをターゲットに絞らず， できるだけ色々な場面で使えるような説明を心がけています．</blockquote>
+というあとがきの記述通り、CSS組版全般、また単にCSSの解説本としても読めるようになっており、本書を参考にしてレポートを書くための環境を整えることができました。
+同人誌でもレポートでも論文でも、やりたいことは結局同じ組版であるため、整えるべき環境は変わりません。
 <h2 id="この記事で書くこと">この記事で書くこと</h2>
 <p>CSSを用いた組版については、「<a href="https://pentapod.github.io/c92/">CSSではじめる同人誌制作</a>」を直接読んでいただくのが一番早いため、今回はあまり詳しくは書きません。
 <a href="https://pentapod.booth.pm/items/601017">300円というお手頃価格で電子版も出ている</a>ので買ってください。
@@ -157,7 +159,9 @@ Nunjucksを使うことにしたので、markedのNunjucks向けプラグイン�
 <p>HTMLだけでなくCSSも次世代仕様を使用できるようにしておくと便利です。
 SassやStylusという選択肢もありますが、この次世代CSS過渡期において独自記法マシマシのcoffeeとあくまでES2015をもとにしたtsならどちらを使うかという話です。
 一通り必要な機能が入ったプラグイン集である<a href="http://cssnext.io/">cssnext</a>と、lintをしてくれる<a href="https://stylelint.io/">stylelint</a>を入れていますが、この構成だとSassのように<code>@import</code>できない点で不便さがあるので、CSSをモジュール化できるようにするためにpostcss-importも入れたほうが良いかもしれません。</p>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">gulp-postcssを使っている際にstylelintでインデント幅をlintするよう指定している状態でAutoprefixerなどで右寄せしたprefixが追加された場合、なぜかsrc側のCSSのインデントが崩れているとしてstylelintに怒られてしまうので、plugin設定にはstylelintを一番先に置くべきという知見を得ました <a href="https://t.co/IMnmqibetC">pic.twitter.com/IMnmqibetC</a></p>&mdash; たたもさん@がんばらない (@__tatamo__) <a href="https://twitter.com/__tatamo__/status/928286264914145280?ref_src=twsrc%5Etfw">2017年11月8日</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+これは余談です。
 <h3 id="highlightjs">highlight.js</h3>
 <p>プログラムリストを貼り付けることが求められることもあるので、シンタックスハイライターを用意します。
 他の候補としてはPrism.jsなどがあります。
@@ -187,7 +191,7 @@ Nunjucksのテンプレート継承機能を用いて、これらの読み込み
 <h2 id="使ってみた">使ってみた</h2>
 <p>大学でパーセプトロンの出力を求めるだけのレポート課題が出たので、構築した環境を用いてレポートを書いてみました。</p>
 <p>以下に、Vivliostyleを用いて出力されたPDF(のスクリーンショットにモザイクかけたただの画像)を示します。</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><a href="http://tatamo.81.la/blog/images/post/2017/12/06/output_report.png" target="_blank"><img src="http://tatamo.81.la/blog/images/post/2017/12/06/output_report.png" alt="PDFに出力されたレポート"></a></p>
 <p>図はLibreOffice Drawで用意しましたがそのあたりは適当です。</p>
 <p>これに用いたCSSは、</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">@<span style="color:#66d9ef">page</span> {

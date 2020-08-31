@@ -81,7 +81,8 @@
 今回は、LR法による構文解析の流れを解説するとともに、これからどのような流れでパーサジェネレータを作成していくのかを紹介します。
 今回は解説のみのためソースコードが載りません。</p>
 <h2 id="lr1構文解析の流れ">LR(1)構文解析の流れ</h2>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">字句規則を用意して字句解析器にかけてトークン列を取得したあと構文規則をもとにFIRST関数とFOLLOW関数を求め、それをもとにgotoグラフを導出することによってLR表を作成して、構築したLRパーサでトークン列を解析して得た抽象構文木を処理すれば構文解析ができると知ったわたし <a href="https://t.co/aIbxqSf5qj">pic.twitter.com/aIbxqSf5qj</a></p>&mdash; たたも (@__tatamo__) <a href="https://twitter.com/__tatamo__/status/798837425313189888">2016年11月16日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>FOLLOW関数はSLR法などで使用する概念のため、LR(1)法を用いる今回の記事では用いません。忘れてください。</p>
 <p>LR構文解析の流れは、以下の通りとなります。</p>
 <ol>

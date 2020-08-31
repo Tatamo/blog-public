@@ -76,7 +76,7 @@
         <a href="http://tatamo.81.la/blog/tags/blog/">blog</a></p>
         <p>このブログのシンタックスハイライトには<a href="https://highlightjs.org/">highlight.js</a>を使用していますが、使い勝手を上げるために調整を行いました。</p>
 <h2 id="コードの強調は不要だがhighlightjsのテーマは使いたい">コードの強調は不要だがhighlight.jsのテーマは使いたい</h2>
-<p>プログラムの実行結果など、プログラムそのもの以外を<!-- raw HTML omitted -->&lt;code&gt;<!-- raw HTML omitted -->タグで囲いたくなる場合が何度かありました。
+<p>プログラムの実行結果など、プログラムそのもの以外を<code class="html">&lt;code&gt;</code>タグで囲いたくなる場合が何度かありました。
 class要素に<code>nohighlight</code>を指定すればハイライトは行われなくなりますが、highlight.jsのCSSテーマも適用されなくなります。</p>
 <h2 id="インライン要素のハイライトをデフォルトで無効化したい">インライン要素のハイライトをデフォルトで無効化したい</h2>
 <p>さらに、インライン要素のハイライトを行う場合、対象となるコードが短いために言語の自動検出がうまく働かないことが多いです。
@@ -86,7 +86,7 @@ class要素に<code>nohighlight</code>を指定すればハイライトは行わ
 ```
 </code></pre><p>とすることで言語注釈をつけることができますが、インラインの場合はこれができないため言語を明示的に指定する場合には直接codeタグを書く必要があります。</p>
 <h2 id="解決策">解決策</h2>
-<p>今のところ<!-- raw HTML omitted -->&lt;code&gt;<!-- raw HTML omitted -->で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、<code>nohighlight</code>を指定した場合でもCSSテーマが適用されるようにします。
+<p>今のところ<code class="html">&lt;code&gt;</code>で囲った部分はすべてhighlight.jsのテーマを適用してしまって問題はないので、<code>nohighlight</code>を指定した場合でもCSSテーマが適用されるようにします。
 また、インライン要素の場合はデフォルトで<code>nohighlight</code>にしてしまって、必要がある場合のみHTMLタグを記述して明示的に言語を指定することとしました。
 <a href="http://tatamo.81.la/blog/2015/12/12/apply-highlightjs-to-inline/">highlight.jsをインライン要素にも適用できるようにした</a> で書いたコードを、さらに手直しします。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// hljs.initHighlightingOnLoad();
@@ -112,7 +112,7 @@ class要素に<code>nohighlight</code>を指定すればハイライトは行わ
 		}
 	}
 }, <span style="color:#66d9ef">false</span>);
-</code></pre></div><p>まず、<!-- raw HTML omitted -->&lt;code&gt;<!-- raw HTML omitted -->タグでclassの指定が明示的に行われていない場合は自動的に<code>nohighlight</code>クラスを追加しています。
+</code></pre></div><p>まず、<code class="html">&lt;code&gt;</code>タグでclassの指定が明示的に行われていない場合は自動的に<code>nohighlight</code>クラスを追加しています。
 この処理はhighlight.jsでのハイライト化の処理を行う前に持ってきました。
 スタイルの適用も同じように前に持ってきましたが、特に問題はないようです。
 次に、<code>nohighlight</code>が指定されていてハイライトが行われていない要素に対して、classにhighlight.jsで使用されているクラスである<code>hljs</code>を指定することでテーマの適用を行っています。</p>

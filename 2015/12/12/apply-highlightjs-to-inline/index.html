@@ -83,10 +83,10 @@
 	<span style="color:#66d9ef">print</span> (<span style="color:#e6db74">&#34;Fizz&#34;</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> i<span style="color:#f92672">%</span><span style="color:#ae81ff">3</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">+</span> (<span style="color:#e6db74">&#34;Buzz&#34;</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> i<span style="color:#f92672">%</span><span style="color:#ae81ff">5</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">or</span> i
 </code></pre></div><p><a href="https://highlightjs.org/static/demo/">highlight.js demo</a>を見れば、どのようにハイライトされるのか、どのようなテーマがあるのかが簡単にわかるので良いと思います。
 (しかし思うのですが、自分のサイトに導入を検討する際に、この濃い赤色の背景色だと白色の背景と感覚が違ってくるのでやや選びにくいのではないでしょうか……。
-コンソールから<!-- raw HTML omitted -->document.body.style.backgroundColor=&rdquo;#FFFFFF&rdquo;;<!-- raw HTML omitted -->とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)</p>
+コンソールから<code class="js">document.body.style.backgroundColor=&rdquo;#FFFFFF&rdquo;;</code>とでも入力して、背景を白く変更してから見てみるのがいいかもしれません。)</p>
 <h2 id="インライン要素でもハイライトできるようにしてみた">インライン要素でもハイライトできるようにしてみた</h2>
-<p>通常では、highlight.jsによるハイライトは<!-- raw HTML omitted -->&lt;pre&gt;&lt;code&gt;<!-- raw HTML omitted -->から<!-- raw HTML omitted -->&lt;/code&gt;&lt;/pre&gt;<!-- raw HTML omitted -->で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。</p>
-<p>Markdownの展開方法に適用できるように、<!-- raw HTML omitted -->&lt;code&gt;&lt;/code&gt;<!-- raw HTML omitted -->で囲まれた要素をハイライトすることにします。
+<p>通常では、highlight.jsによるハイライトは<code class="html">&lt;pre&gt;&lt;code&gt;</code>から<code class="html">&lt;/code&gt;&lt;/pre&gt;</code>で囲まれたブロック要素にのみ適用され、インライン要素に適用することはできません。1行の中にコードを埋め込みたいことも多いので、これではやや不便です。</p>
+<p>Markdownの展開方法に適用できるように、<code class="html">&lt;code&gt;&lt;/code&gt;</code>で囲まれた要素をハイライトすることにします。
 既に先人たちが記事を書いてくれているので、基本的にはそれを参考にするだけでした。</p>
 <ul>
 <li><a href="http://kenzauros.com/blog/apply-highlight-js-to-inline-source-code/">highlight.jsでインラインのソースコードもハイライトする | blog@kenzauros.com</a></li>
@@ -110,10 +110,10 @@
 }, <span style="color:#66d9ef">false</span>);
 &lt;/<span style="color:#f92672">script</span>&gt;
 </code></pre></div><p>通常<code>hljs.initHighlightingOnLoad();</code>を呼ぶところを、上記のコードで置き換えるだけで完了です。
-親要素が<!-- raw HTML omitted -->&lt;pre&gt;<!-- raw HTML omitted -->ではない場合にインライン化するようにしています。
+親要素が<code class="html">&lt;pre&gt;</code>ではない場合にインライン化するようにしています。
 またスタイルの指定も同時に行っているので、別途CSSを記述する必要はありません。</p>
 <p>既に記事内で何回も使用しているので今更感はありますが、実際にインラインのコードがハイライトされるか見てみましょう。
-たとえば、このように:<!-- raw HTML omitted -->print &ldquo;\n&rdquo;.join([&ldquo;Fizz&rdquo;<em>(not i%3)+&quot;Buzz&rdquo;</em>(not i%5) or str(i) for i in range(1,101)])<!-- raw HTML omitted -->1行のコードでもうまくハイライトされているのがわかります。
+たとえば、このように:<code class="py">print &ldquo;\n&rdquo;.join([&ldquo;Fizz&rdquo;<em>(not i%3)+&quot;Buzz&rdquo;</em>(not i%5) or str(i) for i in range(1,101)])</code>1行のコードでもうまくハイライトされているのがわかります。
 やったね。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
