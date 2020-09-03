@@ -92,7 +92,7 @@
 <p>どのような作品かについての詳細は、<a href="https://www.kogado.com/sw/contents/kuroneko/sr2017/ja/">公式サイト</a>、または紹介記事 <a href="https://ascii.jp/elem/000/001/544/1544812/">ASCII.jp：誰のために雨は降る 感情を揺さぶる音楽ゲームノベル「Symphonic Rain」:Steam</a> あたりを読んでいただければ把握しやすいのではないかと思います。
 テキスト・グラフィック・サウンドのすべてが一体となって世界観を作り上げているとても良質な作品ですので、これらのページを見て雰囲気が良いなと思った方はすぐに購入してしまって間違いないです。
 おすすめの作品です。</p>
-<iframe src="https://store.steampowered.com/widget/629650/" frameborder="0" width="646" height="190"></iframe>
+<iframe src="https://store.steampowered.com/widget/629650/" frameborder="0" width="646" height="190" style="max-width:100%"></iframe>
 <p>(Steamに毒されてしまったみなさん向けの情報として、Steam版/Switch版ともに時々値下がりします。
 セールの時期になるとだいたい3,000円より安くなるので、その際が買い時でしょう。
 もちろん定価で購入するだけの価値は十分にある作品です。)</p>
@@ -104,13 +104,20 @@
 そのため、<strong>本作品の全ルートをクリアした方以外は閲覧をお控えください</strong>。</p>
 <script>
     function show(){
-        document.getElementById('ff').style.display='';
-        document.getElementById('show').style.display='none';
+        document.getElementById("ff").style.display="";
+        document.getElementById("show_button").style.display="none";
     }
+    document.addEventListener("DOMContentLoaded", ()=>{
+        const span_more = document.querySelector("#more");
+        const button = document.createElement("button");
+        button.id = "show_button";
+        button.textContent = span_more.textContent;
+        span_more.textContent = "";
+        span_more.appendChild(button);
+        button.addEventListener("click", show);
+    });
 </script>
-<p>&lt;button id=&quot;show&rdquo;, onclick=&quot;show()&ldquo;&gt;続きを読む</button></p>
-<!-- なぜかこのdivの有無によってhugoのパース結果が変わる -->
-<div></div>
+<p><span id="more">続きを読む</span></p>
 <section id="ff" style="display:none">
 <h2 id="時系列">時系列</h2>
 <p>まずはファルの行動に注目しながら時系列を追っていきます。</p>
