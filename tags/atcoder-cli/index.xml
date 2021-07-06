@@ -26,7 +26,7 @@
       <pubDate>Fri, 07 Dec 2018 23:21:00 +0900</pubDate>
       
       <guid>http://tatamo.81.la/blog/2018/12/07/atcoder-cli-installation-guide/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt;のインストール方法を解説していきます。&lt;/p&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.npmjs.com/package/atcoder-cli&#34;&gt;atcoder-cli&lt;/a&gt; のインストール方法を解説していきます。&lt;/p&gt;
 &lt;h2 id=&#34;わかる人向け&#34;&gt;わかる人向け&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ pip3 install online-judge-tools
 $ npm install -g atcoder-cli
