@@ -152,8 +152,7 @@ Windows の場合はコマンドプロンプトを、Mac/Linux の場合は端�
 <p>ここまででインストール作業は完了です。</p>
 <p><a href="2018/12/07/atcoder-cli-tutorial/">atcoder-cli チュートリアル</a>に進み、atcoder-cli の基本的な使い方を確認しましょう。</p>
 <h2 id="トラブルシューティング">トラブルシューティング</h2>
-<p><code>oj</code> コマンドのインストールに関する問題が解決しない場合、 <a href="https://github.com/kmyk/online-judge-tools">online-judge-tools リポジトリ</a> にも案内があるため、そちらも併せて確認してください。 たとえば、 (docs/INSTALL.ja.md
-)[https://github.com/online-judge-tools/oj/blob/master/docs/INSTALL.ja.md]  にはより詳細で正確なインストール手順が書かれています。</p>
+<p><code>oj</code> コマンドのインストールに関する問題が解決しない場合、 <a href="https://github.com/kmyk/online-judge-tools">online-judge-tools リポジトリ</a> にも案内があるため、そちらも併せて確認してください。 たとえば、 <a href="https://github.com/online-judge-tools/oj/blob/master/docs/INSTALL.ja.md">docs/INSTALL.ja.md</a>  にはより詳細で正確なインストール手順が書かれています。</p>
 <h3 id="windows-powershell-で-acc-コマンドが実行できない">(Windows) PowerShell で <code>acc</code> コマンドが実行できない</h3>
 <p>コマンドプロンプト (cmd.exe とタイトルに書かれている黒い画面) ではなく PowerShell (青い画面) を使っている場合、「このシステムではスクリプトの実行が無効になっているため、……」 というようなメッセージが表示されて <code>acc</code> コマンドが実行できないことがあります。</p>
 <p>この場合、まず管理者モードで PowerShell を開きます。たとえば、スタートメニューボタンを右クリックして表示されるメニューに <code>Windows PowerShell (管理者)</code> というような項目があるので、これを選択すると <code>管理者: Windows PowerShell</code> というウインドウが立ち上がります。
@@ -164,18 +163,17 @@ Windows の場合はコマンドプロンプトを、Mac/Linux の場合は端�
 <ul>
 <li>参考: <a href="https://qiita.com/Targityen/items/3d2e0b5b0b7b04963750">https://qiita.com/Targityen/items/3d2e0b5b0b7b04963750</a></li>
 </ul>
-<h3 id="mac-linux-npm-install--g-atcoder-cli-すると-err-と書かれた行がたくさん表示される">(Mac, Linux) <code>npm install -g atcoder-cli</code> すると <code>ERR</code> と書かれた行がたくさん表示される</h3>
-<p>エラーメッセージをよく見ると、 <code>permission</code> がどうとか書かれているかもしれません。
+<h3 id="mac-linux-npm-install--g-atcoder-cli-すると-err-と書かれた行がたくさん表示される">(Mac, Linux) <code>npm install -g atcoder-cli</code> すると ERR と書かれた行がたくさん表示される</h3>
+<p>エラーメッセージをよく見ると、 permission がどうとか書かれているかもしれません。
 公式のインストーラーなどを使用して、すでにシステムに Node.js がインストールされていた場合に発生することがあるようです。
 この記事に書かれた手順に従って Node.js をインストールしなおすことで解消されます(すでにインストールされていた Node.js を個別にアンインストールしたりする必要はないので、そのまま手順通りに進めてください)。</p>
-<h3 id="mac-linux-oj-コマンドが見つからないといわれる-pip3-install-online-judge-tools-すると-permission-denied-といわれる">(Mac, Linux) <code>oj</code> コマンドが見つからないといわれる・ <code>pip3 install online-judge-tools</code> すると <code>Permission denied</code> といわれる</h3>
+<h3 id="mac-linux-oj-コマンドが見つからないといわれる-pip3-install-online-judge-tools-すると-permission-denied-といわれる">(Mac, Linux) <code>oj</code> コマンドが見つからないといわれる・ <code>pip3 install online-judge-tools</code> すると Permission denied といわれる</h3>
 <p><code>sudo</code> コマンドが使える場合、</p>
 <pre><code>$ sudo pip3 install online-judge-tools
 </code></pre><p>で解決することがあります。
 <code>sudo</code> から始まるコマンドを実行するとパスワードの入力を求められるので、 PC にログインしているユーザーのパスワードを入力します。
 セキュリティのためにパスワードを入力しても画面に文字が何も表示されないはずですが、内容は読み取られているので正しくパスワードを入力してエンターキーを押してください。</p>
-<p>または、 online-judge-tools のインストールドキュメント ((docs/INSTALL.ja.md
-)[https://github.com/online-judge-tools/oj/blob/master/docs/INSTALL.ja.md]) を読み、 <code>~/.local/bin</code> を <code>PATH</code> に追加してから</p>
+<p>または、 online-judge-tools のインストールドキュメント (<a href="https://github.com/online-judge-tools/oj/blob/master/docs/INSTALL.ja.md">docs/INSTALL.ja.md</a>) を読み、 <code>~/.local/bin</code> を <code>PATH</code> に追加してから</p>
 <pre><code>$ pip3 install --user online-judge-tools
 </code></pre><p>を実行してください。</p>
         <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="__tatamo__">Tweet</a></p>
